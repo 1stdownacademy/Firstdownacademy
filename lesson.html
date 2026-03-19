@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lessons — First Down Academy</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div style="padding-top:0;min-height:100vh;background:var(--off);">
+
+  <!-- Lesson header bar -->
+  <div style="background:var(--navy);padding:16px 0;border-bottom:1px solid rgba(255,255,255,.08);position:sticky;top:0;z-index:50;">
+    <div class="container">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+        <a href="program.html" style="font-family:var(--font-m);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.6);text-decoration:none;display:flex;align-items:center;gap:6px;">&#8592; The Program</a>
+        <div id="lessonHeader" style="flex:1;text-align:center;"></div>
+        <a href="dashboard.html" style="font-family:var(--font-m);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.6);text-decoration:none;">Dashboard</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lesson body -->
+  <div class="container" style="max-width:680px;padding:40px 24px 80px;">
+    <div id="lessonBody">
+      <div style="text-align:center;padding:80px 0;">
+        <div style="font-size:40px;margin-bottom:16px;">&#127944;</div>
+        <div style="font-family:var(--font-d);font-size:24px;color:var(--navy);">Loading lesson...</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="curriculum.js"></script>
+<script src="app.js"></script>
+<script>
+function showPage(name) {
+  var pageMap = {
+    'home':'index.html','course':'program.html','giq':'giq.html',
+    'levels':'levels.html','coaches':'coaches.html','signup':'auth.html',
+    'dashboard':'dashboard.html','lesson':'lesson.html','legal':'legal.html'
+  };
+  if (pageMap[name]) window.location.href = pageMap[name];
+}
+// Load the module saved in session storage
+var savedModule = sessionStorage.getItem('openModule');
+if (savedModule !== null) {
+  openModule(parseInt(savedModule));
+  sessionStorage.removeItem('openModule');
+} else {
+  openModule(0);
+}
+</script>
+</body>
+</html>

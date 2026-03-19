@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>First Down Academy — Build the Football IQ That Gives Your Players the Edge</title>
+<meta name="description" content="First Down Academy is a complete football education platform for coaches who want smarter players. 8 modules, 84 slides, 5 pillars of football knowledge.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a class="logo" href="index.html">
+      <img src="logo.png" alt="First Down Academy" style="height:40px;width:40px;object-fit:contain;" onerror="this.style.display='none'">
+      First Down Academy
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="program.html">The Program</a>
+      <div class="nav-dropdown" id="nav-platform-wrap">
+        <button class="nav-link" id="nav-platform" onclick="toggleDropdown()">Platform &#9662;</button>
+        <div class="nav-dropdown-menu" id="navDropdown">
+          <a class="nav-dropdown-item" href="giq.html">&#129504; <strong>Gridiron IQ</strong> &mdash; Football knowledge assessment</a>
+          <a class="nav-dropdown-item" href="levels.html">&#128200; <strong>Levels</strong> &mdash; Foundations &middot; Middle School &middot; High School</a>
+        </div>
+      </div>
+      <a class="nav-link" href="coaches.html">Coaches</a>
+      <a class="nav-link" id="nav-dashboard" href="dashboard.html" style="display:none">Dashboard</a>
+    </div>
+    <div class="nav-auth-btns" id="navAuthBtns">
+      <a class="btn btn-outline nav-login-btn" href="auth.html">Log In</a>
+      <a class="btn btn-primary nav-signup-btn" href="auth.html">Sign Up</a>
+    </div>
+    <a class="btn btn-primary nav-cta" id="navDashBtn" href="dashboard.html" style="display:none">Dashboard</a>
+    <button class="hamburger" onclick="toggleMobileMenu()" id="hamburger">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a class="mobile-menu-item" href="program.html">The Program</a>
+  <a class="mobile-menu-item" href="giq.html">Gridiron IQ</a>
+  <a class="mobile-menu-item" href="levels.html">Levels</a>
+  <a class="mobile-menu-item" href="coaches.html">Coaches</a>
+  <div class="mobile-menu-divider"></div>
+  <a class="mobile-menu-item" href="auth.html" id="mobileSignupBtn">Sign Up Free</a>
+  <a class="mobile-menu-item" href="auth.html">Log In</a>
+</div>
+
+<!-- HERO -->
+<section class="home-hero">
+  <div class="home-hero-grid"></div>
+  <div class="home-hero-glow"></div>
+  <div class="home-hero-inner">
+    <div class="home-hero-left">
+      <div class="home-hero-eyebrow">
+        <span class="home-hero-dot"></span>
+        <span class="home-hero-eyebrow-text">Foundations &middot; Middle School &middot; High School</span>
+      </div>
+      <h1 class="home-hero-headline">
+        BUILD THE
+        <span class="home-hero-accent">FOOTBALL IQ</span>
+        <span class="home-hero-ghost">THAT WINS.</span>
+      </h1>
+      <p class="home-hero-sub">First Down Academy is a complete football education platform for coaches who want smarter players — and players who want to understand the whole game, not just their role.</p>
+      <div class="home-hero-ctas">
+        <a href="coaches.html" class="btn-home-primary">Get Your Coach Link &rarr;</a>
+        <a href="program.html" class="btn-home-secondary">View the Curriculum</a>
+      </div>
+      <div class="home-hero-stats">
+        <div class="home-stat"><div class="home-stat-num">8</div><div class="home-stat-label">Modules</div></div>
+        <div class="home-stat"><div class="home-stat-num">84</div><div class="home-stat-label">Slides</div></div>
+        <div class="home-stat"><div class="home-stat-num">5</div><div class="home-stat-label">IQ Pillars</div></div>
+        <div class="home-stat"><div class="home-stat-num">8&ndash;18</div><div class="home-stat-label">Ages</div></div>
+      </div>
+    </div>
+    <div class="home-hero-right">
+      <div class="home-hero-right-bg"></div>
+      <div class="home-hero-right-grid"></div>
+      <div class="home-hero-right-glow"></div>
+      <div class="home-iq-card">
+        <div class="home-iq-header">
+          <span class="home-iq-label">Gridiron IQ Score</span>
+          <span class="home-iq-badge">Coming Soon</span>
+        </div>
+        <div class="home-iq-score-row">
+          <div class="home-iq-num">84</div>
+          <div class="home-iq-meta">
+            <div class="home-iq-title">ADVANCED<br>PLAYMAKER</div>
+            <div class="home-iq-sub">Top 15% of players</div>
+          </div>
+        </div>
+        <div class="home-iq-bars">
+          <div class="home-iq-bar-row"><span class="home-iq-bar-label">Game Structure</span><div class="home-iq-bar-track"><div class="home-iq-bar-fill" style="width:92%"></div></div><span class="home-iq-bar-val">92</span></div>
+          <div class="home-iq-bar-row"><span class="home-iq-bar-label">Player Roles</span><div class="home-iq-bar-track"><div class="home-iq-bar-fill" style="width:88%"></div></div><span class="home-iq-bar-val">88</span></div>
+          <div class="home-iq-bar-row"><span class="home-iq-bar-label">Offense</span><div class="home-iq-bar-track"><div class="home-iq-bar-fill" style="width:79%"></div></div><span class="home-iq-bar-val">79</span></div>
+          <div class="home-iq-bar-row"><span class="home-iq-bar-label">Defense</span><div class="home-iq-bar-track"><div class="home-iq-bar-fill" style="width:74%"></div></div><span class="home-iq-bar-val">74</span></div>
+          <div class="home-iq-bar-row"><span class="home-iq-bar-label">Situational</span><div class="home-iq-bar-track"><div class="home-iq-bar-fill" style="width:68%"></div></div><span class="home-iq-bar-val">68</span></div>
+        </div>
+      </div>
+      <div class="home-pill-row">
+        <div class="home-pill"><div class="home-pill-val">3</div><div class="home-pill-label">Levels</div></div>
+        <div class="home-pill"><div class="home-pill-val">42</div><div class="home-pill-label">Quiz Qs</div></div>
+        <div class="home-pill"><div class="home-pill-val">70%</div><div class="home-pill-label">Pass Score</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track">
+    <span class="ticker-item">Game Structure <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Player Roles <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Offensive Concepts <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Defensive Concepts <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Situational Strategy <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Gridiron IQ <span class="ticker-dot"></span></span>
+    <span class="ticker-item">84 Slides <span class="ticker-dot"></span></span>
+    <span class="ticker-item">42 Quiz Questions <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Game Structure <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Player Roles <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Offensive Concepts <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Defensive Concepts <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Situational Strategy <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Gridiron IQ <span class="ticker-dot"></span></span>
+    <span class="ticker-item">84 Slides <span class="ticker-dot"></span></span>
+    <span class="ticker-item">42 Quiz Questions <span class="ticker-dot"></span></span>
+  </div>
+</div>
+
+<!-- CONCEPT SECTION -->
+<section class="home-concept">
+  <div class="home-concept-inner">
+    <div class="home-concept-left">
+      <div class="section-eyebrow">The Core Concept</div>
+      <h2 class="section-title">GRIDIRON IQ IS THE EDGE MOST PLAYERS <span class="text-orange">DON&rsquo;T HAVE.</span></h2>
+      <p class="section-body">Most players know their assignment. The ones who stand out understand <strong>the entire play</strong> &mdash; what the defense is showing, why the blocking scheme works, and how to react when the play breaks down.</p>
+      <p class="section-body">That&rsquo;s Gridiron IQ. It isn&rsquo;t about size or speed. It&rsquo;s about <strong>football intelligence</strong> &mdash; and it can be developed. Players with a high Gridiron IQ process the game faster, adjust when things break down, and get more out of every rep at practice.</p>
+      <p class="section-body">First Down Academy builds it systematically. Every slide. Every module. Every quiz &mdash; designed to raise football IQ so players arrive at practice with the foundation already installed.</p>
+    </div>
+    <div class="home-concept-right">
+      <div class="home-pillars">
+        <div class="home-pillar featured">
+          <div class="home-pillar-num">01</div>
+          <div class="home-pillar-name">GAME STRUCTURE</div>
+          <div class="home-pillar-desc">Field layout, downs, scoring, penalties, and how a football game works from kickoff to final whistle.</div>
+        </div>
+        <div class="home-pillar">
+          <div class="home-pillar-num">02</div>
+          <div class="home-pillar-name">PLAYER ROLES</div>
+          <div class="home-pillar-desc">Every position on offense, defense, and special teams.</div>
+        </div>
+        <div class="home-pillar">
+          <div class="home-pillar-num">03</div>
+          <div class="home-pillar-name">OFFENSE</div>
+          <div class="home-pillar-desc">Formations, runs, passes, routes, and blocking.</div>
+        </div>
+        <div class="home-pillar">
+          <div class="home-pillar-num">04</div>
+          <div class="home-pillar-name">DEFENSE</div>
+          <div class="home-pillar-desc">Coverages, fronts, tackling, and turnovers.</div>
+        </div>
+        <div class="home-pillar">
+          <div class="home-pillar-num">05</div>
+          <div class="home-pillar-name">SITUATIONAL</div>
+          <div class="home-pillar-desc">3rd down, red zone, clock management, and game-flow decisions.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="home-loop">
+  <div class="home-loop-grid"></div>
+  <div class="home-loop-inner">
+    <div class="home-loop-header">
+      <div class="section-eyebrow" style="color:var(--orange-300);justify-content:center;">How It Works</div>
+      <h2 class="section-title" style="color:white;text-align:center;">LEARN OFF THE FIELD.<br>PERFORM ON IT.</h2>
+      <p class="home-loop-sub">The most effective way to improve football IQ is to teach the game away from the field &mdash; when there is no pressure, no whistle, no time limit.</p>
+    </div>
+    <div class="home-loop-steps">
+      <div class="home-loop-step">
+        <div class="home-step-num">01</div>
+        <div class="home-step-icon orange">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect x="4" y="6" width="20" height="16" rx="3" stroke="white" stroke-width="2"/><path d="M9 11h10M9 15h7" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <div class="home-step-title">PLAYERS LEARN THE GAME</div>
+        <p class="home-step-body">Short slide-based lessons covering all 5 pillars of football knowledge &mdash; on their own time, before practice.</p>
+      </div>
+      <div class="home-loop-arrow">&rarr;</div>
+      <div class="home-loop-step">
+        <div class="home-step-num">02</div>
+        <div class="home-step-icon navy">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M14 4L4 10v14h20V10L14 4z" stroke="white" stroke-width="2" stroke-linejoin="round" opacity=".5"/><path d="M10 15l3 3 6-6" stroke="#E8630A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="home-step-title">COACHES RUN BETTER PRACTICES</div>
+        <p class="home-step-body">Players arrive knowing the fundamentals. You stop re-teaching the game and start coaching your team.</p>
+      </div>
+      <div class="home-loop-arrow">&rarr;</div>
+      <div class="home-loop-step">
+        <div class="home-step-num">03</div>
+        <div class="home-step-icon green">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M6 20L12 14L16 18L22 10" stroke="#22C55E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M22 10H18M22 10V14" stroke="#22C55E" stroke-width="2.5" stroke-linecap="round"/></svg>
+        </div>
+        <div class="home-step-title">GRIDIRON IQ GOES UP</div>
+        <p class="home-step-body">Faster decisions. Better execution. The measurable result of understanding the whole game &mdash; not just one role.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BENTO GRID -->
+<section class="home-bento">
+  <div class="home-bento-header">
+    <div class="section-eyebrow">The Platform</div>
+    <h2 class="section-title">BUILT FOR EVERY<br>PART OF THE GAME.</h2>
+  </div>
+  <div class="home-bento-grid">
+    <div class="home-bcard dark">
+      <div class="home-bcard-tag">For Coaches</div>
+      <div class="home-bcard-title">YOUR ROSTER.<br>SMARTER.<br>BEFORE PRACTICE.</div>
+      <div class="home-bcard-checks">
+        <div class="home-bcard-check"><div class="home-check-dot"></div><span>Share one link with your entire team in 60 seconds</span></div>
+        <div class="home-bcard-check"><div class="home-check-dot"></div><span>Players arrive knowing positions, formations, and plays</span></div>
+        <div class="home-bcard-check"><div class="home-check-dot"></div><span>Reclaim 15&ndash;20 minutes of practice time every session</span></div>
+        <div class="home-bcard-check"><div class="home-check-dot"></div><span>No cost to you or your program &mdash; ever</span></div>
+      </div>
+      <a href="coaches.html" class="home-bcard-link">Get Your Coach Link &rarr;</a>
+      <div class="home-bcard-bgnum">C</div>
+    </div>
+    <div class="home-bcard orange">
+      <div class="home-bcard-tag">For Players</div>
+      <div class="home-bcard-title">UNDERSTAND<br>THE WHOLE<br>GAME.</div>
+      <p class="home-bcard-body">Not just your position. Every player on the field, every concept, every decision &mdash; built into your football IQ through 84 slides and 42 quiz questions.</p>
+      <a href="auth.html" class="home-bcard-link">Start Learning &rarr;</a>
+      <div class="home-bcard-bgnum">P</div>
+    </div>
+    <div class="home-bcard dark full">
+      <div class="home-bcard-tag">The Roadmap</div>
+      <div class="home-bcard-full-inner">
+        <div>
+          <div class="home-bcard-title">THREE LEVELS.<br>ONE ACADEMY.</div>
+          <p class="home-bcard-body" style="max-width:400px;margin-top:8px;">First Down Academy grows with every player &mdash; from little league through high school. Each level goes deeper into the same 5 pillars.</p>
+        </div>
+        <div class="home-levels-bar">
+          <div class="home-level active"><div class="home-level-num">1</div><div class="home-level-name">Foundations</div><span class="home-level-badge live">Live Now</span></div>
+          <div class="home-level"><div class="home-level-num">2</div><div class="home-level-name">Middle School</div><span class="home-level-badge soon">Coming Soon</span></div>
+          <div class="home-level"><div class="home-level-num">3</div><div class="home-level-name">High School</div><span class="home-level-badge future">Future</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="home-cta-section">
+  <div class="home-cta-box">
+    <div class="home-cta-glow"></div>
+    <div class="home-cta-left">
+      <div class="home-cta-tag">Ready to Start?</div>
+      <h2 class="home-cta-title">YOUR ROSTER.<br>SMARTER.<br>NEXT PRACTICE.</h2>
+      <p class="home-cta-sub">Share one link. First Down Academy installs the football knowledge. You run the practice you actually want to run.</p>
+    </div>
+    <div class="home-cta-right">
+      <a href="coaches.html" class="btn-home-primary">Get Your Coach Link &rarr;</a>
+      <a href="program.html" class="btn-home-secondary">View the Curriculum</a>
+      <div class="home-cta-note">No setup required &middot; No credit card</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a class="logo" href="index.html" style="margin-bottom:12px;display:inline-flex;">
+        <img src="logo.png" alt="First Down Academy" style="height:36px;width:36px;object-fit:contain;" onerror="this.style.display='none'">
+        First Down Academy
+      </a>
+      <p class="footer-tagline">The football education platform built for coaches who want smarter players.</p>
+    </div>
+    <div class="footer-links">
+      <div class="footer-col">
+        <div class="footer-col-label">Platform</div>
+        <ul><li><a href="program.html">The Program</a></li><li><a href="giq.html">Gridiron IQ</a></li><li><a href="levels.html">Levels</a></li><li><a href="coaches.html">Coaches</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-label">Account</div>
+        <ul><li><a href="auth.html">Sign Up</a></li><li><a href="auth.html">Log In</a></li><li><a href="dashboard.html">Dashboard</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-label">Legal</div>
+        <ul><li><a href="legal.html">Privacy Policy</a></li><li><a href="legal.html">Terms of Service</a></li></ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&copy; 2026 First Down Academy. All Rights Reserved.</span>
+    <div>
+      <a href="legal.html" onclick="sessionStorage.setItem('legalDoc','privacy')">Privacy Policy</a>
+      <a href="legal.html" onclick="sessionStorage.setItem('legalDoc','terms')">Terms of Service</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+function toggleMobileMenu() {
+  var menu = document.getElementById('mobileMenu');
+  var burger = document.getElementById('hamburger');
+  if (!menu) return;
+  menu.classList.toggle('open');
+  var isOpen = menu.classList.contains('open');
+  var spans = burger.querySelectorAll('span');
+  if (spans[0]) spans[0].style.transform = isOpen ? 'rotate(45deg) translate(5px,5px)' : '';
+  if (spans[1]) spans[1].style.opacity = isOpen ? '0' : '';
+  if (spans[2]) spans[2].style.transform = isOpen ? 'rotate(-45deg) translate(5px,-5px)' : '';
+}
+function toggleDropdown() {
+  var dd = document.getElementById('navDropdown');
+  if (dd) dd.classList.toggle('open');
+}
+document.addEventListener('click', function(e) {
+  var wrap = document.getElementById('nav-platform-wrap');
+  if (wrap && !wrap.contains(e.target)) {
+    var dd = document.getElementById('navDropdown');
+    if (dd) dd.classList.remove('open');
+  }
+});
+// Check if logged in via Supabase session
+(async function() {
+  try {
+    var s = window.supabase;
+    if (!s) return;
+    var { createClient } = s;
+    var db = createClient('https://wzylgwvifdfnkmuleoxn.supabase.co', 'sb_publishable_FaPj5NQeqzsRE8kOme2lKQ_uXrHArbt');
+    var result = await db.auth.getSession();
+    if (result.data && result.data.session) {
+      var authBtns = document.getElementById('navAuthBtns');
+      if (authBtns) authBtns.style.display = 'none';
+      var dashBtn = document.getElementById('navDashBtn');
+      if (dashBtn) dashBtn.style.display = 'inline-flex';
+      var dashLink = document.getElementById('nav-dashboard');
+      if (dashLink) dashLink.style.display = 'block';
+    }
+  } catch(e) {}
+})();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign Up / Log In — First Down Academy</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="logo" href="index.html">
+      <img src="logo.png" alt="First Down Academy" style="height:40px;width:40px;object-fit:contain;" onerror="this.style.display='none'">
+      First Down Academy
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="program.html">The Program</a>
+      <a class="nav-link" href="coaches.html">Coaches</a>
+    </div>
+    <div class="nav-auth-btns" id="navAuthBtns">
+      <a class="btn btn-outline nav-login-btn" href="auth.html">Log In</a>
+      <a class="btn btn-primary nav-signup-btn" href="auth.html">Sign Up</a>
+    </div>
+  </div>
+</nav>
+
+<div class="auth-page">
+  <div class="auth-card">
+    <div class="auth-logo-area">
+      <img src="logo.png" alt="First Down Academy" style="width:56px;height:56px;object-fit:contain;margin-bottom:12px;" onerror="this.style.display:'none'">
+      <div class="auth-title">First Down Academy</div>
+      <div class="auth-sub">Learn football. Build your IQ.</div>
+    </div>
+
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tabSignup" onclick="switchTab('signup')">Sign Up</button>
+      <button class="auth-tab" id="tabLogin" onclick="switchTab('login')">Log In</button>
+    </div>
+
+    <!-- SIGN UP FORM -->
+    <div id="formSignup">
+      <div class="role-toggle">
+        <button class="role-btn active" id="rolePlayer" onclick="switchRole('player')">&#127944; Player</button>
+        <button class="role-btn" id="roleCoach" onclick="switchRole('coach')">&#128203; Coach</button>
+      </div>
+
+      <!-- Player fields -->
+      <div id="playerFields">
+        <div class="form-group"><label class="form-label">Full Name</label><input class="form-input" id="playerName" type="text" placeholder="Your full name"></div>
+        <div class="form-group"><label class="form-label">Email</label><input class="form-input" id="playerEmail" type="email" placeholder="your@email.com"></div>
+        <div class="form-group"><label class="form-label">Password</label><input class="form-input" id="playerPassword" type="password" placeholder="At least 6 characters"></div>
+        <div class="form-group">
+          <label class="form-label">Age</label>
+          <select class="form-input" id="playerAge">
+            <option value="">Select your age</option>
+            <option value="8">8</option><option value="9">9</option><option value="10">10</option>
+            <option value="11">11</option><option value="12">12</option><option value="13">13</option>
+            <option value="14">14</option><option value="15">15</option><option value="16">16</option>
+            <option value="17">17</option><option value="18">18</option><option value="18+">18+</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Coach Referral Code <span style="color:var(--muted);font-weight:400;">(optional)</span></label>
+          <input class="form-input" id="playerReferral" type="text" placeholder="e.g. eagles4827">
+          <div style="font-size:12px;color:var(--muted);margin-top:6px;">Ask your coach for their referral code to connect your account to their team.</div>
+        </div>
+        <button class="btn btn-navy" style="width:100%;justify-content:center;margin-top:8px;" onclick="doSignup()">Create Player Account &rarr;</button>
+      </div>
+
+      <!-- Coach fields -->
+      <div id="coachFields" style="display:none">
+        <div class="form-group"><label class="form-label">Your Full Name</label><input class="form-input" id="coachName" type="text" placeholder="Coach name"></div>
+        <div class="form-group"><label class="form-label">Email</label><input class="form-input" id="coachEmail" type="email" placeholder="your@email.com"></div>
+        <div class="form-group"><label class="form-label">Password</label><input class="form-input" id="coachPassword" type="password" placeholder="At least 6 characters"></div>
+        <div class="form-group"><label class="form-label">Team Name</label><input class="form-input" id="coachTeamName" type="text" placeholder="e.g. Westside Eagles"></div>
+        <div class="form-group">
+          <label class="form-label">Team Mascot</label>
+          <input class="form-input" id="coachMascot" type="text" placeholder="e.g. Eagles" oninput="updateCoachPreview()">
+          <div id="coachLinkPreview" style="display:none;margin-top:10px;background:var(--off);border-radius:8px;padding:12px 14px;">
+            <div style="font-size:11px;color:var(--muted);font-family:var(--font-m);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;">Your referral code</div>
+            <div style="font-size:16px;font-family:var(--font-d);color:var(--navy);letter-spacing:.04em;" id="clpCode"></div>
+          </div>
+        </div>
+        <button class="btn btn-navy" style="width:100%;justify-content:center;margin-top:8px;" onclick="doCoachSignup()">Create Coach Account &rarr;</button>
+      </div>
+
+      <div style="font-size:12px;color:var(--muted);text-align:center;margin-top:16px;">
+        By signing up you agree to our <a href="legal.html" style="color:var(--blue);">Terms of Service</a> and <a href="legal.html" style="color:var(--blue);">Privacy Policy</a>.
+      </div>
+    </div>
+
+    <!-- LOGIN FORM -->
+    <div id="formLogin" style="display:none">
+      <div class="form-group"><label class="form-label">Email</label><input class="form-input" id="loginEmail" type="email" placeholder="your@email.com"></div>
+      <div class="form-group"><label class="form-label">Password</label><input class="form-input" id="loginPassword" type="password" placeholder="Your password"></div>
+      <button class="btn btn-navy" style="width:100%;justify-content:center;margin-top:8px;" onclick="doLogin()">Log In &rarr;</button>
+      <div style="font-size:13px;color:var(--muted);text-align:center;margin-top:16px;">
+        <a href="mailto:support@firstdownacademy.com" style="color:var(--blue);">Forgot your password?</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="curriculum.js"></script>
+<script src="app.js"></script>
+<script>
+// Override showPage to use real navigation
+function showPage(name) {
+  var pageMap = {
+    'home': 'index.html', 'course': 'program.html', 'giq': 'giq.html',
+    'levels': 'levels.html', 'coaches': 'coaches.html', 'signup': 'auth.html',
+    'dashboard': 'dashboard.html', 'lesson': 'lesson.html', 'legal': 'legal.html'
+  };
+  if (pageMap[name]) window.location.href = pageMap[name];
+}
+// Check if we should show login tab
+if (new URLSearchParams(window.location.search).get('tab') === 'login') {
+  switchTab('login');
+}
+</script>
+</body>
+</html>

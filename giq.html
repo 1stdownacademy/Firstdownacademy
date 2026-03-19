@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gridiron IQ — First Down Academy</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <a class="logo" href="index.html"><img src="logo.png" alt="First Down Academy" style="height:40px;width:40px;object-fit:contain;" onerror="this.style.display:'none'">First Down Academy</a>
+    <div class="nav-links">
+      <a class="nav-link" href="program.html">The Program</a>
+      <a class="nav-link active" href="giq.html">Gridiron IQ</a>
+      <a class="nav-link" href="coaches.html">Coaches</a>
+      <a class="nav-link" id="nav-dashboard" href="dashboard.html" style="display:none">Dashboard</a>
+    </div>
+    <div class="nav-auth-btns" id="navAuthBtns">
+      <a class="btn btn-outline nav-login-btn" href="auth.html?tab=login">Log In</a>
+      <a class="btn btn-primary nav-signup-btn" href="auth.html">Sign Up</a>
+    </div>
+    <a class="btn btn-primary nav-cta" id="navDashBtn" href="dashboard.html" style="display:none">Dashboard</a>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="container page-hero-inner">
+    <span class="tag tag-orange">Coming Soon</span>
+    <h1>Gridiron IQ</h1>
+    <p>A comprehensive football intelligence assessment scored across 5 pillars. Find out exactly where your football knowledge stands — and where to improve.</p>
+  </div>
+</div>
+
+<div style="padding:80px 0;background:var(--white);">
+  <div class="container" style="max-width:900px;">
+    <div style="text-align:center;margin-bottom:60px;">
+      <div class="section-eyebrow" style="justify-content:center;">The 5 Pillars</div>
+      <h2 class="section-title">YOUR IQ ACROSS <span class="text-orange">EVERY DIMENSION.</span></h2>
+      <p style="font-size:16px;color:var(--muted);max-width:560px;margin:16px auto 0;">Gridiron IQ doesn&rsquo;t give you one number. It breaks down your football intelligence across 5 specific pillars so you know exactly where you stand.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;">
+      <div class="giq-pillar-card"><div class="giq-pillar-num">01</div><div class="giq-pillar-name">Game Structure</div><div class="giq-pillar-desc">Field, downs, scoring, penalties</div></div>
+      <div class="giq-pillar-card"><div class="giq-pillar-num">02</div><div class="giq-pillar-name">Player Roles</div><div class="giq-pillar-desc">Every position explained</div></div>
+      <div class="giq-pillar-card"><div class="giq-pillar-num">03</div><div class="giq-pillar-name">Offense</div><div class="giq-pillar-desc">Formations, routes, blocking</div></div>
+      <div class="giq-pillar-card"><div class="giq-pillar-num">04</div><div class="giq-pillar-name">Defense</div><div class="giq-pillar-desc">Coverages, tackling, turnovers</div></div>
+      <div class="giq-pillar-card"><div class="giq-pillar-num">05</div><div class="giq-pillar-name">Situational</div><div class="giq-pillar-desc">3rd down, red zone, clock</div></div>
+    </div>
+  </div>
+</div>
+
+<div style="padding:80px 0;background:var(--off);">
+  <div class="container" style="max-width:680px;">
+    <div style="text-align:center;margin-bottom:40px;">
+      <div class="section-eyebrow" style="justify-content:center;">Sample Question</div>
+      <h2 class="section-title">TRY A <span class="text-orange">SAMPLE QUESTION.</span></h2>
+    </div>
+    <div id="sampleQuiz" style="background:var(--white);border-radius:var(--r-lg);padding:32px;border:1px solid var(--gray);">
+      <div style="font-family:var(--font-m);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--orange);margin-bottom:12px;">Game Structure &middot; Sample Q</div>
+      <div style="font-size:18px;font-weight:600;color:var(--navy);margin-bottom:20px;line-height:1.4;">A team is on 3rd and 8. What does this mean?</div>
+      <div id="sampleOpts" style="display:flex;flex-direction:column;gap:10px;">
+        <button class="lesson-quiz-opt" onclick="answerSample(0,1)"><span class="lesson-opt-letter">A</span><span>It is the 3rd quarter with 8 minutes left</span></button>
+        <button class="lesson-quiz-opt" onclick="answerSample(1,1)"><span class="lesson-opt-letter">B</span><span>It is the 3rd down and the offense needs 8 more yards for a first down</span></button>
+        <button class="lesson-quiz-opt" onclick="answerSample(2,1)"><span class="lesson-opt-letter">C</span><span>Eight players are on the field</span></button>
+        <button class="lesson-quiz-opt" onclick="answerSample(3,1)"><span class="lesson-opt-letter">D</span><span>The ball is on the 8-yard line</span></button>
+      </div>
+      <div id="sampleResult" style="display:none;margin-top:16px;padding:14px;border-radius:8px;font-size:14px;line-height:1.6;"></div>
+    </div>
+  </div>
+</div>
+
+<div style="padding:80px var(--gutter);background:var(--navy);">
+  <div style="max-width:600px;margin:0 auto;text-align:center;">
+    <div style="font-family:var(--font-d);font-size:clamp(32px,5vw,52px);color:white;letter-spacing:.04em;line-height:.95;margin-bottom:16px;">GET NOTIFIED WHEN GRIDIRON IQ LAUNCHES.</div>
+    <p style="font-size:15px;color:rgba(255,255,255,.5);margin-bottom:32px;">Be the first to take the full assessment and find out your official Gridiron IQ score.</p>
+    <div class="notify-form" style="display:flex;gap:10px;max-width:440px;margin:0 auto;flex-wrap:wrap;">
+      <input type="email" id="notifyEmail" class="form-input" placeholder="your@email.com" style="flex:1;min-width:200px;">
+      <button class="btn btn-primary" onclick="submitNotify()" style="white-space:nowrap;">Notify Me &rarr;</button>
+    </div>
+    <div id="notifyConfirm" style="display:none;margin-top:16px;background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.3);border-radius:8px;padding:12px;color:#22C55E;font-size:14px;">&#10003; You&rsquo;re on the list! We&rsquo;ll email you when Gridiron IQ is live.</div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand"><a class="logo" href="index.html"><img src="logo.png" alt="" style="height:36px;width:36px;object-fit:contain;" onerror="this.style.display:'none'">First Down Academy</a></div>
+    <div class="footer-links">
+      <div class="footer-col"><div class="footer-col-label">Platform</div><ul><li><a href="program.html">The Program</a></li><li><a href="coaches.html">Coaches</a></li></ul></div>
+      <div class="footer-col"><div class="footer-col-label">Account</div><ul><li><a href="auth.html">Sign Up</a></li><li><a href="auth.html?tab=login">Log In</a></li></ul></div>
+    </div>
+  </div>
+  <div class="footer-bottom"><span>&copy; 2026 First Down Academy</span></div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="curriculum.js"></script>
+<script src="app.js"></script>
+<script>
+function showPage(n) { var m={'home':'index.html','signup':'auth.html','dashboard':'dashboard.html'}; if(m[n]) window.location.href=m[n]; }
+function updateNavForLoggedIn() {
+  var ab=document.getElementById('navAuthBtns'); if(ab) ab.style.display='none';
+  var db=document.getElementById('navDashBtn'); if(db) db.style.display='inline-flex';
+  var dl=document.getElementById('nav-dashboard'); if(dl) dl.style.display='block';
+}
+function answerSample(chosen, correct) {
+  var opts = document.querySelectorAll('#sampleOpts .lesson-quiz-opt');
+  opts.forEach(function(o) { o.disabled = true; });
+  opts[correct].classList.add('correct');
+  if (chosen !== correct) opts[chosen].classList.add('wrong');
+  var result = document.getElementById('sampleResult');
+  result.style.display = 'block';
+  if (chosen === correct) {
+    result.className = 'lesson-quiz-result correct show';
+    result.innerHTML = '&#10003; Correct! 3rd and 8 means it is the third down and the offense needs 8 more yards for a first down. Down and distance tells you exactly where the offense stands.';
+  } else {
+    result.className = 'lesson-quiz-result wrong show';
+    result.innerHTML = '&#10007; Not quite. 3rd and 8 means it is the third down and the offense needs 8 more yards for a first down. The first number is the down, the second is yards needed.';
+  }
+}
+function submitNotify() {
+  var email = document.getElementById('notifyEmail');
+  if (!email || !email.value.includes('@')) { alert('Please enter a valid email address.'); return; }
+  document.getElementById('notifyConfirm').style.display = 'block';
+  document.querySelector('.notify-form').style.display = 'none';
+}
+</script>
+</body>
+</html>

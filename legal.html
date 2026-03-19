@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Legal — First Down Academy</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <a class="logo" href="index.html"><img src="logo.png" alt="First Down Academy" style="height:40px;width:40px;object-fit:contain;" onerror="this.style.display:'none'">First Down Academy</a>
+    <div class="nav-links"><a class="nav-link" href="program.html">The Program</a></div>
+    <div class="nav-auth-btns"><a class="btn btn-outline nav-login-btn" href="auth.html?tab=login">Log In</a><a class="btn btn-primary nav-signup-btn" href="auth.html">Sign Up</a></div>
+  </div>
+</nav>
+
+<div style="padding-top:64px;min-height:100vh;background:var(--off);">
+  <div style="max-width:860px;margin:0 auto;padding:48px 24px 80px;">
+    <div style="display:flex;gap:12px;margin-bottom:40px;flex-wrap:wrap;">
+      <button class="btn btn-navy" style="font-size:14px;padding:10px 24px;" id="legalTabPrivacy" onclick="setDoc('privacy')">Privacy Policy</button>
+      <button class="btn btn-ghost" style="font-size:14px;padding:10px 24px;" id="legalTabTerms" onclick="setDoc('terms')">Terms of Service</button>
+      <a class="btn btn-ghost" href="index.html" style="font-size:14px;padding:10px 24px;margin-left:auto;text-decoration:none;">&#8592; Back to Site</a>
+    </div>
+
+    <div id="legalPrivacy">
+      <h1 style="font-family:var(--font-d);font-weight:900;font-size:52px;color:var(--navy);text-transform:uppercase;margin-bottom:8px;">Privacy Policy</h1>
+      <p style="font-size:14px;color:var(--muted);margin-bottom:40px;">First Down Academy &middot; Effective Date: March 15, 2026</p>
+      <div style="background:#FEF3C7;border-left:4px solid var(--orange);border-radius:8px;padding:16px 20px;margin-bottom:32px;"><p style="font-size:14px;color:#78350F;font-weight:500;">Plain English: First Down Academy collects only what is needed to run your account and track your progress. We never sell your data. Users under 13 require a parent or guardian to create their account.</p></div>
+      <div style="display:flex;flex-direction:column;gap:32px;">
+        <div><h2 style="font-family:var(--font-d);font-weight:800;font-size:22px;color:var(--navy);text-transform:uppercase;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--gray);">1. Who We Are</h2><p style="font-size:15px;color:var(--text);line-height:1.75;">First Down Academy is an online football education platform available at firstdownacademy.com. This Privacy Policy explains how we collect, use, and protect information from users of our platform.</p></div>
+        <div><h2 style="font-family:var(--font-d);font-weight:800;font-size:22px;color:var(--navy);text-transform:uppercase;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--gray);">2. Information We Collect</h2><p style="font-size:15px;color:var(--text);line-height:1.75;">We collect your name, email address, password (encrypted), player age, and optional coach referral code when you create an account. We also collect lesson progress, quiz scores, and general usage data automatically.</p></div>
+        <div><h2 style="font-family:var(--font-d);font-weight:800;font-size:22px;color:var(--navy);text-transform:uppercase;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--gray);">3. Children Under 13 &mdash; COPPA</h2><div style="background:#EFF6FF;border-left:4px solid #3B82F6;border-radius:8px;padding:14px 18px;margin-bottom:14px;"><p style="font-size:14px;color:#1E40AF;font-weight:500;">If a player is under 13, a parent or guardian must create the account using a parent email address.</p></div><p style="font-size:15px;color:var(--text);line-height:1.75;">Parents may request to review, correct, or delete their child&rsquo;s data at any time by contacting privacy@firstdownacademy.com.</p></div>
+        <div><h2 style="font-family:var(--font-d);font-weight:800;font-size:22px;color:var(--navy);text-transform:uppercase;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--gray);">4. How We Use Your Information</h2><p style="font-size:15px;color:var(--text);line-height:1.75;">We use your information to manage your account, track lesson progress, send account emails, connect players to coaches via referral codes, and improve the platform. We do not use your information for advertising and we do not sell your data to any third party.</p></div>
+        <div><h2 style="font-family:var(--font-d);font-weight:800;font-size:22px;color:var(--navy);text-transform:uppercase;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--gray);">5. Contact</h2><div style="background:var(--navy);border-radius:12px;padding:24px;"><p style="font-size:15px;color:rgba(255,255,255,.7);">Questions? Email us at <a href="mailto:privacy@firstdownacademy.com" style="color:var(--orange);">privacy@firstdownacademy.com</a>. For child data requests include &ldquo;COPPA Request&rdquo; in the subject line.</p></div></div>
+      </div>
+    </div>
+
+    <div id="legalTerms" style="display:none;">
+      <h1 style="font-family:var(--font-d);font-weight:900;font-size:52px;color:var(--navy);text-transform:uppercase;margin-bottom:8px;">Terms of Service</h1>
+      <p style="font-size:14px;color:var(--muted);margin-bottom:40px;">First Down Academy &middot; Effective Date: March 15, 2026</p>
+      <div style="background:#FEF3C7;border-left:4px solid var(--orange);border-radius:8px;padding:16px 20px;margin-bottom:32px;"><p style="font-size:14px;color:#78350F;font-weight:500;">Plain English: By using First Down Academy you agree to use it fairly and not to misuse it.</p></div>
+      <div style="display:flex;flex-direction:column;gap:32px;">
+        <div><h2 style="font-family:var(--font-d);font-weight:800;font-size:22px;color:var(--navy);text-transform:uppercase;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--gray);">1. Acceptance</h2><p style="font-size:15px;color:var(--text);line-height:1.75;">By creating an account or using First Down Academy, you agree to these Terms. If you are creating an account on behalf of a minor, you agree on their behalf.</p></div>
+        <div><h2 style="font-family:var(--font-d);font-weight:800;font-size:22px;color:var(--navy);text-transform:uppercase;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--gray);">2. Use by Minors</h2><div style="background:#EFF6FF;border-left:4px solid #3B82F6;border-radius:8px;padding:14px 18px;margin-bottom:14px;"><p style="font-size:14px;color:#1E40AF;font-weight:500;">Users under 13 must have a parent or guardian create their account.</p></div></div>
+        <div><h2 style="font-family:var(--font-d);font-weight:800;font-size:22px;color:var(--navy);text-transform:uppercase;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--gray);">3. Acceptable Use</h2><p style="font-size:15px;color:var(--text);line-height:1.75;">You agree not to share account credentials, copy or redistribute course content, attempt to hack or disrupt the platform, or use the platform for any commercial purpose without written consent.</p></div>
+        <div><h2 style="font-family:var(--font-d);font-weight:800;font-size:22px;color:var(--navy);text-transform:uppercase;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--gray);">4. Intellectual Property</h2><p style="font-size:15px;color:var(--text);line-height:1.75;">All content on First Down Academy &mdash; lessons, curriculum, quizzes, branding, and design &mdash; is the intellectual property of First Down Academy and protected by United States copyright law.</p></div>
+        <div><h2 style="font-family:var(--font-d);font-weight:800;font-size:22px;color:var(--navy);text-transform:uppercase;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--gray);">5. Contact</h2><div style="background:var(--navy);border-radius:12px;padding:24px;"><p style="font-size:15px;color:rgba(255,255,255,.7);">Questions? Email <a href="mailto:legal@firstdownacademy.com" style="color:var(--orange);">legal@firstdownacademy.com</a>.</p></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function setDoc(doc) {
+  document.getElementById('legalPrivacy').style.display = doc==='privacy'?'block':'none';
+  document.getElementById('legalTerms').style.display = doc==='terms'?'block':'none';
+  document.getElementById('legalTabPrivacy').className = doc==='privacy'?'btn btn-navy':'btn btn-ghost';
+  document.getElementById('legalTabTerms').className = doc==='terms'?'btn btn-navy':'btn btn-ghost';
+  document.getElementById('legalTabPrivacy').style.cssText='font-size:14px;padding:10px 24px;';
+  document.getElementById('legalTabTerms').style.cssText='font-size:14px;padding:10px 24px;';
+}
+// Check sessionStorage for which doc to show
+var doc = sessionStorage.getItem('legalDoc');
+if (doc) { setDoc(doc); sessionStorage.removeItem('legalDoc'); }
+</script>
+</body>
+</html>

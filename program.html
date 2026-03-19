@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Program — First Down Academy</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="logo" href="index.html">
+      <img src="logo.png" alt="First Down Academy" style="height:40px;width:40px;object-fit:contain;" onerror="this.style.display:'none'">
+      First Down Academy
+    </a>
+    <div class="nav-links">
+      <a class="nav-link active" href="program.html">The Program</a>
+      <a class="nav-link" href="giq.html">Gridiron IQ</a>
+      <a class="nav-link" href="coaches.html">Coaches</a>
+      <a class="nav-link" id="nav-dashboard" href="dashboard.html" style="display:none">Dashboard</a>
+    </div>
+    <div class="nav-auth-btns" id="navAuthBtns">
+      <a class="btn btn-outline nav-login-btn" href="auth.html?tab=login">Log In</a>
+      <a class="btn btn-primary nav-signup-btn" href="auth.html">Sign Up</a>
+    </div>
+    <a class="btn btn-primary nav-cta" id="navDashBtn" href="dashboard.html" style="display:none">Dashboard</a>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="container page-hero-inner">
+    <span class="tag">Level 1 &middot; Foundations</span>
+    <h1>The Program</h1>
+    <p>8 modules. 28 lessons. Built around 5 pillars of football knowledge. Create a free account to access the full curriculum and track your progress.</p>
+  </div>
+</div>
+
+<div class="course-overview">
+  <div class="container">
+
+    <!-- LOGGED OUT: Static preview -->
+    <div id="courseLoggedOut">
+      <div class="modules-title-row">
+        <div class="modules-heading">What You Will Learn</div>
+        <span class="tag" id="moduleListTag">Preview</span>
+      </div>
+      <div class="module-list">
+        <div class="module-row module-row-preview" onclick="window.location.href='auth.html'" style="cursor:pointer;">
+          <div class="module-row-num orange">1</div>
+          <div class="module-row-body"><div class="module-row-name">The Field</div><div class="module-row-desc">Field layout, yard lines, hash marks, end zones, and boundaries.</div></div>
+          <div class="module-row-right"><div class="module-row-count">3 lessons</div><div style="font-size:11px;color:var(--orange);font-family:var(--font-m);font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-top:2px;">Free</div></div>
+        </div>
+        <div class="module-row module-row-preview" onclick="window.location.href='auth.html'" style="cursor:pointer;">
+          <div class="module-row-num orange">2</div>
+          <div class="module-row-body"><div class="module-row-name">How the Game Works</div><div class="module-row-desc">Downs, first downs, possession, scoring, and turnovers.</div></div>
+          <div class="module-row-right"><div class="module-row-count">4 lessons</div><div style="font-size:11px;color:var(--orange);font-family:var(--font-m);font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-top:2px;">Free</div></div>
+        </div>
+        <div class="module-row module-row-locked"><div class="module-row-num" style="background:var(--gray);color:var(--muted);">&#128274;</div><div class="module-row-body"><div class="module-row-name" style="color:var(--muted);">Penalties and Kicking</div><div class="module-row-desc">3 lessons</div></div><div class="module-row-right"><span class="locked-badge">Locked</span></div></div>
+        <div class="module-row module-row-locked"><div class="module-row-num" style="background:var(--gray);color:var(--muted);">&#128274;</div><div class="module-row-body"><div class="module-row-name" style="color:var(--muted);">Offensive Players</div><div class="module-row-desc">3 lessons</div></div><div class="module-row-right"><span class="locked-badge">Locked</span></div></div>
+        <div class="module-row module-row-locked"><div class="module-row-num" style="background:var(--gray);color:var(--muted);">&#128274;</div><div class="module-row-body"><div class="module-row-name" style="color:var(--muted);">Defensive Players and Special Teams</div><div class="module-row-desc">3 lessons</div></div><div class="module-row-right"><span class="locked-badge">Locked</span></div></div>
+        <div class="module-row module-row-locked"><div class="module-row-num" style="background:var(--gray);color:var(--muted);">&#128274;</div><div class="module-row-body"><div class="module-row-name" style="color:var(--muted);">Offensive Concepts</div><div class="module-row-desc">4 lessons</div></div><div class="module-row-right"><span class="locked-badge">Locked</span></div></div>
+        <div class="module-row module-row-locked"><div class="module-row-num" style="background:var(--gray);color:var(--muted);">&#128274;</div><div class="module-row-body"><div class="module-row-name" style="color:var(--muted);">Defensive Concepts</div><div class="module-row-desc">4 lessons</div></div><div class="module-row-right"><span class="locked-badge">Locked</span></div></div>
+        <div class="module-row module-row-locked"><div class="module-row-num" style="background:var(--gray);color:var(--muted);">&#128274;</div><div class="module-row-body"><div class="module-row-name" style="color:var(--muted);">Situational Strategy</div><div class="module-row-desc">4 lessons</div></div><div class="module-row-right"><span class="locked-badge">Locked</span></div></div>
+      </div>
+      <div class="login-gate" id="courseGate" style="margin-top:32px;">
+        <div class="login-gate-inner">
+          <span class="tag tag-white" style="margin-bottom:16px;display:inline-block">Ready to Start?</span>
+          <h2>Create Your Account to Begin</h2>
+          <p>Your progress is saved so you can pick up where you left off on any device.</p>
+          <div class="login-gate-btns">
+            <a class="btn btn-primary" href="auth.html">Create Your Account &rarr;</a>
+            <a class="btn btn-outline" href="auth.html?tab=login">Already have an account? Log In</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LOGGED IN: Dynamic module list -->
+    <div id="courseLoggedIn" style="display:none;">
+      <div class="modules-title-row">
+        <div class="modules-heading">Your Modules</div>
+        <span class="tag" id="moduleListTagLoggedIn">8 Modules &middot; 5 Pillars</span>
+      </div>
+      <div class="module-list" id="moduleList"></div>
+      <!-- Level placeholders -->
+      <div style="margin-top:48px;display:flex;flex-direction:column;gap:16px;">
+        <div style="background:var(--white);border-radius:var(--r-lg);border:2px dashed var(--gray);padding:28px 32px;display:flex;align-items:center;justify-content:space-between;gap:20px;opacity:.7;">
+          <div style="display:flex;align-items:center;gap:16px;"><div style="width:48px;height:48px;background:var(--gray);border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:18px;color:var(--muted);">2</div><div><div style="font-family:var(--font-d);font-size:20px;color:var(--muted);text-transform:uppercase;">Middle School</div><div style="font-size:13px;color:var(--muted);margin-top:2px;">Advanced coverage, run schemes, blitz recognition</div></div></div>
+          <span style="font-family:var(--font-m);font-weight:700;font-size:11px;letter-spacing:.1em;text-transform:uppercase;background:var(--off);color:var(--muted);border:1px solid var(--gray);padding:6px 14px;border-radius:100px;">Coming Soon</span>
+        </div>
+        <div style="background:var(--white);border-radius:var(--r-lg);border:2px dashed var(--gray);padding:28px 32px;display:flex;align-items:center;justify-content:space-between;gap:20px;opacity:.5;">
+          <div style="display:flex;align-items:center;gap:16px;"><div style="width:48px;height:48px;background:var(--gray);border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:18px;color:var(--muted);">3</div><div><div style="font-family:var(--font-d);font-size:20px;color:var(--muted);text-transform:uppercase;">High School</div><div style="font-size:13px;color:var(--muted);margin-top:2px;">Film study, QB progressions, advanced play design</div></div></div>
+          <span style="font-family:var(--font-m);font-weight:700;font-size:11px;letter-spacing:.1em;text-transform:uppercase;background:var(--off);color:var(--muted);border:1px solid var(--gray);padding:6px 14px;border-radius:100px;">Future Release</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand"><a class="logo" href="index.html"><img src="logo.png" alt="" style="height:36px;width:36px;object-fit:contain;" onerror="this.style.display:'none'">First Down Academy</a></div>
+    <div class="footer-links">
+      <div class="footer-col"><div class="footer-col-label">Platform</div><ul><li><a href="program.html">The Program</a></li><li><a href="giq.html">Gridiron IQ</a></li><li><a href="coaches.html">Coaches</a></li></ul></div>
+      <div class="footer-col"><div class="footer-col-label">Account</div><ul><li><a href="auth.html">Sign Up</a></li><li><a href="auth.html?tab=login">Log In</a></li></ul></div>
+      <div class="footer-col"><div class="footer-col-label">Legal</div><ul><li><a href="legal.html">Privacy Policy</a></li><li><a href="legal.html">Terms</a></li></ul></div>
+    </div>
+  </div>
+  <div class="footer-bottom"><span>&copy; 2026 First Down Academy</span></div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="curriculum.js"></script>
+<script src="app.js"></script>
+<script>
+function showPage(name) {
+  if (name === 'signup') window.location.href = 'auth.html';
+  else if (name === 'dashboard') window.location.href = 'dashboard.html';
+}
+function openModule(idx) {
+  sessionStorage.setItem('openModule', idx);
+  window.location.href = 'lesson.html';
+}
+function updateNavForLoggedIn() {
+  var authBtns = document.getElementById('navAuthBtns');
+  if (authBtns) authBtns.style.display = 'none';
+  var dashBtn = document.getElementById('navDashBtn');
+  if (dashBtn) dashBtn.style.display = 'inline-flex';
+  var dashLink = document.getElementById('nav-dashboard');
+  if (dashLink) dashLink.style.display = 'block';
+}
+</script>
+</body>
+</html>
