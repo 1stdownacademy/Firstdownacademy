@@ -795,3 +795,21 @@ footer { background:var(--navy); padding:48px 0 32px; border-top:1px solid rgba(
   .home-cta-right { flex-direction:column; }
   .steps-grid { grid-template-columns:1fr 1fr; }
 }
+
+/* ── PROGRAM PAGE MODULE ROWS ── */
+.prog-module-row { display:flex; align-items:flex-start; gap:20px; background:var(--white); border:1px solid var(--gray); border-radius:var(--r-lg); padding:24px 28px; transition:border-color .2s; border-left:4px solid var(--orange); }
+.prog-module-num { font-family:var(--font-d); font-size:36px; color:var(--orange); line-height:1; width:40px; flex-shrink:0; letter-spacing:.04em; }
+.prog-module-body { flex:1; min-width:0; }
+.prog-module-name { font-family:var(--font-d); font-size:22px; color:var(--navy); letter-spacing:.04em; margin-bottom:4px; text-transform:uppercase; }
+.prog-module-desc { font-size:14px; color:var(--muted); line-height:1.6; margin-bottom:12px; }
+.prog-module-lessons { display:flex; flex-wrap:wrap; gap:6px; }
+.prog-lesson-pill { font-family:var(--font-m); font-size:11px; letter-spacing:.04em; color:var(--navy); background:var(--off); border:1px solid var(--gray); border-radius:100px; padding:4px 12px; }
+.prog-module-meta { flex-shrink:0; text-align:right; }
+.prog-module-count { font-family:var(--font-m); font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--navy); }
+.prog-module-slides { font-family:var(--font-m); font-size:11px; color:var(--muted); margin-top:3px; }
+
+@media(max-width:600px) {
+  .prog-module-row { flex-direction:column; gap:12px; padding:18px 16px; }
+  .prog-module-meta { text-align:left; }
+  .prog-module-num { font-size:28px; }
+}

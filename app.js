@@ -6,8 +6,8 @@
 
 // ── SUPABASE CONFIG ──
 // Replace these with your real keys
-const SUPABASE_URL = 'https://wzylgwvifdfnkmuleoxn.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_FaPj5NQeqzsRE8kOme2lKQ_uXrHArbt';
+const SUPABASE_URL = 'PASTE_YOUR_SUPABASE_URL_HERE';
+const SUPABASE_KEY = 'PASTE_YOUR_PUBLISHABLE_KEY_HERE';
 
 const { createClient } = supabase;
 const db = createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -162,17 +162,12 @@ async function checkSession() {
       currentUser = result.data.session.user;
       await loadProfile();
       updateNavForLoggedIn();
-      buildModuleList();
-      var dashPage = document.getElementById('page-dashboard');
-      if (dashPage && dashPage.classList.contains('active')) loadDashboard();
-      var coursePage = document.getElementById('page-course');
-      if (coursePage && coursePage.classList.contains('active')) buildModuleList();
-    } else {
-      buildModuleList();
+      // Only call page-specific functions if they exist on this page
+      if (typeof buildModuleList === 'function') buildModuleList();
+      if (typeof loadDashboard === 'function') loadDashboard();
     }
   } catch(e) {
     console.log('Session check skipped — keys not configured yet');
-    buildModuleList();
   }
 }
 
@@ -802,6 +797,7 @@ function retakeModule() {
 // ══════════════════════════════════════════
 // INIT
 // ══════════════════════════════════════════
-showPage('home');
-buildModuleList();
+// Only call functions that exist on this page
+if (typeof showPage === 'function') showPage('home');
+if (typeof buildModuleList === 'function') buildModuleList();
 checkSession();

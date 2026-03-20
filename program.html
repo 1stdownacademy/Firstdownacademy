@@ -4,14 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Program — First Down Academy</title>
-<link rel="stylesheet" href="style.css">
+<meta name="description" content="8 modules, 28 lessons, 84 slides. Built around 5 pillars of football knowledge.">
+<link rel="stylesheet" href="style.css?v=2">
 </head>
 <body>
 
 <nav>
   <div class="nav-inner">
     <a class="logo" href="index.html">
-      <img src="logo.png" alt="First Down Academy" style="height:40px;width:40px;object-fit:contain;" onerror="this.style.display:'none'">
+      <img src="logo.png" alt="First Down Academy" style="height:40px;width:40px;object-fit:contain;" onerror="this.style.display='none'">
       First Down Academy
     </a>
     <div class="nav-links">
@@ -25,111 +26,270 @@
       <a class="btn btn-primary nav-signup-btn" href="auth.html">Sign Up</a>
     </div>
     <a class="btn btn-primary nav-cta" id="navDashBtn" href="dashboard.html" style="display:none">Dashboard</a>
+    <button class="hamburger" onclick="toggleMobileNav()" id="hamburger"><span></span><span></span><span></span></button>
   </div>
 </nav>
 
+<div class="mobile-menu" id="mobileMenu">
+  <a class="mobile-menu-item" href="program.html">The Program</a>
+  <a class="mobile-menu-item" href="giq.html">Gridiron IQ</a>
+  <a class="mobile-menu-item" href="coaches.html">Coaches</a>
+  <div class="mobile-menu-divider"></div>
+  <a class="mobile-menu-item" href="auth.html">Sign Up Free</a>
+  <a class="mobile-menu-item" href="auth.html?tab=login">Log In</a>
+</div>
+
+<!-- HERO -->
 <div class="page-hero">
   <div class="container page-hero-inner">
     <span class="tag">Level 1 &middot; Foundations</span>
     <h1>The Program</h1>
-    <p>8 modules. 28 lessons. Built around 5 pillars of football knowledge. Create a free account to access the full curriculum and track your progress.</p>
+    <p>8 modules. 28 lessons. 84 slides. Built around 5 pillars of football knowledge — structured to give every player a complete understanding of the game.</p>
   </div>
 </div>
 
-<div class="course-overview">
+<!-- LEVELS OVERVIEW -->
+<div style="background:var(--off);padding:48px 0;border-bottom:1px solid var(--gray);">
   <div class="container">
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:800px;margin:0 auto;">
 
-    <!-- LOGGED OUT: Static preview -->
-    <div id="courseLoggedOut">
-      <div class="modules-title-row">
-        <div class="modules-heading">What You Will Learn</div>
-        <span class="tag" id="moduleListTag">Preview</span>
+      <!-- Level 1 — Active -->
+      <div style="background:var(--navy);border-radius:var(--r-lg);padding:24px 20px;border-left:4px solid var(--orange);position:relative;overflow:hidden;">
+        <div style="font-family:var(--font-d);font-size:48px;color:rgba(255,255,255,.06);position:absolute;right:-4px;bottom:-10px;line-height:1;">1</div>
+        <div style="font-family:var(--font-m);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--orange);margin-bottom:8px;">Now Available</div>
+        <div style="font-family:var(--font-d);font-size:24px;color:white;letter-spacing:.04em;margin-bottom:6px;">FOUNDATIONS</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.4);">Ages 8&ndash;18 &middot; 8 modules &middot; 84 slides</div>
+        <div style="margin-top:14px;display:inline-flex;align-items:center;gap:6px;font-family:var(--font-m);font-size:10px;letter-spacing:.1em;text-transform:uppercase;background:rgba(34,197,94,.15);color:#22C55E;border:1px solid rgba(34,197,94,.3);border-radius:100px;padding:4px 10px;">&#10003; Live Now</div>
       </div>
-      <div class="module-list">
-        <div class="module-row module-row-preview" onclick="window.location.href='auth.html'" style="cursor:pointer;">
-          <div class="module-row-num orange">1</div>
-          <div class="module-row-body"><div class="module-row-name">The Field</div><div class="module-row-desc">Field layout, yard lines, hash marks, end zones, and boundaries.</div></div>
-          <div class="module-row-right"><div class="module-row-count">3 lessons</div><div style="font-size:11px;color:var(--orange);font-family:var(--font-m);font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-top:2px;">Free</div></div>
-        </div>
-        <div class="module-row module-row-preview" onclick="window.location.href='auth.html'" style="cursor:pointer;">
-          <div class="module-row-num orange">2</div>
-          <div class="module-row-body"><div class="module-row-name">How the Game Works</div><div class="module-row-desc">Downs, first downs, possession, scoring, and turnovers.</div></div>
-          <div class="module-row-right"><div class="module-row-count">4 lessons</div><div style="font-size:11px;color:var(--orange);font-family:var(--font-m);font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-top:2px;">Free</div></div>
-        </div>
-        <div class="module-row module-row-locked"><div class="module-row-num" style="background:var(--gray);color:var(--muted);">&#128274;</div><div class="module-row-body"><div class="module-row-name" style="color:var(--muted);">Penalties and Kicking</div><div class="module-row-desc">3 lessons</div></div><div class="module-row-right"><span class="locked-badge">Locked</span></div></div>
-        <div class="module-row module-row-locked"><div class="module-row-num" style="background:var(--gray);color:var(--muted);">&#128274;</div><div class="module-row-body"><div class="module-row-name" style="color:var(--muted);">Offensive Players</div><div class="module-row-desc">3 lessons</div></div><div class="module-row-right"><span class="locked-badge">Locked</span></div></div>
-        <div class="module-row module-row-locked"><div class="module-row-num" style="background:var(--gray);color:var(--muted);">&#128274;</div><div class="module-row-body"><div class="module-row-name" style="color:var(--muted);">Defensive Players and Special Teams</div><div class="module-row-desc">3 lessons</div></div><div class="module-row-right"><span class="locked-badge">Locked</span></div></div>
-        <div class="module-row module-row-locked"><div class="module-row-num" style="background:var(--gray);color:var(--muted);">&#128274;</div><div class="module-row-body"><div class="module-row-name" style="color:var(--muted);">Offensive Concepts</div><div class="module-row-desc">4 lessons</div></div><div class="module-row-right"><span class="locked-badge">Locked</span></div></div>
-        <div class="module-row module-row-locked"><div class="module-row-num" style="background:var(--gray);color:var(--muted);">&#128274;</div><div class="module-row-body"><div class="module-row-name" style="color:var(--muted);">Defensive Concepts</div><div class="module-row-desc">4 lessons</div></div><div class="module-row-right"><span class="locked-badge">Locked</span></div></div>
-        <div class="module-row module-row-locked"><div class="module-row-num" style="background:var(--gray);color:var(--muted);">&#128274;</div><div class="module-row-body"><div class="module-row-name" style="color:var(--muted);">Situational Strategy</div><div class="module-row-desc">4 lessons</div></div><div class="module-row-right"><span class="locked-badge">Locked</span></div></div>
+
+      <!-- Level 2 — Coming Soon -->
+      <div style="background:var(--white);border-radius:var(--r-lg);padding:24px 20px;border:1px solid var(--gray);opacity:.7;position:relative;overflow:hidden;">
+        <div style="font-family:var(--font-d);font-size:48px;color:var(--gray);position:absolute;right:-4px;bottom:-10px;line-height:1;">2</div>
+        <div style="font-family:var(--font-m);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Coming Soon</div>
+        <div style="font-family:var(--font-d);font-size:24px;color:var(--muted);letter-spacing:.04em;margin-bottom:6px;">MIDDLE SCHOOL</div>
+        <div style="font-size:12px;color:var(--muted);">Ages 11&ndash;14 &middot; Advanced concepts</div>
+        <div style="margin-top:14px;display:inline-flex;align-items:center;gap:6px;font-family:var(--font-m);font-size:10px;letter-spacing:.1em;text-transform:uppercase;background:var(--off);color:var(--muted);border:1px solid var(--gray);border-radius:100px;padding:4px 10px;">In Development</div>
       </div>
-      <div class="login-gate" id="courseGate" style="margin-top:32px;">
-        <div class="login-gate-inner">
-          <span class="tag tag-white" style="margin-bottom:16px;display:inline-block">Ready to Start?</span>
-          <h2>Create Your Account to Begin</h2>
-          <p>Your progress is saved so you can pick up where you left off on any device.</p>
-          <div class="login-gate-btns">
-            <a class="btn btn-primary" href="auth.html">Create Your Account &rarr;</a>
-            <a class="btn btn-outline" href="auth.html?tab=login">Already have an account? Log In</a>
+
+      <!-- Level 3 — Future -->
+      <div style="background:var(--white);border-radius:var(--r-lg);padding:24px 20px;border:1px solid var(--gray);opacity:.45;position:relative;overflow:hidden;">
+        <div style="font-family:var(--font-d);font-size:48px;color:var(--gray);position:absolute;right:-4px;bottom:-10px;line-height:1;">3</div>
+        <div style="font-family:var(--font-m);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Future Release</div>
+        <div style="font-family:var(--font-d);font-size:24px;color:var(--muted);letter-spacing:.04em;margin-bottom:6px;">HIGH SCHOOL</div>
+        <div style="font-size:12px;color:var(--muted);">Ages 14&ndash;18 &middot; Pro-level IQ</div>
+        <div style="margin-top:14px;display:inline-flex;align-items:center;gap:6px;font-family:var(--font-m);font-size:10px;letter-spacing:.1em;text-transform:uppercase;background:var(--off);color:var(--muted);border:1px solid var(--gray);border-radius:100px;padding:4px 10px;">Planned</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- FOUNDATIONS CURRICULUM OVERVIEW -->
+<div style="padding:72px 0;background:var(--white);">
+  <div class="container" style="max-width:900px;">
+
+    <div style="margin-bottom:40px;">
+      <div class="section-eyebrow">Level 1 — Foundations Curriculum</div>
+      <h2 class="section-title">8 MODULES. <span class="text-orange">5 PILLARS.</span></h2>
+      <p style="font-size:16px;color:var(--muted);max-width:560px;line-height:1.7;margin-top:8px;">Create a free account to access the full curriculum, track your progress, and earn module completions.</p>
+    </div>
+
+    <!-- Module list — display only, no clicking into lessons -->
+    <div style="display:flex;flex-direction:column;gap:12px;">
+
+      <div class="prog-module-row">
+        <div class="prog-module-num">1</div>
+        <div class="prog-module-body">
+          <div class="prog-module-name">The Field</div>
+          <div class="prog-module-desc">Field layout, yard lines, hash marks, end zones, and boundaries.</div>
+          <div class="prog-module-lessons">
+            <span class="prog-lesson-pill">The Football Field</span>
+            <span class="prog-lesson-pill">Yard Lines and Hash Marks</span>
+            <span class="prog-lesson-pill">End Zones and Boundaries</span>
           </div>
         </div>
-      </div>
-    </div>
-
-    <!-- LOGGED IN: Dynamic module list -->
-    <div id="courseLoggedIn" style="display:none;">
-      <div class="modules-title-row">
-        <div class="modules-heading">Your Modules</div>
-        <span class="tag" id="moduleListTagLoggedIn">8 Modules &middot; 5 Pillars</span>
-      </div>
-      <div class="module-list" id="moduleList"></div>
-      <!-- Level placeholders -->
-      <div style="margin-top:48px;display:flex;flex-direction:column;gap:16px;">
-        <div style="background:var(--white);border-radius:var(--r-lg);border:2px dashed var(--gray);padding:28px 32px;display:flex;align-items:center;justify-content:space-between;gap:20px;opacity:.7;">
-          <div style="display:flex;align-items:center;gap:16px;"><div style="width:48px;height:48px;background:var(--gray);border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:18px;color:var(--muted);">2</div><div><div style="font-family:var(--font-d);font-size:20px;color:var(--muted);text-transform:uppercase;">Middle School</div><div style="font-size:13px;color:var(--muted);margin-top:2px;">Advanced coverage, run schemes, blitz recognition</div></div></div>
-          <span style="font-family:var(--font-m);font-weight:700;font-size:11px;letter-spacing:.1em;text-transform:uppercase;background:var(--off);color:var(--muted);border:1px solid var(--gray);padding:6px 14px;border-radius:100px;">Coming Soon</span>
-        </div>
-        <div style="background:var(--white);border-radius:var(--r-lg);border:2px dashed var(--gray);padding:28px 32px;display:flex;align-items:center;justify-content:space-between;gap:20px;opacity:.5;">
-          <div style="display:flex;align-items:center;gap:16px;"><div style="width:48px;height:48px;background:var(--gray);border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:18px;color:var(--muted);">3</div><div><div style="font-family:var(--font-d);font-size:20px;color:var(--muted);text-transform:uppercase;">High School</div><div style="font-size:13px;color:var(--muted);margin-top:2px;">Film study, QB progressions, advanced play design</div></div></div>
-          <span style="font-family:var(--font-m);font-weight:700;font-size:11px;letter-spacing:.1em;text-transform:uppercase;background:var(--off);color:var(--muted);border:1px solid var(--gray);padding:6px 14px;border-radius:100px;">Future Release</span>
+        <div class="prog-module-meta">
+          <div class="prog-module-count">3 lessons</div>
+          <div class="prog-module-slides">9 slides</div>
         </div>
       </div>
-    </div>
 
+      <div class="prog-module-row">
+        <div class="prog-module-num">2</div>
+        <div class="prog-module-body">
+          <div class="prog-module-name">How the Game Works</div>
+          <div class="prog-module-desc">Downs, first downs, possession, scoring, and turnovers.</div>
+          <div class="prog-module-lessons">
+            <span class="prog-lesson-pill">Downs and Distance</span>
+            <span class="prog-lesson-pill">Earning a First Down</span>
+            <span class="prog-lesson-pill">Scoring</span>
+            <span class="prog-lesson-pill">Possession and Turnovers</span>
+          </div>
+        </div>
+        <div class="prog-module-meta">
+          <div class="prog-module-count">4 lessons</div>
+          <div class="prog-module-slides">12 slides</div>
+        </div>
+      </div>
+
+      <div class="prog-module-row">
+        <div class="prog-module-num">3</div>
+        <div class="prog-module-body">
+          <div class="prog-module-name">Penalties and Kicking</div>
+          <div class="prog-module-desc">Basic penalties, kickoffs, punts, and the kicking game.</div>
+          <div class="prog-module-lessons">
+            <span class="prog-lesson-pill">Common Penalties</span>
+            <span class="prog-lesson-pill">Kickoffs and Touchbacks</span>
+            <span class="prog-lesson-pill">Punting and Field Position</span>
+          </div>
+        </div>
+        <div class="prog-module-meta">
+          <div class="prog-module-count">3 lessons</div>
+          <div class="prog-module-slides">9 slides</div>
+        </div>
+      </div>
+
+      <div class="prog-module-row">
+        <div class="prog-module-num">4</div>
+        <div class="prog-module-body">
+          <div class="prog-module-name">Offensive Players</div>
+          <div class="prog-module-desc">Every offensive position — their identity and role on each play.</div>
+          <div class="prog-module-lessons">
+            <span class="prog-lesson-pill">The Quarterback</span>
+            <span class="prog-lesson-pill">Running Backs and the Offensive Line</span>
+            <span class="prog-lesson-pill">Wide Receivers and Tight Ends</span>
+          </div>
+        </div>
+        <div class="prog-module-meta">
+          <div class="prog-module-count">3 lessons</div>
+          <div class="prog-module-slides">9 slides</div>
+        </div>
+      </div>
+
+      <div class="prog-module-row">
+        <div class="prog-module-num">5</div>
+        <div class="prog-module-body">
+          <div class="prog-module-name">Defensive Players and Special Teams</div>
+          <div class="prog-module-desc">Every defensive position and the players who cover kicks.</div>
+          <div class="prog-module-lessons">
+            <span class="prog-lesson-pill">Defensive Line and Linebackers</span>
+            <span class="prog-lesson-pill">Cornerbacks and Safeties</span>
+            <span class="prog-lesson-pill">Kicker, Punter, and Returner</span>
+          </div>
+        </div>
+        <div class="prog-module-meta">
+          <div class="prog-module-count">3 lessons</div>
+          <div class="prog-module-slides">9 slides</div>
+        </div>
+      </div>
+
+      <div class="prog-module-row">
+        <div class="prog-module-num">6</div>
+        <div class="prog-module-body">
+          <div class="prog-module-name">Offensive Concepts</div>
+          <div class="prog-module-desc">Run vs pass, handoffs, blocking, formations, and routes.</div>
+          <div class="prog-module-lessons">
+            <span class="prog-lesson-pill">Run Plays</span>
+            <span class="prog-lesson-pill">Blocking</span>
+            <span class="prog-lesson-pill">Offensive Formations</span>
+            <span class="prog-lesson-pill">Pass Routes</span>
+          </div>
+        </div>
+        <div class="prog-module-meta">
+          <div class="prog-module-count">4 lessons</div>
+          <div class="prog-module-slides">12 slides</div>
+        </div>
+      </div>
+
+      <div class="prog-module-row">
+        <div class="prog-module-num">7</div>
+        <div class="prog-module-body">
+          <div class="prog-module-name">Defensive Concepts</div>
+          <div class="prog-module-desc">Tackling, stopping the run, covering receivers, and turnovers.</div>
+          <div class="prog-module-lessons">
+            <span class="prog-lesson-pill">Tackling Fundamentals</span>
+            <span class="prog-lesson-pill">Stopping the Run</span>
+            <span class="prog-lesson-pill">Coverage Concepts</span>
+            <span class="prog-lesson-pill">Creating Turnovers</span>
+          </div>
+        </div>
+        <div class="prog-module-meta">
+          <div class="prog-module-count">4 lessons</div>
+          <div class="prog-module-slides">12 slides</div>
+        </div>
+      </div>
+
+      <div class="prog-module-row">
+        <div class="prog-module-num">8</div>
+        <div class="prog-module-body">
+          <div class="prog-module-name">Situational Strategy</div>
+          <div class="prog-module-desc">3rd down, 4th down, red zone, field position, and game awareness.</div>
+          <div class="prog-module-lessons">
+            <span class="prog-lesson-pill">Third Down</span>
+            <span class="prog-lesson-pill">Fourth Down Decisions</span>
+            <span class="prog-lesson-pill">Red Zone and Scoring Decisions</span>
+            <span class="prog-lesson-pill">Field Position Awareness</span>
+          </div>
+        </div>
+        <div class="prog-module-meta">
+          <div class="prog-module-count">4 lessons</div>
+          <div class="prog-module-slides">12 slides</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- CTA GATE -->
+<div style="padding:72px var(--gutter);background:var(--navy);">
+  <div style="max-width:680px;margin:0 auto;text-align:center;">
+    <div style="font-family:var(--font-m);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--orange-300);margin-bottom:16px;">Ready to Start?</div>
+    <h2 style="font-family:var(--font-d);font-size:clamp(36px,5vw,56px);color:white;letter-spacing:.04em;line-height:.95;margin-bottom:16px;">CREATE YOUR FREE ACCOUNT TO BEGIN.</h2>
+    <p style="font-size:16px;color:rgba(255,255,255,.45);line-height:1.7;margin-bottom:36px;">Your progress is saved after every module so you can pick up where you left off on any device.</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <a href="auth.html" class="btn-home-primary">Create Free Account &rarr;</a>
+      <a href="auth.html?tab=login" class="btn-home-secondary">Already have an account? Log In</a>
+    </div>
   </div>
 </div>
 
 <footer>
   <div class="footer-inner">
-    <div class="footer-brand"><a class="logo" href="index.html"><img src="logo.png" alt="" style="height:36px;width:36px;object-fit:contain;" onerror="this.style.display:'none'">First Down Academy</a></div>
+    <div class="footer-brand">
+      <a class="logo" href="index.html"><img src="logo.png" alt="" style="height:36px;width:36px;object-fit:contain;" onerror="this.style.display='none'">First Down Academy</a>
+      <p class="footer-tagline">The football education platform built for coaches who want smarter players.</p>
+    </div>
     <div class="footer-links">
       <div class="footer-col"><div class="footer-col-label">Platform</div><ul><li><a href="program.html">The Program</a></li><li><a href="giq.html">Gridiron IQ</a></li><li><a href="coaches.html">Coaches</a></li></ul></div>
-      <div class="footer-col"><div class="footer-col-label">Account</div><ul><li><a href="auth.html">Sign Up</a></li><li><a href="auth.html?tab=login">Log In</a></li></ul></div>
-      <div class="footer-col"><div class="footer-col-label">Legal</div><ul><li><a href="legal.html">Privacy Policy</a></li><li><a href="legal.html">Terms</a></li></ul></div>
+      <div class="footer-col"><div class="footer-col-label">Account</div><ul><li><a href="auth.html">Sign Up</a></li><li><a href="auth.html?tab=login">Log In</a></li><li><a href="dashboard.html">Dashboard</a></li></ul></div>
+      <div class="footer-col"><div class="footer-col-label">Legal</div><ul><li><a href="legal.html">Privacy Policy</a></li><li><a href="legal.html">Terms of Service</a></li></ul></div>
     </div>
   </div>
-  <div class="footer-bottom"><span>&copy; 2026 First Down Academy</span></div>
+  <div class="footer-bottom">
+    <span>&copy; 2026 First Down Academy. All Rights Reserved.</span>
+  </div>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="curriculum.js"></script>
-<script src="app.js"></script>
+<script src="curriculum.js?v=2"></script>
+<script src="app.js?v=2"></script>
 <script>
-function showPage(name) {
-  if (name === 'signup') window.location.href = 'auth.html';
-  else if (name === 'dashboard') window.location.href = 'dashboard.html';
-}
-function openModule(idx) {
-  sessionStorage.setItem('openModule', idx);
-  window.location.href = 'lesson.html';
-}
 function updateNavForLoggedIn() {
-  var authBtns = document.getElementById('navAuthBtns');
-  if (authBtns) authBtns.style.display = 'none';
-  var dashBtn = document.getElementById('navDashBtn');
-  if (dashBtn) dashBtn.style.display = 'inline-flex';
-  var dashLink = document.getElementById('nav-dashboard');
-  if (dashLink) dashLink.style.display = 'block';
+  var ab = document.getElementById('navAuthBtns'); if (ab) ab.style.display = 'none';
+  var db = document.getElementById('navDashBtn'); if (db) db.style.display = 'inline-flex';
+  var dl = document.getElementById('nav-dashboard'); if (dl) dl.style.display = 'block';
+}
+function toggleMobileNav() {
+  var menu = document.getElementById('mobileMenu');
+  var burger = document.getElementById('hamburger');
+  if (!menu) return;
+  menu.classList.toggle('open');
+  var isOpen = menu.classList.contains('open');
+  var spans = burger.querySelectorAll('span');
+  if (spans[0]) spans[0].style.transform = isOpen ? 'rotate(45deg) translate(5px,5px)' : '';
+  if (spans[1]) spans[1].style.opacity = isOpen ? '0' : '';
+  if (spans[2]) spans[2].style.transform = isOpen ? 'rotate(-45deg) translate(5px,-5px)' : '';
 }
 </script>
 </body>
