@@ -162,12 +162,12 @@ async function checkSession() {
       currentUser = result.data.session.user;
       await loadProfile();
       updateNavForLoggedIn();
-      // Only call page-specific functions if they exist on this page
-      if (typeof buildModuleList === 'function') buildModuleList();
-      if (typeof loadDashboard === 'function') loadDashboard();
     }
+    // Signal that session check is complete
+    document.dispatchEvent(new Event('sessionReady'));
   } catch(e) {
     console.log('Session check skipped — keys not configured yet');
+    document.dispatchEvent(new Event('sessionReady'));
   }
 }
 
@@ -221,11 +221,8 @@ async function doSignup() {
       currentProfile = { full_name: name, coach_id: coachId, referral_code: refCode };
     }
     showAuthMsg('success', 'Account created! Logging you in...');
-    setTimeout(async function() {
-      updateNavForLoggedIn();
-      if (!currentProfile) await loadProfile();
+    setTimeout(function() {
       showPage('dashboard');
-      loadDashboard();
     }, 1500);
   } catch(err) { showAuthMsg('error', 'Something went wrong. Please try again.'); console.error(err); }
 }
@@ -261,11 +258,8 @@ async function doCoachSignup() {
       currentProfile = { full_name: name, referral_code: slug, team_name: teamName, role: 'coach' };
     }
     showAuthMsg('success', 'Coach account created! Your code is: ' + slug);
-    setTimeout(async function() {
-      updateNavForLoggedIn();
-      if (!currentProfile) await loadProfile();
+    setTimeout(function() {
       showPage('dashboard');
-      loadDashboard();
     }, 1500);
   } catch(err) { showAuthMsg('error', 'Something went wrong. Please try again.'); console.error(err); }
 }
@@ -280,9 +274,8 @@ async function doLogin() {
     if (result.error) { showAuthMsg('error', 'Incorrect email or password.'); return; }
     currentUser = result.data.user;
     await loadProfile();
-    updateNavForLoggedIn();
+    // Navigate to dashboard — dashboard.html handles its own init
     showPage('dashboard');
-    await loadDashboard();
   } catch(err) { showAuthMsg('error', 'Something went wrong. Please try again.'); console.error(err); }
 }
 

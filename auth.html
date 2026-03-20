@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sign Up / Log In — First Down Academy</title>
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=2">
 </head>
 <body>
 
@@ -96,29 +96,38 @@
       <div class="form-group"><label class="form-label">Password</label><input class="form-input" id="loginPassword" type="password" placeholder="Your password"></div>
       <button class="btn btn-navy" style="width:100%;justify-content:center;margin-top:8px;" onclick="doLogin()">Log In &rarr;</button>
       <div style="font-size:13px;color:var(--muted);text-align:center;margin-top:16px;">
-        <a href="mailto:support@firstdownacademy.com" style="color:var(--blue);">Forgot your password?</a>
+        <a href="/cdn-cgi/l/email-protection#ddaea8adadb2afa99dbbb4afaea9b9b2aab3bcbebcb9b8b0a4f3beb2b0" style="color:var(--blue);">Forgot your password?</a>
       </div>
     </div>
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="curriculum.js"></script>
-<script src="app.js"></script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="curriculum.js?v=2"></script>
+<script src="app.js?v=2"></script>
 <script>
-// Override showPage to use real navigation
 function showPage(name) {
-  var pageMap = {
-    'home': 'index.html', 'course': 'program.html', 'giq': 'giq.html',
-    'levels': 'levels.html', 'coaches': 'coaches.html', 'signup': 'auth.html',
-    'dashboard': 'dashboard.html', 'lesson': 'lesson.html', 'legal': 'legal.html'
+  var map = {
+    'home':'index.html','course':'program.html','giq':'giq.html',
+    'levels':'levels.html','coaches':'coaches.html','signup':'auth.html',
+    'dashboard':'dashboard.html','lesson':'lesson.html','legal':'legal.html'
   };
-  if (pageMap[name]) window.location.href = pageMap[name];
+  if (map[name]) window.location.href = map[name];
 }
-// Check if we should show login tab
+
+function updateNavForLoggedIn() {
+  window.location.href = 'dashboard.html';
+}
+
+// Show login tab if requested
 if (new URLSearchParams(window.location.search).get('tab') === 'login') {
-  switchTab('login');
+  document.addEventListener('DOMContentLoaded', function() { switchTab('login'); });
 }
+
+// If already logged in go straight to dashboard
+document.addEventListener('sessionReady', function() {
+  if (currentUser) window.location.href = 'dashboard.html';
+});
 </script>
 </body>
 </html>

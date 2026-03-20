@@ -4,26 +4,34 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard — First Down Academy</title>
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=2">
 </head>
 <body>
 
 <nav>
   <div class="nav-inner">
     <a class="logo" href="index.html">
-      <img src="logo.png" alt="First Down Academy" style="height:40px;width:40px;object-fit:contain;" onerror="this.style.display:'none'">
+      <img src="logo.png" alt="First Down Academy" style="height:40px;width:40px;object-fit:contain;" onerror="this.style.display='none'">
       First Down Academy
     </a>
     <div class="nav-links">
       <a class="nav-link" href="program.html">The Program</a>
       <a class="nav-link" href="coaches.html">Coaches</a>
-      <a class="nav-link" style="display:block;" href="dashboard.html">Dashboard</a>
+      <a class="nav-link active" href="dashboard.html">Dashboard</a>
     </div>
-    <a class="btn btn-primary nav-cta" href="dashboard.html">Dashboard</a>
+    <a class="btn btn-primary nav-cta" id="navDashBtn" href="dashboard.html">Dashboard</a>
   </div>
 </nav>
 
 <div class="dashboard">
+
+  <!-- Loading state — shown until session resolves -->
+  <div id="dashLoading" style="min-height:80vh;display:flex;align-items:center;justify-content:center;">
+    <div style="text-align:center;">
+      <div style="font-size:48px;margin-bottom:20px;">&#127944;</div>
+      <div style="font-family:var(--font-d);font-size:28px;color:var(--navy);letter-spacing:.04em;">Loading...</div>
+    </div>
+  </div>
 
   <!-- PLAYER DASHBOARD -->
   <div id="dashPlayer" style="display:none;">
@@ -31,7 +39,7 @@
       <div class="container">
         <div class="dash-header-inner">
           <div>
-            <div style="font-size:13px;color:rgba(255,255,255,.5);font-family:var(--font-m);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">Welcome back</div>
+            <div style="font-size:13px;color:rgba(255,255,255,.5);font-family:var(--font-m);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;">Welcome back</div>
             <div class="dash-welcome">Hey, <span id="dashPlayerName">Player</span> &#127944;</div>
           </div>
           <button class="btn btn-ghost" onclick="doLogout()" style="font-size:13px;">Sign Out</button>
@@ -42,21 +50,19 @@
     <div class="container dash-body">
       <div class="dash-grid">
 
-        <!-- Progress card -->
         <div class="dash-card" style="grid-column:span 2;">
           <div class="dash-card-label">Your Progress</div>
           <div id="dashProgressLabel" style="font-family:var(--font-d);font-size:32px;color:var(--navy);letter-spacing:.04em;margin-bottom:8px;">0 / 8 modules</div>
           <div class="dash-progress-bar-wrap">
             <div class="dash-progress-bar-fill" id="dashProgressBar" style="width:0%"></div>
           </div>
-          <div id="dashProgressNote" style="font-size:13px;color:var(--muted);margin-top:8px;">Tap any module to start learning</div>
+          <div id="dashProgressNote" style="font-size:13px;color:var(--muted);margin-top:8px;">Tap any module below to start learning</div>
         </div>
 
-        <!-- Next lesson -->
-        <div class="dash-card">
+        <div class="dash-card" onclick="window.location.href='lesson.html'" style="cursor:pointer;">
           <div class="dash-card-label">Next Up</div>
-          <div class="dash-next-lesson" onclick="window.location.href='program.html'">
-            <div class="dash-next-icon">&#128218;</div>
+          <div style="display:flex;align-items:center;gap:14px;margin-top:8px;">
+            <div style="font-size:32px;">&#128218;</div>
             <div>
               <div style="font-family:var(--font-d);font-size:18px;color:var(--navy);letter-spacing:.04em;" id="nextLessonTitle">The Field</div>
               <div style="font-size:13px;color:var(--muted);margin-top:2px;">Continue where you left off</div>
@@ -64,17 +70,13 @@
           </div>
         </div>
 
-        <!-- Streak card -->
         <div class="dash-card">
           <div class="dash-card-label">This Week</div>
-          <div id="dashStreak" style="margin:12px 0;">
-            <div id="dashStreakDays" style="display:flex;gap:6px;flex-wrap:wrap;"></div>
-          </div>
+          <div id="dashStreakDays" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;"></div>
         </div>
 
       </div>
 
-      <!-- Module progress list -->
       <div style="margin-top:32px;">
         <div style="font-family:var(--font-d);font-size:22px;color:var(--navy);letter-spacing:.04em;margin-bottom:16px;">MODULE PROGRESS</div>
         <div id="dashModuleList"></div>
@@ -88,7 +90,7 @@
       <div class="container">
         <div class="dash-header-inner">
           <div>
-            <div style="font-size:13px;color:rgba(255,255,255,.5);font-family:var(--font-m);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">Coach Dashboard</div>
+            <div style="font-size:13px;color:rgba(255,255,255,.5);font-family:var(--font-m);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;">Coach Dashboard</div>
             <div class="dash-welcome">Hey, Coach <span id="dashCoachName">Coach</span> &#128203;</div>
             <div id="dashCoachTeam" style="font-size:14px;color:rgba(255,255,255,.5);margin-top:2px;"></div>
           </div>
@@ -100,35 +102,31 @@
     <div class="container dash-body">
       <div class="dash-grid">
 
-        <!-- Referral link -->
         <div class="dash-card" style="grid-column:span 2;">
           <div class="dash-card-label">Your Team Referral Link</div>
-          <div style="font-size:13px;color:var(--muted);margin-bottom:12px;">Share this link with your players. When they sign up using your code their progress will appear here.</div>
+          <div style="font-size:13px;color:var(--muted);margin-bottom:12px;">Share this with your players so their progress links to your team.</div>
           <div class="coach-ref-box">
-            <div id="coachRefLink" style="font-family:var(--font-m);font-size:14px;color:var(--navy);word-break:break-all;">firstdownacademy.com/join/...</div>
+            <div id="coachRefLink" style="font-family:var(--font-m);font-size:14px;color:var(--navy);word-break:break-all;">Loading...</div>
             <button class="btn btn-primary" onclick="copyCoachLink()" style="font-size:12px;padding:8px 16px;white-space:nowrap;">Copy Link</button>
           </div>
-          <div id="coachCopyConfirm" style="display:none;font-size:13px;color:var(--green);margin-top:8px;">&#10003; Link copied to clipboard!</div>
+          <div id="coachCopyConfirm" style="display:none;font-size:13px;color:var(--green);margin-top:8px;">&#10003; Copied!</div>
           <div style="margin-top:10px;font-size:13px;color:var(--muted);">Your referral code: <strong id="coachStatCode" style="color:var(--navy);font-family:var(--font-m);">—</strong></div>
         </div>
 
-        <!-- Player count -->
         <div class="dash-card">
           <div class="dash-card-label">Players</div>
-          <div style="font-family:var(--font-d);font-size:40px;color:var(--orange);letter-spacing:.04em;line-height:1;" id="coachStatPlayers">0</div>
+          <div style="font-family:var(--font-d);font-size:48px;color:var(--orange);letter-spacing:.04em;line-height:1;" id="coachStatPlayers">0</div>
           <div id="coachPlayerCount" style="font-size:13px;color:var(--muted);margin-top:4px;">registered players</div>
         </div>
 
-        <!-- Active -->
         <div class="dash-card">
           <div class="dash-card-label">Active This Week</div>
-          <div style="font-family:var(--font-d);font-size:40px;color:var(--orange);letter-spacing:.04em;line-height:1;" id="coachStatActive">0</div>
+          <div style="font-family:var(--font-d);font-size:48px;color:var(--orange);letter-spacing:.04em;line-height:1;" id="coachStatActive">0</div>
           <div style="font-size:13px;color:var(--muted);margin-top:4px;">learning this week</div>
         </div>
 
       </div>
 
-      <!-- Players list -->
       <div style="margin-top:32px;">
         <div style="font-family:var(--font-d);font-size:22px;color:var(--navy);letter-spacing:.04em;margin-bottom:16px;">YOUR PLAYERS</div>
         <div id="coachPlayersList" class="dash-card"></div>
@@ -136,49 +134,66 @@
     </div>
   </div>
 
-  <!-- Loading state -->
-  <div id="dashLoading" style="min-height:60vh;display:flex;align-items:center;justify-content:center;">
-    <div style="text-align:center;">
-      <div style="font-size:40px;margin-bottom:16px;">&#127944;</div>
-      <div style="font-family:var(--font-d);font-size:24px;color:var(--navy);letter-spacing:.04em;">Loading your dashboard...</div>
-    </div>
-  </div>
-
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="curriculum.js"></script>
-<script src="app.js"></script>
+<script src="curriculum.js?v=2"></script>
+<script src="app.js?v=2"></script>
 <script>
+// Page-specific navigation
 function showPage(name) {
-  var pageMap = {
+  var map = {
     'home':'index.html','course':'program.html','giq':'giq.html',
     'levels':'levels.html','coaches':'coaches.html','signup':'auth.html',
     'dashboard':'dashboard.html','lesson':'lesson.html','legal':'legal.html'
   };
-  if (pageMap[name]) window.location.href = pageMap[name];
+  if (map[name]) window.location.href = map[name];
 }
+
 function openModule(idx) {
   sessionStorage.setItem('openModule', idx);
   window.location.href = 'lesson.html';
 }
-// Dashboard specific init
-(async function() {
-  try {
-    var loading = document.getElementById('dashLoading');
-    if (!currentUser) {
-      // checkSession runs in app.js — wait for it
-      setTimeout(async function() {
-        if (!currentUser) { window.location.href = 'auth.html'; return; }
-        if (loading) loading.style.display = 'none';
-        await loadDashboard();
-      }, 1500);
-    } else {
-      if (loading) loading.style.display = 'none';
-      await loadDashboard();
-    }
-  } catch(e) { console.error(e); }
-})();
+
+function updateNavForLoggedIn() {
+  // Already on dashboard — nav is already correct
+}
+
+// Wait for checkSession to fire the sessionReady event, then init
+document.addEventListener('sessionReady', async function() {
+  var loading = document.getElementById('dashLoading');
+
+  if (!currentUser) {
+    // Not logged in — redirect to login
+    window.location.href = 'auth.html?tab=login';
+    return;
+  }
+
+  // Hide loading, show dashboard
+  if (loading) loading.style.display = 'none';
+
+  // Load the right dashboard based on role
+  var role = 'player';
+  if (currentUser.user_metadata && currentUser.user_metadata.role) {
+    role = currentUser.user_metadata.role;
+  } else if (currentProfile && currentProfile.team_name && !currentProfile.coach_id) {
+    role = 'coach';
+  }
+
+  var playerDash = document.getElementById('dashPlayer');
+  var coachDash  = document.getElementById('dashCoach');
+
+  if (role === 'coach') {
+    if (playerDash) playerDash.style.display = 'none';
+    if (coachDash)  coachDash.style.display = 'block';
+    loadCoachDashboard();
+  } else {
+    if (coachDash)  coachDash.style.display = 'none';
+    if (playerDash) playerDash.style.display = 'block';
+    loadPlayerDashboard();
+    buildDashModuleList();
+  }
+});
 </script>
 </body>
 </html>
