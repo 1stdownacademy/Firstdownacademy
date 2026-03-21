@@ -100,37 +100,61 @@
     </div>
 
     <div class="container dash-body">
-      <div class="dash-grid">
 
-        <div class="dash-card" style="grid-column:span 2;">
-          <div class="dash-card-label">Your Team Referral Link</div>
-          <div style="font-size:13px;color:var(--muted);margin-bottom:12px;">Share this with your players so their progress links to your team.</div>
-          <div class="coach-ref-box">
-            <div id="coachRefLink" style="font-family:var(--font-m);font-size:14px;color:var(--navy);word-break:break-all;">Loading...</div>
-            <button class="btn btn-primary" onclick="copyCoachLink()" style="font-size:12px;padding:8px 16px;white-space:nowrap;">Copy Link</button>
+      <!-- REFERRAL LINK — hero card -->
+      <div style="background:var(--navy);border-radius:var(--r-xl);padding:36px 40px;margin-bottom:28px;position:relative;overflow:hidden;">
+        <div style="position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 90% 50%,rgba(232,99,10,.12),transparent);pointer-events:none;"></div>
+        <div style="position:relative;z-index:1;">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;">
+            <div style="flex:1;min-width:200px;">
+              <div style="font-family:var(--font-m);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:8px;">Your Team Referral Link</div>
+              <div style="font-family:var(--font-d);font-size:clamp(18px,2vw,24px);color:white;letter-spacing:.04em;margin-bottom:6px;" id="coachRefLink">Loading your link...</div>
+              <div style="font-size:13px;color:rgba(255,255,255,.4);line-height:1.6;">Share this link with your players. When they sign up using your link their account connects to your team automatically.</div>
+              <div id="coachCopyConfirm" style="display:none;margin-top:10px;font-size:13px;color:#22C55E;font-family:var(--font-m);letter-spacing:.04em;">&#10003; Link copied to clipboard!</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px;flex-shrink:0;">
+              <button id="coachCopyBtn" class="btn btn-primary" onclick="copyCoachLink()" style="font-size:13px;padding:12px 24px;white-space:nowrap;transition:background .2s;">Copy Link</button>
+              <div style="text-align:center;font-family:var(--font-m);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.25);">Code: <span id="coachStatCode" style="color:rgba(255,255,255,.5);">—</span></div>
+            </div>
           </div>
-          <div id="coachCopyConfirm" style="display:none;font-size:13px;color:var(--green);margin-top:8px;">&#10003; Copied!</div>
-          <div style="margin-top:10px;font-size:13px;color:var(--muted);">Your referral code: <strong id="coachStatCode" style="color:var(--navy);font-family:var(--font-m);">—</strong></div>
+          <!-- How to share steps -->
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:28px;padding-top:24px;border-top:1px solid rgba(255,255,255,.08);">
+            <div style="text-align:center;">
+              <div style="font-family:var(--font-d);font-size:28px;color:rgba(255,255,255,.15);margin-bottom:4px;">1</div>
+              <div style="font-family:var(--font-m);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.5);">Copy your link</div>
+            </div>
+            <div style="text-align:center;">
+              <div style="font-family:var(--font-d);font-size:28px;color:rgba(255,255,255,.15);margin-bottom:4px;">2</div>
+              <div style="font-family:var(--font-m);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.5);">Share with your team</div>
+            </div>
+            <div style="text-align:center;">
+              <div style="font-family:var(--font-d);font-size:28px;color:rgba(255,255,255,.15);margin-bottom:4px;">3</div>
+              <div style="font-family:var(--font-m);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.5);">Players appear here</div>
+            </div>
+          </div>
         </div>
-
-        <div class="dash-card">
-          <div class="dash-card-label">Players</div>
-          <div style="font-family:var(--font-d);font-size:48px;color:var(--orange);letter-spacing:.04em;line-height:1;" id="coachStatPlayers">0</div>
-          <div id="coachPlayerCount" style="font-size:13px;color:var(--muted);margin-top:4px;">registered players</div>
-        </div>
-
-        <div class="dash-card">
-          <div class="dash-card-label">Active This Week</div>
-          <div style="font-family:var(--font-d);font-size:48px;color:var(--orange);letter-spacing:.04em;line-height:1;" id="coachStatActive">0</div>
-          <div style="font-size:13px;color:var(--muted);margin-top:4px;">learning this week</div>
-        </div>
-
       </div>
 
-      <div style="margin-top:32px;">
+      <!-- Stats row -->
+      <div class="dash-grid" style="margin-bottom:28px;">
+        <div class="dash-card">
+          <div class="dash-card-label">Total Players</div>
+          <div style="font-family:var(--font-d);font-size:52px;color:var(--orange);letter-spacing:.04em;line-height:1;margin-top:4px;" id="coachStatPlayers">0</div>
+          <div id="coachPlayerCount" style="font-size:13px;color:var(--muted);margin-top:6px;">players signed up with your link</div>
+        </div>
+        <div class="dash-card">
+          <div class="dash-card-label">Your Referral Code</div>
+          <div style="font-family:var(--font-d);font-size:36px;color:var(--navy);letter-spacing:.06em;line-height:1;margin-top:4px;" id="coachStatCodeDisplay">—</div>
+          <div style="font-size:13px;color:var(--muted);margin-top:6px;">auto-generated from your team name</div>
+        </div>
+      </div>
+
+      <!-- Players list -->
+      <div>
         <div style="font-family:var(--font-d);font-size:22px;color:var(--navy);letter-spacing:.04em;margin-bottom:16px;">YOUR PLAYERS</div>
         <div id="coachPlayersList" class="dash-card"></div>
       </div>
+
     </div>
   </div>
 

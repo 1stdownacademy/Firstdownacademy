@@ -5,9 +5,464 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sign Up / Log In — First Down Academy</title>
 <link rel="stylesheet" href="style.css?v=2">
+<style>
+/* ── AUTH PAGE OVERRIDES ── */
+.auth-wrap {
+  min-height: 100vh;
+  background: var(--navy-950);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding-top: 68px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Left panel — branding */
+.auth-left {
+  background: linear-gradient(160deg, var(--navy-800) 0%, var(--navy-950) 100%);
+  padding: 60px 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.auth-left-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+}
+.auth-left-glow {
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(232,99,10,.12), transparent 70%);
+  bottom: -100px;
+  right: -100px;
+  pointer-events: none;
+}
+.auth-brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 56px;
+}
+.auth-brand-mark {
+  width: 44px;
+  height: 44px;
+  background: var(--orange-500);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-m);
+  font-weight: 700;
+  font-size: 14px;
+  color: white;
+  letter-spacing: .04em;
+  flex-shrink: 0;
+}
+.auth-brand-name {
+  font-family: var(--font-d);
+  font-size: 22px;
+  color: white;
+  letter-spacing: .08em;
+}
+.auth-brand-name span { color: var(--orange-400); }
+.auth-left-headline {
+  font-family: var(--font-d);
+  font-size: clamp(40px, 5vw, 64px);
+  line-height: .92;
+  letter-spacing: .03em;
+  color: white;
+  margin-bottom: 24px;
+}
+.auth-left-headline .acc { color: var(--orange-500); display: block; }
+.auth-left-headline .ghost {
+  -webkit-text-stroke: 1.5px rgba(255,255,255,.18);
+  color: transparent;
+  display: block;
+}
+.auth-left-sub {
+  font-size: 15px;
+  color: rgba(255,255,255,.45);
+  line-height: 1.75;
+  max-width: 360px;
+  margin-bottom: 48px;
+  font-weight: 300;
+}
+.auth-left-stats {
+  display: flex;
+  gap: 32px;
+  padding-top: 32px;
+  border-top: 1px solid rgba(255,255,255,.07);
+}
+.auth-stat-num {
+  font-family: var(--font-d);
+  font-size: 32px;
+  color: var(--orange-500);
+  line-height: 1;
+  letter-spacing: .04em;
+}
+.auth-stat-label {
+  font-family: var(--font-m);
+  font-size: 9px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.28);
+  margin-top: 3px;
+}
+
+/* Right panel — form */
+.auth-right {
+  background: #FAFBFE;
+  padding: 60px 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow-y: auto;
+}
+.auth-right-inner {
+  max-width: 420px;
+  width: 100%;
+}
+.auth-mode-label {
+  font-family: var(--font-m);
+  font-size: 10px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--orange-500);
+  margin-bottom: 8px;
+}
+.auth-right-title {
+  font-family: var(--font-d);
+  font-size: 36px;
+  color: var(--navy-900);
+  letter-spacing: .04em;
+  margin-bottom: 28px;
+  line-height: 1;
+}
+
+/* Tabs */
+.auth-tab-bar {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: var(--grey-100);
+  border-radius: 12px;
+  padding: 4px;
+  margin-bottom: 28px;
+  gap: 0;
+}
+.auth-tab-btn {
+  padding: 10px;
+  font-family: var(--font-m);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 9px;
+  cursor: pointer;
+  transition: all .2s;
+  background: transparent;
+  color: var(--grey-500);
+}
+.auth-tab-btn.active {
+  background: white;
+  color: var(--navy-900);
+  box-shadow: 0 2px 8px rgba(10,26,62,.1);
+}
+
+/* Role selector */
+.auth-role-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.auth-role-card {
+  border: 2px solid var(--grey-200);
+  border-radius: 12px;
+  padding: 16px 14px;
+  cursor: pointer;
+  transition: all .2s;
+  background: white;
+  text-align: center;
+}
+.auth-role-card:hover { border-color: var(--navy-500); }
+.auth-role-card.active {
+  border-color: var(--orange-500);
+  background: rgba(232,99,10,.04);
+}
+.auth-role-icon { font-size: 24px; margin-bottom: 6px; }
+.auth-role-title {
+  font-family: var(--font-m);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--navy-900);
+}
+.auth-role-desc {
+  font-size: 11px;
+  color: var(--grey-500);
+  margin-top: 2px;
+}
+
+/* Form fields */
+.auth-field {
+  margin-bottom: 14px;
+}
+.auth-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-m);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--navy-700);
+  margin-bottom: 6px;
+}
+.auth-label-opt {
+  font-family: var(--font-b);
+  font-size: 11px;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--grey-500);
+}
+.auth-input {
+  width: 100%;
+  padding: 12px 14px;
+  font-family: var(--font-b);
+  font-size: 15px;
+  color: var(--navy-900);
+  background: white;
+  border: 1.5px solid var(--grey-200);
+  border-radius: 10px;
+  outline: none;
+  transition: border-color .2s, box-shadow .2s;
+  -webkit-appearance: none;
+}
+.auth-input:focus {
+  border-color: var(--navy-500);
+  box-shadow: 0 0 0 3px rgba(30,58,138,.08);
+}
+.auth-input.error { border-color: #EF4444; }
+.auth-input.success { border-color: #22C55E; }
+.auth-input-wrap {
+  position: relative;
+}
+.auth-input-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  pointer-events: none;
+}
+.auth-field-hint {
+  font-size: 11px;
+  color: var(--grey-500);
+  margin-top: 5px;
+  line-height: 1.5;
+}
+.auth-field-error {
+  font-size: 11px;
+  color: #DC2626;
+  margin-top: 5px;
+  display: none;
+}
+.auth-field-error.show { display: block; }
+
+/* Password strength */
+.pw-strength {
+  margin-top: 6px;
+  display: none;
+}
+.pw-strength.show { display: block; }
+.pw-strength-bar {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+.pw-seg {
+  flex: 1;
+  height: 3px;
+  border-radius: 100px;
+  background: var(--grey-200);
+  transition: background .3s;
+}
+.pw-seg.weak { background: #EF4444; }
+.pw-seg.fair { background: #F59E0B; }
+.pw-seg.good { background: #22C55E; }
+.pw-strength-label {
+  font-size: 11px;
+  color: var(--grey-500);
+}
+
+/* Submit button */
+.auth-submit {
+  width: 100%;
+  padding: 14px;
+  background: var(--orange-500);
+  color: white;
+  font-family: var(--font-m);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all .2s;
+  margin-top: 6px;
+  position: relative;
+  overflow: hidden;
+}
+.auth-submit:hover { background: var(--orange-400); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(232,99,10,.3); }
+.auth-submit:active { transform: translateY(0); }
+.auth-submit:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+
+/* Divider */
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 16px 0;
+  color: var(--grey-300);
+  font-size: 12px;
+}
+.auth-divider::before, .auth-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--grey-200);
+}
+
+/* Switch link */
+.auth-switch {
+  text-align: center;
+  font-size: 13px;
+  color: var(--grey-500);
+  margin-top: 16px;
+}
+.auth-switch a {
+  color: var(--navy-600);
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+.auth-switch a:hover { color: var(--orange-500); }
+
+/* Toast message */
+.auth-toast {
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 13px;
+  line-height: 1.5;
+  margin-bottom: 16px;
+  display: none;
+  align-items: flex-start;
+  gap: 10px;
+}
+.auth-toast.show { display: flex; }
+.auth-toast.error { background: #FEF2F2; border: 1px solid #FECACA; color: #B91C1C; }
+.auth-toast.success { background: #F0FDF4; border: 1px solid #BBF7D0; color: #15803D; }
+.auth-toast.loading { background: #EFF6FF; border: 1px solid #BFDBFE; color: #1D4ED8; }
+.auth-toast-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+/* Referral preview box */
+.ref-preview {
+  background: var(--grey-50);
+  border: 1px solid var(--grey-200);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-top: 8px;
+  display: none;
+}
+.ref-preview.show { display: block; }
+.ref-preview-label {
+  font-family: var(--font-m);
+  font-size: 9px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--grey-500);
+  margin-bottom: 4px;
+}
+.ref-preview-code {
+  font-family: var(--font-d);
+  font-size: 22px;
+  color: var(--navy-900);
+  letter-spacing: .06em;
+}
+
+/* Checkbox */
+.auth-check-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 14px;
+  margin-bottom: 6px;
+}
+.auth-check-row input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+  flex-shrink: 0;
+  accent-color: var(--orange-500);
+  cursor: pointer;
+}
+.auth-check-row label {
+  font-size: 12px;
+  color: var(--grey-500);
+  line-height: 1.5;
+  cursor: pointer;
+}
+.auth-check-row a { color: var(--navy-600); }
+
+/* Mobile layout */
+@media(max-width: 768px) {
+  .auth-wrap { grid-template-columns: 1fr; }
+  .auth-left { display: none; }
+  .auth-right { padding: 40px 24px 60px; background: var(--navy-950); }
+  .auth-right-inner { max-width: 100%; }
+  .auth-right-title { color: white; }
+  .auth-mode-label { color: var(--orange-400); }
+  .auth-tab-bar { background: rgba(255,255,255,.08); }
+  .auth-tab-btn { color: rgba(255,255,255,.4); }
+  .auth-tab-btn.active { background: rgba(255,255,255,.12); color: white; box-shadow: none; }
+  .auth-input { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.12); color: white; }
+  .auth-input::placeholder { color: rgba(255,255,255,.3); }
+  .auth-input:focus { border-color: var(--orange-500); box-shadow: 0 0 0 3px rgba(232,99,10,.12); }
+  .auth-label { color: rgba(255,255,255,.7); }
+  .auth-role-card { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.1); }
+  .auth-role-card:hover { border-color: rgba(255,255,255,.3); }
+  .auth-role-card.active { border-color: var(--orange-500); background: rgba(232,99,10,.1); }
+  .auth-role-title { color: white; }
+  .auth-role-desc { color: rgba(255,255,255,.4); }
+  .auth-divider { color: rgba(255,255,255,.2); }
+  .auth-divider::before, .auth-divider::after { background: rgba(255,255,255,.1); }
+  .auth-switch { color: rgba(255,255,255,.4); }
+  .auth-switch a { color: var(--orange-300); }
+  .auth-field-hint { color: rgba(255,255,255,.3); }
+  .ref-preview { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.1); }
+  .ref-preview-code { color: white; }
+  .auth-check-row label { color: rgba(255,255,255,.4); }
+  .auth-check-row a { color: var(--orange-300); }
+}
+</style>
 </head>
 <body>
 
+<!-- NAV -->
 <nav>
   <div class="nav-inner">
     <a class="logo" href="index.html">
@@ -18,94 +473,212 @@
       <a class="nav-link" href="program.html">The Program</a>
       <a class="nav-link" href="coaches.html">Coaches</a>
     </div>
-    <div class="nav-auth-btns" id="navAuthBtns">
-      <a class="btn btn-outline nav-login-btn" href="auth.html">Log In</a>
-      <a class="btn btn-primary nav-signup-btn" href="auth.html">Sign Up</a>
-    </div>
   </div>
 </nav>
 
-<div class="auth-page">
-  <div class="auth-card">
-    <div class="auth-logo-area">
-      <img src="logo.png" alt="First Down Academy" style="width:56px;height:56px;object-fit:contain;margin-bottom:12px;" onerror="this.style.display:'none'">
-      <div class="auth-title">First Down Academy</div>
-      <div class="auth-sub">Learn football. Build your IQ.</div>
+<div class="auth-wrap">
+
+  <!-- LEFT PANEL — branding -->
+  <div class="auth-left">
+    <div class="auth-left-grid"></div>
+    <div class="auth-left-glow"></div>
+    <div class="auth-brand-logo">
+      <div class="auth-brand-mark">FDA</div>
+      <span class="auth-brand-name">FIRST DOWN <span>ACADEMY</span></span>
     </div>
-
-    <div class="auth-tabs">
-      <button class="auth-tab active" id="tabSignup" onclick="switchTab('signup')">Sign Up</button>
-      <button class="auth-tab" id="tabLogin" onclick="switchTab('login')">Log In</button>
-    </div>
-
-    <!-- SIGN UP FORM -->
-    <div id="formSignup">
-      <div class="role-toggle">
-        <button class="role-btn active" id="rolePlayer" onclick="switchRole('player')">&#127944; Player</button>
-        <button class="role-btn" id="roleCoach" onclick="switchRole('coach')">&#128203; Coach</button>
-      </div>
-
-      <!-- Player fields -->
-      <div id="playerFields">
-        <div class="form-group"><label class="form-label">Full Name</label><input class="form-input" id="playerName" type="text" placeholder="Your full name"></div>
-        <div class="form-group"><label class="form-label">Email</label><input class="form-input" id="playerEmail" type="email" placeholder="your@email.com"></div>
-        <div class="form-group"><label class="form-label">Password</label><input class="form-input" id="playerPassword" type="password" placeholder="At least 6 characters"></div>
-        <div class="form-group">
-          <label class="form-label">Age</label>
-          <select class="form-input" id="playerAge">
-            <option value="">Select your age</option>
-            <option value="8">8</option><option value="9">9</option><option value="10">10</option>
-            <option value="11">11</option><option value="12">12</option><option value="13">13</option>
-            <option value="14">14</option><option value="15">15</option><option value="16">16</option>
-            <option value="17">17</option><option value="18">18</option><option value="18+">18+</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Coach Referral Code <span style="color:var(--muted);font-weight:400;">(optional)</span></label>
-          <input class="form-input" id="playerReferral" type="text" placeholder="e.g. eagles4827">
-          <div style="font-size:12px;color:var(--muted);margin-top:6px;">Ask your coach for their referral code to connect your account to their team.</div>
-        </div>
-        <button class="btn btn-navy" style="width:100%;justify-content:center;margin-top:8px;" onclick="doSignup()">Create Player Account &rarr;</button>
-      </div>
-
-      <!-- Coach fields -->
-      <div id="coachFields" style="display:none">
-        <div class="form-group"><label class="form-label">Your Full Name</label><input class="form-input" id="coachName" type="text" placeholder="Coach name"></div>
-        <div class="form-group"><label class="form-label">Email</label><input class="form-input" id="coachEmail" type="email" placeholder="your@email.com"></div>
-        <div class="form-group"><label class="form-label">Password</label><input class="form-input" id="coachPassword" type="password" placeholder="At least 6 characters"></div>
-        <div class="form-group"><label class="form-label">Team Name</label><input class="form-input" id="coachTeamName" type="text" placeholder="e.g. Westside Eagles"></div>
-        <div class="form-group">
-          <label class="form-label">Team Mascot</label>
-          <input class="form-input" id="coachMascot" type="text" placeholder="e.g. Eagles" oninput="updateCoachPreview()">
-          <div id="coachLinkPreview" style="display:none;margin-top:10px;background:var(--off);border-radius:8px;padding:12px 14px;">
-            <div style="font-size:11px;color:var(--muted);font-family:var(--font-m);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;">Your referral code</div>
-            <div style="font-size:16px;font-family:var(--font-d);color:var(--navy);letter-spacing:.04em;" id="clpCode"></div>
-          </div>
-        </div>
-        <button class="btn btn-navy" style="width:100%;justify-content:center;margin-top:8px;" onclick="doCoachSignup()">Create Coach Account &rarr;</button>
-      </div>
-
-      <div style="font-size:12px;color:var(--muted);text-align:center;margin-top:16px;">
-        By signing up you agree to our <a href="legal.html" style="color:var(--blue);">Terms of Service</a> and <a href="legal.html" style="color:var(--blue);">Privacy Policy</a>.
-      </div>
-    </div>
-
-    <!-- LOGIN FORM -->
-    <div id="formLogin" style="display:none">
-      <div class="form-group"><label class="form-label">Email</label><input class="form-input" id="loginEmail" type="email" placeholder="your@email.com"></div>
-      <div class="form-group"><label class="form-label">Password</label><input class="form-input" id="loginPassword" type="password" placeholder="Your password"></div>
-      <button class="btn btn-navy" style="width:100%;justify-content:center;margin-top:8px;" onclick="doLogin()">Log In &rarr;</button>
-      <div style="font-size:13px;color:var(--muted);text-align:center;margin-top:16px;">
-        <a href="/cdn-cgi/l/email-protection#ddaea8adadb2afa99dbbb4afaea9b9b2aab3bcbebcb9b8b0a4f3beb2b0" style="color:var(--blue);">Forgot your password?</a>
-      </div>
+    <h1 class="auth-left-headline">
+      BUILD YOUR
+      <span class="acc">FOOTBALL IQ</span>
+      <span class="ghost">TODAY.</span>
+    </h1>
+    <p class="auth-left-sub">Join thousands of players and coaches using First Down Academy to understand the whole game — not just one position.</p>
+    <div class="auth-left-stats">
+      <div><div class="auth-stat-num">8</div><div class="auth-stat-label">Modules</div></div>
+      <div><div class="auth-stat-num">84</div><div class="auth-stat-label">Slides</div></div>
+      <div><div class="auth-stat-num">5</div><div class="auth-stat-label">IQ Pillars</div></div>
+      <div><div class="auth-stat-num">Free</div><div class="auth-stat-label">Always</div></div>
     </div>
   </div>
+
+  <!-- RIGHT PANEL — form -->
+  <div class="auth-right">
+    <div class="auth-right-inner">
+
+      <!-- Toast message -->
+      <div class="auth-toast" id="authToast">
+        <span class="auth-toast-icon" id="authToastIcon"></span>
+        <span id="authToastMsg"></span>
+      </div>
+
+      <!-- Tab bar -->
+      <div class="auth-tab-bar">
+        <button class="auth-tab-btn active" id="tabSignup" onclick="switchTab('signup')">Sign Up</button>
+        <button class="auth-tab-btn" id="tabLogin" onclick="switchTab('login')">Log In</button>
+      </div>
+
+      <!-- ── SIGN UP FORM ── -->
+      <div id="formSignup">
+
+        <div class="auth-mode-label" id="signupModeLabel">Create your account</div>
+        <div class="auth-right-title" id="signupTitle">Join Free</div>
+
+        <!-- Role selector -->
+        <div class="auth-role-row">
+          <div class="auth-role-card active" id="rolePlayer" onclick="switchRole('player')">
+            <div class="auth-role-icon">🏈</div>
+            <div class="auth-role-title">Player</div>
+            <div class="auth-role-desc">I want to learn</div>
+          </div>
+          <div class="auth-role-card" id="roleCoach" onclick="switchRole('coach')">
+            <div class="auth-role-icon">📋</div>
+            <div class="auth-role-title">Coach</div>
+            <div class="auth-role-desc">I have a team</div>
+          </div>
+        </div>
+
+        <!-- Player fields -->
+        <div id="playerFields">
+          <div class="auth-field">
+            <div class="auth-label">Full Name</div>
+            <input class="auth-input" id="playerName" type="text" placeholder="Your full name" autocomplete="name">
+          </div>
+          <div class="auth-field">
+            <div class="auth-label">Email</div>
+            <div class="auth-input-wrap">
+              <input class="auth-input" id="playerEmail" type="email" placeholder="your@email.com" autocomplete="email">
+            </div>
+          </div>
+          <div class="auth-field">
+            <div class="auth-label">
+              Age
+              <span class="auth-label-opt">Under 13? Parent email required</span>
+            </div>
+            <select class="auth-input" id="playerAge">
+              <option value="">Select your age</option>
+              <option>8</option><option>9</option><option>10</option><option>11</option>
+              <option>12</option><option>13</option><option>14</option><option>15</option>
+              <option>16</option><option>17</option><option>18</option><option value="18+">18+</option>
+            </select>
+          </div>
+          <div class="auth-field">
+            <div class="auth-label">Password</div>
+            <input class="auth-input" id="playerPassword" type="password" placeholder="At least 6 characters" autocomplete="new-password" oninput="checkPasswordStrength(this.value); checkPasswordMatch()">
+            <div class="pw-strength" id="pwStrength">
+              <div class="pw-strength-bar">
+                <div class="pw-seg" id="pwSeg1"></div>
+                <div class="pw-seg" id="pwSeg2"></div>
+                <div class="pw-seg" id="pwSeg3"></div>
+                <div class="pw-seg" id="pwSeg4"></div>
+              </div>
+              <div class="pw-strength-label" id="pwLabel">Enter a password</div>
+            </div>
+          </div>
+          <div class="auth-field">
+            <div class="auth-label">Confirm Password</div>
+            <div class="auth-input-wrap">
+              <input class="auth-input" id="playerPasswordConfirm" type="password" placeholder="Type it again" autocomplete="new-password" oninput="checkPasswordMatch()">
+              <span class="auth-input-icon" id="pwMatchIcon"></span>
+            </div>
+            <div class="auth-field-error" id="pwMatchError">Passwords do not match</div>
+          </div>
+          <div class="auth-field">
+            <div class="auth-label">
+              Coach Referral Code
+              <span class="auth-label-opt">Optional</span>
+            </div>
+            <input class="auth-input" id="playerReferral" type="text" placeholder="e.g. eagles4827">
+            <div class="auth-field-hint">Ask your coach for their referral code to link your progress to their team.</div>
+          </div>
+          <div class="auth-check-row">
+            <input type="checkbox" id="playerTerms">
+            <label for="playerTerms">I agree to the <a href="legal.html">Terms of Service</a> and <a href="legal.html">Privacy Policy</a></label>
+          </div>
+          <button class="auth-submit" onclick="doSignup()">Create Player Account &rarr;</button>
+          <div class="auth-switch">Already have an account? <a onclick="switchTab('login')">Log in</a></div>
+        </div>
+
+        <!-- Coach fields -->
+        <div id="coachFields" style="display:none;">
+          <div class="auth-field">
+            <div class="auth-label">Your Full Name</div>
+            <input class="auth-input" id="coachName" type="text" placeholder="Coach name" autocomplete="name">
+          </div>
+          <div class="auth-field">
+            <div class="auth-label">Email</div>
+            <input class="auth-input" id="coachEmail" type="email" placeholder="your@email.com" autocomplete="email">
+          </div>
+          <div class="auth-field">
+            <div class="auth-label">Team Name</div>
+            <input class="auth-input" id="coachTeamName" type="text" placeholder="e.g. Westside Eagles">
+            <div class="auth-field-hint">Your unique referral link will be generated automatically after you create your account.</div>
+          </div>
+
+          <div class="auth-field">
+            <div class="auth-label">Password</div>
+            <input class="auth-input" id="coachPassword" type="password" placeholder="At least 6 characters" autocomplete="new-password" oninput="checkCoachPasswordStrength(this.value); checkCoachPasswordMatch()">
+            <div class="pw-strength" id="coachPwStrength">
+              <div class="pw-strength-bar">
+                <div class="pw-seg" id="cPwSeg1"></div>
+                <div class="pw-seg" id="cPwSeg2"></div>
+                <div class="pw-seg" id="cPwSeg3"></div>
+                <div class="pw-seg" id="cPwSeg4"></div>
+              </div>
+              <div class="pw-strength-label" id="coachPwLabel">Enter a password</div>
+            </div>
+          </div>
+          <div class="auth-field">
+            <div class="auth-label">Confirm Password</div>
+            <div class="auth-input-wrap">
+              <input class="auth-input" id="coachPasswordConfirm" type="password" placeholder="Type it again" autocomplete="new-password" oninput="checkCoachPasswordMatch()">
+              <span class="auth-input-icon" id="coachPwMatchIcon"></span>
+            </div>
+            <div class="auth-field-error" id="coachPwMatchError">Passwords do not match</div>
+          </div>
+          <div class="auth-check-row">
+            <input type="checkbox" id="coachTerms">
+            <label for="coachTerms">I agree to the <a href="legal.html">Terms of Service</a> and <a href="legal.html">Privacy Policy</a></label>
+          </div>
+          <button class="auth-submit" onclick="doCoachSignup()">Create Coach Account &rarr;</button>
+          <div class="auth-switch">Already have an account? <a onclick="switchTab('login')">Log in</a></div>
+        </div>
+
+      </div>
+
+      <!-- ── LOGIN FORM ── -->
+      <div id="formLogin" style="display:none;">
+        <div class="auth-mode-label">Welcome back</div>
+        <div class="auth-right-title">Log In</div>
+
+        <div class="auth-field">
+          <div class="auth-label">Email</div>
+          <input class="auth-input" id="loginEmail" type="email" placeholder="your@email.com" autocomplete="email">
+        </div>
+        <div class="auth-field">
+          <div class="auth-label">
+            Password
+            <a href="mailto:support@firstdownacademy.com" class="auth-label-opt" style="color:var(--navy-600);text-decoration:none;">Forgot password?</a>
+          </div>
+          <input class="auth-input" id="loginPassword" type="password" placeholder="Your password" autocomplete="current-password">
+        </div>
+
+        <button class="auth-submit" onclick="doLogin()">Log In &rarr;</button>
+
+        <div class="auth-switch" style="margin-top:20px;">
+          Don&rsquo;t have an account? <a onclick="switchTab('signup')">Sign up free</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="curriculum.js?v=2"></script>
 <script src="app.js?v=2"></script>
 <script>
+
+// ── Navigation ──
 function showPage(name) {
   var map = {
     'home':'index.html','course':'program.html','giq':'giq.html',
@@ -119,14 +692,158 @@ function updateNavForLoggedIn() {
   window.location.href = 'dashboard.html';
 }
 
-// Show login tab if requested
+// If already logged in go to dashboard
+document.addEventListener('sessionReady', function() {
+  if (currentUser) window.location.href = 'dashboard.html';
+});
+
+// Show login tab if ?tab=login
 if (new URLSearchParams(window.location.search).get('tab') === 'login') {
   document.addEventListener('DOMContentLoaded', function() { switchTab('login'); });
 }
 
-// If already logged in go straight to dashboard
-document.addEventListener('sessionReady', function() {
-  if (currentUser) window.location.href = 'dashboard.html';
+// ── Tab switching ──
+function switchTab(tab) {
+  var fs = document.getElementById('formSignup');
+  var fl = document.getElementById('formLogin');
+  var ts = document.getElementById('tabSignup');
+  var tl = document.getElementById('tabLogin');
+  if (fs) fs.style.display = tab === 'signup' ? 'block' : 'none';
+  if (fl) fl.style.display = tab === 'login' ? 'block' : 'none';
+  if (ts) ts.classList.toggle('active', tab === 'signup');
+  if (tl) tl.classList.toggle('active', tab === 'login');
+  clearToast();
+}
+
+// ── Role switching ──
+var currentRole = 'player';
+function switchRole(role) {
+  currentRole = role;
+  var pf = document.getElementById('playerFields');
+  var cf = document.getElementById('coachFields');
+  var rp = document.getElementById('rolePlayer');
+  var rc = document.getElementById('roleCoach');
+  if (pf) pf.style.display = role === 'player' ? 'block' : 'none';
+  if (cf) cf.style.display = role === 'coach' ? 'block' : 'none';
+  if (rp) rp.classList.toggle('active', role === 'player');
+  if (rc) rc.classList.toggle('active', role === 'coach');
+  clearToast();
+}
+
+// ── Toast messages ──
+function showToast(type, msg) {
+  var toast = document.getElementById('authToast');
+  var icon  = document.getElementById('authToastIcon');
+  var text  = document.getElementById('authToastMsg');
+  if (!toast) return;
+  toast.className = 'auth-toast show ' + type;
+  icon.textContent = type === 'error' ? '⚠️' : type === 'success' ? '✅' : '⏳';
+  text.textContent = msg;
+  toast.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+function clearToast() {
+  var toast = document.getElementById('authToast');
+  if (toast) toast.className = 'auth-toast';
+}
+// Override app.js showAuthMsg to use new toast
+function showAuthMsg(type, msg) { showToast(type, msg); }
+
+// ── Password strength ──
+function getStrength(pw) {
+  var score = 0;
+  if (pw.length >= 6) score++;
+  if (pw.length >= 10) score++;
+  if (/[A-Z]/.test(pw) || /[0-9]/.test(pw)) score++;
+  if (/[^A-Za-z0-9]/.test(pw)) score++;
+  return score;
+}
+function applyStrengthUI(score, segs, labelId, strengthId) {
+  var labels = ['', 'Weak', 'Fair', 'Good', 'Strong'];
+  var colors = ['', 'weak', 'fair', 'good', 'good'];
+  var str = document.getElementById(strengthId);
+  var lbl = document.getElementById(labelId);
+  if (str) str.classList.toggle('show', true);
+  segs.forEach(function(seg, i) {
+    var el = document.getElementById(seg);
+    if (el) { el.className = 'pw-seg' + (i < score ? ' ' + colors[score] : ''); }
+  });
+  if (lbl) lbl.textContent = labels[score] || 'Weak';
+}
+function checkPasswordStrength(val) {
+  applyStrengthUI(getStrength(val), ['pwSeg1','pwSeg2','pwSeg3','pwSeg4'], 'pwLabel', 'pwStrength');
+}
+function checkCoachPasswordStrength(val) {
+  applyStrengthUI(getStrength(val), ['cPwSeg1','cPwSeg2','cPwSeg3','cPwSeg4'], 'coachPwLabel', 'coachPwStrength');
+}
+
+// ── Password match ──
+function checkPasswordMatch() {
+  var pw   = document.getElementById('playerPassword');
+  var conf = document.getElementById('playerPasswordConfirm');
+  var icon = document.getElementById('pwMatchIcon');
+  var err  = document.getElementById('pwMatchError');
+  if (!conf || !conf.value) { if (icon) icon.textContent = ''; return; }
+  var match = pw && pw.value === conf.value;
+  if (icon) icon.textContent = match ? '✅' : '❌';
+  if (conf) conf.classList.toggle('success', match);
+  if (conf) conf.classList.toggle('error', !match);
+  if (err)  err.classList.toggle('show', !match);
+}
+function checkCoachPasswordMatch() {
+  var pw   = document.getElementById('coachPassword');
+  var conf = document.getElementById('coachPasswordConfirm');
+  var icon = document.getElementById('coachPwMatchIcon');
+  var err  = document.getElementById('coachPwMatchError');
+  if (!conf || !conf.value) { if (icon) icon.textContent = ''; return; }
+  var match = pw && pw.value === conf.value;
+  if (icon) icon.textContent = match ? '✅' : '❌';
+  if (conf) conf.classList.toggle('success', match);
+  if (conf) conf.classList.toggle('error', !match);
+  if (err)  err.classList.toggle('show', !match);
+}
+
+// Coach preview removed — referral code generated on account creation
+
+// ── Signup validation wrapper ──
+var _origDoSignup = null;
+document.addEventListener('DOMContentLoaded', function() {
+  // Validate password match before calling doSignup from app.js
+  var submitBtn = document.querySelector('#playerFields .auth-submit');
+  if (submitBtn) {
+    submitBtn.onclick = function() {
+      var pw   = document.getElementById('playerPassword');
+      var conf = document.getElementById('playerPasswordConfirm');
+      var terms = document.getElementById('playerTerms');
+      if (pw && conf && pw.value !== conf.value) {
+        showToast('error', 'Passwords do not match — please check and try again.');
+        conf.focus();
+        return;
+      }
+      if (!terms || !terms.checked) {
+        showToast('error', 'Please agree to the Terms of Service and Privacy Policy.');
+        return;
+      }
+      doSignup();
+    };
+  }
+  var coachBtn = document.querySelector('#coachFields .auth-submit');
+  if (coachBtn) {
+    coachBtn.onclick = function() {
+      var pw   = document.getElementById('coachPassword');
+      var conf = document.getElementById('coachPasswordConfirm');
+      var terms = document.getElementById('coachTerms');
+      if (pw && conf && pw.value !== conf.value) {
+        showToast('error', 'Passwords do not match — please check and try again.');
+        conf.focus();
+        return;
+      }
+      if (!terms || !terms.checked) {
+        showToast('error', 'Please agree to the Terms of Service and Privacy Policy.');
+        return;
+      }
+      doCoachSignup();
+    };
+  }
 });
 </script>
 </body>

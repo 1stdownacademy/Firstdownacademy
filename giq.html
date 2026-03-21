@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gridiron IQ — First Down Academy</title>
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=2">
 </head>
 <body>
 <nav>
@@ -39,12 +39,37 @@
       <h2 class="section-title">YOUR IQ ACROSS <span class="text-orange">EVERY DIMENSION.</span></h2>
       <p style="font-size:16px;color:var(--muted);max-width:560px;margin:16px auto 0;">Gridiron IQ doesn&rsquo;t give you one number. It breaks down your football intelligence across 5 specific pillars so you know exactly where you stand.</p>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;">
-      <div class="giq-pillar-card"><div class="giq-pillar-num">01</div><div class="giq-pillar-name">Game Structure</div><div class="giq-pillar-desc">Field, downs, scoring, penalties</div></div>
-      <div class="giq-pillar-card"><div class="giq-pillar-num">02</div><div class="giq-pillar-name">Player Roles</div><div class="giq-pillar-desc">Every position explained</div></div>
-      <div class="giq-pillar-card"><div class="giq-pillar-num">03</div><div class="giq-pillar-name">Offense</div><div class="giq-pillar-desc">Formations, routes, blocking</div></div>
-      <div class="giq-pillar-card"><div class="giq-pillar-num">04</div><div class="giq-pillar-name">Defense</div><div class="giq-pillar-desc">Coverages, tackling, turnovers</div></div>
-      <div class="giq-pillar-card"><div class="giq-pillar-num">05</div><div class="giq-pillar-name">Situational</div><div class="giq-pillar-desc">3rd down, red zone, clock</div></div>
+    <div class="giq-pillars-grid">
+      <div class="giq-pillar-card">
+        <div class="giq-pillar-icon"><svg width="24" height="24" viewBox="0 0 32 32" fill="none"><rect x="2" y="6" width="28" height="20" rx="2" stroke="var(--orange-500)" stroke-width="2"/><line x1="16" y1="6" x2="16" y2="26" stroke="var(--orange-500)" stroke-width="1.5" stroke-dasharray="3 2"/><line x1="8" y1="6" x2="8" y2="26" stroke="var(--grey-300)" stroke-width="1"/><line x1="24" y1="6" x2="24" y2="26" stroke="var(--grey-300)" stroke-width="1"/></svg></div>
+        <div class="giq-pillar-num">01</div>
+        <div class="giq-pillar-name">Game Structure</div>
+        <div class="giq-pillar-desc">Field layout, downs, scoring, and penalties — how the game works start to finish.</div>
+      </div>
+      <div class="giq-pillar-card">
+        <div class="giq-pillar-icon"><svg width="24" height="24" viewBox="0 0 32 32" fill="none"><circle cx="12" cy="10" r="4" stroke="var(--orange-500)" stroke-width="2"/><path d="M4 26c0-4.4 3.6-8 8-8s8 3.6 8 8" stroke="var(--orange-500)" stroke-width="2" stroke-linecap="round"/><circle cx="22" cy="10" r="3" stroke="var(--grey-300)" stroke-width="1.5"/><path d="M26 24c0-3.3-2-6-4.5-7" stroke="var(--grey-300)" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        <div class="giq-pillar-num">02</div>
+        <div class="giq-pillar-name">Player Roles</div>
+        <div class="giq-pillar-desc">Every position on offense, defense, and special teams and what each one does.</div>
+      </div>
+      <div class="giq-pillar-card">
+        <div class="giq-pillar-icon"><svg width="24" height="24" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="22" r="3" fill="var(--orange-500)"/><path d="M16 19V10" stroke="var(--orange-500)" stroke-width="2" stroke-linecap="round"/><path d="M16 10 Q23 14 27 9" stroke="var(--orange-500)" stroke-width="2" stroke-linecap="round" fill="none"/><path d="M7 15l5 4M25 15l-5 4" stroke="var(--grey-300)" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        <div class="giq-pillar-num">03</div>
+        <div class="giq-pillar-name">Offense</div>
+        <div class="giq-pillar-desc">Formations, run plays, passing routes, and how offenses attack.</div>
+      </div>
+      <div class="giq-pillar-card">
+        <div class="giq-pillar-icon"><svg width="24" height="24" viewBox="0 0 32 32" fill="none"><path d="M16 3L3 8.5v8c0 6.5 5.5 11.5 13 13.5 7.5-2 13-7 13-13.5v-8L16 3z" stroke="var(--orange-500)" stroke-width="2" stroke-linejoin="round"/><path d="M10 16l4 4 8-8" stroke="var(--orange-500)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="giq-pillar-num">04</div>
+        <div class="giq-pillar-name">Defense</div>
+        <div class="giq-pillar-desc">Coverage schemes, defensive fronts, tackling, and forcing turnovers.</div>
+      </div>
+      <div class="giq-pillar-card">
+        <div class="giq-pillar-icon"><svg width="24" height="24" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="12" stroke="var(--orange-500)" stroke-width="2"/><path d="M16 8v8l5 3" stroke="var(--orange-500)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="giq-pillar-num">05</div>
+        <div class="giq-pillar-name">Situational</div>
+        <div class="giq-pillar-desc">3rd down, red zone, 4th down decisions, and clock management.</div>
+      </div>
     </div>
   </div>
 </div>
@@ -93,8 +118,8 @@
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="curriculum.js"></script>
-<script src="app.js"></script>
+<script src="curriculum.js?v=2"></script>
+<script src="app.js?v=2"></script>
 <script>
 function showPage(n) { var m={'home':'index.html','signup':'auth.html','dashboard':'dashboard.html'}; if(m[n]) window.location.href=m[n]; }
 function updateNavForLoggedIn() {

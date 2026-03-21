@@ -232,20 +232,19 @@ async function doCoachSignup() {
   var email    = document.getElementById('coachEmail') ? document.getElementById('coachEmail').value.trim() : '';
   var password = document.getElementById('coachPassword') ? document.getElementById('coachPassword').value.trim() : '';
   var teamName = document.getElementById('coachTeamName') ? document.getElementById('coachTeamName').value.trim() : '';
-  var mascot   = document.getElementById('coachMascot') ? document.getElementById('coachMascot').value.trim() : '';
-  var mascotEl = document.getElementById('coachMascot');
-  var slug     = mascotEl && mascotEl.dataset.slug ? mascotEl.dataset.slug : generateSlug(mascot || 'coach');
+
+  // Auto-generate slug from team name
+  var slug = generateSlug(teamName || name || 'coach');
 
   if (!name || !email || !password) { showAuthMsg('error', 'Please fill in all required fields.'); return; }
   if (!teamName) { showAuthMsg('error', 'Please enter your team name.'); return; }
-  if (!mascot) { showAuthMsg('error', 'Please enter your team mascot.'); return; }
   if (password.length < 6) { showAuthMsg('error', 'Password must be at least 6 characters.'); return; }
   showAuthMsg('loading', 'Creating your coach account...');
 
   try {
     var signupResult = await db.auth.signUp({
       email: email, password: password,
-      options: { data: { full_name: name, role: 'coach', team_name: teamName, mascot: mascot, referral_slug: slug } }
+      options: { data: { full_name: name, role: 'coach', team_name: teamName, referral_slug: slug } }
     });
     if (signupResult.error) { showAuthMsg('error', signupResult.error.message); return; }
     if (signupResult.data.user) {
@@ -257,7 +256,7 @@ async function doCoachSignup() {
       currentUser = signupResult.data.user;
       currentProfile = { full_name: name, referral_code: slug, team_name: teamName, role: 'coach' };
     }
-    showAuthMsg('success', 'Coach account created! Your code is: ' + slug);
+    showAuthMsg('success', 'Coach account created! Your referral link is ready in your dashboard.');
     setTimeout(function() {
       showPage('dashboard');
     }, 1500);
@@ -344,24 +343,31 @@ async function loadPlayerDashboard() {
     var today = new Date().getDay();
     var dayIndex = today === 0 ? 6 : today - 1;
     streakDays.innerHTML = days.map(function(d, i) {
-      var cls = i === dayIndex ? 'streak-day today' : 'streak-day off';
-      return '<div class="' + cls + '">' + d + '</div>';
+      var isToday = i === dayIndex;
+      return '<div style="width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--font-m);font-size:11px;font-weight:700;letter-spacing:.04em;background:' + (isToday ? 'var(--orange)' : 'var(--off)') + ';color:' + (isToday ? 'white' : 'var(--muted)') + ';border:1px solid ' + (isToday ? 'var(--orange)' : 'var(--gray)') + ';">' + d + '</div>';
     }).join('');
   }
 
   try {
-    var result = await db.from('progress').select('*').eq('user_id', currentUser.id).eq('completed', true);
+    var result = await db.from('progress').select('module_num,quiz_passed').eq('user_id', currentUser.id);
     if (result.data) {
-      var completed = result.data.length;
-      var modulesDone = new Set(result.data.map(function(r) { return r.module_num; })).size;
-      var lessonEl = document.querySelector('.quick-stat-lessons');
-      if (lessonEl) lessonEl.textContent = completed;
+      var passedModules = result.data.filter(function(r) { return r.quiz_passed; });
+      var passedSet = new Set(passedModules.map(function(r) { return r.module_num; }));
+      var modulesDone = passedSet.size;
       var progressLabel = document.getElementById('dashProgressLabel');
       if (progressLabel) progressLabel.textContent = modulesDone + ' / 8 modules';
       var progressBar = document.getElementById('dashProgressBar');
       if (progressBar) progressBar.style.width = Math.round((modulesDone / 8) * 100) + '%';
       var progressNote = document.getElementById('dashProgressNote');
-      if (progressNote) progressNote.textContent = completed > 0 ? completed + ' lessons completed — keep going!' : 'Tap any module to start learning';
+      if (progressNote) {
+        if (modulesDone === 8) progressNote.textContent = 'All 8 modules complete!';
+        else if (modulesDone > 0) progressNote.textContent = modulesDone + ' module' + (modulesDone > 1 ? 's' : '') + ' complete — keep going!';
+        else progressNote.textContent = 'Tap any module below to start learning';
+      }
+      var nextIdx = 0;
+      for (var ni = 0; ni < 8; ni++) { if (passedSet.has(ni + 1)) nextIdx = ni + 1; else break; }
+      var nextEl = document.getElementById('nextLessonTitle');
+      if (nextEl && nextIdx < 8 && typeof CURRICULUM !== 'undefined') nextEl.textContent = CURRICULUM[nextIdx].name;
     }
   } catch(e) { console.error('Progress load error:', e); }
 
@@ -388,10 +394,16 @@ async function loadCoachDashboard() {
   var teamEl = document.getElementById('dashCoachTeam');
   if (teamEl) teamEl.textContent = currentProfile.team_name || '';
   var refCode = currentProfile.referral_code || '';
+  var fullLink = 'https://firstdownacademy.com/auth.html?ref=' + refCode;
   var refLinkEl = document.getElementById('coachRefLink');
-  if (refLinkEl) refLinkEl.textContent = 'firstdownacademy.com/join/' + refCode;
+  if (refLinkEl) refLinkEl.textContent = fullLink;
   var codeEl = document.getElementById('coachStatCode');
   if (codeEl) codeEl.textContent = refCode || '—';
+  var codeEl2 = document.getElementById('coachStatCodeDisplay');
+  if (codeEl2) codeEl2.textContent = refCode || '—';
+  // Update copy button data
+  var copyBtn = document.getElementById('coachCopyBtn');
+  if (copyBtn) copyBtn.setAttribute('data-link', fullLink);
 
   try {
     var playersResult = await db.from('profiles').select('full_name, created_at').eq('coach_id', currentUser.id);
@@ -423,14 +435,39 @@ async function loadCoachDashboard() {
 
 function copyCoachLink() {
   var refCode = currentProfile ? currentProfile.referral_code : '';
-  var link = 'https://firstdownacademy.com/join/' + refCode;
-  navigator.clipboard.writeText(link).then(function() {
-    var confirm = document.getElementById('coachCopyConfirm');
-    if (confirm) { confirm.style.display = 'block'; setTimeout(function() { confirm.style.display = 'none'; }, 2000); }
-  }).catch(function() {
-    var linkEl = document.getElementById('coachRefLink');
-    if (linkEl) window.getSelection().selectAllChildren(linkEl);
-  });
+  var link = 'https://firstdownacademy.com/auth.html?ref=' + refCode;
+  // Try clipboard API first, fall back to selecting the text
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(link).then(function() {
+      showCopiedConfirm();
+    }).catch(function() { fallbackCopy(link); });
+  } else {
+    fallbackCopy(link);
+  }
+}
+function fallbackCopy(text) {
+  var el = document.createElement('textarea');
+  el.value = text;
+  el.style.position = 'fixed';
+  el.style.opacity = '0';
+  document.body.appendChild(el);
+  el.select();
+  try { document.execCommand('copy'); showCopiedConfirm(); } catch(e) {}
+  document.body.removeChild(el);
+}
+function showCopiedConfirm() {
+  var confirm = document.getElementById('coachCopyConfirm');
+  if (confirm) {
+    confirm.style.display = 'block';
+    setTimeout(function() { confirm.style.display = 'none'; }, 3000);
+  }
+  var btn = document.getElementById('coachCopyBtn');
+  if (btn) {
+    var orig = btn.textContent;
+    btn.textContent = '✓ Copied!';
+    btn.style.background = 'var(--green)';
+    setTimeout(function() { btn.textContent = orig; btn.style.background = ''; }, 3000);
+  }
 }
 
 // ══════════════════════════════════════════

@@ -381,7 +381,7 @@ footer { background:var(--navy); padding:48px 0 32px; border-top:1px solid rgba(
 /* ══════════════════════════════════════
    PAGE: DASHBOARD
 ══════════════════════════════════════ */
-.dashboard { padding-top:64px; min-height:100vh; background:var(--off); }
+.dashboard { padding-top:68px; min-height:100vh; background:var(--off); }
 .dash-header { background:linear-gradient(135deg,var(--navy),var(--blue)); padding:40px 0; }
 .dash-header-inner { display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap; }
 .dash-welcome { font-family:var(--font-d); font-weight:900; font-size:36px; color:var(--white); text-transform:uppercase; }
@@ -812,4 +812,69 @@ footer { background:var(--navy); padding:48px 0 32px; border-top:1px solid rgba(
   .prog-module-row { flex-direction:column; gap:12px; padding:18px 16px; }
   .prog-module-meta { text-align:left; }
   .prog-module-num { font-size:28px; }
+}
+
+/* ── HOME PILLAR CARDS — improved ── */
+.home-pillar-icon-wrap { margin-bottom: 16px; }
+.home-pillar-label { font-family: var(--font-d); font-size: 48px; color: rgba(255,255,255,.07); line-height: 1; margin-bottom: 10px; }
+.home-pillar:not(.featured) .home-pillar-label { color: var(--grey-200); }
+.home-pillar-name { font-family: var(--font-m); font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 8px; }
+.home-pillar:not(.featured) .home-pillar-name { color: var(--navy-800); }
+.home-pillar.featured .home-pillar-name { color: white; }
+.home-pillar-desc { font-size: 13px; line-height: 1.65; }
+.home-pillar:not(.featured) .home-pillar-desc { color: var(--grey-500); }
+.home-pillar.featured .home-pillar-desc { color: rgba(255,255,255,.45); }
+
+/* ── GIQ PILLAR CARDS — improved ── */
+.giq-pillars-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+.giq-pillar-card {
+  background: var(--white);
+  border: 1px solid var(--grey-200);
+  border-top: 3px solid var(--orange-500);
+  border-radius: 14px;
+  padding: 22px 18px;
+  transition: transform .2s, box-shadow .2s;
+}
+.giq-pillar-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(10,26,62,.1); }
+.giq-pillar-icon { margin-bottom: 14px; }
+.giq-pillar-num { font-family: var(--font-d); font-size: 32px; color: var(--grey-200); line-height: 1; margin-bottom: 8px; letter-spacing: .04em; }
+.giq-pillar-name { font-family: var(--font-m); font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--navy-900); margin-bottom: 8px; }
+.giq-pillar-desc { font-size: 13px; color: var(--grey-500); line-height: 1.6; }
+
+@media(max-width: 768px) {
+  .giq-pillars-grid { grid-template-columns: 1fr 1fr; }
+  .giq-pillars-grid .giq-pillar-card:first-child { grid-column: span 2; }
+}
+@media(max-width: 480px) {
+  .giq-pillars-grid { grid-template-columns: 1fr; }
+  .giq-pillars-grid .giq-pillar-card:first-child { grid-column: span 1; }
+}
+
+/* ── COACHES BENEFIT CARDS — improved ── */
+.coaches-benefits-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+.coach-benefit-card {
+  background: var(--white);
+  border: 1px solid var(--grey-200);
+  border-radius: var(--r-lg);
+  padding: 28px 28px;
+  transition: transform .2s, box-shadow .2s;
+}
+.coach-benefit-card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(10,26,62,.08); }
+.coach-benefit-icon {
+  width: 48px;
+  height: 48px;
+  background: rgba(232,99,10,.08);
+  border: 1px solid rgba(232,99,10,.2);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+  flex-shrink: 0;
+}
+.coach-benefit-title { font-family: var(--font-d); font-size: 22px; color: var(--navy-900); letter-spacing: .04em; text-transform: uppercase; margin-bottom: 10px; line-height: 1.1; }
+.coach-benefit-desc { font-size: 14px; color: var(--grey-700); line-height: 1.75; }
+
+@media(max-width: 600px) {
+  .coaches-benefits-grid { grid-template-columns: 1fr; }
 }

@@ -145,29 +145,34 @@
     <div class="home-concept-right">
       <div class="home-pillars">
         <div class="home-pillar featured">
-          <div class="home-pillar-num">01</div>
+          <div class="home-pillar-icon-wrap"><svg width="28" height="28" viewBox="0 0 32 32" fill="none"><rect x="2" y="6" width="28" height="20" rx="2" stroke="rgba(255,255,255,.7)" stroke-width="2"/><line x1="16" y1="6" x2="16" y2="26" stroke="rgba(255,255,255,.5)" stroke-width="1.5" stroke-dasharray="3 2"/><line x1="8" y1="6" x2="8" y2="26" stroke="rgba(255,255,255,.3)" stroke-width="1"/><line x1="24" y1="6" x2="24" y2="26" stroke="rgba(255,255,255,.3)" stroke-width="1"/></svg></div>
+          <div class="home-pillar-label">01</div>
           <div class="home-pillar-name">GAME STRUCTURE</div>
           <div class="home-pillar-desc">Field layout, downs, scoring, penalties, and how a football game works from kickoff to final whistle.</div>
         </div>
         <div class="home-pillar">
-          <div class="home-pillar-num">02</div>
+          <div class="home-pillar-icon-wrap"><svg width="28" height="28" viewBox="0 0 32 32" fill="none"><circle cx="12" cy="10" r="4" stroke="var(--orange-500)" stroke-width="2"/><path d="M4 26c0-4.4 3.6-8 8-8s8 3.6 8 8" stroke="var(--orange-500)" stroke-width="2" stroke-linecap="round"/><circle cx="22" cy="10" r="3" stroke="var(--grey-300)" stroke-width="1.5"/><path d="M26 24c0-3.3-2-6-4.5-7" stroke="var(--grey-300)" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+          <div class="home-pillar-label">02</div>
           <div class="home-pillar-name">PLAYER ROLES</div>
-          <div class="home-pillar-desc">Every position on offense, defense, and special teams.</div>
+          <div class="home-pillar-desc">Every position on offense, defense, and special teams — what they do and why it matters.</div>
         </div>
         <div class="home-pillar">
-          <div class="home-pillar-num">03</div>
+          <div class="home-pillar-icon-wrap"><svg width="28" height="28" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="22" r="3" fill="var(--orange-500)"/><path d="M16 19V10" stroke="var(--orange-500)" stroke-width="2" stroke-linecap="round"/><path d="M16 10 Q23 14 27 9" stroke="var(--orange-500)" stroke-width="2" stroke-linecap="round" fill="none"/><path d="M7 15l5 4M25 15l-5 4" stroke="var(--grey-300)" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+          <div class="home-pillar-label">03</div>
           <div class="home-pillar-name">OFFENSE</div>
-          <div class="home-pillar-desc">Formations, runs, passes, routes, and blocking.</div>
+          <div class="home-pillar-desc">Formations, run plays, passing routes, blocking, and how offenses attack defenses.</div>
         </div>
         <div class="home-pillar">
-          <div class="home-pillar-num">04</div>
+          <div class="home-pillar-icon-wrap"><svg width="28" height="28" viewBox="0 0 32 32" fill="none"><path d="M16 3L3 8.5v8c0 6.5 5.5 11.5 13 13.5 7.5-2 13-7 13-13.5v-8L16 3z" stroke="var(--orange-500)" stroke-width="2" stroke-linejoin="round"/><path d="M10 16l4 4 8-8" stroke="var(--orange-500)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="home-pillar-label">04</div>
           <div class="home-pillar-name">DEFENSE</div>
-          <div class="home-pillar-desc">Coverages, fronts, tackling, and turnovers.</div>
+          <div class="home-pillar-desc">Coverage schemes, defensive fronts, tackling fundamentals, and forcing turnovers.</div>
         </div>
         <div class="home-pillar">
-          <div class="home-pillar-num">05</div>
+          <div class="home-pillar-icon-wrap"><svg width="28" height="28" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="12" stroke="var(--orange-500)" stroke-width="2"/><path d="M16 8v8l5 3" stroke="var(--orange-500)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="home-pillar-label">05</div>
           <div class="home-pillar-name">SITUATIONAL</div>
-          <div class="home-pillar-desc">3rd down, red zone, clock management, and game-flow decisions.</div>
+          <div class="home-pillar-desc">3rd down, red zone, 4th down decisions, clock management, and game-flow awareness.</div>
         </div>
       </div>
     </div>
@@ -337,7 +342,7 @@ document.addEventListener('click', function(e) {
     var s = window.supabase;
     if (!s) return;
     var { createClient } = s;
-    var db = createClient('https://wzylgwvifdfnkmuleoxn.supabase.co', 'sb_publishable_FaPj5NQeqzsRE8kOme2lKQ_uXrHArbt');
+    var db = createClient('PASTE_YOUR_SUPABASE_URL_HERE', 'PASTE_YOUR_PUBLISHABLE_KEY_HERE');
     var result = await db.auth.getSession();
     if (result.data && result.data.session) {
       var authBtns = document.getElementById('navAuthBtns');
