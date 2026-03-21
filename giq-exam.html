@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gridiron IQ Exam — First Down Academy</title>
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="stylesheet" href="style.css?v=2">
+<style>
+/* ── EXAM PAGE ── */
+.exam-wrap {
+  min-height: 100vh;
+  background: var(--navy-950);
+  padding-top: 68px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Disclaimer banner */
+.exam-disclaimer {
+  background: rgba(232,99,10,.12);
+  border-bottom: 1px solid rgba(232,99,10,.2);
+  padding: 10px 24px;
+  text-align: center;
+  font-family: var(--font-m);
+  font-size: 12px;
+  letter-spacing: .06em;
+  color: var(--orange-300);
+}
+.exam-disclaimer strong { color: var(--orange-400); }
+
+/* Header */
+.exam-header {
+  background: var(--navy-900);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  padding: 20px 0;
+}
+.exam-header-inner {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.exam-title-group {}
+.exam-title {
+  font-family: var(--font-d);
+  font-size: 22px;
+  color: white;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+.exam-subtitle {
+  font-family: var(--font-m);
+  font-size: 10px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.35);
+  margin-top: 4px;
+}
+.exam-counter {
+  font-family: var(--font-d);
+  font-size: 14px;
+  letter-spacing: .08em;
+  color: rgba(255,255,255,.4);
+  white-space: nowrap;
+}
+.exam-counter span { color: var(--orange-400); font-size: 22px; }
+
+/* Progress bar */
+.exam-progress-track {
+  height: 3px;
+  background: rgba(255,255,255,.06);
+}
+.exam-progress-fill {
+  height: 100%;
+  background: var(--orange-500);
+  transition: width .4s ease;
+}
+
+/* Question area */
+.exam-body {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 48px 24px 80px;
+}
+.exam-card {
+  background: white;
+  border-radius: 24px;
+  width: 100%;
+  max-width: 680px;
+  overflow: hidden;
+  box-shadow: 0 24px 64px rgba(0,0,0,.4);
+  animation: examFadeIn .3s ease;
+}
+@keyframes examFadeIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.exam-q-header {
+  background: var(--navy-900);
+  padding: 24px 32px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.exam-q-badge {
+  width: 36px;
+  height: 36px;
+  background: var(--orange-500);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-d);
+  font-size: 16px;
+  color: white;
+  letter-spacing: .04em;
+  flex-shrink: 0;
+}
+.exam-q-label {
+  font-family: var(--font-m);
+  font-size: 10px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.35);
+}
+.exam-q-text {
+  font-family: var(--font-d);
+  font-size: clamp(18px, 3vw, 24px);
+  color: white;
+  letter-spacing: .03em;
+  line-height: 1.25;
+  margin-top: 2px;
+}
+.exam-q-body { padding: 28px 32px; }
+.exam-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+.exam-opt {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+  border: 2px solid var(--grey-200);
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all .15s;
+  background: white;
+  text-align: left;
+  width: 100%;
+}
+.exam-opt:hover {
+  border-color: var(--navy-500);
+  background: var(--grey-50);
+  transform: translateX(3px);
+}
+.exam-opt.selected {
+  border-color: var(--orange-500);
+  background: rgba(232,99,10,.04);
+}
+.exam-opt-letter {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--grey-100);
+  border: 1.5px solid var(--grey-200);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-m);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  color: var(--grey-500);
+  flex-shrink: 0;
+  transition: all .15s;
+}
+.exam-opt.selected .exam-opt-letter {
+  background: var(--orange-500);
+  border-color: var(--orange-500);
+  color: white;
+}
+.exam-opt-text {
+  font-size: 15px;
+  color: var(--navy-900);
+  line-height: 1.4;
+}
+.exam-next-btn {
+  width: 100%;
+  padding: 16px;
+  background: var(--navy-900);
+  color: white;
+  font-family: var(--font-m);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all .2s;
+  opacity: .4;
+  pointer-events: none;
+}
+.exam-next-btn.ready {
+  opacity: 1;
+  pointer-events: all;
+  background: var(--orange-500);
+}
+.exam-next-btn.ready:hover {
+  background: var(--orange-400);
+  transform: translateY(-1px);
+}
+
+/* ── SCORE SCREEN ── */
+.score-screen {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 48px 24px 80px;
+  min-height: calc(100vh - 68px);
+}
+.score-card {
+  background: white;
+  border-radius: 24px;
+  width: 100%;
+  max-width: 600px;
+  overflow: hidden;
+  box-shadow: 0 24px 64px rgba(0,0,0,.4);
+  animation: examFadeIn .5s ease;
+}
+.score-header {
+  background: var(--navy-900);
+  padding: 40px 40px 36px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.score-header-bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 100% at 50% 110%, rgba(232,99,10,.15), transparent);
+  pointer-events: none;
+}
+.score-header-eyebrow {
+  font-family: var(--font-m);
+  font-size: 10px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--orange-300);
+  margin-bottom: 12px;
+}
+.score-num {
+  font-family: var(--font-d);
+  font-size: 96px;
+  line-height: .9;
+  letter-spacing: .02em;
+  color: white;
+  margin-bottom: 4px;
+}
+.score-num span { color: rgba(255,255,255,.25); font-size: 48px; }
+.score-tier {
+  font-family: var(--font-d);
+  font-size: 28px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.score-tier-sub {
+  font-family: var(--font-m);
+  font-size: 12px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.35);
+}
+
+.score-body { padding: 32px 40px 36px; }
+.score-breakdown {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 28px;
+}
+.score-stat {
+  background: var(--grey-50);
+  border: 1px solid var(--grey-100);
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+}
+.score-stat-num {
+  font-family: var(--font-d);
+  font-size: 28px;
+  color: var(--navy-900);
+  letter-spacing: .04em;
+  line-height: 1;
+}
+.score-stat-label {
+  font-family: var(--font-m);
+  font-size: 10px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--grey-400);
+  margin-top: 4px;
+}
+
+/* Score bar */
+.score-bar-wrap {
+  background: var(--grey-100);
+  border-radius: 100px;
+  height: 8px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+.score-bar-fill {
+  height: 100%;
+  border-radius: 100px;
+  transition: width 1.2s cubic-bezier(.4,0,.2,1);
+}
+.score-bar-label {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-m);
+  font-size: 10px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--grey-400);
+  margin-bottom: 24px;
+}
+
+.score-disclaimer {
+  background: rgba(232,99,10,.06);
+  border: 1px solid rgba(232,99,10,.15);
+  border-radius: 10px;
+  padding: 14px 18px;
+  font-size: 13px;
+  color: var(--grey-600);
+  line-height: 1.6;
+  margin-bottom: 24px;
+  text-align: center;
+}
+.score-disclaimer strong { color: var(--orange-600); }
+
+.score-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.score-btn-primary {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  background: var(--orange-500);
+  color: white;
+  font-family: var(--font-m);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  transition: all .2s;
+  box-sizing: border-box;
+}
+.score-btn-primary:hover { background: var(--orange-400); transform: translateY(-1px); }
+.score-btn-secondary {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  background: transparent;
+  color: var(--navy-900);
+  font-family: var(--font-m);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  border: 2px solid var(--grey-200);
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  transition: all .2s;
+  box-sizing: border-box;
+}
+.score-btn-secondary:hover { border-color: var(--navy-500); background: var(--grey-50); }
+
+@media(max-width: 540px) {
+  .exam-q-header { padding: 20px 20px; }
+  .exam-q-body { padding: 20px 20px; }
+  .score-header { padding: 32px 24px 28px; }
+  .score-body { padding: 24px 24px 28px; }
+  .score-num { font-size: 72px; }
+  .exam-q-text { font-size: 17px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="logo" href="index.html">
+      <img src="logo.png" alt="First Down Academy" style="height:52px;width:auto;object-fit:contain;" onerror="this.style.display='none'">
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="program.html">The Program</a>
+      <a class="nav-link active" href="giq.html">Gridiron IQ</a>
+    </div>
+    <a class="btn btn-outline" href="dashboard.html" id="navDashBtn" style="display:none;">Dashboard</a>
+  </div>
+</nav>
+
+<div class="exam-wrap">
+
+  <!-- Disclaimer -->
+  <div class="exam-disclaimer">
+    <strong>Practice Exam</strong> &mdash; This is a sample assessment. The official Gridiron IQ exam is coming soon.
+  </div>
+
+  <!-- Header + progress -->
+  <div class="exam-header" id="examHeader">
+    <div class="exam-header-inner">
+      <div class="exam-title-group">
+        <div class="exam-title">Gridiron IQ</div>
+        <div class="exam-subtitle">Practice Exam &middot; 25 Questions &middot; 100 Points</div>
+      </div>
+      <div class="exam-counter">Q <span id="qNum">1</span> / 25</div>
+    </div>
+    <div class="exam-progress-track">
+      <div class="exam-progress-fill" id="examProgress" style="width:0%"></div>
+    </div>
+  </div>
+
+  <!-- Question body -->
+  <div class="exam-body" id="examBody">
+    <div class="exam-card" id="examCard">
+      <div class="exam-q-header">
+        <div class="exam-q-badge" id="qBadge">1</div>
+        <div>
+          <div class="exam-q-label">Question <span id="qLabelNum">1</span> of 25</div>
+          <div class="exam-q-text" id="qText"></div>
+        </div>
+      </div>
+      <div class="exam-q-body">
+        <div class="exam-options" id="examOptions"></div>
+        <button class="exam-next-btn" id="examNextBtn" onclick="nextQuestion()">
+          Next Question &rarr;
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Score screen (hidden initially) -->
+  <div class="score-screen" id="scoreScreen">
+    <div class="score-card">
+      <div class="score-header">
+        <div class="score-header-bg"></div>
+        <div class="score-header-eyebrow">Gridiron IQ &mdash; Practice Exam</div>
+        <div class="score-num" id="scoreFinal">0<span>/100</span></div>
+        <div class="score-tier" id="scoreTier" style="color:white;"></div>
+        <div class="score-tier-sub" id="scoreTierSub"></div>
+      </div>
+      <div class="score-body">
+        <div class="score-breakdown">
+          <div class="score-stat">
+            <div class="score-stat-num" id="scoreCorrect">0</div>
+            <div class="score-stat-label">Correct</div>
+          </div>
+          <div class="score-stat">
+            <div class="score-stat-num" id="scoreWrong">0</div>
+            <div class="score-stat-label">Missed</div>
+          </div>
+          <div class="score-stat">
+            <div class="score-stat-num" id="scorePct">0%</div>
+            <div class="score-stat-label">Accuracy</div>
+          </div>
+        </div>
+
+        <div class="score-bar-wrap">
+          <div class="score-bar-fill" id="scoreBarFill" style="width:0%;background:var(--orange-500);"></div>
+        </div>
+        <div class="score-bar-label">
+          <span>0</span>
+          <span>Rookie</span>
+          <span>Starter</span>
+          <span>Veteran</span>
+          <span>Elite</span>
+          <span>100</span>
+        </div>
+
+        <div class="score-disclaimer">
+          <strong>This was the practice exam.</strong> The official Gridiron IQ assessment with full scoring, pillar breakdowns, and your official Gridiron IQ score is coming soon.
+        </div>
+
+        <div class="score-actions">
+          <a href="dashboard.html" class="score-btn-primary">Back to Dashboard &rarr;</a>
+          <button class="score-btn-secondary" onclick="retakeExam()">Retake Practice Exam</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+var QUESTIONS = [
+  { q: "How many points is a touchdown worth?", opts: ["3","6","7","8"], ans: 1 },
+  { q: "Which position snaps the ball?", opts: ["Quarterback","Center","Guard","Tight end"], ans: 1 },
+  { q: "What is the main goal of the defense?", opts: ["Score every play","Stop the offense from scoring","Run the clock out","Kick field goals"], ans: 1 },
+  { q: "What is the primary job of the quarterback?", opts: ["Block defenders","Kick the ball","Lead the offense and distribute the ball","Play defense"], ans: 2 },
+  { q: "How many downs does a team have to gain a first down?", opts: ["3","4","5","Unlimited"], ans: 1 },
+  { q: "What is the result of a false start penalty?", opts: ["Loss of down","5-yard penalty against the offense","10-yard penalty against the offense","Automatic first down"], ans: 1 },
+  { q: "What is the main difference between a run play and a pass play?", opts: ["Run plays don't use blockers","Pass plays always go deep","Run plays are designed to hand off, pass plays are designed to throw","There is no difference"], ans: 2 },
+  { q: "What is man coverage?", opts: ["Defenders guard specific areas","Defenders guard specific players","Only linemen rush","No one covers receivers"], ans: 1 },
+  { q: "What is a blitz?", opts: ["Dropping all defenders into coverage","Rushing extra defenders to pressure the quarterback","A running play","A kickoff formation"], ans: 1 },
+  { q: "What is the goal on 3rd down?", opts: ["Punt the ball","Score immediately","Get a first down","Run out of bounds"], ans: 2 },
+  { q: "What does \"play action\" mean?", opts: ["Faking a pass","Faking a run to set up a pass","Running the same play twice","Calling an audible"], ans: 1 },
+  { q: "What is the primary role of a wide receiver?", opts: ["Block every play","Catch passes","Play quarterback","Kick field goals"], ans: 1 },
+  { q: "What is the main job of an offensive lineman?", opts: ["Catch passes","Run routes","Block defenders","Call plays"], ans: 2 },
+  { q: "Why is field position important?", opts: ["It determines jersey color","It affects scoring difficulty and strategy","It only matters in overtime","It has no impact"], ans: 1 },
+  { q: "When should a ball carrier go out of bounds?", opts: ["Always","Never","When trying to stop the clock or avoid a hit","Only on first down"], ans: 2 },
+  { q: "A screen pass is primarily designed to exploit what?", opts: ["Tight coverage downfield","Aggressive pass rush","Strong run defense","Prevent defense"], ans: 1 },
+  { q: "What is a \"hot route\"?", opts: ["A route run in cold weather","A pre-planned deep route","A quick adjustment to beat a blitz","A trick play"], ans: 2 },
+  { q: "In Cover 2 defense, how many deep defenders are responsible for the deep field?", opts: ["1","2","3","4"], ans: 1 },
+  { q: "What is the key difference between a strong safety and a free safety?", opts: ["No difference","Strong safety plays closer to the line, free safety plays deeper","Free safety blitzes every play","Strong safety only plays special teams"], ans: 1 },
+  { q: "In a 3–4 defense, what is a primary role of an outside linebacker?", opts: ["Only cover receivers","Only stop the run","Rush the passer and set the edge","Play quarterback"], ans: 2 },
+  { q: "What is the result of a defensive penalty committed in the end zone by the defense?", opts: ["Touchdown","Safety","Ball placed at the 1-yard line","Replay the down with no penalty"], ans: 1 },
+  { q: "When does the game clock stop after a first down?", opts: ["Always stops until next snap (all levels)","Only in the NFL","Only in college football (temporarily)","Never stops"], ans: 2 },
+  { q: "In an RPO, what makes a linebacker vulnerable?", opts: ["Staying still","Having too much help","Being forced to choose between stopping run or covering pass","Blitzing every play"], ans: 2 },
+  { q: "When trailing with under 2 minutes and no timeouts, what is most important?", opts: ["Running the ball every play","Staying in bounds","Preserving clock by getting out of bounds and quick plays","Punting quickly"], ans: 2 },
+  { q: "On 4th and short near midfield, what most influences the decision to go for it?", opts: ["Jersey color","Crowd noise only","Score, time remaining, and field position","Coin toss result"], ans: 2 }
+];
+
+var TIERS = [
+  { min: 0,  max: 39,  name: "ROOKIE",   sub: "Keep studying — the fundamentals are your foundation",  color: "#94A3B8" },
+  { min: 40, max: 59,  name: "STARTER",  sub: "Solid base — a few gaps to close",                      color: "#3B82F6" },
+  { min: 60, max: 79,  name: "VETERAN",  sub: "Strong football IQ — you know the game",                color: "#E8630A" },
+  { min: 80, max: 99,  name: "ELITE",    sub: "Outstanding — you think the game at a high level",      color: "#22C55E" },
+  { min: 100,max: 100, name: "PERFECT",  sub: "Flawless — that is a Gridiron IQ 100",                  color: "#F59E0B" }
+];
+
+var currentQ = 0;
+var selected  = null;
+var answers   = [];
+var letters   = ['A','B','C','D'];
+
+function getTier(score) {
+  for (var i = TIERS.length - 1; i >= 0; i--) {
+    if (score >= TIERS[i].min) return TIERS[i];
+  }
+  return TIERS[0];
+}
+
+function renderQuestion() {
+  var q = QUESTIONS[currentQ];
+  selected = null;
+
+  // Header counts
+  document.getElementById('qNum').textContent = currentQ + 1;
+  document.getElementById('qBadge').textContent = currentQ + 1;
+  document.getElementById('qLabelNum').textContent = currentQ + 1;
+  document.getElementById('examProgress').style.width = (currentQ / 25 * 100) + '%';
+
+  // Question text
+  document.getElementById('qText').textContent = q.q;
+
+  // Options
+  var opts = document.getElementById('examOptions');
+  opts.innerHTML = '';
+  q.opts.forEach(function(opt, i) {
+    var btn = document.createElement('button');
+    btn.className = 'exam-opt';
+    btn.innerHTML =
+      '<div class="exam-opt-letter">' + letters[i] + '</div>' +
+      '<div class="exam-opt-text">' + opt + '</div>';
+    btn.onclick = function() { selectOption(i, btn); };
+    opts.appendChild(btn);
+  });
+
+  // Reset next button
+  var nextBtn = document.getElementById('examNextBtn');
+  nextBtn.className = 'exam-next-btn';
+  nextBtn.textContent = currentQ === 24 ? 'See My Score →' : 'Next Question →';
+
+  // Animate card in
+  var card = document.getElementById('examCard');
+  card.style.animation = 'none';
+  card.offsetHeight; // reflow
+  card.style.animation = 'examFadeIn .3s ease';
+}
+
+function selectOption(idx, btn) {
+  // Deselect all
+  document.querySelectorAll('.exam-opt').forEach(function(o) {
+    o.classList.remove('selected');
+  });
+  // Select this one
+  btn.classList.add('selected');
+  selected = idx;
+
+  // Enable next button
+  var nextBtn = document.getElementById('examNextBtn');
+  nextBtn.className = 'exam-next-btn ready';
+}
+
+function nextQuestion() {
+  if (selected === null) return;
+  answers.push(selected);
+
+  if (currentQ < 24) {
+    currentQ++;
+    renderQuestion();
+  } else {
+    showScore();
+  }
+}
+
+function showScore() {
+  // Calculate score
+  var correct = 0;
+  answers.forEach(function(ans, i) {
+    if (ans === QUESTIONS[i].ans) correct++;
+  });
+  var score = correct * 4;
+  var tier  = getTier(score);
+
+  // Hide exam, show score
+  document.getElementById('examHeader').style.display = 'none';
+  document.getElementById('examBody').style.display = 'none';
+  var ss = document.getElementById('scoreScreen');
+  ss.style.display = 'flex';
+
+  // Populate
+  document.getElementById('scoreFinal').innerHTML = score + '<span>/100</span>';
+  document.getElementById('scoreTier').textContent = tier.name;
+  document.getElementById('scoreTier').style.color = tier.color;
+  document.getElementById('scoreTierSub').textContent = tier.sub;
+  document.getElementById('scoreCorrect').textContent = correct;
+  document.getElementById('scoreWrong').textContent = 25 - correct;
+  document.getElementById('scorePct').textContent = Math.round(score) + '%';
+
+  // Animate bar
+  var barFill = document.getElementById('scoreBarFill');
+  barFill.style.background = tier.color;
+  setTimeout(function() { barFill.style.width = score + '%'; }, 100);
+
+  // Save to Supabase if logged in
+  saveScore(score, correct);
+
+  window.scrollTo(0, 0);
+}
+
+function retakeExam() {
+  currentQ = 0;
+  selected = null;
+  answers  = [];
+  document.getElementById('examHeader').style.display = 'block';
+  document.getElementById('examBody').style.display = 'flex';
+  document.getElementById('scoreScreen').style.display = 'none';
+  renderQuestion();
+  window.scrollTo(0, 0);
+}
+
+async function saveScore(score, correct) {
+  try {
+    if (typeof db === 'undefined' || !currentUser) return;
+    await db.from('giq_scores').upsert({
+      user_id: currentUser.id,
+      score: score,
+      correct: correct,
+      total: 25,
+      exam_type: 'practice',
+      taken_at: new Date().toISOString()
+    }, { onConflict: 'user_id,exam_type' });
+  } catch(e) {
+    console.log('Score save skipped:', e.message);
+  }
+}
+
+// Init
+renderQuestion();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="curriculum.js?v=2"></script>
+<script src="app.js?v=2"></script>
+<script>
+function showPage(name) {
+  var map = { 'home':'index.html','course':'program.html','giq':'giq.html','signup':'auth.html','dashboard':'dashboard.html' };
+  if (map[name]) window.location.href = map[name];
+}
+function buildModuleList() {}
+function loadDashboard() {}
+function updateNavForLoggedIn() {
+  var db2 = document.getElementById('navDashBtn');
+  if (db2) db2.style.display = 'inline-flex';
+}
+document.addEventListener('sessionReady', function() {
+  // Nav update handled by updateNavForLoggedIn
+});
+</script>
+</body>
+</html>
