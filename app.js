@@ -8,7 +8,6 @@
 // Replace these with your real keys
 const SUPABASE_URL = 'https://wzylgwvifdfnkmuleoxn.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_FaPj5NQeqzsRE8kOme2lKQ_uXrHArbt';
-
 const { createClient } = supabase;
 const db = createClient(SUPABASE_URL, SUPABASE_KEY);
 var currentUser = null;
@@ -585,8 +584,15 @@ function openModule(mIdx) {
   moduleState.phase     = 'overview';
   moduleState.skipIntro = false;
   quizResponses = {};
+  // Only navigate to lesson.html if not already there
+  var onLessonPage = window.location.pathname.indexOf('lesson.html') !== -1;
+  if (!onLessonPage) {
+    sessionStorage.setItem('openModule', mIdx);
+    window.location.href = 'lesson.html';
+    return;
+  }
+  // Already on lesson page — just render
   renderModule();
-  showPage('lesson');
 }
 
 function renderModule() {

@@ -60,17 +60,26 @@ function loadDashboard() {
   // Not needed on lesson page — prevents crash
 }
 
-// Wait for session, then load the lesson
+// Wait for session, then render the lesson
 document.addEventListener('sessionReady', function() {
   if (!currentUser) {
     window.location.href = 'auth.html';
     return;
   }
-  // Load the module saved in sessionStorage
+  // Get module index from sessionStorage
   var savedModule = sessionStorage.getItem('openModule');
   var moduleIdx = savedModule !== null ? parseInt(savedModule) : 0;
   sessionStorage.removeItem('openModule');
-  openModule(moduleIdx);
+
+  // Set state and render directly — do NOT call openModule()
+  // which would trigger navigation again
+  moduleState.moduleIdx = moduleIdx;
+  moduleState.lessonIdx = 0;
+  moduleState.slideIdx  = 0;
+  moduleState.phase     = 'overview';
+  moduleState.skipIntro = false;
+  quizResponses = {};
+  renderModule();
 });
 </script>
 </body>
