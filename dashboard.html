@@ -73,43 +73,71 @@
     </div>
 
     <div class="container dash-body">
-      <div class="dash-grid">
 
-        <div class="dash-card" style="grid-column:span 2;">
-          <div class="dash-card-label">Your Progress</div>
-          <div id="dashProgressLabel" style="font-family:var(--font-d);font-size:32px;color:var(--navy);letter-spacing:.04em;margin-bottom:8px;">0 / 8 modules</div>
-          <div class="dash-progress-bar-wrap">
-            <div class="dash-progress-bar-fill" id="dashProgressBar" style="width:0%"></div>
+      <!-- TOP ROW: Progress + Next Up + Week -->
+      <div class="pdb-top-row">
+
+        <!-- Progress card -->
+        <div class="pdb-progress-card">
+          <div class="pdb-progress-header">
+            <div class="pdb-section-label">Your Progress</div>
+            <div class="pdb-prog-fraction" id="dashProgressLabel">0 / 8</div>
           </div>
-          <div id="dashProgressNote" style="font-size:13px;color:var(--muted);margin-top:8px;">Tap any module below to start learning</div>
-        </div>
-
-        <div class="dash-next-card" onclick="window.location.href='lesson.html'" style="cursor:pointer;">
-          <div class="dash-next-inner">
-            <div class="dash-next-icon-wrap">
-              <svg width="22" height="22" viewBox="0 0 32 32" fill="none">
-                <path d="M8 16 L14 22 L24 10" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
-            <div>
-              <div class="dash-next-label">Up Next</div>
-              <div class="dash-next-title" id="nextLessonTitle">The Field</div>
-            </div>
+          <div class="pdb-prog-track">
+            <div class="pdb-prog-fill" id="dashProgressBar" style="width:0%"></div>
           </div>
-          <div class="dash-next-arrow">&#8594;</div>
+          <div class="pdb-prog-pillars">
+            <div class="pdb-pillar-dot" id="pdot0"></div>
+            <div class="pdb-pillar-dot" id="pdot1"></div>
+            <div class="pdb-pillar-dot" id="pdot2"></div>
+            <div class="pdb-pillar-dot" id="pdot3"></div>
+            <div class="pdb-pillar-dot" id="pdot4"></div>
+            <div class="pdb-pillar-dot" id="pdot5"></div>
+            <div class="pdb-pillar-dot" id="pdot6"></div>
+            <div class="pdb-pillar-dot" id="pdot7"></div>
+          </div>
+          <div class="pdb-prog-note" id="dashProgressNote">Start your first module below</div>
         </div>
 
-        <div class="dash-card">
-          <div class="dash-card-label">This Week</div>
-          <div id="dashStreakDays" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;"></div>
-        </div>
+        <!-- Right column -->
+        <div class="pdb-right-col">
 
+          <!-- Next Up -->
+          <div class="pdb-next-card" onclick="window.location.href='lesson.html'">
+            <div class="pdb-next-left">
+              <div class="pdb-next-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                  <polygon points="5,3 19,12 5,21" fill="white"/>
+                </svg>
+              </div>
+              <div>
+                <div class="pdb-section-label" style="color:rgba(255,255,255,.45);">Up Next</div>
+                <div class="pdb-next-title" id="nextLessonTitle">The Field</div>
+              </div>
+            </div>
+            <svg class="pdb-next-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M5 12h14M13 6l6 6-6 6" stroke="rgba(255,255,255,.4)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+
+          <!-- This Week -->
+          <div class="pdb-week-card">
+            <div class="pdb-section-label" style="margin-bottom:10px;">This Week</div>
+            <div id="dashStreakDays" class="pdb-week-days"></div>
+          </div>
+
+        </div>
       </div>
 
-      <div style="margin-top:32px;">
-        <div style="font-family:var(--font-d);font-size:22px;color:var(--navy);letter-spacing:.04em;margin-bottom:16px;">MODULE PROGRESS</div>
-        <div id="dashModuleList"></div>
+      <!-- MODULE LIST -->
+      <div class="pdb-modules-section">
+        <div class="pdb-modules-header">
+          <div class="pdb-modules-title">Module Progress</div>
+          <div class="pdb-modules-sub">Level 1 &mdash; Foundations</div>
+        </div>
+        <div class="pdb-module-list" id="dashModuleList"></div>
       </div>
+
     </div>
   </div>
 

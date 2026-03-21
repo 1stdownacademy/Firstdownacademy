@@ -8,6 +8,7 @@
 // Replace these with your real keys
 const SUPABASE_URL = 'https://wzylgwvifdfnkmuleoxn.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_FaPj5NQeqzsRE8kOme2lKQ_uXrHArbt';
+
 const { createClient } = supabase;
 const db = createClient(SUPABASE_URL, SUPABASE_KEY);
 var currentUser = null;
@@ -336,6 +337,10 @@ async function loadPlayerDashboard() {
   var nameEl = document.getElementById('dashPlayerName');
   if (nameEl) nameEl.textContent = (currentProfile && currentProfile.full_name) ? currentProfile.full_name.split(' ')[0] : (currentUser && currentUser.user_metadata && currentUser.user_metadata.full_name ? currentUser.user_metadata.full_name.split(' ')[0] : 'Player');
 
+  // Build module list first
+  buildDashModuleList();
+
+  // This Week days
   var streakDays = document.getElementById('dashStreakDays');
   if (streakDays) {
     var days = ['M','T','W','T','F','S','S'];
@@ -343,30 +348,77 @@ async function loadPlayerDashboard() {
     var dayIndex = today === 0 ? 6 : today - 1;
     streakDays.innerHTML = days.map(function(d, i) {
       var isToday = i === dayIndex;
-      return '<div style="width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--font-m);font-size:11px;font-weight:700;letter-spacing:.04em;background:' + (isToday ? 'var(--orange)' : 'var(--off)') + ';color:' + (isToday ? 'white' : 'var(--muted)') + ';border:1px solid ' + (isToday ? 'var(--orange)' : 'var(--gray)') + ';">' + d + '</div>';
+      return '<div class="pdb-day ' + (isToday ? 'today' : 'off') + '">' + d + '</div>';
     }).join('');
   }
 
+  // Load progress from Supabase
   try {
     var result = await db.from('progress').select('module_num,quiz_passed').eq('user_id', currentUser.id);
     if (result.data) {
       var passedModules = result.data.filter(function(r) { return r.quiz_passed; });
       var passedSet = new Set(passedModules.map(function(r) { return r.module_num; }));
       var modulesDone = passedSet.size;
+
+      // Update progress fraction
       var progressLabel = document.getElementById('dashProgressLabel');
-      if (progressLabel) progressLabel.textContent = modulesDone + ' / 8 modules';
+      if (progressLabel) progressLabel.textContent = modulesDone + ' / 8';
+
+      // Update progress bar
       var progressBar = document.getElementById('dashProgressBar');
       if (progressBar) progressBar.style.width = Math.round((modulesDone / 8) * 100) + '%';
+
+      // Update pillar dots
+      for (var di = 0; di < 8; di++) {
+        var dot = document.getElementById('pdot' + di);
+        if (dot) {
+          if (passedSet.has(di + 1)) dot.classList.add('done');
+          else if (di === modulesDone) dot.classList.add('active');
+        }
+      }
+
+      // Update progress note
       var progressNote = document.getElementById('dashProgressNote');
       if (progressNote) {
-        if (modulesDone === 8) progressNote.textContent = 'All 8 modules complete!';
+        if (modulesDone === 8) progressNote.textContent = 'All 8 modules complete — Gridiron IQ coming soon!';
         else if (modulesDone > 0) progressNote.textContent = modulesDone + ' module' + (modulesDone > 1 ? 's' : '') + ' complete — keep going!';
-        else progressNote.textContent = 'Tap any module below to start learning';
+        else progressNote.textContent = 'Start your first module below';
       }
+
+      // Update next lesson title
       var nextIdx = 0;
-      for (var ni = 0; ni < 8; ni++) { if (passedSet.has(ni + 1)) nextIdx = ni + 1; else break; }
+      for (var ni = 0; ni < 8; ni++) {
+        if (passedSet.has(ni + 1)) nextIdx = ni + 1; else break;
+      }
       var nextEl = document.getElementById('nextLessonTitle');
-      if (nextEl && nextIdx < 8 && typeof CURRICULUM !== 'undefined') nextEl.textContent = CURRICULUM[nextIdx].name;
+      if (nextEl && nextIdx < 8 && typeof CURRICULUM !== 'undefined') {
+        nextEl.textContent = CURRICULUM[nextIdx].name;
+      }
+
+      // Update each module row state
+      if (typeof CURRICULUM !== 'undefined') {
+        CURRICULUM.forEach(function(m, i) {
+          var isDone = passedSet.has(i + 1);
+          var isNext = i === nextIdx;
+          var numEl  = document.getElementById('pdb-num-' + i);
+          var nameEl2 = document.getElementById('pdb-name-' + i);
+          var barEl  = document.getElementById('pdb-bar-' + i);
+          var pctEl  = document.getElementById('pdb-pct-' + i);
+
+          if (isDone) {
+            if (numEl)  { numEl.className = 'pdb-mod-num done'; numEl.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'; }
+            if (nameEl2) nameEl2.className = 'pdb-mod-name';
+            if (barEl)  barEl.style.width = '100%';
+            if (pctEl)  { pctEl.textContent = '100%'; pctEl.className = 'pdb-mod-pct done'; }
+          } else if (isNext) {
+            if (numEl)  numEl.className = 'pdb-mod-num next';
+            if (nameEl2) nameEl2.className = 'pdb-mod-name';
+            if (barEl)  barEl.style.width = '0%';
+            if (pctEl)  pctEl.textContent = '';
+          }
+          // locked modules stay as-is
+        });
+      }
     }
   } catch(e) { console.error('Progress load error:', e); }
 
@@ -383,8 +435,8 @@ async function loadPlayerDashboard() {
       }
     } catch(e) { console.error('Coach load error:', e); }
   }
-  buildDashModuleList();
 }
+
 
 async function loadCoachDashboard() {
   if (!currentProfile) return;
@@ -507,351 +559,26 @@ function buildModuleList() {
 
 function buildDashModuleList() {
   var list = document.getElementById('dashModuleList');
-  if (!list) return;
+  if (!list || typeof CURRICULUM === 'undefined') return;
   list.innerHTML = '';
-  CURRICULUM.slice(0, 5).forEach(function(m, i) {
-    var item = document.createElement('div');
-    item.className = 'mod-prog-item';
-    item.style.cursor = 'pointer';
-    item.onclick = (function(idx) { return function() { openModule(idx); }; })(i);
-    item.innerHTML =
-      '<div class="mod-prog-num">' + m.num + '</div>' +
-      '<span class="mod-prog-name">' + m.name + '</span>' +
-      '<div class="mod-prog-bar-wrap"><div class="mod-prog-fill" id="modFill' + i + '" style="width:0%"></div></div>' +
-      '<span class="mod-prog-pct" id="modPct' + i + '">0%</span>';
-    list.appendChild(item);
-  });
-  var more = document.createElement('div');
-  more.style.cssText = 'text-align:center;margin-top:12px;';
-  more.innerHTML = "<button class='btn btn-ghost' style='font-size:13px;padding:8px 18px' onclick=\"showPage('course')\">View All 8 Modules</button>";
-  list.appendChild(more);
-  loadModuleProgress();
-}
-
-async function loadModuleProgress() {
-  if (!currentUser) return;
-  try {
-    var result = await db.from('progress').select('module_num, quiz_passed').eq('user_id', currentUser.id);
-    if (!result.data) return;
-    var moduleMap = {};
-    result.data.forEach(function(r) {
-      if (!moduleMap[r.module_num]) moduleMap[r.module_num] = { passed: false };
-      if (r.quiz_passed) moduleMap[r.module_num].passed = true;
-    });
-    CURRICULUM.forEach(function(m, i) {
-      var pct = moduleMap[m.num] && moduleMap[m.num].passed ? 100 : 0;
-      var fillEl = document.getElementById('modRowFill' + i);
-      var pctEl  = document.getElementById('modRowPct' + i);
-      if (fillEl) fillEl.style.width = pct + '%';
-      if (pctEl)  pctEl.textContent = pct + '%';
-      var dashFill = document.getElementById('modFill' + i);
-      var dashPct  = document.getElementById('modPct' + i);
-      if (dashFill) dashFill.style.width = pct + '%';
-      if (dashPct)  dashPct.textContent = pct + '%';
-    });
-    var passedCount = Object.values(moduleMap).filter(function(m) { return m.passed; }).length;
-    var progressLabel = document.getElementById('dashProgressLabel');
-    if (progressLabel) progressLabel.textContent = passedCount + ' / 8 modules';
-    var progressBar = document.getElementById('dashProgressBar');
-    if (progressBar) progressBar.style.width = Math.round((passedCount/8)*100) + '%';
-    var nextEl = document.getElementById('nextLessonTitle');
-    if (nextEl) {
-      var nextIdx = 0;
-      for (var i = 0; i < CURRICULUM.length; i++) {
-        if (moduleMap[CURRICULUM[i].num] && moduleMap[CURRICULUM[i].num].passed) nextIdx = i + 1;
-        else break;
-      }
-      if (nextIdx < CURRICULUM.length) nextEl.textContent = CURRICULUM[nextIdx].name;
-    }
-  } catch(e) { console.error('Progress load error:', e); }
-}
-
-// ══════════════════════════════════════════
-// LESSON ENGINE
-// ══════════════════════════════════════════
-
-var moduleState = {
-  moduleIdx: 0, lessonIdx: 0, slideIdx: 0,
-  phase: 'overview', quizAnswers: [], quizScore: 0, quizPassed: false,
-  skipIntro: false, touchStartX: 0
-};
-var quizResponses = {};
-
-function openModule(mIdx) {
-  moduleState.moduleIdx = mIdx;
-  moduleState.lessonIdx = 0;
-  moduleState.slideIdx  = 0;
-  moduleState.phase     = 'overview';
-  moduleState.skipIntro = false;
-  quizResponses = {};
-  // Only navigate to lesson.html if not already there
-  var onLessonPage = window.location.pathname.indexOf('lesson.html') !== -1;
-  if (!onLessonPage) {
-    sessionStorage.setItem('openModule', mIdx);
-    window.location.href = 'lesson.html';
-    return;
-  }
-  // Already on lesson page — just render
-  renderModule();
-}
-
-function renderModule() {
-  var mIdx = moduleState.moduleIdx;
-  var mod  = CURRICULUM[mIdx];
-  var phase = moduleState.phase;
-  var header = document.getElementById('lessonHeader');
-  var body   = document.getElementById('lessonBody');
-  if (!body) return;
-
-  if (header) {
-    var totalS = totalSlides(mIdx);
-    var currentS = phase === 'slides' ? absoluteSlideIdx(mIdx, moduleState.lessonIdx, moduleState.slideIdx) + 1 : 0;
-    var pct = phase === 'slides' ? Math.round((currentS / totalS) * 100) : (phase === 'quiz' || phase === 'complete' ? 100 : 0);
-    header.innerHTML =
-      '<div class="lesson-module-label">Module ' + mod.num + '</div>' +
-      '<div class="lesson-title">' + mod.name + '</div>' +
-      (phase === 'slides' ?
-        '<div class="lesson-progress-row"><div class="lesson-progress-bar"><div class="lesson-progress-fill" style="width:' + pct + '%"></div></div><span class="lesson-progress-label">Slide ' + currentS + ' of ' + totalS + '</span></div>' : '');
-  }
-
-  if (phase === 'overview') renderOverview(mod);
-  else if (phase === 'slides') renderSlide(mod);
-  else if (phase === 'quiz')   renderQuiz(mod);
-  else if (phase === 'complete') renderComplete(mod);
-}
-
-function renderOverview(mod) {
-  var body = document.getElementById('lessonBody');
-  body.innerHTML =
-    '<div class="module-overview">' +
-    '<div class="overview-meta">' +
-      '<span class="overview-chip">' + mod.lessons.length + ' lessons</span>' +
-      '<span class="overview-chip">' + totalSlides(moduleState.moduleIdx) + ' slides</span>' +
-      '<span class="overview-chip">' + mod.quiz.length + '-question quiz</span>' +
-    '</div>' +
-    '<p class="overview-desc">' + mod.desc + '</p>' +
-    '<div class="overview-lessons">' +
-      mod.lessons.map(function(l, i) {
-        return '<div class="overview-lesson-item"><div class="overview-lesson-num">' + (i+1) + '</div><div class="overview-lesson-info"><div class="overview-lesson-title">' + l.title + '</div><div class="overview-lesson-count">' + l.slides.length + ' slides</div></div></div>';
-      }).join('') +
-    '</div>' +
-    '<button class="btn btn-primary lesson-advance-btn" onclick="startSlides()">Start Module ' + mod.num + ' &#8594;</button>' +
-    '</div>';
-}
-
-function startSlides() {
-  moduleState.lessonIdx = 0;
-  moduleState.slideIdx  = 0;
-  moduleState.phase     = 'slides';
-  renderModule();
-}
-
-function renderSlide(mod) {
-  var body   = document.getElementById('lessonBody');
-  var lIdx   = moduleState.lessonIdx;
-  var sIdx   = moduleState.slideIdx;
-  if (sIdx === 0 && lIdx > 0 && !moduleState.skipIntro) { renderLessonIntro(mod, lIdx); return; }
-  moduleState.skipIntro = false;
-  var lesson = mod.lessons[lIdx];
-  var slide  = lesson.slides[sIdx];
-  var isLast = lIdx === mod.lessons.length - 1 && sIdx === lesson.slides.length - 1;
-  var isFirst = lIdx === 0 && sIdx === 0;
-  body.innerHTML =
-    '<div class="slide-container" id="slideContainer" ontouchstart="handleTouchStart(event)" ontouchend="handleTouchEnd(event)">' +
-    '<div class="slide-lesson-banner"><div class="slide-lesson-banner-left"><span class="slide-lesson-chip">Lesson ' + (lIdx+1) + ' of ' + mod.lessons.length + '</span><span class="slide-lesson-name">' + lesson.title + '</span></div><span class="slide-lesson-pos">Slide ' + (sIdx+1) + ' of ' + lesson.slides.length + '</span></div>' +
-    '<div class="slide-card" id="slideCard"><div class="slide-heading">' + slide.heading + '</div><div class="slide-body">' + slide.body + '</div></div>' +
-    '<div class="slide-dots">' + generateDots(lIdx, sIdx, mod) + '</div>' +
-    '<div class="slide-nav">' +
-      '<button class="slide-btn-back" onclick="prevSlide()" ' + (isFirst ? 'disabled' : '') + '>&#8592; Back</button>' +
-      (isLast ? '<button class="slide-btn-next primary" onclick="goToQuiz()">Take the Quiz &#8594;</button>' : '<button class="slide-btn-next" onclick="nextSlide()">Next &#8594;</button>') +
-    '</div></div>';
-}
-
-function renderLessonIntro(mod, lIdx) {
-  var body   = document.getElementById('lessonBody');
-  var lesson = mod.lessons[lIdx];
-  var colors = ['#E8630A','#1B3A8C','#22C55E','#8B5CF6'];
-  var color  = colors[lIdx % colors.length];
-  body.innerHTML =
-    '<div class="lesson-intro-card" style="border-top:4px solid ' + color + ';">' +
-    '<div class="lesson-intro-eyebrow" style="color:' + color + ';">Lesson ' + (lIdx+1) + ' of ' + mod.lessons.length + '</div>' +
-    '<div class="lesson-intro-title">' + lesson.title + '</div>' +
-    '<div class="lesson-intro-slides">' + lesson.slides.length + ' slides</div>' +
-    '<div class="lesson-intro-previews">' + lesson.slides.map(function(s) { return '<div class="lesson-intro-preview-item"><div class="lesson-intro-preview-dot" style="background:' + color + '"></div><span>' + s.heading + '</span></div>'; }).join('') + '</div>' +
-    '<div class="slide-nav" style="margin-top:28px;"><button class="slide-btn-back" onclick="prevSlide()">&#8592; Back</button><button class="slide-btn-next" style="background:' + color + ';border-color:' + color + ';" onclick="skipIntroAndStart()">Start Lesson ' + (lIdx+1) + ' &#8594;</button></div>' +
-    '</div>';
-}
-
-function skipIntroAndStart() { moduleState.skipIntro = true; renderSlide(CURRICULUM[moduleState.moduleIdx]); }
-
-function generateDots(curLIdx, curSIdx, mod) {
-  var dots = '';
-  var colors = ['#E8630A','#1B3A8C','#22C55E','#8B5CF6'];
-  mod.lessons.forEach(function(l, li) {
-    var color = colors[li % colors.length];
-    if (li > 0) dots += '<span class="slide-dot-sep"></span>';
-    l.slides.forEach(function(s, si) {
-      var isActive = li === curLIdx && si === curSIdx;
-      var isPast   = li < curLIdx || (li === curLIdx && si < curSIdx);
-      var style = isActive ? 'background:' + color + ';width:20px;' : isPast ? 'background:' + color + ';opacity:.35;' : '';
-      dots += '<span class="slide-dot" style="' + style + '"></span>';
-    });
-  });
-  return dots;
-}
-
-function nextSlide() {
-  var mod    = CURRICULUM[moduleState.moduleIdx];
-  var lesson = mod.lessons[moduleState.lessonIdx];
-  if (moduleState.slideIdx + 1 < lesson.slides.length) { moduleState.slideIdx++; moduleState.skipIntro = false; }
-  else if (moduleState.lessonIdx + 1 < mod.lessons.length) { moduleState.lessonIdx++; moduleState.slideIdx = 0; moduleState.skipIntro = false; }
-  renderModule();
-}
-
-function prevSlide() {
-  if (moduleState.slideIdx > 0) { moduleState.slideIdx--; moduleState.skipIntro = false; }
-  else if (moduleState.lessonIdx > 0) {
-    moduleState.lessonIdx--;
-    moduleState.slideIdx = CURRICULUM[moduleState.moduleIdx].lessons[moduleState.lessonIdx].slides.length - 1;
-    moduleState.skipIntro = true;
-  }
-  renderModule();
-}
-
-function handleTouchStart(e) { moduleState.touchStartX = e.touches[0].clientX; }
-function handleTouchEnd(e) {
-  var diff = moduleState.touchStartX - e.changedTouches[0].clientX;
-  if (Math.abs(diff) > 50) { if (diff > 0) nextSlide(); else prevSlide(); }
-}
-
-function goToQuiz() { moduleState.phase = 'quiz'; quizResponses = {}; renderModule(); }
-
-function renderQuiz(mod) {
-  var body = document.getElementById('lessonBody');
-  var questions = mod.quiz.map(function(q, qi) {
-    var opts = q.opts.map(function(opt, oi) {
-      var letters = ['A','B','C','D'];
-      return '<button class="lesson-quiz-opt" id="qOpt_' + qi + '_' + oi + '" onclick="answerQuizQ(' + qi + ',' + oi + ',' + q.correct + ')">' +
-        '<span class="lesson-opt-letter">' + letters[oi] + '</span><span>' + opt + '</span></button>';
-    }).join('');
-    return '<div class="module-quiz-q" id="quizQ_' + qi + '">' +
-      '<div class="module-quiz-num">Q' + (qi+1) + '</div>' +
-      '<div class="lesson-quiz-q">' + q.q + '</div>' +
-      '<div class="lesson-quiz-opts">' + opts + '</div>' +
-      '<div class="lesson-quiz-result" id="quizResult_' + qi + '"></div></div>';
-  }).join('');
-  body.innerHTML =
-    '<div class="module-quiz-section">' +
-    '<div class="module-quiz-header"><div class="module-quiz-title">Module ' + mod.num + ' Quiz</div><div class="module-quiz-sub">Answer all ' + mod.quiz.length + ' questions. You need 70% to complete this module.</div></div>' +
-    '<div id="quizQuestions">' + questions + '</div>' +
-    '<div id="quizSubmitArea" style="display:none;margin-top:28px;"><button class="btn btn-primary lesson-advance-btn" onclick="submitQuiz()">Submit Quiz &#8594;</button></div>' +
-    '</div>';
-}
-
-function answerQuizQ(qi, chosen, correct) {
-  if (quizResponses[qi] !== undefined) return;
-  quizResponses[qi] = chosen;
-  for (var i = 0; i < 4; i++) {
-    var el = document.getElementById('qOpt_' + qi + '_' + i);
-    if (el) el.disabled = true;
-  }
-  var chosenEl  = document.getElementById('qOpt_' + qi + '_' + chosen);
-  var correctEl = document.getElementById('qOpt_' + qi + '_' + correct);
-  var resultEl  = document.getElementById('quizResult_' + qi);
-  var explanation = CURRICULUM[moduleState.moduleIdx].quiz[qi].explanation;
-  if (chosen === correct) {
-    if (chosenEl) chosenEl.classList.add('correct');
-    if (resultEl) { resultEl.className = 'lesson-quiz-result correct show'; resultEl.textContent = explanation; }
-  } else {
-    if (chosenEl) chosenEl.classList.add('wrong');
-    if (correctEl) correctEl.classList.add('correct');
-    if (resultEl) { resultEl.className = 'lesson-quiz-result wrong show'; resultEl.textContent = explanation; }
-  }
-  if (Object.keys(quizResponses).length >= CURRICULUM[moduleState.moduleIdx].quiz.length) {
-    var submitArea = document.getElementById('quizSubmitArea');
-    if (submitArea) { submitArea.style.display = 'block'; submitArea.scrollIntoView({behavior:'smooth'}); }
-  }
-}
-
-async function submitQuiz() {
-  var mod     = CURRICULUM[moduleState.moduleIdx];
-  var total   = mod.quiz.length;
-  var correct = 0;
-  for (var qi = 0; qi < total; qi++) { if (quizResponses[qi] === mod.quiz[qi].correct) correct++; }
-  var score  = Math.round((correct / total) * 100);
-  var passed = score >= 70;
-  if (currentUser) {
-    try {
-      await db.from('progress').upsert({
-        user_id: currentUser.id, module_num: mod.num,
-        lesson_num: 0, slide_num: 0,
-        completed: passed, quiz_passed: passed,
-        completed_at: new Date().toISOString()
-      }, { onConflict: 'user_id,module_num,lesson_num' });
-    } catch(e) { console.error('Progress save error:', e); }
-  }
-  quizResponses = {};
-  moduleState.phase      = 'complete';
-  moduleState.quizScore  = score;
-  moduleState.quizPassed = passed;
-  renderModule();
-}
-
-function renderComplete(mod) {
-  var body   = document.getElementById('lessonBody');
-  var passed = moduleState.quizPassed;
-  var score  = moduleState.quizScore;
-  var nextMod = moduleState.moduleIdx + 1 < CURRICULUM.length ? CURRICULUM[moduleState.moduleIdx + 1] : null;
-  if (passed) {
-    body.innerHTML =
-      '<div class="lesson-complete-section">' +
-      '<div class="lesson-complete-icon">&#127941;</div>' +
-      '<div class="lesson-complete-title">Module Complete!</div>' +
-      '<div class="lesson-complete-sub">You scored ' + score + '% on the quiz.</div>' +
-      '<div class="lesson-module-complete-badge">&#127944; Module ' + mod.num + ' — ' + mod.name + '</div>' +
-      (nextMod ? '<button class="btn btn-primary lesson-advance-btn" onclick="openModule(' + (moduleState.moduleIdx+1) + ')">Start Module ' + nextMod.num + ': ' + nextMod.name + ' &#8594;</button>' : '<button class="btn btn-primary lesson-advance-btn" onclick="showPage(\'dashboard\')">Back to Dashboard &#8594;</button>') +
-      '<button class="btn btn-ghost" onclick="showPage(\'dashboard\')" style="width:100%;justify-content:center;margin-top:12px;">Back to Dashboard</button>' +
+  CURRICULUM.forEach(function(m, i) {
+    var row = document.createElement('div');
+    row.className = 'pdb-mod-row';
+    row.onclick = function() {
+      sessionStorage.setItem('openModule', i);
+      window.location.href = 'lesson.html';
+    };
+    // State: done, next, locked — set by loadPlayerDashboard after progress loads
+    row.id = 'pdb-row-' + i;
+    row.innerHTML =
+      '<div class="pdb-mod-num locked" id="pdb-num-' + i + '">' + (i + 1) + '</div>' +
+      '<div class="pdb-mod-name locked" id="pdb-name-' + i + '">' + m.name + '</div>' +
+      '<div class="pdb-mod-right">' +
+        '<div class="pdb-mod-bar-track"><div class="pdb-mod-bar-fill" id="pdb-bar-' + i + '" style="width:0%"></div></div>' +
+        '<div class="pdb-mod-pct" id="pdb-pct-' + i + '">0%</div>' +
       '</div>';
-  } else {
-    body.innerHTML =
-      '<div class="lesson-complete-section">' +
-      '<div class="lesson-complete-icon">&#128172;</div>' +
-      '<div class="lesson-complete-title">Not Quite Yet</div>' +
-      '<div class="lesson-complete-sub">You scored ' + score + '%. You need 70% to complete this module.</div>' +
-      '<button class="btn btn-primary lesson-advance-btn" onclick="retakeModule()">Review Slides &#8594;</button>' +
-      '<button class="btn btn-ghost" onclick="goToQuiz()" style="width:100%;justify-content:center;margin-top:12px;">Retake Quiz Immediately</button>' +
-      '</div>';
-  }
+    list.appendChild(row);
+  });
 }
 
-function retakeModule() {
-  moduleState.lessonIdx = 0; moduleState.slideIdx = 0;
-  moduleState.phase     = 'slides'; quizResponses = {};
-  renderModule();
-}
 
-// ══════════════════════════════════════════
-// FORGOT PASSWORD
-// ══════════════════════════════════════════
-async function doForgotPassword() {
-  var emailEl = document.getElementById('forgotEmail') || document.getElementById('loginEmail');
-  var email = emailEl ? emailEl.value.trim() : '';
-  if (!email) { showAuthMsg('error', 'Please enter your email address.'); return; }
-  showAuthMsg('loading', 'Sending reset link...');
-  try {
-    var result = await db.auth.resetPasswordForEmail(email, {
-      redirectTo: 'https://firstdownacademy.com/reset.html'
-    });
-    if (result.error) { showAuthMsg('error', result.error.message); return; }
-    showAuthMsg('success', 'Reset link sent! Check your email inbox.');
-  } catch(e) {
-    showAuthMsg('error', 'Something went wrong. Please try again.');
-    console.error(e);
-  }
-}
-
-// ══════════════════════════════════════════
-// INIT
-// ══════════════════════════════════════════
-// Only run checkSession — each page handles its own init
-checkSession();
