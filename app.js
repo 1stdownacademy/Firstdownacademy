@@ -8,7 +8,6 @@
 // Replace these with your real keys
 const SUPABASE_URL = 'https://wzylgwvifdfnkmuleoxn.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_FaPj5NQeqzsRE8kOme2lKQ_uXrHArbt';
-
 const { createClient } = supabase;
 const db = createClient(SUPABASE_URL, SUPABASE_KEY);
 var currentUser = null;
@@ -581,4 +580,7 @@ function buildDashModuleList() {
   });
 }
 
-
+// ══════════════════════════════════════════
+// INIT — must be last
+// ══════════════════════════════════════════
+checkSession();
