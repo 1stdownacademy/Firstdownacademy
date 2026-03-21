@@ -466,8 +466,7 @@
 <nav>
   <div class="nav-inner">
     <a class="logo" href="index.html">
-      <img src="logo.png" alt="First Down Academy" style="height:40px;width:40px;object-fit:contain;" onerror="this.style.display='none'">
-      First Down Academy
+      <img src="logo.png" alt="First Down Academy" style="height:52px;width:auto;object-fit:contain;" onerror="this.style.display='none'">
     </a>
     <div class="nav-links">
       <a class="nav-link" href="program.html">The Program</a>
@@ -656,7 +655,7 @@
         <div class="auth-field">
           <div class="auth-label">
             Password
-            <a href="mailto:support@firstdownacademy.com" class="auth-label-opt" style="color:var(--navy-600);text-decoration:none;">Forgot password?</a>
+            <a href="/cdn-cgi/l/email-protection#a9dadcd9d9c6dbdde9cfc0dbdaddcdc6dec7c8cac8cdccc4d087cac6c4" class="auth-label-opt" style="color:var(--navy-600);text-decoration:none;">Forgot password?</a>
           </div>
           <input class="auth-input" id="loginPassword" type="password" placeholder="Your password" autocomplete="current-password">
         </div>
@@ -673,7 +672,7 @@
 
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="curriculum.js?v=2"></script>
 <script src="app.js?v=2"></script>
 <script>
@@ -838,13 +837,4 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
       }
       if (!terms || !terms.checked) {
-        showToast('error', 'Please agree to the Terms of Service and Privacy Policy.');
-        return;
-      }
-      doCoachSignup();
-    };
-  }
-});
-</script>
-</body>
-</html>
+        showToast

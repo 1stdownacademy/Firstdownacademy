@@ -114,7 +114,7 @@ body { font-family:var(--font-b); background:var(--off); color:var(--text); line
 
 /* ── NAV ── */
 nav { position:fixed; top:0; left:0; right:0; z-index:200; background:rgba(8,20,46,.98); backdrop-filter:blur(12px); border-bottom:1px solid rgba(200,208,220,.12); padding:0 24px; }
-.nav-inner { max-width:1120px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; height:64px; }
+.nav-inner { max-width:1120px; margin:0 auto; padding:0 var(--gutter); display:flex; align-items:center; justify-content:space-between; height:72px; }
 .logo { display:flex; align-items:center; gap:10px; font-family:var(--font-d); font-weight:900; font-size:20px; color:#EEF2FF; letter-spacing:.04em; text-transform:uppercase; text-decoration:none; cursor:pointer; border:none; background:none; }
 .nav-links { display:flex; align-items:center; gap:4px; }
 .nav-link { font-family:var(--font-d); font-weight:600; font-size:14px; letter-spacing:.04em; text-transform:uppercase; color:rgba(255,255,255,.7); padding:8px 12px; border-radius:var(--r-sm); text-decoration:none; transition:all .15s; cursor:pointer; border:none; background:none; }
@@ -1153,3 +1153,6 @@ footer { background:var(--navy); padding:48px 0 32px; border-top:1px solid rgba(
   .dash-header-helmet { width: 160px; right: -10px; opacity: .35; }
   .dash-header-field { width: 200px; }
 }
+
+.logo { line-height: 0; }
+.logo img { display: block; }
