@@ -222,7 +222,7 @@ async function doSignup() {
     }
     showAuthMsg('success', 'Account created! Logging you in...');
     setTimeout(function() {
-      showPage('dashboard');
+      window.location.href = 'dashboard.html';
     }, 1500);
   } catch(err) { showAuthMsg('error', 'Something went wrong. Please try again.'); console.error(err); }
 }
@@ -258,7 +258,7 @@ async function doCoachSignup() {
     }
     showAuthMsg('success', 'Coach account created! Your referral link is ready in your dashboard.');
     setTimeout(function() {
-      showPage('dashboard');
+      window.location.href = 'dashboard.html';
     }, 1500);
   } catch(err) { showAuthMsg('error', 'Something went wrong. Please try again.'); console.error(err); }
 }
@@ -273,21 +273,19 @@ async function doLogin() {
     if (result.error) { showAuthMsg('error', 'Incorrect email or password.'); return; }
     currentUser = result.data.user;
     await loadProfile();
-    // Navigate to dashboard — dashboard.html handles its own init
-    showPage('dashboard');
+    // Navigate to dashboard — use direct navigation, not SPA showPage
+    if (typeof window !== 'undefined') {
+      window.location.href = 'dashboard.html';
+    } else {
+      showPage('dashboard');
+    }
   } catch(err) { showAuthMsg('error', 'Something went wrong. Please try again.'); console.error(err); }
 }
 
 async function doLogout() {
   await db.auth.signOut();
   currentUser = null; currentProfile = null;
-  var dashLink = document.getElementById('nav-dashboard');
-  if (dashLink) dashLink.style.display = 'none';
-  var authBtns = document.getElementById('navAuthBtns');
-  if (authBtns) authBtns.style.display = 'flex';
-  var dashBtn = document.getElementById('navDashBtn');
-  if (dashBtn) dashBtn.style.display = 'none';
-  showPage('home');
+  window.location.href = 'index.html';
 }
 
 function showAuthMsg(type, msg) {
