@@ -1156,3 +1156,123 @@ footer { background:var(--navy); padding:48px 0 32px; border-top:1px solid rgba(
 
 .logo { line-height: 0; }
 .logo img { display: block; }
+
+/* ═══════════════════════════════════════
+   MOBILE FIXES
+═══════════════════════════════════════ */
+
+/* Footer — fix logo text overlap on mobile */
+@media(max-width: 768px) {
+  footer { padding: 40px 0 24px; }
+
+  .footer-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0 20px;
+    gap: 32px;
+  }
+
+  .footer-brand { width: 100%; }
+
+  /* Logo in footer — img only, no text overflow */
+  .footer-brand .logo {
+    font-size: 0; /* hide any leftover text nodes */
+    gap: 0;
+    margin-bottom: 12px;
+  }
+  .footer-brand .logo img {
+    height: 44px;
+  }
+
+  .footer-links {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px 16px;
+  }
+
+  .footer-col { min-width: 0; }
+  .footer-col ul li a { font-size: 13px; }
+
+  .footer-bottom {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+    padding: 16px 20px;
+  }
+}
+
+/* Program page — level cards stack vertically on mobile */
+@media(max-width: 640px) {
+  /* Override the inline repeat(3,1fr) grid */
+  div[style*="repeat(3,1fr)"] {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+    max-width: 100% !important;
+  }
+}
+
+/* Home bento levels bar — stack on mobile */
+@media(max-width: 500px) {
+  .home-levels-bar {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .home-level {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+  }
+  .home-level-num { font-size: 20px; margin-bottom: 0; }
+}
+
+/* Nav logo on mobile — proper sizing */
+@media(max-width: 768px) {
+  .nav-inner { padding: 0 16px; height: 68px; }
+  .nav-inner .logo img { height: 48px; }
+
+  /* Hamburger visible */
+  .hamburger { display: flex; }
+
+  /* Hide desktop nav items */
+  .nav-links, .nav-auth-btns, .nav-cta { display: none !important; }
+}
+
+/* General mobile padding */
+@media(max-width: 480px) {
+  .container { padding: 0 16px; }
+
+  .home-hero-left { padding: 40px 16px; }
+  .home-hero-headline { font-size: clamp(48px, 12vw, 72px); }
+  .home-hero-sub { font-size: 15px; }
+  .home-hero-ctas { flex-direction: column; }
+  .btn-home-primary, .btn-home-secondary { width: 100%; justify-content: center; text-align: center; }
+
+  .home-bento { padding: 48px 16px; }
+  .home-cta-box { padding: 32px 20px; }
+
+  .section-title { font-size: clamp(28px, 8vw, 44px); }
+
+  /* Program page module rows */
+  .prog-module-lessons { display: none; } /* hide lesson pills on very small screens */
+
+  /* Auth page */
+  .auth-right { padding: 32px 16px 48px; }
+
+  /* Dashboard */
+  .dash-header { padding: 32px 0 28px; }
+  .dash-welcome { font-size: 28px; }
+  .dash-header-helmet { display: none; }
+  .dash-body { padding: 24px 0 48px; }
+  .dash-grid { grid-template-columns: 1fr; gap: 14px; }
+}
+
+/* Program page level cards — stack on mobile */
+@media(max-width: 640px) {
+  .level-cards-grid {
+    grid-template-columns: 1fr !important;
+    max-width: 100% !important;
+  }
+}
