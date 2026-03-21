@@ -334,8 +334,10 @@ async function loadDashboard() {
 }
 
 async function loadPlayerDashboard() {
+  // Ensure profile is loaded before using it
+  if (!currentProfile && currentUser) await loadProfile();
   var nameEl = document.getElementById('dashPlayerName');
-  if (nameEl && currentProfile) nameEl.textContent = currentProfile.full_name ? currentProfile.full_name.split(' ')[0] : 'Player';
+  if (nameEl) nameEl.textContent = (currentProfile && currentProfile.full_name) ? currentProfile.full_name.split(' ')[0] : (currentUser && currentUser.user_metadata && currentUser.user_metadata.full_name ? currentUser.user_metadata.full_name.split(' ')[0] : 'Player');
 
   var streakDays = document.getElementById('dashStreakDays');
   if (streakDays) {
