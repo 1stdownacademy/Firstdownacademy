@@ -2,11 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<link rel="icon" type="image/x-icon" href="favicon.ico">
-<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Lessons — First Down Academy</title>
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="stylesheet" href="style.css?v=2">
 </head>
 <body>
@@ -17,9 +16,9 @@
   <div style="background:var(--navy);padding:16px 0;border-bottom:1px solid rgba(255,255,255,.08);position:sticky;top:0;z-index:50;">
     <div class="container">
       <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
-        <a href="program.html" style="font-family:var(--font-m);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.6);text-decoration:none;display:flex;align-items:center;gap:6px;">&#8592; The Program</a>
+        <a href="dashboard.html" style="font-family:var(--font-m);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.6);text-decoration:none;display:flex;align-items:center;gap:6px;">&#8592; Dashboard</a>
         <div id="lessonHeader" style="flex:1;text-align:center;"></div>
-        <a href="dashboard.html" style="font-family:var(--font-m);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.6);text-decoration:none;">Dashboard</a>
+        <a href="program.html" style="font-family:var(--font-m);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.6);text-decoration:none;">The Program</a>
       </div>
     </div>
   </div>
@@ -39,22 +38,40 @@
 <script src="curriculum.js?v=2"></script>
 <script src="app.js?v=2"></script>
 <script>
+// Page-specific navigation — no SPA showPage needed
 function showPage(name) {
-  var pageMap = {
-    'home':'index.html','course':'program.html','giq':'giq.html',
-    'levels':'levels.html','coaches':'coaches.html','signup':'auth.html',
-    'dashboard':'dashboard.html','lesson':'lesson.html','legal':'legal.html'
+  var map = {
+    'home':'index.html', 'course':'program.html', 'giq':'giq.html',
+    'levels':'levels.html', 'coaches':'coaches.html', 'signup':'auth.html',
+    'dashboard':'dashboard.html', 'lesson':'lesson.html', 'legal':'legal.html'
   };
-  if (pageMap[name]) window.location.href = pageMap[name];
+  if (map[name]) window.location.href = map[name];
 }
-// Load the module saved in session storage
-var savedModule = sessionStorage.getItem('openModule');
-if (savedModule !== null) {
-  openModule(parseInt(savedModule));
+
+function updateNavForLoggedIn() {
+  // No nav changes needed on lesson page
+}
+
+function buildModuleList() {
+  // Not needed on lesson page — prevents crash
+}
+
+function loadDashboard() {
+  // Not needed on lesson page — prevents crash
+}
+
+// Wait for session, then load the lesson
+document.addEventListener('sessionReady', function() {
+  if (!currentUser) {
+    window.location.href = 'auth.html';
+    return;
+  }
+  // Load the module saved in sessionStorage
+  var savedModule = sessionStorage.getItem('openModule');
+  var moduleIdx = savedModule !== null ? parseInt(savedModule) : 0;
   sessionStorage.removeItem('openModule');
-} else {
-  openModule(0);
-}
+  openModule(moduleIdx);
+});
 </script>
 </body>
 </html>

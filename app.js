@@ -847,7 +847,5 @@ async function doForgotPassword() {
 // ══════════════════════════════════════════
 // INIT
 // ══════════════════════════════════════════
-// Only call functions that exist on this page
-if (typeof showPage === 'function') showPage('home');
-if (typeof buildModuleList === 'function') buildModuleList();
+// Only run checkSession — each page handles its own init
 checkSession();
