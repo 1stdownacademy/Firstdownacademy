@@ -699,6 +699,28 @@ document.addEventListener('sessionReady', function() {
   if (currentUser) window.location.href = 'dashboard.html';
 });
 
+// Forgot password — sends reset email then shows confirmation
+function handleForgotPassword() {
+  var emailEl = document.getElementById('loginEmail');
+  var email = emailEl ? emailEl.value.trim() : '';
+  if (!email) {
+    showToast('loading', 'Enter your email above then click Forgot password.');
+    return;
+  }
+  showToast('loading', 'Sending reset link...');
+  db.auth.resetPasswordForEmail(email, {
+    redirectTo: 'https://firstdownacademy.com/reset.html'
+  }).then(function(result) {
+    if (result.error) {
+      showToast('error', result.error.message);
+    } else {
+      showToast('success', 'Reset link sent! Check your email inbox.');
+    }
+  }).catch(function(e) {
+    showToast('error', 'Something went wrong. Please try again.');
+  });
+}
+
 // Show login tab if ?tab=login
 if (new URLSearchParams(window.location.search).get('tab') === 'login') {
   document.addEventListener('DOMContentLoaded', function() { switchTab('login'); });

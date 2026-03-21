@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reset Password — First Down Academy</title>
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="stylesheet" href="style.css?v=2">
+<style>
+.reset-wrap {
+  min-height: 100vh;
+  background: var(--navy-950);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px 40px;
+}
+.reset-card {
+  background: white;
+  border-radius: 20px;
+  padding: 48px 44px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 24px 64px rgba(0,0,0,.3);
+}
+.reset-logo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 28px;
+}
+.reset-logo img { height: 64px; width: auto; }
+.reset-eyebrow {
+  font-family: var(--font-m);
+  font-size: 10px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--orange-500);
+  margin-bottom: 8px;
+}
+.reset-title {
+  font-family: var(--font-d);
+  font-size: 28px;
+  color: var(--navy-900);
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  line-height: 1;
+}
+.reset-sub {
+  font-size: 14px;
+  color: var(--grey-500);
+  line-height: 1.65;
+  margin-bottom: 28px;
+}
+.reset-field { margin-bottom: 14px; }
+.reset-label {
+  font-family: var(--font-m);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--navy-700);
+  margin-bottom: 6px;
+  display: block;
+}
+.reset-input {
+  width: 100%;
+  padding: 13px 14px;
+  font-family: var(--font-b);
+  font-size: 15px;
+  color: var(--navy-900);
+  background: white;
+  border: 1.5px solid var(--grey-200);
+  border-radius: 10px;
+  outline: none;
+  transition: border-color .2s, box-shadow .2s;
+  box-sizing: border-box;
+}
+.reset-input:focus {
+  border-color: var(--navy-500);
+  box-shadow: 0 0 0 3px rgba(30,58,138,.08);
+}
+.reset-input.success { border-color: #22C55E; }
+.reset-input.error { border-color: #EF4444; }
+.pw-match-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  pointer-events: none;
+}
+.reset-input-wrap { position: relative; }
+.pw-match-error {
+  font-size: 11px;
+  color: #DC2626;
+  margin-top: 5px;
+  display: none;
+}
+.pw-match-error.show { display: block; }
+.reset-btn {
+  width: 100%;
+  padding: 15px;
+  background: var(--orange-500);
+  color: white;
+  font-family: var(--font-m);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all .2s;
+  margin-top: 8px;
+}
+.reset-btn:hover { background: var(--orange-400); transform: translateY(-1px); }
+.reset-btn:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+.reset-toast {
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 13px;
+  line-height: 1.5;
+  margin-bottom: 20px;
+  display: none;
+  align-items: flex-start;
+  gap: 10px;
+}
+.reset-toast.show { display: flex; }
+.reset-toast.error { background: #FEF2F2; border: 1px solid #FECACA; color: #B91C1C; }
+.reset-toast.success { background: #F0FDF4; border: 1px solid #BBF7D0; color: #15803D; }
+.reset-toast.loading { background: #EFF6FF; border: 1px solid #BFDBFE; color: #1D4ED8; }
+
+/* Success state */
+.reset-success-state { display: none; text-align: center; }
+.reset-success-icon {
+  width: 64px;
+  height: 64px;
+  background: rgba(34,197,94,.1);
+  border: 2px solid rgba(34,197,94,.3);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  font-size: 28px;
+}
+.reset-success-title {
+  font-family: var(--font-d);
+  font-size: 24px;
+  color: var(--navy-900);
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.reset-success-sub {
+  font-size: 14px;
+  color: var(--grey-500);
+  line-height: 1.65;
+  margin-bottom: 28px;
+}
+
+/* Expired link state */
+.reset-expired-state { display: none; text-align: center; }
+
+@media(max-width: 480px) {
+  .reset-card { padding: 36px 24px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="logo" href="index.html">
+      <img src="logo.png" alt="First Down Academy" style="height:52px;width:auto;object-fit:contain;" onerror="this.style.display='none'">
+    </a>
+  </div>
+</nav>
+
+<div class="reset-wrap">
+  <div class="reset-card">
+
+    <div class="reset-logo">
+      <img src="logo.png" alt="First Down Academy" onerror="this.style.display='none'">
+    </div>
+
+    <!-- Toast -->
+    <div class="reset-toast" id="resetToast">
+      <span id="resetToastIcon"></span>
+      <span id="resetToastMsg"></span>
+    </div>
+
+    <!-- FORM STATE -->
+    <div id="resetFormState">
+      <div class="reset-eyebrow">Password Reset</div>
+      <div class="reset-title">Choose a New Password</div>
+      <p class="reset-sub">Enter a new password for your First Down Academy account.</p>
+
+      <div class="reset-field">
+        <label class="reset-label" for="newPassword">New Password</label>
+        <input class="reset-input" id="newPassword" type="password" placeholder="At least 6 characters" oninput="checkMatch()">
+      </div>
+
+      <div class="reset-field">
+        <label class="reset-label" for="confirmPassword">Confirm Password</label>
+        <div class="reset-input-wrap">
+          <input class="reset-input" id="confirmPassword" type="password" placeholder="Type it again" oninput="checkMatch()">
+          <span class="pw-match-icon" id="matchIcon"></span>
+        </div>
+        <div class="pw-match-error" id="matchError">Passwords do not match</div>
+      </div>
+
+      <button class="reset-btn" id="resetBtn" onclick="doReset()">Set New Password &rarr;</button>
+    </div>
+
+    <!-- SUCCESS STATE -->
+    <div class="reset-success-state" id="resetSuccessState">
+      <div class="reset-success-icon">&#10003;</div>
+      <div class="reset-success-title">Password Updated!</div>
+      <p class="reset-success-sub">Your password has been changed successfully. You can now log in with your new password.</p>
+      <a href="auth.html?tab=login" class="reset-btn" style="display:block;text-align:center;text-decoration:none;box-sizing:border-box;">
+        Go to Log In &rarr;
+      </a>
+    </div>
+
+    <!-- EXPIRED STATE -->
+    <div class="reset-expired-state" id="resetExpiredState">
+      <div style="font-size:48px;margin-bottom:16px;">&#9201;</div>
+      <div class="reset-title">Link Expired</div>
+      <p class="reset-sub">This password reset link has expired. Reset links are only valid for 24 hours. Request a new one and try again.</p>
+      <a href="auth.html?tab=login" class="reset-btn" style="display:block;text-align:center;text-decoration:none;box-sizing:border-box;">
+        Back to Log In &rarr;
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="curriculum.js?v=2"></script>
+<script src="app.js?v=2"></script>
+<script>
+// Override showPage for this standalone page
+function showPage(name) {
+  var map = {
+    'home':'index.html','course':'program.html','signup':'auth.html',
+    'dashboard':'dashboard.html','login':'auth.html?tab=login'
+  };
+  if (map[name]) window.location.href = map[name];
+}
+
+function showToast(type, msg) {
+  var toast = document.getElementById('resetToast');
+  var icon  = document.getElementById('resetToastIcon');
+  var text  = document.getElementById('resetToastMsg');
+  toast.className = 'reset-toast show ' + type;
+  icon.textContent = type === 'error' ? '⚠️' : type === 'success' ? '✅' : '⏳';
+  text.textContent = msg;
+}
+
+function checkMatch() {
+  var pw   = document.getElementById('newPassword').value;
+  var conf = document.getElementById('confirmPassword');
+  var icon = document.getElementById('matchIcon');
+  var err  = document.getElementById('matchError');
+  if (!conf.value) { icon.textContent = ''; return; }
+  var match = pw === conf.value;
+  icon.textContent = match ? '✅' : '❌';
+  conf.classList.toggle('success', match);
+  conf.classList.toggle('error', !match);
+  err.classList.toggle('show', !match);
+}
+
+async function doReset() {
+  var pw   = document.getElementById('newPassword').value;
+  var conf = document.getElementById('confirmPassword').value;
+
+  if (!pw || pw.length < 6) {
+    showToast('error', 'Password must be at least 6 characters.');
+    return;
+  }
+  if (pw !== conf) {
+    showToast('error', 'Passwords do not match — please check and try again.');
+    return;
+  }
+
+  var btn = document.getElementById('resetBtn');
+  btn.disabled = true;
+  showToast('loading', 'Updating your password...');
+
+  try {
+    var result = await db.auth.updateUser({ password: pw });
+    if (result.error) {
+      showToast('error', result.error.message || 'Something went wrong. Please try again.');
+      btn.disabled = false;
+      return;
+    }
+    // Success
+    document.getElementById('resetToast').className = 'reset-toast';
+    document.getElementById('resetFormState').style.display = 'none';
+    document.getElementById('resetSuccessState').style.display = 'block';
+  } catch(e) {
+    showToast('error', 'Something went wrong. Please try again.');
+    btn.disabled = false;
+    console.error(e);
+  }
+}
+
+// On load — check if we have a valid recovery session from the email link
+// Supabase puts the token in the URL hash automatically
+document.addEventListener('sessionReady', function() {
+  // If user arrived via recovery link, Supabase sets the session automatically
+  // If no session at all, the link may be expired
+  var hash = window.location.hash;
+  var isRecovery = hash.includes('type=recovery') || hash.includes('access_token');
+
+  if (!isRecovery && !currentUser) {
+    // No recovery token and not logged in — show expired state
+    document.getElementById('resetFormState').style.display = 'none';
+    document.getElementById('resetExpiredState').style.display = 'block';
+  }
+});
+
+// Also handle if Supabase auth state changes to SIGNED_IN via recovery
+if (typeof db !== 'undefined') {
+  db.auth.onAuthStateChange(function(event, session) {
+    if (event === 'PASSWORD_RECOVERY') {
+      // Valid recovery link — show the form
+      document.getElementById('resetFormState').style.display = 'block';
+      document.getElementById('resetExpiredState').style.display = 'none';
+    }
+  });
+}
+</script>
+</body>
+</html>

@@ -827,6 +827,26 @@ function retakeModule() {
 }
 
 // ══════════════════════════════════════════
+// FORGOT PASSWORD
+// ══════════════════════════════════════════
+async function doForgotPassword() {
+  var emailEl = document.getElementById('forgotEmail') || document.getElementById('loginEmail');
+  var email = emailEl ? emailEl.value.trim() : '';
+  if (!email) { showAuthMsg('error', 'Please enter your email address.'); return; }
+  showAuthMsg('loading', 'Sending reset link...');
+  try {
+    var result = await db.auth.resetPasswordForEmail(email, {
+      redirectTo: 'https://firstdownacademy.com/reset.html'
+    });
+    if (result.error) { showAuthMsg('error', result.error.message); return; }
+    showAuthMsg('success', 'Reset link sent! Check your email inbox.');
+  } catch(e) {
+    showAuthMsg('error', 'Something went wrong. Please try again.');
+    console.error(e);
+  }
+}
+
+// ══════════════════════════════════════════
 // INIT
 // ══════════════════════════════════════════
 // Only call functions that exist on this page
