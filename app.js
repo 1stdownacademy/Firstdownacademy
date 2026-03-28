@@ -8,6 +8,7 @@
 // Replace these with your real keys
 const SUPABASE_URL = 'https://wzylgwvifdfnkmuleoxn.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_FaPj5NQeqzsRE8kOme2lKQ_uXrHArbt';
+
 const { createClient } = supabase;
 const db = createClient(SUPABASE_URL, SUPABASE_KEY);
 var currentUser = null;
@@ -578,6 +579,112 @@ function buildDashModuleList() {
       '</div>';
     list.appendChild(row);
   });
+}
+
+
+// ══════════════════════════════════════════
+// GRIDIRON IQ DASHBOARD
+// ══════════════════════════════════════════
+async function loadGIQScore() {
+  var card = document.getElementById('giqDashCard');
+  if (!card || !currentUser) return;
+
+  try {
+    var result = await db
+      .from('giq_scores')
+      .select('score, level, correct, total, raw_score, taken_at')
+      .eq('user_id', currentUser.id)
+      .order('score', { ascending: false })
+      .limit(1);
+
+    if (result.error || !result.data || result.data.length === 0) {
+      // No score yet — show prompt
+      return;
+    }
+
+    var best = result.data[0];
+    var lvlColors = { rookie:'#94A3B8', pro:'#E8630A', mvp:'#22C55E' };
+    var color = lvlColors[best.level] || '#E8630A';
+
+    // Score display
+    var scoreEl = document.getElementById('giqDashScore');
+    if (scoreEl) {
+      scoreEl.innerHTML = best.score + '<span class="giq-dash-denom">/100</span>';
+    }
+
+    // Tier label
+    var tier;
+    if (best.score >= 90) tier = 'Elite IQ';
+    else if (best.score >= 75) tier = 'Advanced';
+    else if (best.score >= 60) tier = 'Developing';
+    else if (best.score >= 40) tier = 'Learning';
+    else tier = 'Rookie';
+
+    var metaEl = document.getElementById('giqDashMeta');
+    if (metaEl) {
+      var lvlName = best.level.charAt(0).toUpperCase() + best.level.slice(1);
+      var date = new Date(best.taken_at).toLocaleDateString('en-US', { month:'short', day:'numeric' });
+      metaEl.innerHTML =
+        '<div class="giq-dash-tier" style="color:' + color + '">' + tier + '</div>' +
+        '<div>' + lvlName + ' Level &middot; ' + best.correct + '/' + best.total + ' correct &middot; ' + date + '</div>';
+    }
+
+    // Update button to "Retake"
+    var btn = document.getElementById('giqDashBtn');
+    if (btn) {
+      btn.textContent = 'Retake Exam →';
+      btn.classList.add('retake');
+    }
+
+    // Fetch all scores for pillar data if available
+    var allResult = await db
+      .from('giq_scores')
+      .select('*')
+      .eq('user_id', currentUser.id)
+      .order('taken_at', { ascending: false })
+      .limit(1);
+
+    if (allResult.data && allResult.data.length > 0) {
+      var latest = allResult.data[0];
+      var PILLARS = [
+        { key:'pillarrulesobjectives',    label:'Rules' },
+        { key:'pillarpositionsresponsibilities', label:'Positions' },
+        { key:'pillarformationsalignments', label:'Formations' },
+        { key:'pillarplaysconcepts',      label:'Plays' },
+        { key:'pillarsituationalawareness', label:'Situational' }
+      ];
+
+      var pillarsEl = document.getElementById('giqDashPillars');
+      if (pillarsEl) {
+        pillarsEl.style.display = 'flex';
+        pillarsEl.innerHTML = '';
+        PILLARS.forEach(function(p) {
+          var raw = latest[p.key];
+          var pct = 0;
+          if (raw && raw.includes('/')) {
+            var parts = raw.split('/');
+            pct = parts[1] > 0 ? Math.round((parseInt(parts[0]) / parseInt(parts[1])) * 100) : 0;
+          }
+          var row = document.createElement('div');
+          row.className = 'giq-dash-pillar-row';
+          row.innerHTML =
+            '<div class="giq-dash-pillar-name">' + p.label + '</div>' +
+            '<div class="giq-dash-pillar-track"><div class="giq-dash-pillar-fill" style="width:0%;background:' + color + '" data-pct="' + pct + '"></div></div>' +
+            '<div class="giq-dash-pillar-pct">' + pct + '%</div>';
+          pillarsEl.appendChild(row);
+        });
+        // Animate bars
+        setTimeout(function() {
+          document.querySelectorAll('.giq-dash-pillar-fill').forEach(function(el) {
+            el.style.width = el.getAttribute('data-pct') + '%';
+          });
+        }, 300);
+      }
+    }
+
+  } catch(e) {
+    console.error('GIQ score load error:', e);
+  }
 }
 
 // ══════════════════════════════════════════

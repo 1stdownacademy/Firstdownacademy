@@ -129,6 +129,23 @@
         </div>
       </div>
 
+      <!-- GRIDIRON IQ CARD -->
+      <div class="giq-dash-card" id="giqDashCard">
+        <div class="giq-dash-left">
+          <div class="giq-dash-eyebrow">Gridiron IQ</div>
+          <div class="giq-dash-score" id="giqDashScore">
+            <span class="giq-dash-no-score">Not taken yet</span>
+          </div>
+          <div class="giq-dash-meta" id="giqDashMeta"></div>
+        </div>
+        <div class="giq-dash-right">
+          <div class="giq-dash-pillars" id="giqDashPillars" style="display:none;">
+            <!-- populated by JS -->
+          </div>
+          <a href="giq-exam.html" class="giq-dash-btn" id="giqDashBtn">Take the Exam &rarr;</a>
+        </div>
+      </div>
+
       <!-- MODULE LIST -->
       <div class="pdb-modules-section">
         <div class="pdb-modules-header">
@@ -302,6 +319,7 @@ document.addEventListener('sessionReady', async function() {
     if (playerDash) playerDash.style.display = 'block';
     loadPlayerDashboard();
     buildDashModuleList();
+    loadGIQScore();
   }
 });
 </script>

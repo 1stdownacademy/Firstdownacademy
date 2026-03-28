@@ -1562,3 +1562,144 @@ footer { background:var(--navy); padding:48px 0 32px; border-top:1px solid rgba(
   .pdb-modules-header { padding: 18px 20px 14px; }
   .pdb-mod-row { padding: 14px 20px; }
 }
+
+/* ── GRIDIRON IQ DASHBOARD CARD ── */
+.giq-dash-card {
+  background: var(--navy-900);
+  border-radius: 20px;
+  padding: 28px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+  flex-wrap: wrap;
+}
+.giq-dash-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 100% at 100% 50%, rgba(232,99,10,.1), transparent);
+  pointer-events: none;
+}
+.giq-dash-left { position: relative; z-index: 1; }
+.giq-dash-eyebrow {
+  font-family: var(--font-m);
+  font-size: 10px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--orange-300);
+  margin-bottom: 8px;
+}
+.giq-dash-score {
+  font-family: var(--font-d);
+  font-size: 64px;
+  color: white;
+  letter-spacing: .04em;
+  line-height: .9;
+  margin-bottom: 8px;
+}
+.giq-dash-score span.giq-dash-denom {
+  font-size: 28px;
+  color: rgba(255,255,255,.3);
+}
+.giq-dash-no-score {
+  font-family: var(--font-m);
+  font-size: 18px;
+  color: rgba(255,255,255,.35);
+  letter-spacing: .04em;
+}
+.giq-dash-meta {
+  font-family: var(--font-m);
+  font-size: 11px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.35);
+}
+.giq-dash-tier {
+  font-family: var(--font-d);
+  font-size: 18px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.giq-dash-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 16px;
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+}
+.giq-dash-pillars {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 200px;
+}
+.giq-dash-pillar-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.giq-dash-pillar-name {
+  font-size: 11px;
+  color: rgba(255,255,255,.45);
+  width: 110px;
+  flex-shrink: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.giq-dash-pillar-track {
+  flex: 1;
+  height: 4px;
+  background: rgba(255,255,255,.08);
+  border-radius: 100px;
+  overflow: hidden;
+  min-width: 60px;
+}
+.giq-dash-pillar-fill {
+  height: 100%;
+  border-radius: 100px;
+  transition: width .8s ease;
+}
+.giq-dash-pillar-pct {
+  font-family: var(--font-m);
+  font-size: 10px;
+  color: rgba(255,255,255,.35);
+  width: 28px;
+  text-align: right;
+  flex-shrink: 0;
+}
+.giq-dash-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 11px 22px;
+  background: var(--orange-500);
+  color: white;
+  font-family: var(--font-m);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: all .2s;
+  white-space: nowrap;
+}
+.giq-dash-btn:hover { background: var(--orange-400); transform: translateY(-1px); }
+.giq-dash-btn.retake { background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.15); }
+.giq-dash-btn.retake:hover { background: rgba(255,255,255,.14); }
+
+@media(max-width: 600px) {
+  .giq-dash-card { flex-direction: column; align-items: flex-start; padding: 22px 20px; }
+  .giq-dash-right { align-items: flex-start; width: 100%; }
+  .giq-dash-pillars { min-width: 0; width: 100%; }
+  .giq-dash-score { font-size: 48px; }
+}
