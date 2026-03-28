@@ -8,403 +8,142 @@
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="stylesheet" href="style.css?v=2">
 <style>
-/* ── EXAM PAGE ── */
-.exam-wrap {
-  min-height: 100vh;
-  background: var(--navy-950);
-  padding-top: 68px;
-  display: flex;
-  flex-direction: column;
-}
+.exam-wrap { min-height:100vh; background:var(--navy-950); padding-top:68px; display:flex; flex-direction:column; }
 
-/* Disclaimer banner */
-.exam-disclaimer {
-  background: rgba(232,99,10,.12);
-  border-bottom: 1px solid rgba(232,99,10,.2);
-  padding: 10px 24px;
-  text-align: center;
-  font-family: var(--font-m);
-  font-size: 12px;
-  letter-spacing: .06em;
-  color: var(--orange-300);
-}
-.exam-disclaimer strong { color: var(--orange-400); }
+/* ── LEVEL SELECT ── */
+.level-select-screen { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:40px 24px 80px; }
+.level-select-inner { width:100%; max-width:740px; }
+.ls-eyebrow { font-family:var(--font-m); font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--orange-300); text-align:center; margin-bottom:10px; }
+.ls-title { font-family:var(--font-d); font-size:clamp(30px,5vw,50px); color:white; letter-spacing:.04em; text-transform:uppercase; text-align:center; line-height:.95; margin-bottom:8px; }
+.ls-desc { font-size:14px; color:rgba(255,255,255,.4); text-align:center; line-height:1.7; max-width:560px; margin:0 auto 36px; }
+.level-cards { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:24px; }
+.level-card { background:rgba(255,255,255,.04); border:2px solid rgba(255,255,255,.08); border-radius:20px; padding:28px 20px; cursor:pointer; transition:all .2s; position:relative; overflow:hidden; }
+.level-card:hover { background:rgba(255,255,255,.08); transform:translateY(-4px); }
+.level-card.active { border-color:var(--orange-500); background:rgba(232,99,10,.07); }
+.lc-accent { position:absolute; top:0; left:0; right:0; height:3px; }
+.lc-num { font-family:var(--font-d); font-size:60px; color:rgba(255,255,255,.05); line-height:1; margin-bottom:6px; }
+.lc-name { font-family:var(--font-d); font-size:26px; color:white; letter-spacing:.06em; text-transform:uppercase; margin-bottom:4px; }
+.lc-qs { font-family:var(--font-m); font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:rgba(255,255,255,.3); margin-bottom:12px; }
+.lc-desc { font-size:13px; color:rgba(255,255,255,.4); line-height:1.55; }
+.lc-badge { display:inline-flex; align-items:center; gap:5px; margin-top:12px; font-family:var(--font-m); font-size:9px; letter-spacing:.1em; text-transform:uppercase; padding:4px 10px; border-radius:100px; }
 
-/* Header */
-.exam-header {
-  background: var(--navy-900);
-  border-bottom: 1px solid rgba(255,255,255,.06);
-  padding: 20px 0;
-}
-.exam-header-inner {
-  max-width: 760px;
-  margin: 0 auto;
-  padding: 0 24px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-}
-.exam-title-group {}
-.exam-title {
-  font-family: var(--font-d);
-  font-size: 22px;
-  color: white;
-  letter-spacing: .06em;
-  text-transform: uppercase;
-  line-height: 1;
-}
-.exam-subtitle {
-  font-family: var(--font-m);
-  font-size: 10px;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,.35);
-  margin-top: 4px;
-}
-.exam-counter {
-  font-family: var(--font-d);
-  font-size: 14px;
-  letter-spacing: .08em;
-  color: rgba(255,255,255,.4);
-  white-space: nowrap;
-}
-.exam-counter span { color: var(--orange-400); font-size: 22px; }
+.scoring-info { background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.07); border-radius:14px; padding:18px 22px; margin-bottom:20px; }
+.si-label { font-family:var(--font-m); font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:rgba(255,255,255,.3); margin-bottom:12px; }
+.si-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+.si-item { background:rgba(255,255,255,.04); border-radius:10px; padding:12px 10px; text-align:center; }
+.si-pts { font-family:var(--font-d); font-size:22px; line-height:1; margin-bottom:4px; }
+.si-pts.pos { color:#22C55E; }
+.si-pts.neg { color:#EF4444; }
+.si-pts.zero { color:#94A3B8; }
+.si-desc { font-size:11px; color:rgba(255,255,255,.35); line-height:1.4; }
 
-/* Progress bar */
-.exam-progress-track {
-  height: 3px;
-  background: rgba(255,255,255,.06);
-}
-.exam-progress-fill {
-  height: 100%;
-  background: var(--orange-500);
-  transition: width .4s ease;
-}
+.pillars-row { display:flex; gap:7px; flex-wrap:wrap; margin-bottom:24px; }
+.pillar-chip { font-family:var(--font-m); font-size:11px; letter-spacing:.06em; background:rgba(232,99,10,.1); color:var(--orange-300); border:1px solid rgba(232,99,10,.2); border-radius:100px; padding:5px 12px; }
 
-/* Question area */
-.exam-body {
-  flex: 1;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  padding: 48px 24px 80px;
-}
-.exam-card {
-  background: white;
-  border-radius: 24px;
-  width: 100%;
-  max-width: 680px;
-  overflow: hidden;
-  box-shadow: 0 24px 64px rgba(0,0,0,.4);
-  animation: examFadeIn .3s ease;
-}
-@keyframes examFadeIn {
-  from { opacity: 0; transform: translateY(16px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-.exam-q-header {
-  background: var(--navy-900);
-  padding: 24px 32px;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-.exam-q-badge {
-  width: 36px;
-  height: 36px;
-  background: var(--orange-500);
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-d);
-  font-size: 16px;
-  color: white;
-  letter-spacing: .04em;
-  flex-shrink: 0;
-}
-.exam-q-label {
-  font-family: var(--font-m);
-  font-size: 10px;
-  letter-spacing: .16em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,.35);
-}
-.exam-q-text {
-  font-family: var(--font-d);
-  font-size: clamp(18px, 3vw, 24px);
-  color: white;
-  letter-spacing: .03em;
-  line-height: 1.25;
-  margin-top: 2px;
-}
-.exam-q-body { padding: 28px 32px; }
-.exam-options {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-bottom: 28px;
-}
-.exam-opt {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 16px 20px;
-  border: 2px solid var(--grey-200);
-  border-radius: 14px;
-  cursor: pointer;
-  transition: all .15s;
-  background: white;
-  text-align: left;
-  width: 100%;
-}
-.exam-opt:hover {
-  border-color: var(--navy-500);
-  background: var(--grey-50);
-  transform: translateX(3px);
-}
-.exam-opt.selected {
-  border-color: var(--orange-500);
-  background: rgba(232,99,10,.04);
-}
-.exam-opt-letter {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-  background: var(--grey-100);
-  border: 1.5px solid var(--grey-200);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-m);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: .06em;
-  color: var(--grey-500);
-  flex-shrink: 0;
-  transition: all .15s;
-}
-.exam-opt.selected .exam-opt-letter {
-  background: var(--orange-500);
-  border-color: var(--orange-500);
-  color: white;
-}
-.exam-opt-text {
-  font-size: 15px;
-  color: var(--navy-900);
-  line-height: 1.4;
-}
-.exam-next-btn {
-  width: 100%;
-  padding: 16px;
-  background: var(--navy-900);
-  color: white;
-  font-family: var(--font-m);
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all .2s;
-  opacity: .4;
-  pointer-events: none;
-}
-.exam-next-btn.ready {
-  opacity: 1;
-  pointer-events: all;
-  background: var(--orange-500);
-}
-.exam-next-btn.ready:hover {
-  background: var(--orange-400);
-  transform: translateY(-1px);
-}
+.start-btn { width:100%; padding:17px; background:var(--orange-500); color:white; font-family:var(--font-m); font-size:14px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; border:none; border-radius:14px; cursor:pointer; transition:all .2s; opacity:.35; pointer-events:none; }
+.start-btn.ready { opacity:1; pointer-events:all; }
+.start-btn.ready:hover { background:var(--orange-400); transform:translateY(-2px); }
+
+/* ── EXAM HEADER ── */
+.exam-header { background:var(--navy-900); border-bottom:1px solid rgba(255,255,255,.06); padding:16px 0; display:none; }
+.exam-header-inner { max-width:760px; margin:0 auto; padding:0 24px; display:flex; align-items:center; justify-content:space-between; gap:16px; }
+.exam-level-badge { font-family:var(--font-m); font-size:10px; letter-spacing:.14em; text-transform:uppercase; padding:5px 12px; border-radius:100px; flex-shrink:0; }
+.exam-pillar-tag { font-family:var(--font-m); font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:rgba(255,255,255,.3); flex:1; text-align:center; }
+.exam-counter { font-family:var(--font-d); font-size:13px; color:rgba(255,255,255,.35); white-space:nowrap; flex-shrink:0; }
+.exam-counter span { color:var(--orange-400); font-size:20px; }
+.exam-prog-track { height:3px; background:rgba(255,255,255,.06); }
+.exam-prog-fill { height:100%; background:var(--orange-500); transition:width .4s ease; }
+
+/* ── QUESTION CARD ── */
+.exam-body { flex:1; display:flex; align-items:flex-start; justify-content:center; padding:36px 24px 80px; display:none; }
+.exam-card { background:white; border-radius:24px; width:100%; max-width:680px; overflow:hidden; box-shadow:0 24px 64px rgba(0,0,0,.4); animation:examIn .3s ease; }
+@keyframes examIn { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+
+.exam-q-head { background:var(--navy-900); padding:22px 30px; display:flex; align-items:flex-start; gap:14px; }
+.exam-q-badge { width:34px; height:34px; background:var(--orange-500); border-radius:9px; display:flex; align-items:center; justify-content:center; font-family:var(--font-d); font-size:15px; color:white; flex-shrink:0; margin-top:2px; }
+.exam-q-sub { font-family:var(--font-m); font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:rgba(255,255,255,.3); margin-bottom:5px; }
+.exam-q-text { font-family:var(--font-d); font-size:clamp(16px,2.5vw,21px); color:white; letter-spacing:.03em; line-height:1.3; }
+
+.exam-q-body { padding:24px 30px; }
+.exam-opts { display:flex; flex-direction:column; gap:9px; margin-bottom:18px; }
+.exam-opt { display:flex; align-items:center; gap:13px; padding:14px 16px; border:2px solid var(--grey-200); border-radius:12px; cursor:pointer; transition:all .15s; background:white; text-align:left; width:100%; }
+.exam-opt:hover { border-color:var(--navy-400); background:#F8FAFF; transform:translateX(3px); }
+.exam-opt.selected { border-color:var(--orange-500); background:rgba(232,99,10,.04); }
+.exam-opt-lt { width:28px; height:28px; border-radius:7px; background:var(--grey-100); border:1.5px solid var(--grey-200); display:flex; align-items:center; justify-content:center; font-family:var(--font-m); font-size:11px; font-weight:700; color:var(--grey-500); flex-shrink:0; transition:all .15s; }
+.exam-opt.selected .exam-opt-lt { background:var(--orange-500); border-color:var(--orange-500); color:white; }
+.exam-opt-txt { font-size:14px; color:var(--navy-900); line-height:1.4; }
+
+/* ── CONFIDENCE ROW ── */
+.conf-row { display:none; margin-bottom:18px; }
+.conf-row.show { display:block; animation:examIn .25s ease; }
+.conf-label { font-family:var(--font-m); font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--grey-500); margin-bottom:10px; }
+.conf-opts { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:10px; }
+.conf-btn { display:flex; flex-direction:column; align-items:center; gap:4px; padding:12px 8px; border:2px solid var(--grey-200); border-radius:12px; background:white; cursor:pointer; transition:all .15s; }
+.conf-btn:hover { border-color:var(--navy-400); background:#F8FAFF; }
+.conf-btn.active { border-color:var(--orange-500); background:rgba(232,99,10,.05); }
+.conf-icon { font-size:22px; line-height:1; }
+.conf-name { font-family:var(--font-m); font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--navy-900); }
+.conf-pts { font-size:10px; color:var(--grey-500); text-align:center; line-height:1.3; }
+.conf-note { font-size:11px; color:var(--grey-400); line-height:1.5; text-align:center; padding:8px 12px; background:var(--grey-50); border-radius:8px; border:1px solid var(--grey-100); }
+
+.exam-next-btn { width:100%; padding:14px; background:var(--navy-900); color:white; font-family:var(--font-m); font-size:13px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; border:none; border-radius:12px; cursor:pointer; transition:all .2s; opacity:.3; pointer-events:none; }
+.exam-next-btn.ready { opacity:1; pointer-events:all; background:var(--orange-500); }
+.exam-next-btn.ready:hover { background:var(--orange-400); transform:translateY(-1px); }
 
 /* ── SCORE SCREEN ── */
-.score-screen {
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 48px 24px 80px;
-  min-height: calc(100vh - 68px);
-}
-.score-card {
-  background: white;
-  border-radius: 24px;
-  width: 100%;
-  max-width: 600px;
-  overflow: hidden;
-  box-shadow: 0 24px 64px rgba(0,0,0,.4);
-  animation: examFadeIn .5s ease;
-}
-.score-header {
-  background: var(--navy-900);
-  padding: 40px 40px 36px;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-}
-.score-header-bg {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse 80% 100% at 50% 110%, rgba(232,99,10,.15), transparent);
-  pointer-events: none;
-}
-.score-header-eyebrow {
-  font-family: var(--font-m);
-  font-size: 10px;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  color: var(--orange-300);
-  margin-bottom: 12px;
-}
-.score-num {
-  font-family: var(--font-d);
-  font-size: 96px;
-  line-height: .9;
-  letter-spacing: .02em;
-  color: white;
-  margin-bottom: 4px;
-}
-.score-num span { color: rgba(255,255,255,.25); font-size: 48px; }
-.score-tier {
-  font-family: var(--font-d);
-  font-size: 28px;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  margin-bottom: 4px;
-}
-.score-tier-sub {
-  font-family: var(--font-m);
-  font-size: 12px;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,.35);
-}
+.score-screen { display:none; flex-direction:column; align-items:center; padding:44px 24px 80px; }
+.score-card { background:white; border-radius:24px; width:100%; max-width:620px; overflow:hidden; box-shadow:0 24px 64px rgba(0,0,0,.4); animation:examIn .5s ease; }
+.score-head { background:var(--navy-900); padding:36px 36px 32px; text-align:center; position:relative; overflow:hidden; }
+.score-head-glow { position:absolute; inset:0; background:radial-gradient(ellipse 80% 100% at 50% 110%,rgba(232,99,10,.15),transparent); pointer-events:none; }
+.score-eyebrow { font-family:var(--font-m); font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--orange-300); margin-bottom:10px; }
+.score-num { font-family:var(--font-d); font-size:84px; line-height:.9; color:white; margin-bottom:4px; }
+.score-num span { color:rgba(255,255,255,.25); font-size:40px; }
+.score-tier { font-family:var(--font-d); font-size:24px; letter-spacing:.08em; text-transform:uppercase; margin-bottom:3px; }
+.score-tier-sub { font-family:var(--font-m); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:rgba(255,255,255,.35); }
 
-.score-body { padding: 32px 40px 36px; }
-.score-breakdown {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  margin-bottom: 28px;
-}
-.score-stat {
-  background: var(--grey-50);
-  border: 1px solid var(--grey-100);
-  border-radius: 12px;
-  padding: 16px;
-  text-align: center;
-}
-.score-stat-num {
-  font-family: var(--font-d);
-  font-size: 28px;
-  color: var(--navy-900);
-  letter-spacing: .04em;
-  line-height: 1;
-}
-.score-stat-label {
-  font-family: var(--font-m);
-  font-size: 10px;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  color: var(--grey-400);
-  margin-top: 4px;
-}
+.score-body { padding:28px 32px 32px; }
+.score-stats { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:20px; }
+.score-stat { background:var(--grey-50); border:1px solid var(--grey-100); border-radius:10px; padding:12px 8px; text-align:center; }
+.score-stat-n { font-family:var(--font-d); font-size:24px; color:var(--navy-900); line-height:1; }
+.score-stat-l { font-family:var(--font-m); font-size:9px; letter-spacing:.1em; text-transform:uppercase; color:var(--grey-400); margin-top:3px; }
 
-/* Score bar */
-.score-bar-wrap {
-  background: var(--grey-100);
-  border-radius: 100px;
-  height: 8px;
-  overflow: hidden;
-  margin-bottom: 8px;
-}
-.score-bar-fill {
-  height: 100%;
-  border-radius: 100px;
-  transition: width 1.2s cubic-bezier(.4,0,.2,1);
-}
-.score-bar-label {
-  display: flex;
-  justify-content: space-between;
-  font-family: var(--font-m);
-  font-size: 10px;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  color: var(--grey-400);
-  margin-bottom: 24px;
-}
+.score-bar-wrap { background:var(--grey-100); border-radius:100px; height:7px; overflow:hidden; margin-bottom:5px; }
+.score-bar-fill { height:100%; border-radius:100px; transition:width 1.2s cubic-bezier(.4,0,.2,1); }
+.score-bar-labs { display:flex; justify-content:space-between; font-family:var(--font-m); font-size:9px; letter-spacing:.06em; text-transform:uppercase; color:var(--grey-400); margin-bottom:20px; }
 
-.score-disclaimer {
-  background: rgba(232,99,10,.06);
-  border: 1px solid rgba(232,99,10,.15);
-  border-radius: 10px;
-  padding: 14px 18px;
-  font-size: 13px;
-  color: var(--grey-600);
-  line-height: 1.6;
-  margin-bottom: 24px;
-  text-align: center;
-}
-.score-disclaimer strong { color: var(--orange-600); }
+/* Pillar breakdown */
+.pillar-section { margin-bottom:22px; }
+.pillar-section-label { font-family:var(--font-m); font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:var(--grey-400); margin-bottom:12px; }
+.pillar-blur-wrap { position:relative; border-radius:12px; overflow:hidden; }
+.pillar-rows { display:flex; flex-direction:column; gap:10px; }
+.pillar-row { display:flex; align-items:center; gap:12px; }
+.pillar-row-name { font-size:12px; color:var(--navy-900); font-weight:500; width:175px; flex-shrink:0; line-height:1.3; }
+.pillar-row-track { flex:1; height:6px; background:var(--grey-100); border-radius:100px; overflow:hidden; }
+.pillar-row-fill { height:100%; border-radius:100px; transition:width 1s ease; }
+.pillar-row-pct { font-family:var(--font-m); font-size:11px; color:var(--grey-500); width:34px; text-align:right; flex-shrink:0; }
 
-.score-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.score-btn-primary {
-  display: block;
-  width: 100%;
-  padding: 15px;
-  background: var(--orange-500);
-  color: white;
-  font-family: var(--font-m);
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  text-align: center;
-  text-decoration: none;
-  transition: all .2s;
-  box-sizing: border-box;
-}
-.score-btn-primary:hover { background: var(--orange-400); transform: translateY(-1px); }
-.score-btn-secondary {
-  display: block;
-  width: 100%;
-  padding: 15px;
-  background: transparent;
-  color: var(--navy-900);
-  font-family: var(--font-m);
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  border: 2px solid var(--grey-200);
-  border-radius: 12px;
-  cursor: pointer;
-  text-align: center;
-  text-decoration: none;
-  transition: all .2s;
-  box-sizing: border-box;
-}
-.score-btn-secondary:hover { border-color: var(--navy-500); background: var(--grey-50); }
+.pillar-blur-overlay { position:absolute; inset:0; backdrop-filter:blur(5px); -webkit-backdrop-filter:blur(5px); background:rgba(255,255,255,.75); border-radius:12px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; padding:20px; text-align:center; }
+.pbo-icon { font-size:28px; }
+.pbo-title { font-family:var(--font-d); font-size:17px; color:var(--navy-900); letter-spacing:.04em; text-transform:uppercase; }
+.pbo-sub { font-size:13px; color:var(--grey-500); line-height:1.5; }
 
-@media(max-width: 540px) {
-  .exam-q-header { padding: 20px 20px; }
-  .exam-q-body { padding: 20px 20px; }
-  .score-header { padding: 32px 24px 28px; }
-  .score-body { padding: 24px 24px 28px; }
-  .score-num { font-size: 72px; }
-  .exam-q-text { font-size: 17px; }
+.score-actions { display:flex; flex-direction:column; gap:9px; }
+.score-btn-p { display:block; width:100%; padding:14px; background:var(--orange-500); color:white; font-family:var(--font-m); font-size:13px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; border:none; border-radius:12px; cursor:pointer; text-align:center; text-decoration:none; transition:all .2s; box-sizing:border-box; }
+.score-btn-p:hover { background:var(--orange-400); transform:translateY(-1px); }
+.score-btn-s { display:block; width:100%; padding:14px; background:transparent; color:var(--navy-900); font-family:var(--font-m); font-size:13px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; border:2px solid var(--grey-200); border-radius:12px; cursor:pointer; text-align:center; text-decoration:none; transition:all .2s; box-sizing:border-box; }
+.score-btn-s:hover { border-color:var(--navy-400); background:var(--grey-50); }
+
+@media(max-width:640px) {
+  .level-cards { grid-template-columns:1fr; }
+  .si-grid { grid-template-columns:repeat(2,1fr); }
+  .exam-q-head { padding:18px 20px; }
+  .exam-q-body { padding:18px 20px; }
+  .score-head { padding:28px 20px 24px; }
+  .score-body { padding:20px 20px 24px; }
+  .score-num { font-size:64px; }
+  .score-stats { grid-template-columns:repeat(2,1fr); }
+  .pillar-row-name { width:120px; font-size:11px; }
+  .conf-opts { grid-template-columns:repeat(3,1fr); }
 }
 </style>
 </head>
@@ -419,298 +158,553 @@
       <a class="nav-link" href="program.html">The Program</a>
       <a class="nav-link active" href="giq.html">Gridiron IQ</a>
     </div>
-    <a class="btn btn-outline" href="dashboard.html" id="navDashBtn" style="display:none;">Dashboard</a>
+    <a class="btn btn-outline" href="dashboard.html" id="navDashBtn" style="display:none;font-size:13px;">Dashboard</a>
   </div>
 </nav>
 
 <div class="exam-wrap">
 
-  <!-- Disclaimer -->
-  <div class="exam-disclaimer">
-    <strong>Practice Exam</strong> &mdash; This is a sample assessment. The official Gridiron IQ exam is coming soon.
+  <!-- ── LEVEL SELECT ── -->
+  <div class="level-select-screen" id="levelSelectScreen">
+    <div class="level-select-inner">
+
+      <div class="ls-eyebrow">Gridiron IQ &mdash; Practice Exam</div>
+      <div class="ls-title">Choose Your Level</div>
+      <p class="ls-desc">The Gridiron IQ exam measures football knowledge across five core pillars. Answer each question then rate your confidence — your score reflects both what you know and how well you know it.</p>
+
+      <div class="level-cards">
+        <div class="level-card" onclick="selectLevel('rookie')" id="card-rookie">
+          <div class="lc-accent" style="background:linear-gradient(90deg,#64748B,#94A3B8);"></div>
+          <div class="lc-num">1</div>
+          <div class="lc-name">Rookie</div>
+          <div class="lc-qs">15 Questions</div>
+          <div class="lc-desc">Foundational knowledge — rules, positions, and the basics of the game.</div>
+          <div class="lc-badge" style="background:rgba(100,116,139,.15);color:#94A3B8;border:1px solid rgba(100,116,139,.3);">Foundational</div>
+        </div>
+        <div class="level-card" onclick="selectLevel('pro')" id="card-pro">
+          <div class="lc-accent" style="background:linear-gradient(90deg,#E8630A,#F59E0B);"></div>
+          <div class="lc-num">2</div>
+          <div class="lc-name">Pro</div>
+          <div class="lc-qs">20 Questions</div>
+          <div class="lc-desc">Understanding and recognition — how the game works and why.</div>
+          <div class="lc-badge" style="background:rgba(232,99,10,.15);color:var(--orange-300);border:1px solid rgba(232,99,10,.3);">Intermediate</div>
+        </div>
+        <div class="level-card" onclick="selectLevel('mvp')" id="card-mvp">
+          <div class="lc-accent" style="background:linear-gradient(90deg,#22C55E,#16A34A);"></div>
+          <div class="lc-num">3</div>
+          <div class="lc-name">MVP</div>
+          <div class="lc-qs">25 Questions</div>
+          <div class="lc-desc">Decision-making and advanced IQ — think and react like a high-level player.</div>
+          <div class="lc-badge" style="background:rgba(34,197,94,.12);color:#22C55E;border:1px solid rgba(34,197,94,.3);">Advanced</div>
+        </div>
+      </div>
+
+      <!-- Scoring explanation -->
+      <div class="scoring-info">
+        <div class="si-label">Confidence Scoring &mdash; Your score depends on what you know AND how sure you are</div>
+        <div class="si-grid">
+          <div class="si-item"><div class="si-pts pos">+3</div><div class="si-desc">Correct<br>+ Certain</div></div>
+          <div class="si-item"><div class="si-pts pos">+2</div><div class="si-desc">Correct<br>+ Pretty Sure</div></div>
+          <div class="si-item"><div class="si-pts pos">+1</div><div class="si-desc">Correct<br>+ Not Sure</div></div>
+          <div class="si-item"><div class="si-pts zero">0</div><div class="si-desc">Wrong<br>+ Not Sure</div></div>
+          <div class="si-item"><div class="si-pts neg">&minus;1</div><div class="si-desc">Wrong<br>+ Pretty Sure</div></div>
+          <div class="si-item"><div class="si-pts neg">&minus;2</div><div class="si-desc">Wrong<br>+ Certain</div></div>
+        </div>
+      </div>
+
+      <div class="pillars-row">
+        <span class="pillar-chip">Rules &amp; Objectives</span>
+        <span class="pillar-chip">Positions &amp; Responsibilities</span>
+        <span class="pillar-chip">Formations &amp; Alignments</span>
+        <span class="pillar-chip">Plays &amp; Concepts</span>
+        <span class="pillar-chip">Situational Awareness</span>
+      </div>
+
+      <button class="start-btn" id="startBtn" onclick="startExam()">Select a Level to Begin</button>
+    </div>
   </div>
 
-  <!-- Header + progress -->
+  <!-- ── EXAM HEADER ── -->
   <div class="exam-header" id="examHeader">
     <div class="exam-header-inner">
-      <div class="exam-title-group">
-        <div class="exam-title">Gridiron IQ</div>
-        <div class="exam-subtitle">Practice Exam &middot; 25 Questions &middot; 100 Points</div>
-      </div>
-      <div class="exam-counter">Q <span id="qNum">1</span> / 25</div>
+      <span class="exam-level-badge" id="examLevelBadge"></span>
+      <span class="exam-pillar-tag" id="examPillarTag"></span>
+      <div class="exam-counter">Q <span id="qNum">1</span> / <span id="qTotal">15</span></div>
     </div>
-    <div class="exam-progress-track">
-      <div class="exam-progress-fill" id="examProgress" style="width:0%"></div>
-    </div>
+    <div class="exam-prog-track"><div class="exam-prog-fill" id="examProg" style="width:0%"></div></div>
   </div>
 
-  <!-- Question body -->
+  <!-- ── QUESTION BODY ── -->
   <div class="exam-body" id="examBody">
     <div class="exam-card" id="examCard">
-      <div class="exam-q-header">
+      <div class="exam-q-head">
         <div class="exam-q-badge" id="qBadge">1</div>
         <div>
-          <div class="exam-q-label">Question <span id="qLabelNum">1</span> of 25</div>
+          <div class="exam-q-sub" id="qSub">Question</div>
           <div class="exam-q-text" id="qText"></div>
         </div>
       </div>
       <div class="exam-q-body">
-        <div class="exam-options" id="examOptions"></div>
-        <button class="exam-next-btn" id="examNextBtn" onclick="nextQuestion()">
-          Next Question &rarr;
-        </button>
+        <div class="exam-opts" id="examOpts"></div>
+
+        <!-- Confidence — shown after answer selected -->
+        <div class="conf-row" id="confRow">
+          <div class="conf-label">How confident are you?</div>
+          <div class="conf-opts">
+            <button class="conf-btn" id="conf1" onclick="selectConf(1)">
+              <span class="conf-icon">&#129300;</span>
+              <span class="conf-name">Not Sure</span>
+              <span class="conf-pts">+1 correct<br>0 wrong</span>
+            </button>
+            <button class="conf-btn" id="conf2" onclick="selectConf(2)">
+              <span class="conf-icon">&#128578;</span>
+              <span class="conf-name">Pretty Sure</span>
+              <span class="conf-pts">+2 correct<br>&minus;1 wrong</span>
+            </button>
+            <button class="conf-btn" id="conf3" onclick="selectConf(3)">
+              <span class="conf-icon">&#128170;</span>
+              <span class="conf-name">Certain</span>
+              <span class="conf-pts">+3 correct<br>&minus;2 wrong</span>
+            </button>
+          </div>
+          <div class="conf-note">Guessing confidently costs you points. Only go Certain when you really know it.</div>
+        </div>
+
+        <button class="exam-next-btn" id="examNextBtn" onclick="nextQ()">Next Question &rarr;</button>
       </div>
     </div>
   </div>
 
-  <!-- Score screen (hidden initially) -->
+  <!-- ── SCORE SCREEN ── -->
   <div class="score-screen" id="scoreScreen">
     <div class="score-card">
-      <div class="score-header">
-        <div class="score-header-bg"></div>
-        <div class="score-header-eyebrow">Gridiron IQ &mdash; Practice Exam</div>
-        <div class="score-num" id="scoreFinal">0<span>/100</span></div>
-        <div class="score-tier" id="scoreTier" style="color:white;"></div>
+      <div class="score-head">
+        <div class="score-head-glow"></div>
+        <div class="score-eyebrow" id="scoreEyebrow">Gridiron IQ &mdash; Practice Exam</div>
+        <div class="score-num" id="scoreNum">0<span>/100</span></div>
+        <div class="score-tier" id="scoreTier"></div>
         <div class="score-tier-sub" id="scoreTierSub"></div>
       </div>
       <div class="score-body">
-        <div class="score-breakdown">
-          <div class="score-stat">
-            <div class="score-stat-num" id="scoreCorrect">0</div>
-            <div class="score-stat-label">Correct</div>
-          </div>
-          <div class="score-stat">
-            <div class="score-stat-num" id="scoreWrong">0</div>
-            <div class="score-stat-label">Missed</div>
-          </div>
-          <div class="score-stat">
-            <div class="score-stat-num" id="scorePct">0%</div>
-            <div class="score-stat-label">Accuracy</div>
+        <div class="score-stats">
+          <div class="score-stat"><div class="score-stat-n" id="sCorrect">0</div><div class="score-stat-l">Correct</div></div>
+          <div class="score-stat"><div class="score-stat-n" id="sWrong">0</div><div class="score-stat-l">Missed</div></div>
+          <div class="score-stat"><div class="score-stat-n" id="sRaw">0</div><div class="score-stat-l">Raw Pts</div></div>
+          <div class="score-stat"><div class="score-stat-n" id="sAcc">0%</div><div class="score-stat-l">Accuracy</div></div>
+        </div>
+        <div class="score-bar-wrap"><div class="score-bar-fill" id="scoreBar" style="width:0%"></div></div>
+        <div class="score-bar-labs"><span>0</span><span>Rookie</span><span>Pro</span><span>MVP</span><span>100</span></div>
+
+        <div class="pillar-section">
+          <div class="pillar-section-label">Pillar Breakdown</div>
+          <div class="pillar-blur-wrap" id="pillarWrap">
+            <div class="pillar-rows" id="pillarRows"></div>
+            <div class="pillar-blur-overlay" id="pillarOverlay">
+              <div class="pbo-icon">&#128274;</div>
+              <div class="pbo-title">Sign In to See Your Breakdown</div>
+              <div class="pbo-sub">Create a free account to see your score by pillar and track your progress over time.</div>
+            </div>
           </div>
         </div>
 
-        <div class="score-bar-wrap">
-          <div class="score-bar-fill" id="scoreBarFill" style="width:0%;background:var(--orange-500);"></div>
-        </div>
-        <div class="score-bar-label">
-          <span>0</span>
-          <span>Rookie</span>
-          <span>Starter</span>
-          <span>Veteran</span>
-          <span>Elite</span>
-          <span>100</span>
-        </div>
-
-        <div class="score-disclaimer">
-          <strong>This was the practice exam.</strong> The official Gridiron IQ assessment with full scoring, pillar breakdowns, and your official Gridiron IQ score is coming soon.
-        </div>
-
-        <div class="score-actions">
-          <a href="dashboard.html" class="score-btn-primary">Back to Dashboard &rarr;</a>
-          <button class="score-btn-secondary" onclick="retakeExam()">Retake Practice Exam</button>
-        </div>
+        <div class="score-actions" id="scoreActions"></div>
       </div>
     </div>
   </div>
 
-</div>
+</div><!-- end exam-wrap -->
 
 <script>
-var QUESTIONS = [
-  { q: "How many points is a touchdown worth?", opts: ["3","6","7","8"], ans: 1 },
-  { q: "Which position snaps the ball?", opts: ["Quarterback","Center","Guard","Tight end"], ans: 1 },
-  { q: "What is the main goal of the defense?", opts: ["Score every play","Stop the offense from scoring","Run the clock out","Kick field goals"], ans: 1 },
-  { q: "What is the primary job of the quarterback?", opts: ["Block defenders","Kick the ball","Lead the offense and distribute the ball","Play defense"], ans: 2 },
-  { q: "How many downs does a team have to gain a first down?", opts: ["3","4","5","Unlimited"], ans: 1 },
-  { q: "What is the result of a false start penalty?", opts: ["Loss of down","5-yard penalty against the offense","10-yard penalty against the offense","Automatic first down"], ans: 1 },
-  { q: "What is the main difference between a run play and a pass play?", opts: ["Run plays don't use blockers","Pass plays always go deep","Run plays are designed to hand off, pass plays are designed to throw","There is no difference"], ans: 2 },
-  { q: "What is man coverage?", opts: ["Defenders guard specific areas","Defenders guard specific players","Only linemen rush","No one covers receivers"], ans: 1 },
-  { q: "What is a blitz?", opts: ["Dropping all defenders into coverage","Rushing extra defenders to pressure the quarterback","A running play","A kickoff formation"], ans: 1 },
-  { q: "What is the goal on 3rd down?", opts: ["Punt the ball","Score immediately","Get a first down","Run out of bounds"], ans: 2 },
-  { q: "What does \"play action\" mean?", opts: ["Faking a pass","Faking a run to set up a pass","Running the same play twice","Calling an audible"], ans: 1 },
-  { q: "What is the primary role of a wide receiver?", opts: ["Block every play","Catch passes","Play quarterback","Kick field goals"], ans: 1 },
-  { q: "What is the main job of an offensive lineman?", opts: ["Catch passes","Run routes","Block defenders","Call plays"], ans: 2 },
-  { q: "Why is field position important?", opts: ["It determines jersey color","It affects scoring difficulty and strategy","It only matters in overtime","It has no impact"], ans: 1 },
-  { q: "When should a ball carrier go out of bounds?", opts: ["Always","Never","When trying to stop the clock or avoid a hit","Only on first down"], ans: 2 },
-  { q: "A screen pass is primarily designed to exploit what?", opts: ["Tight coverage downfield","Aggressive pass rush","Strong run defense","Prevent defense"], ans: 1 },
-  { q: "What is a \"hot route\"?", opts: ["A route run in cold weather","A pre-planned deep route","A quick adjustment to beat a blitz","A trick play"], ans: 2 },
-  { q: "In Cover 2 defense, how many deep defenders are responsible for the deep field?", opts: ["1","2","3","4"], ans: 1 },
-  { q: "What is the key difference between a strong safety and a free safety?", opts: ["No difference","Strong safety plays closer to the line, free safety plays deeper","Free safety blitzes every play","Strong safety only plays special teams"], ans: 1 },
-  { q: "In a 3–4 defense, what is a primary role of an outside linebacker?", opts: ["Only cover receivers","Only stop the run","Rush the passer and set the edge","Play quarterback"], ans: 2 },
-  { q: "What is the result of a defensive penalty committed in the end zone by the defense?", opts: ["Touchdown","Safety","Ball placed at the 1-yard line","Replay the down with no penalty"], ans: 1 },
-  { q: "When does the game clock stop after a first down?", opts: ["Always stops until next snap (all levels)","Only in the NFL","Only in college football (temporarily)","Never stops"], ans: 2 },
-  { q: "In an RPO, what makes a linebacker vulnerable?", opts: ["Staying still","Having too much help","Being forced to choose between stopping run or covering pass","Blitzing every play"], ans: 2 },
-  { q: "When trailing with under 2 minutes and no timeouts, what is most important?", opts: ["Running the ball every play","Staying in bounds","Preserving clock by getting out of bounds and quick plays","Punting quickly"], ans: 2 },
-  { q: "On 4th and short near midfield, what most influences the decision to go for it?", opts: ["Jersey color","Crowd noise only","Score, time remaining, and field position","Coin toss result"], ans: 2 }
-];
+/* ── QUESTION BANK ─────────────────────────────────────────────────────── */
+var QB = {
+  rookie:[
+    {q:"How many points is a touchdown worth?",opts:["Three points","Six points","Seven points","Two points"],ans:1,pillar:"Rules & Objectives"},
+    {q:"How many points is a field goal worth?",opts:["One point","Two points","Three points","Six points"],ans:2,pillar:"Rules & Objectives"},
+    {q:"How many downs does a team have to gain yards?",opts:["Three downs","Four downs","Five downs","Six downs"],ans:1,pillar:"Rules & Objectives"},
+    {q:"What happens when a team gains enough yards?",opts:["They score points","They restart the drive","They get new downs","They lose possession"],ans:2,pillar:"Rules & Objectives"},
+    {q:"What is it called when the offense is tackled in their end zone?",opts:["Score play","Safety","Turnover play","Sack result"],ans:1,pillar:"Rules & Objectives"},
+    {q:"How many points is a safety worth?",opts:["One point","Two points","Three points","Six points"],ans:1,pillar:"Rules & Objectives"},
+    {q:"What is the kick after a touchdown called?",opts:["Field goal kick","Extra point kick","Punt attempt","Kickoff play"],ans:1,pillar:"Rules & Objectives"},
+    {q:"What is it called when a defender catches a pass?",opts:["Loose ball","Interception","Tackling action","Kick return"],ans:1,pillar:"Rules & Objectives"},
+    {q:"What is it called when a player drops the ball?",opts:["Broken play","Fumble","Incomplete pass","Turnover down"],ans:1,pillar:"Rules & Objectives"},
+    {q:"How long is a standard football game?",opts:["Thirty minutes","Forty minutes","Sixty minutes","Ninety minutes"],ans:2,pillar:"Rules & Objectives"},
+    {q:"Which player usually throws the ball?",opts:["Running back","Wide receiver","Quarterback","Tight end"],ans:2,pillar:"Positions & Responsibilities"},
+    {q:"Which player usually carries the ball?",opts:["Quarterback","Running back","Cornerback","Safety"],ans:1,pillar:"Positions & Responsibilities"},
+    {q:"What is the job of a wide receiver?",opts:["Catch the ball","Block defenders","Tackle players","Kick the ball"],ans:0,pillar:"Positions & Responsibilities"},
+    {q:"What does the offensive line do?",opts:["Catch passes","Block defenders","Run routes","Kick plays"],ans:1,pillar:"Positions & Responsibilities"},
+    {q:"What does the quarterback lead?",opts:["Defensive unit","Special teams","Offensive plays","Kicking group"],ans:2,pillar:"Positions & Responsibilities"},
+    {q:"What does a defensive lineman try to do?",opts:["Catch passes","Stop the offense","Kick the ball","Run routes"],ans:1,pillar:"Positions & Responsibilities"},
+    {q:"What does a cornerback mainly cover?",opts:["Running lanes","Wide receivers","Offensive line","Kick returners"],ans:1,pillar:"Positions & Responsibilities"},
+    {q:"What does a safety help defend?",opts:["Deep passes","Short runs","Offensive line","Kick attempts"],ans:0,pillar:"Positions & Responsibilities"},
+    {q:"What does a linebacker do?",opts:["Catch passes","Stop runs and passes","Kick field goals","Snap the ball"],ans:1,pillar:"Positions & Responsibilities"},
+    {q:"Who snaps the ball to start the play?",opts:["Guard player","Center player","Tackle player","Tight end"],ans:1,pillar:"Positions & Responsibilities"},
+    {q:"What is it called when players line up before the play?",opts:["Motion setup","Formation","Play call","Route plan"],ans:1,pillar:"Formations & Alignments"},
+    {q:"Where does the quarterback usually line up?",opts:["Near sideline","Behind center","On defense","In end zone"],ans:1,pillar:"Formations & Alignments"},
+    {q:"What is the starting line of a play called?",opts:["Goal line","Sideline","Line of scrimmage","End line"],ans:2,pillar:"Formations & Alignments"},
+    {q:"How many players are on offense?",opts:["Nine players","Ten players","Eleven players","Twelve players"],ans:2,pillar:"Formations & Alignments"},
+    {q:"What is it called when a player moves before the snap?",opts:["Shift move","Motion","Fumble play","Sack play"],ans:1,pillar:"Formations & Alignments"},
+    {q:"What happens if movement is illegal before the snap?",opts:["Score play","Penalty call","Timeout call","Restart play"],ans:1,pillar:"Formations & Alignments"},
+    {q:"What is the goal line used for?",opts:["Starting plays","Scoring points","Ending plays","Running routes"],ans:1,pillar:"Formations & Alignments"},
+    {q:"What is the sideline used for?",opts:["Scoring area","Field boundary","Middle zone","Defensive area"],ans:1,pillar:"Formations & Alignments"},
+    {q:"Where do wide receivers usually line up?",opts:["Near sidelines","Behind quarterback","Inside line","On defense"],ans:0,pillar:"Formations & Alignments"},
+    {q:"What is the area behind the end zone called?",opts:["Backfield","End zone","Neutral zone","Sideline"],ans:1,pillar:"Formations & Alignments"},
+    {q:"What is a running play?",opts:["Throw the ball","Hand the ball off","Kick the ball","Block defenders"],ans:1,pillar:"Plays & Concepts"},
+    {q:"What is a passing play?",opts:["Run the ball","Throw the ball","Kick the ball","Block defenders"],ans:1,pillar:"Plays & Concepts"},
+    {q:"What is a screen pass?",opts:["Throw deep ball","Throw short pass with blockers","Run the ball","Kick the ball"],ans:1,pillar:"Plays & Concepts"},
+    {q:"What is a sack?",opts:["Catch the ball","Tackle the quarterback behind the line","Throw the ball","Kick the ball"],ans:1,pillar:"Plays & Concepts"},
+    {q:"What is a handoff?",opts:["Throw the ball","Give the ball to a runner","Kick the ball","Block the defender"],ans:1,pillar:"Plays & Concepts"},
+    {q:"What is play action?",opts:["Fake a run to set up a pass","Throw deep","Kick the ball","Stop play"],ans:0,pillar:"Plays & Concepts"},
+    {q:"What is a blitz?",opts:["Rush extra defenders at the quarterback","Drop all defenders into coverage","Cover receivers","Delay play"],ans:0,pillar:"Plays & Concepts"},
+    {q:"What is coverage?",opts:["Run the ball","Block defenders","Defend against passes","Kick the ball"],ans:2,pillar:"Plays & Concepts"},
+    {q:"What is a route?",opts:["The path a receiver runs","Catch the ball","Block the player","Kick play"],ans:0,pillar:"Plays & Concepts"},
+    {q:"What is a tackle?",opts:["Catch the ball","Stop the ball carrier","Throw the ball","Kick the ball"],ans:1,pillar:"Plays & Concepts"},
+    {q:"What does third down represent?",opts:["First attempt","Second attempt","Third attempt","Final score"],ans:2,pillar:"Situational Awareness"},
+    {q:"Why is fourth down important?",opts:["Score chance","Last chance to get a first down","Timeout play","Kick only"],ans:1,pillar:"Situational Awareness"},
+    {q:"What is the red zone?",opts:["Middle field","The area inside the opponent's 20-yard line","Defensive zone","Sideline area"],ans:1,pillar:"Situational Awareness"},
+    {q:"What should a team do on short yardage?",opts:["Gain enough yards for a first down","Punt ball","Stop play","Kick ball"],ans:0,pillar:"Situational Awareness"},
+    {q:"What should a team do when time is low and trailing?",opts:["Move fast and conserve clock","Move slow","Stop play","Punt ball"],ans:0,pillar:"Situational Awareness"},
+    {q:"What happens if fourth down fails?",opts:["Score points","The other team gets the ball","Replay down","Call timeout"],ans:1,pillar:"Situational Awareness"},
+    {q:"Why is field position important?",opts:["It affects scoring difficulty and strategy","It stops play","It ends the game","It resets downs"],ans:0,pillar:"Situational Awareness"},
+    {q:"What should the offense do when near the end zone?",opts:["Score points","Punt ball","Stop play","Kick field goal"],ans:0,pillar:"Situational Awareness"},
+    {q:"What is clock management?",opts:["Using time wisely to control the game","Ignore time","Stop game","Reset play"],ans:0,pillar:"Situational Awareness"},
+    {q:"What is the goal of a drive?",opts:["Score points or gain field position","Punt ball","Stop play","Kick field goal"],ans:0,pillar:"Situational Awareness"}
+  ],
+  pro:[
+    {q:"How many yards are needed for a first down?",opts:["Five yards","Ten yards","Fifteen yards","Twenty yards"],ans:1,pillar:"Rules & Objectives"},
+    {q:"What happens when a forward pass hits the ground uncaught?",opts:["Fumble","Interception","Incomplete pass","Turnover"],ans:2,pillar:"Rules & Objectives"},
+    {q:"What is the total after a touchdown and extra point?",opts:["Six points","Seven points","Eight points","Nine points"],ans:1,pillar:"Rules & Objectives"},
+    {q:"What is the result of a false start penalty?",opts:["Lose five yards","Gain five yards","Repeat the down","Change possession"],ans:0,pillar:"Rules & Objectives"},
+    {q:"What is the purpose of a punt?",opts:["Gain field position by kicking to the opponent","Score quick points","Stop the clock","Gain a first down"],ans:0,pillar:"Rules & Objectives"},
+    {q:"What is a turnover?",opts:["Change of possession via fumble or interception","Gain yardage","Stop the clock","Score points"],ans:0,pillar:"Rules & Objectives"},
+    {q:"What happens after failing on fourth down?",opts:["Replay the play","Keep possession","The other team gets the ball","Reset the drive"],ans:2,pillar:"Rules & Objectives"},
+    {q:"What is pass interference?",opts:["Illegal contact with a receiver before the catch","Tackle after catch","Block before snap","Rush before snap"],ans:0,pillar:"Rules & Objectives"},
+    {q:"What is a two-point conversion worth?",opts:["One point","Two points","Three points","Six points"],ans:1,pillar:"Rules & Objectives"},
+    {q:"What is the main goal of the offense?",opts:["Score points","Stop defense","Run clock","Avoid contact"],ans:0,pillar:"Rules & Objectives"},
+    {q:"What is the role of a tight end?",opts:["Block and catch passes","Run and tackle","Kick and snap","Cover and rush"],ans:0,pillar:"Positions & Responsibilities"},
+    {q:"What does a linebacker read before the snap?",opts:["The crowd","The backfield and offensive formation","The sideline","The kicker"],ans:1,pillar:"Positions & Responsibilities"},
+    {q:"What does a cornerback do in man coverage?",opts:["Cover one assigned receiver","Guard an open zone","Rush the quarterback","Block the runner"],ans:0,pillar:"Positions & Responsibilities"},
+    {q:"What does a safety primarily help defend?",opts:["Deep pass routes","Short run plays","Offensive line","Kick returns"],ans:0,pillar:"Positions & Responsibilities"},
+    {q:"What is the job of the center?",opts:["Snap the ball and block","Catch and run","Kick and hold","Cover and tackle"],ans:0,pillar:"Positions & Responsibilities"},
+    {q:"What else does a running back do besides running the ball?",opts:["Block and catch passes","Snap and kick","Cover and tackle","Throw and read defense"],ans:0,pillar:"Positions & Responsibilities"},
+    {q:"What does the quarterback do before the snap?",opts:["Read the defensive alignment","Watch the crowd","Check the weather","Talk to coaches only"],ans:0,pillar:"Positions & Responsibilities"},
+    {q:"What does a defensive lineman do on a pass play?",opts:["Rush the quarterback","Cover the receiver","Block the runner","Catch the ball"],ans:0,pillar:"Positions & Responsibilities"},
+    {q:"What does a wide receiver do on a pass play?",opts:["Run routes and catch passes","Block and tackle","Snap and kick","Rush and cover"],ans:0,pillar:"Positions & Responsibilities"},
+    {q:"What is the main goal of defensive players?",opts:["Stop the offense from scoring","Score the points","Control the clock","Call the plays"],ans:0,pillar:"Positions & Responsibilities"},
+    {q:"What does shotgun formation mean?",opts:["Quarterback lines up directly behind center","Quarterback lines up several yards behind center","Quarterback lines up near sideline","Quarterback plays defense"],ans:1,pillar:"Formations & Alignments"},
+    {q:"Why are formations used?",opts:["To organize players and create advantages","To stop the clock","To score quickly","To avoid penalties"],ans:0,pillar:"Formations & Alignments"},
+    {q:"What does split wide mean for a receiver?",opts:["Line up inside near the line","Line up away from the formation near the sideline","Line up behind the quarterback","Line up deep in the backfield"],ans:1,pillar:"Formations & Alignments"},
+    {q:"What is the neutral zone?",opts:["The area between the two teams where no one can line up","Area behind offense","Area near sideline","Area in end zone"],ans:0,pillar:"Formations & Alignments"},
+    {q:"Why is motion used before the snap?",opts:["To identify the type of coverage the defense is playing","To stop the clock","To gain extra yards","To avoid penalties"],ans:0,pillar:"Formations & Alignments"},
+    {q:"What does loading the box mean?",opts:["Putting extra defenders near the line of scrimmage","Spreading defenders wide","Dropping defenders deep","Removing defenders"],ans:0,pillar:"Formations & Alignments"},
+    {q:"How many players must be on the line of scrimmage at the snap?",opts:["Five players","Six players","Seven players","Eight players"],ans:2,pillar:"Formations & Alignments"},
+    {q:"Why is spacing important in offensive formations?",opts:["To create open running lanes and passing windows","To stop the clock","To avoid penalties","To end the play"],ans:0,pillar:"Formations & Alignments"},
+    {q:"What is the backfield?",opts:["The area behind the offensive line","Area near sideline","Area in end zone","Area on defense"],ans:0,pillar:"Formations & Alignments"},
+    {q:"Why do defenses shift before the snap?",opts:["To match up better against the offensive formation","To stop the clock","To avoid penalties","To end the play"],ans:0,pillar:"Formations & Alignments"},
+    {q:"What is the purpose of play action?",opts:["Fake a run to freeze defenders and set up a pass","Throw the ball","Run the ball","Kick the ball"],ans:0,pillar:"Plays & Concepts"},
+    {q:"What is a slant route?",opts:["A route where the receiver runs diagonally inside","A straight line route","A deep route","An outside route"],ans:0,pillar:"Plays & Concepts"},
+    {q:"What is zone coverage?",opts:["Defenders cover specific areas of the field","Defenders cover specific players","Defenders rush the quarterback","Defenders stop the clock"],ans:0,pillar:"Plays & Concepts"},
+    {q:"What is man coverage?",opts:["Each defender covers one assigned player","Defenders cover areas","Defenders rush the quarterback","Defenders drop into zones"],ans:0,pillar:"Plays & Concepts"},
+    {q:"What is a draw play?",opts:["A delayed run after faking a pass","A deep pass","A kickoff","A defensive rush"],ans:0,pillar:"Plays & Concepts"},
+    {q:"What is a screen pass primarily used for?",opts:["To use the defense's aggression against them","To gain deep yards","To stop the clock","To end the play"],ans:0,pillar:"Plays & Concepts"},
+    {q:"What is a blitz meant to do?",opts:["Pressure the quarterback with extra rushers","Cover the receivers better","Stop the clock","Run the ball"],ans:0,pillar:"Plays & Concepts"},
+    {q:"What is a checkdown pass?",opts:["A short pass to a safety valve receiver when primary options are covered","A deep throw","A run play","A kick play"],ans:0,pillar:"Plays & Concepts"},
+    {q:"What is a deep pass used for?",opts:["To gain large chunks of yardage quickly","To gain short yards","To stop the clock","To block defenders"],ans:0,pillar:"Plays & Concepts"},
+    {q:"What is the purpose of blocking?",opts:["Create space for the ball carrier or time for the quarterback","Score points","Stop the clock","Catch passes"],ans:0,pillar:"Plays & Concepts"},
+    {q:"What is the goal on third down?",opts:["Gain enough yards for a first down","Punt the ball","Stop the clock","Kick the ball"],ans:0,pillar:"Situational Awareness"},
+    {q:"What should be considered on fourth and long?",opts:["Risk of turning over field position vs reward of keeping the drive alive","Score quickly","Run the ball regardless","Stop the play"],ans:0,pillar:"Situational Awareness"},
+    {q:"Why is the red zone harder to score in?",opts:["There is less field space for the defense to cover","More open space","No defenders present","Routes are easier"],ans:0,pillar:"Situational Awareness"},
+    {q:"What should a team do when leading late in the game?",opts:["Protect the lead by controlling the clock","Score as quickly as possible","Throw deep passes","Take unnecessary risks"],ans:0,pillar:"Situational Awareness"},
+    {q:"What is a two-minute drill?",opts:["A fast-paced offensive strategy used when time is short","A slow offense","A defensive play","A kicking strategy"],ans:0,pillar:"Situational Awareness"},
+    {q:"Why is time management important?",opts:["It allows a team to control the pace and outcome of the game","To stop the play","To avoid penalties","To end the drive"],ans:0,pillar:"Situational Awareness"},
+    {q:"What should a team do when losing late in the game?",opts:["Move quickly and conserve timeouts","Move slowly","Stop playing aggressively","Punt the ball"],ans:0,pillar:"Situational Awareness"},
+    {q:"Why is field position important?",opts:["It affects how far the offense must travel to score","It stops the clock","It ends the drive","It resets downs"],ans:0,pillar:"Situational Awareness"},
+    {q:"What should a quarterback read before the snap?",opts:["The defensive alignment and coverage","Crowd noise","Weather conditions","Sideline signals only"],ans:0,pillar:"Situational Awareness"},
+    {q:"What is the goal inside the red zone?",opts:["Score a touchdown","Punt the ball","Run the clock","Kick immediately"],ans:0,pillar:"Situational Awareness"}
+  ],
+  mvp:[
+    {q:"A team is down by two points after scoring late. What is the best decision?",opts:["Attempt an extra point","Attempt a two-point conversion","Punt the ball away","Run the clock down"],ans:1,pillar:"Rules & Objectives"},
+    {q:"What is the main risk of going for it on fourth down?",opts:["Losing field position if you fail","Losing extra time","Losing player energy","Losing scoring chance"],ans:0,pillar:"Rules & Objectives"},
+    {q:"Why would a team intentionally take a delay of game penalty before punting?",opts:["To get a better punting angle and back the returner up","To move defenders back","To stop the clock","To change possession"],ans:0,pillar:"Rules & Objectives"},
+    {q:"When should a ball carrier go out of bounds?",opts:["When saving time is more important than gaining extra yards","When gaining extra yards","When avoiding all contact","When changing sides"],ans:0,pillar:"Rules & Objectives"},
+    {q:"Why might a team avoid scoring immediately late in a game when leading?",opts:["To control remaining time and not give the opponent time to respond","To prevent extra plays","To change field position","To avoid penalties"],ans:0,pillar:"Rules & Objectives"},
+    {q:"What is the advantage of deferring the kickoff to the second half?",opts:["You gain possession to start the second half when you know the score","You gain early momentum","You avoid defensive play","You reduce scoring risk"],ans:0,pillar:"Rules & Objectives"},
+    {q:"Why is clock runoff important after certain penalties late in a game?",opts:["It reduces the remaining time available for the trailing team","It increases game speed","It avoids extra plays","It changes field position"],ans:0,pillar:"Rules & Objectives"},
+    {q:"What is the goal when protecting a late-game lead?",opts:["Control the ball and run down the clock","Score as fast as possible","Throw deep passes","Take more risks"],ans:0,pillar:"Rules & Objectives"},
+    {q:"Why does a quarterback spike the ball?",opts:["To stop the clock quickly without calling a timeout","To avoid a sack","To gain extra yards","To trick the defense"],ans:0,pillar:"Rules & Objectives"},
+    {q:"Why are timeouts critical late in a half?",opts:["They allow a team to manage the clock and run more plays","To rest the players","To slow the game","To avoid penalties"],ans:0,pillar:"Rules & Objectives"},
+    {q:"What is the quarterback reading before the snap?",opts:["Defensive alignment and coverage shell","Crowd reaction","Weather conditions","Sideline signals only"],ans:0,pillar:"Positions & Responsibilities"},
+    {q:"What does a linebacker read on a run play?",opts:["The offensive line's gaps and the running back's path","Receiver routes","Defensive signals","Crowd movement"],ans:0,pillar:"Positions & Responsibilities"},
+    {q:"Why must a wide receiver sometimes adjust their route mid-play?",opts:["To find open space when the defense takes away the original route","To avoid all defenders","To change direction randomly","To follow a set path always"],ans:0,pillar:"Positions & Responsibilities"},
+    {q:"What is a defensive back watching during a pass play?",opts:["The quarterback's eyes to track where the ball is going","Offensive line movement","Sideline calls","Field position markers"],ans:0,pillar:"Positions & Responsibilities"},
+    {q:"What does a running back do in pass protection?",opts:["Block blitzing defenders to protect the quarterback","Run short routes only","Catch the ball always","Move outside the pocket"],ans:0,pillar:"Positions & Responsibilities"},
+    {q:"Why do offensive linemen communicate before the snap?",opts:["To assign blocking assignments based on the defensive front","To change the play","To read the defense collectively","To control the clock"],ans:0,pillar:"Positions & Responsibilities"},
+    {q:"What must a safety recognize quickly after the snap?",opts:["Whether it is a run or pass to react correctly","Crowd reaction","Field markings","Sideline signals"],ans:0,pillar:"Positions & Responsibilities"},
+    {q:"What does a cornerback do in zone coverage?",opts:["Cover an assigned area of the field rather than following one player","Follow one receiver everywhere","Rush the quarterback","Block the runner"],ans:0,pillar:"Positions & Responsibilities"},
+    {q:"What should a quarterback do when recognizing a blitz?",opts:["Get the ball out quickly to a hot route or checkdown","Hold the ball and wait","Run outside the pocket immediately","Change sides"],ans:0,pillar:"Positions & Responsibilities"},
+    {q:"What is most important for all players during a play?",opts:["Execute their specific assignment","Run as fast as possible","Avoid all contact","Watch teammates instead of their responsibility"],ans:0,pillar:"Positions & Responsibilities"},
+    {q:"What can motion before the snap reveal to the quarterback?",opts:["Whether the defense is playing man or zone coverage","Offensive strength","Field position","Time remaining"],ans:0,pillar:"Formations & Alignments"},
+    {q:"If defenders follow a player in motion, what coverage is likely?",opts:["Man coverage","Zone coverage","Blitz pressure","Prevent defense"],ans:0,pillar:"Formations & Alignments"},
+    {q:"If defenders stay in place when a player goes in motion, what coverage is likely?",opts:["Zone coverage","Man coverage","Blitz pressure","Press coverage"],ans:0,pillar:"Formations & Alignments"},
+    {q:"Why is spacing important in offensive formations?",opts:["To create open running lanes and force the defense to spread out","To stop the clock","To avoid penalties","To end the play quickly"],ans:0,pillar:"Formations & Alignments"},
+    {q:"What is the advantage of spreading the field with multiple wide receivers?",opts:["It opens the middle of the field and creates matchup problems","It closes outside space","It reduces pass rush pressure","It stops the play"],ans:0,pillar:"Formations & Alignments"},
+    {q:"Why do defenses disguise their alignment before the snap?",opts:["To confuse the quarterback and hide their coverage or blitz","To slow the offense","To avoid penalties","To change position legally"],ans:0,pillar:"Formations & Alignments"},
+    {q:"What is the purpose of stacking receivers at the line of scrimmage?",opts:["To create natural picks and generate separation on routes","To reduce spacing","To slow the play","To stop movement"],ans:0,pillar:"Formations & Alignments"},
+    {q:"Why would an offense use a tight formation with multiple tight ends?",opts:["To strengthen the run game and add extra blockers","To spread the defense wide","To stop the clock","To avoid pass rush pressure"],ans:0,pillar:"Formations & Alignments"},
+    {q:"Why align a running back directly beside the quarterback in a split back look?",opts:["To improve protection options and add a second immediate threat","To increase spacing","To avoid contact","To change direction"],ans:0,pillar:"Formations & Alignments"},
+    {q:"Why do defenses shift their alignment right before the snap?",opts:["To match the offensive formation and hide their true alignment","To stop the play","To avoid penalties","To reduce space"],ans:0,pillar:"Formations & Alignments"},
+    {q:"What is the primary weakness of Cover 2 defense?",opts:["The middle of the field between the two deep safeties","Deep sidelines","Short zones","The backfield area"],ans:0,pillar:"Plays & Concepts"},
+    {q:"What is the primary weakness of man coverage?",opts:["Crossing routes that create natural picks","Deep coverage over the top","Short underneath passes","Run defense"],ans:0,pillar:"Plays & Concepts"},
+    {q:"What is the purpose of a crossing route?",opts:["To create separation by crossing the field and exploiting man coverage","To gain deep yards only","To block defenders","To stop the play"],ans:0,pillar:"Plays & Concepts"},
+    {q:"Why are screen passes effective against an aggressive pass rush?",opts:["They use the defender's momentum against them by blocking out front","They gain deep yards","They stop the clock","They avoid contact"],ans:0,pillar:"Plays & Concepts"},
+    {q:"What is the true goal of play action?",opts:["To draw linebackers and safeties forward so they vacate the deep middle","To set up a run play later","To stop the play","To kick the ball"],ans:0,pillar:"Plays & Concepts"},
+    {q:"What is a checkdown option for a quarterback?",opts:["The last safe outlet pass to a nearby receiver when primary options are covered","A deep pass route","A running play","A blocking action"],ans:0,pillar:"Plays & Concepts"},
+    {q:"What is a hot route?",opts:["A pre-snap route adjustment by a receiver to beat an incoming blitz","A deep route","A blocking route","A trick running play"],ans:0,pillar:"Plays & Concepts"},
+    {q:"Why do offenses use multiple route combinations on one play?",opts:["To stress every level of the defense and create at least one open option","To slow the play","To avoid pass rush pressure","To stop movement"],ans:0,pillar:"Plays & Concepts"},
+    {q:"What is the true goal of a defensive blitz?",opts:["To disrupt the quarterback's timing and force a quick errant throw","To cover receivers better","To stop the clock","To reduce running space"],ans:0,pillar:"Plays & Concepts"},
+    {q:"What is the fundamental goal of zone coverage?",opts:["Protect areas of the field and take away easy completions","Follow individual players","Rush extra defenders","Stop the play at all costs"],ans:0,pillar:"Plays & Concepts"},
+    {q:"On third and long, what is the defense primarily protecting?",opts:["The first down marker and yards needed","Short yardage only","Run lanes only","Sideline space"],ans:0,pillar:"Situational Awareness"},
+    {q:"On third and short, what is the offense primarily trying to accomplish?",opts:["Gain just enough yards for a first down by any means","Throw a deep pass","Stop the clock","Punt the ball early"],ans:0,pillar:"Situational Awareness"},
+    {q:"When trailing late in the game, what is the most important thing to manage?",opts:["Time — conserving it to have more opportunities to score","Running the clock down","Avoiding all contact","Punting quickly"],ans:0,pillar:"Situational Awareness"},
+    {q:"When leading late in the game, what is most important?",opts:["Controlling the clock and protecting the ball","Scoring as quickly as possible","Throwing deep to demoralize the opponent","Taking unnecessary risks"],ans:0,pillar:"Situational Awareness"},
+    {q:"Why is passing harder in the red zone than in the open field?",opts:["There is limited space for receivers to get separation from defenders","There are more defenders in the red zone","The field is shorter so routes are cut off","The game is played faster"],ans:0,pillar:"Situational Awareness"},
+    {q:"Why would a quarterback intentionally throw the ball out of bounds?",opts:["To avoid a sack and prevent a loss of yards when no receiver is open","To gain yards on the sideline","To stop the play early","To change field position"],ans:0,pillar:"Situational Awareness"},
+    {q:"Why is field position so critical to game strategy?",opts:["It directly determines how far the offense must go to score and how dangerous a turnover would be","It stops the clock automatically","It ends the drive","It resets the downs"],ans:0,pillar:"Situational Awareness"},
+    {q:"On fourth down near midfield, what factors matter most in the go-for-it decision?",opts:["Score, time remaining, yards needed, and field position if you fail","Player speed only","Crowd noise and atmosphere","Weather impact on the game"],ans:0,pillar:"Situational Awareness"},
+    {q:"What should a quarterback identify before the snap on every play?",opts:["The defensive structure — coverage type, blitz risk, and where the open area will be","Crowd reaction to adjust play calling","Field markings for positioning","Sideline signals only"],ans:0,pillar:"Situational Awareness"},
+    {q:"Why is situational awareness considered the highest level of football IQ?",opts:["It requires combining rules, roles, formations, and concepts all in real time under pressure","It focuses only on knowing the rules","It only applies to formations","It is a standalone technique"],ans:0,pillar:"Situational Awareness"}
+  ]
+};
 
-var TIERS = [
-  { min: 0,  max: 39,  name: "ROOKIE",   sub: "Keep studying — the fundamentals are your foundation",  color: "#94A3B8" },
-  { min: 40, max: 59,  name: "STARTER",  sub: "Solid base — a few gaps to close",                      color: "#3B82F6" },
-  { min: 60, max: 79,  name: "VETERAN",  sub: "Strong football IQ — you know the game",                color: "#E8630A" },
-  { min: 80, max: 99,  name: "ELITE",    sub: "Outstanding — you think the game at a high level",      color: "#22C55E" },
-  { min: 100,max: 100, name: "PERFECT",  sub: "Flawless — that is a Gridiron IQ 100",                  color: "#F59E0B" }
-];
+var PILLARS = ['Rules & Objectives','Positions & Responsibilities','Formations & Alignments','Plays & Concepts','Situational Awareness'];
+var LEVELS  = {
+  rookie:{ name:'Rookie', qs:15, color:'#94A3B8' },
+  pro:   { name:'Pro',    qs:20, color:'#E8630A' },
+  mvp:   { name:'MVP',    qs:25, color:'#22C55E' }
+};
 
-var currentQ = 0;
-var selected  = null;
-var answers   = [];
-var letters   = ['A','B','C','D'];
+// Scoring: correct→conf pts, wrong→penalty
+var SCORE_TABLE = {
+  correct:{ 1:1, 2:2, 3:3 },
+  wrong:  { 1:0, 2:-1, 3:-2 }
+};
 
-function getTier(score) {
-  for (var i = TIERS.length - 1; i >= 0; i--) {
-    if (score >= TIERS[i].min) return TIERS[i];
-  }
-  return TIERS[0];
+var state = {
+  level:null, questions:[], currentQ:0,
+  selected:null, confidence:null, answers:[], loggedIn:false
+};
+
+/* ── Helpers ── */
+function shuffle(a){
+  var b=a.slice();
+  for(var i=b.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=b[i];b[i]=b[j];b[j]=t; }
+  return b;
 }
 
-function renderQuestion() {
-  var q = QUESTIONS[currentQ];
-  selected = null;
+function buildQuestions(lvl){
+  var pool=shuffle(QB[lvl]).slice(0,LEVELS[lvl].qs);
+  return pool.map(function(q){
+    var idx=shuffle([0,1,2,3]);
+    return { q:q.q, opts:idx.map(function(i){return q.opts[i];}), ans:idx.indexOf(q.ans), pillar:q.pillar };
+  });
+}
 
-  // Header counts
-  document.getElementById('qNum').textContent = currentQ + 1;
-  document.getElementById('qBadge').textContent = currentQ + 1;
-  document.getElementById('qLabelNum').textContent = currentQ + 1;
-  document.getElementById('examProgress').style.width = (currentQ / 25 * 100) + '%';
+/* ── Level select ── */
+function selectLevel(lvl){
+  state.level=lvl;
+  ['rookie','pro','mvp'].forEach(function(l){
+    document.getElementById('card-'+l).classList.toggle('active',l===lvl);
+  });
+  var btn=document.getElementById('startBtn');
+  btn.classList.add('ready');
+  btn.textContent='Start '+LEVELS[lvl].name+' Exam \u2192';
+}
 
-  // Question text
-  document.getElementById('qText').textContent = q.q;
+/* ── Start exam ── */
+function startExam(){
+  if(!state.level) return;
+  state.questions=buildQuestions(state.level);
+  state.currentQ=0; state.selected=null; state.confidence=null; state.answers=[];
+  var lvl=LEVELS[state.level];
+  document.getElementById('levelSelectScreen').style.display='none';
+  document.getElementById('examHeader').style.display='block';
+  document.getElementById('examBody').style.display='flex';
+  var badge=document.getElementById('examLevelBadge');
+  badge.textContent=lvl.name;
+  badge.style.cssText='background:'+lvl.color+'22;color:'+lvl.color+';border:1px solid '+lvl.color+'55;font-family:var(--font-m);font-size:10px;letter-spacing:.14em;text-transform:uppercase;padding:5px 12px;border-radius:100px;';
+  document.getElementById('qTotal').textContent=state.questions.length;
+  renderQ();
+}
 
-  // Options
-  var opts = document.getElementById('examOptions');
-  opts.innerHTML = '';
-  q.opts.forEach(function(opt, i) {
-    var btn = document.createElement('button');
-    btn.className = 'exam-opt';
-    btn.innerHTML =
-      '<div class="exam-opt-letter">' + letters[i] + '</div>' +
-      '<div class="exam-opt-text">' + opt + '</div>';
-    btn.onclick = function() { selectOption(i, btn); };
+/* ── Render question ── */
+function renderQ(){
+  var q=state.questions[state.currentQ];
+  var total=state.questions.length;
+  state.selected=null; state.confidence=null;
+  document.getElementById('qNum').textContent=state.currentQ+1;
+  document.getElementById('qBadge').textContent=state.currentQ+1;
+  document.getElementById('examProg').style.width=(state.currentQ/total*100)+'%';
+  document.getElementById('examPillarTag').textContent=q.pillar;
+  document.getElementById('qSub').textContent=q.pillar;
+  document.getElementById('qText').textContent=q.q;
+  var opts=document.getElementById('examOpts');
+  opts.innerHTML='';
+  var letters=['A','B','C','D'];
+  q.opts.forEach(function(opt,i){
+    var btn=document.createElement('button');
+    btn.className='exam-opt';
+    btn.innerHTML='<div class="exam-opt-lt">'+letters[i]+'</div><div class="exam-opt-txt">'+opt+'</div>';
+    btn.onclick=(function(idx,b){ return function(){ selectOpt(idx,b); }; })(i,btn);
     opts.appendChild(btn);
   });
-
-  // Reset next button
-  var nextBtn = document.getElementById('examNextBtn');
-  nextBtn.className = 'exam-next-btn';
-  nextBtn.textContent = currentQ === 24 ? 'See My Score →' : 'Next Question →';
-
-  // Animate card in
-  var card = document.getElementById('examCard');
-  card.style.animation = 'none';
-  card.offsetHeight; // reflow
-  card.style.animation = 'examFadeIn .3s ease';
+  var confRow=document.getElementById('confRow');
+  confRow.classList.remove('show');
+  [1,2,3].forEach(function(n){ document.getElementById('conf'+n).classList.remove('active'); });
+  var nb=document.getElementById('examNextBtn');
+  nb.className='exam-next-btn';
+  nb.textContent=state.currentQ===total-1?'See My Score \u2192':'Next Question \u2192';
+  var card=document.getElementById('examCard');
+  card.style.animation='none'; void card.offsetHeight; card.style.animation='examIn .3s ease';
 }
 
-function selectOption(idx, btn) {
-  // Deselect all
-  document.querySelectorAll('.exam-opt').forEach(function(o) {
-    o.classList.remove('selected');
-  });
-  // Select this one
+function selectOpt(idx,btn){
+  document.querySelectorAll('.exam-opt').forEach(function(o){o.classList.remove('selected');});
   btn.classList.add('selected');
-  selected = idx;
-
-  // Enable next button
-  var nextBtn = document.getElementById('examNextBtn');
-  nextBtn.className = 'exam-next-btn ready';
+  state.selected=idx;
+  state.confidence=null;
+  document.getElementById('confRow').classList.add('show');
+  [1,2,3].forEach(function(n){document.getElementById('conf'+n).classList.remove('active');});
+  document.getElementById('examNextBtn').className='exam-next-btn'; // locked until confidence picked
 }
 
-function nextQuestion() {
-  if (selected === null) return;
-  answers.push(selected);
-
-  if (currentQ < 24) {
-    currentQ++;
-    renderQuestion();
-  } else {
-    showScore();
-  }
+function selectConf(level){
+  state.confidence=level;
+  [1,2,3].forEach(function(n){document.getElementById('conf'+n).classList.toggle('active',n===level);});
+  document.getElementById('examNextBtn').className='exam-next-btn ready';
 }
 
-function showScore() {
-  // Calculate score
-  var correct = 0;
-  answers.forEach(function(ans, i) {
-    if (ans === QUESTIONS[i].ans) correct++;
+function nextQ(){
+  if(state.selected===null||state.confidence===null) return;
+  state.answers.push({ans:state.selected,conf:state.confidence});
+  if(state.currentQ<state.questions.length-1){ state.currentQ++; renderQ(); }
+  else showScore();
+}
+
+/* ── Score ── */
+function showScore(){
+  var qs=state.questions; var total=qs.length;
+  var correct=0; var rawScore=0; var maxRaw=total*3;
+  var pd={};
+  PILLARS.forEach(function(p){ pd[p]={correct:0,total:0,raw:0,maxRaw:0}; });
+
+  state.answers.forEach(function(a,i){
+    var q=qs[i]; var p=q.pillar;
+    pd[p].total++; pd[p].maxRaw+=3;
+    if(a.ans===q.ans){
+      correct++;
+      var pts=SCORE_TABLE.correct[a.conf];
+      rawScore+=pts; pd[p].correct++; pd[p].raw+=pts;
+    } else {
+      var pen=SCORE_TABLE.wrong[a.conf];
+      rawScore+=pen; pd[p].raw+=pen;
+    }
   });
-  var score = correct * 4;
-  var tier  = getTier(score);
 
-  // Hide exam, show score
-  document.getElementById('examHeader').style.display = 'none';
-  document.getElementById('examBody').style.display = 'none';
-  var ss = document.getElementById('scoreScreen');
-  ss.style.display = 'flex';
+  var score=Math.max(0,Math.round((rawScore/maxRaw)*100));
+  var lvl=LEVELS[state.level];
 
-  // Populate
-  document.getElementById('scoreFinal').innerHTML = score + '<span>/100</span>';
-  document.getElementById('scoreTier').textContent = tier.name;
-  document.getElementById('scoreTier').style.color = tier.color;
-  document.getElementById('scoreTierSub').textContent = tier.sub;
-  document.getElementById('scoreCorrect').textContent = correct;
-  document.getElementById('scoreWrong').textContent = 25 - correct;
-  document.getElementById('scorePct').textContent = Math.round(score) + '%';
+  // Tier
+  var tier,tierSub;
+  if(score>=90){tier='Elite IQ';tierSub='Outstanding — you think like a high-level player';}
+  else if(score>=75){tier='Advanced';tierSub='Strong football intelligence across the board';}
+  else if(score>=60){tier='Developing';tierSub='Good foundation — keep building your knowledge';}
+  else if(score>=40){tier='Learning';tierSub='The fundamentals are coming together';}
+  else{tier='Rookie';tierSub='Every great player starts somewhere — keep going';}
 
-  // Animate bar
-  var barFill = document.getElementById('scoreBarFill');
-  barFill.style.background = tier.color;
-  setTimeout(function() { barFill.style.width = score + '%'; }, 100);
+  document.getElementById('examHeader').style.display='none';
+  document.getElementById('examBody').style.display='none';
+  var ss=document.getElementById('scoreScreen'); ss.style.display='flex';
 
-  // Save to Supabase if logged in
-  saveScore(score, correct);
+  document.getElementById('scoreEyebrow').textContent='Gridiron IQ \u2014 '+lvl.name+' Level';
+  document.getElementById('scoreNum').innerHTML=score+'<span>/100</span>';
+  document.getElementById('scoreTier').textContent=tier;
+  document.getElementById('scoreTier').style.color=lvl.color;
+  document.getElementById('scoreTierSub').textContent=tierSub;
+  document.getElementById('sCorrect').textContent=correct;
+  document.getElementById('sWrong').textContent=total-correct;
+  document.getElementById('sRaw').textContent=(rawScore>=0?'+':'')+rawScore;
+  document.getElementById('sAcc').textContent=Math.round(correct/total*100)+'%';
 
-  window.scrollTo(0, 0);
-}
+  var bar=document.getElementById('scoreBar');
+  bar.style.background=lvl.color;
+  setTimeout(function(){bar.style.width=score+'%';},100);
 
-function retakeExam() {
-  currentQ = 0;
-  selected = null;
-  answers  = [];
-  document.getElementById('examHeader').style.display = 'block';
-  document.getElementById('examBody').style.display = 'flex';
-  document.getElementById('scoreScreen').style.display = 'none';
-  renderQuestion();
-  window.scrollTo(0, 0);
-}
+  // Pillar rows
+  var rows=document.getElementById('pillarRows');
+  rows.innerHTML='';
+  PILLARS.forEach(function(p){
+    var d=pd[p];
+    var pct=d.maxRaw>0?Math.max(0,Math.round((d.raw/d.maxRaw)*100)):0;
+    var row=document.createElement('div');
+    row.className='pillar-row';
+    row.innerHTML='<div class="pillar-row-name">'+p+'</div>'+
+      '<div class="pillar-row-track"><div class="pillar-row-fill" style="width:0%;background:'+lvl.color+'" data-pct="'+pct+'"></div></div>'+
+      '<div class="pillar-row-pct">'+pct+'%</div>';
+    rows.appendChild(row);
+  });
+  setTimeout(function(){
+    document.querySelectorAll('.pillar-row-fill').forEach(function(el){
+      el.style.width=el.getAttribute('data-pct')+'%';
+    });
+  },200);
 
-async function saveScore(score, correct) {
-  try {
-    if (typeof db === 'undefined' || !currentUser) return;
-    await db.from('giq_scores').upsert({
-      user_id: currentUser.id,
-      score: score,
-      correct: correct,
-      total: 25,
-      exam_type: 'practice',
-      taken_at: new Date().toISOString()
-    }, { onConflict: 'user_id,exam_type' });
-  } catch(e) {
-    console.log('Score save skipped:', e.message);
+  var overlay=document.getElementById('pillarOverlay');
+  overlay.style.display=state.loggedIn?'none':'flex';
+
+  var actions=document.getElementById('scoreActions');
+  if(state.loggedIn){
+    actions.innerHTML='<a href="dashboard.html" class="score-btn-p">Back to Dashboard \u2192</a>'+
+      '<button class="score-btn-s" onclick="retake()">Retake Exam</button>';
+  } else {
+    actions.innerHTML='<a href="auth.html" class="score-btn-p">Create Free Account to Save Score \u2192</a>'+
+      '<a href="auth.html?tab=login" class="score-btn-s">Already have an account? Sign In</a>'+
+      '<button class="score-btn-s" style="margin-top:2px;" onclick="retake()">Retake Without Saving</button>';
   }
+
+  saveScore(score,correct,total,rawScore,pd);
+  window.scrollTo(0,0);
 }
 
-// Init
-renderQuestion();
+function retake(){
+  state.questions=buildQuestions(state.level);
+  state.currentQ=0; state.selected=null; state.confidence=null; state.answers=[];
+  document.getElementById('scoreScreen').style.display='none';
+  document.getElementById('examHeader').style.display='block';
+  document.getElementById('examBody').style.display='flex';
+  renderQ(); window.scrollTo(0,0);
+}
+
+async function saveScore(score,correct,total,raw,pd){
+  try{
+    if(typeof db==='undefined'||!currentUser) return;
+    var payload={user_id:currentUser.id,level:state.level,score:score,correct:correct,total:total,raw_score:raw,exam_type:'practice',taken_at:new Date().toISOString()};
+    PILLARS.forEach(function(p){
+      var key='pillar_'+p.replace(/[^a-zA-Z]/g,'').toLowerCase();
+      payload[key]=pd[p].correct+'/'+pd[p].total;
+    });
+    await db.from('giq_scores').insert(payload);
+  } catch(e){ console.log('Score save skipped'); }
+}
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="curriculum.js?v=2"></script>
 <script src="app.js?v=2"></script>
 <script>
-function showPage(name) {
-  var map = { 'home':'index.html','course':'program.html','giq':'giq.html','signup':'auth.html','dashboard':'dashboard.html' };
-  if (map[name]) window.location.href = map[name];
-}
-function buildModuleList() {}
-function loadDashboard() {}
-function updateNavForLoggedIn() {
-  var db2 = document.getElementById('navDashBtn');
-  if (db2) db2.style.display = 'inline-flex';
-}
-document.addEventListener('sessionReady', function() {
-  // Nav update handled by updateNavForLoggedIn
-});
+function showPage(n){var m={'home':'index.html','course':'program.html','giq':'giq.html','signup':'auth.html','dashboard':'dashboard.html'};if(m[n])window.location.href=m[n];}
+function buildModuleList(){}
+function loadDashboard(){}
+function updateNavForLoggedIn(){ var d=document.getElementById('navDashBtn'); if(d) d.style.display='inline-flex'; }
+document.addEventListener('sessionReady',function(){ if(currentUser) state.loggedIn=true; });
 </script>
 </body>
 </html>
