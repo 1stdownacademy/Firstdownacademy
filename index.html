@@ -6,9 +6,493 @@
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>First Down Academy — Build the Football IQ That Gives Your Players the Edge</title>
-<meta name="description" content="First Down Academy is a complete football education platform for coaches who want smarter players. 8 modules, 84 slides, 5 pillars of football knowledge.">
-<link rel="stylesheet" href="style.css?v=2">
+<title>First Down Academy — Test & Build Your Gridiron IQ</title>
+<meta name="description" content="Test your football IQ, see where you rank, and build the football intelligence that separates good players from great ones. Free. For all ages.">
+<link rel="stylesheet" href="style.css?v=3">
+<style>
+/* ── PAGE-LEVEL ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(24px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity:0; } to { opacity:1; }
+}
+@keyframes pulse-ring {
+  0%   { transform:scale(1);   opacity:.6; }
+  100% { transform:scale(1.5); opacity:0;  }
+}
+@keyframes float {
+  0%,100% { transform:translateY(0); }
+  50%      { transform:translateY(-8px); }
+}
+@keyframes bar-grow {
+  from { width:0; }
+}
+
+/* ── HERO ── */
+.hero {
+  min-height:100vh;
+  background:var(--navy-950);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:100px 24px 60px;
+  position:relative;
+  overflow:hidden;
+  text-align:center;
+}
+.hero-grid {
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+  background-size:60px 60px;
+  pointer-events:none;
+}
+.hero-glow-left {
+  position:absolute;top:-200px;left:-200px;
+  width:600px;height:600px;
+  background:radial-gradient(circle, rgba(232,99,10,.15), transparent 70%);
+  pointer-events:none;
+}
+.hero-glow-right {
+  position:absolute;bottom:-200px;right:-200px;
+  width:500px;height:500px;
+  background:radial-gradient(circle, rgba(30,58,138,.2), transparent 70%);
+  pointer-events:none;
+}
+.hero-eyebrow {
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--font-m);font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--orange-300);margin-bottom:24px;
+  animation:fadeIn .6s ease both;
+}
+.hero-eyebrow-dot {
+  width:6px;height:6px;border-radius:50%;background:var(--orange-500);
+  position:relative;
+}
+.hero-eyebrow-dot::after {
+  content:'';position:absolute;inset:-3px;border-radius:50%;
+  border:1px solid var(--orange-400);
+  animation:pulse-ring 2s ease-out infinite;
+}
+.hero-headline {
+  font-family:var(--font-d);
+  font-size:clamp(44px,8vw,96px);
+  color:white;
+  letter-spacing:.02em;
+  text-transform:uppercase;
+  line-height:.9;
+  margin-bottom:12px;
+  animation:fadeUp .7s .1s ease both;
+}
+.hero-headline-accent {
+  color:var(--orange-500);
+  display:block;
+}
+.hero-headline-sub {
+  color:rgba(255,255,255,.12);
+  display:block;
+  font-size:.55em;
+  letter-spacing:.06em;
+}
+.hero-sub {
+  font-size:clamp(15px,2vw,18px);
+  color:rgba(255,255,255,.45);
+  max-width:540px;
+  margin:0 auto 48px;
+  line-height:1.7;
+  animation:fadeUp .7s .2s ease both;
+}
+
+/* ── TWO PATH CARDS ── */
+.hero-paths {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+  max-width:760px;
+  width:100%;
+  margin:0 auto 40px;
+  animation:fadeUp .7s .3s ease both;
+}
+.path-card {
+  border-radius:20px;
+  padding:28px 26px;
+  text-align:left;
+  cursor:pointer;
+  transition:transform .2s, box-shadow .2s;
+  text-decoration:none;
+  display:block;
+  position:relative;
+  overflow:hidden;
+}
+.path-card:hover { transform:translateY(-4px); }
+.path-card-primary {
+  background:var(--orange-500);
+  box-shadow:0 8px 32px rgba(232,99,10,.35);
+}
+.path-card-primary:hover {
+  box-shadow:0 16px 48px rgba(232,99,10,.5);
+}
+.path-card-secondary {
+  background:rgba(255,255,255,.05);
+  border:1.5px solid rgba(255,255,255,.12);
+}
+.path-card-secondary:hover {
+  background:rgba(255,255,255,.09);
+  border-color:rgba(255,255,255,.25);
+}
+.path-tag {
+  font-family:var(--font-m);font-size:9px;letter-spacing:.18em;text-transform:uppercase;
+  margin-bottom:14px;display:flex;align-items:center;gap:6px;
+}
+.path-tag-primary { color:rgba(255,255,255,.7); }
+.path-tag-secondary { color:rgba(255,255,255,.4); }
+.path-tag-dot {
+  width:5px;height:5px;border-radius:50%;flex-shrink:0;
+}
+.path-title {
+  font-family:var(--font-d);font-size:clamp(20px,3vw,28px);
+  text-transform:uppercase;letter-spacing:.04em;line-height:1;
+  margin-bottom:10px;color:white;
+}
+.path-desc {
+  font-size:13px;line-height:1.6;margin-bottom:18px;
+}
+.path-desc-primary { color:rgba(255,255,255,.8); }
+.path-desc-secondary { color:rgba(255,255,255,.4); }
+.path-meta {
+  display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px;
+}
+.path-pill {
+  font-family:var(--font-m);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+  padding:4px 10px;border-radius:100px;
+}
+.path-pill-primary { background:rgba(255,255,255,.2);color:rgba(255,255,255,.9); }
+.path-pill-secondary { background:rgba(255,255,255,.06);color:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.08); }
+.path-cta {
+  font-family:var(--font-m);font-size:13px;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;display:flex;align-items:center;gap:6px;
+}
+.path-cta-primary { color:white; }
+.path-cta-secondary { color:rgba(255,255,255,.5); }
+.path-bg-letter {
+  position:absolute;bottom:-20px;right:-10px;
+  font-family:var(--font-d);font-size:120px;letter-spacing:.04em;
+  line-height:1;pointer-events:none;text-transform:uppercase;
+}
+.path-bg-letter-primary { color:rgba(255,255,255,.08); }
+.path-bg-letter-secondary { color:rgba(255,255,255,.03); }
+
+.hero-note {
+  font-family:var(--font-m);font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+  color:rgba(255,255,255,.2);
+  animation:fadeIn 1s .5s ease both;
+}
+
+/* ── TICKER ── */
+.ticker { background:var(--orange-500);padding:12px 0;overflow:hidden; }
+.ticker-track {
+  display:flex;gap:0;white-space:nowrap;
+  animation:ticker-scroll 30s linear infinite;
+}
+@keyframes ticker-scroll {
+  from { transform:translateX(0); }
+  to   { transform:translateX(-50%); }
+}
+.ticker-item {
+  font-family:var(--font-m);font-size:12px;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;color:white;
+  padding:0 28px;display:flex;align-items:center;gap:16px;flex-shrink:0;
+}
+.ticker-sep { color:rgba(255,255,255,.4);font-size:8px; }
+
+/* ── SECTION: WHY FDA ── */
+.why-section {
+  background:white;
+  padding:80px 24px;
+}
+.why-inner {
+  max-width:1100px;margin:0 auto;
+  display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;
+}
+.why-left {}
+.why-eyebrow {
+  font-family:var(--font-m);font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--orange-500);margin-bottom:16px;display:flex;align-items:center;gap:8px;
+}
+.why-title {
+  font-family:var(--font-d);font-size:clamp(28px,4vw,44px);
+  color:var(--navy-900);letter-spacing:.04em;text-transform:uppercase;
+  line-height:.95;margin-bottom:20px;
+}
+.why-title span { color:var(--orange-500); }
+.why-body {
+  font-size:15px;color:var(--grey-500);line-height:1.75;margin-bottom:16px;
+}
+.why-body strong { color:var(--navy-900); }
+.why-right {}
+.why-points { display:flex;flex-direction:column;gap:20px; }
+.why-point {
+  display:flex;gap:16px;align-items:flex-start;
+  padding:20px;border-radius:16px;
+  background:var(--grey-50);border:1px solid var(--grey-100);
+  transition:border-color .2s,transform .2s;
+}
+.why-point:hover { border-color:var(--orange-300);transform:translateX(4px); }
+.why-point-icon {
+  width:40px;height:40px;background:var(--navy-900);border-radius:12px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.why-point-title {
+  font-family:var(--font-m);font-size:13px;font-weight:700;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--navy-900);margin-bottom:4px;
+}
+.why-point-body { font-size:13px;color:var(--grey-500);line-height:1.6; }
+
+/* ── SECTION: HOW IT WORKS ── */
+.how-section {
+  background:var(--navy-950);
+  padding:80px 24px;
+  position:relative;overflow:hidden;
+}
+.how-grid-bg {
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
+  background-size:40px 40px;pointer-events:none;
+}
+.how-inner { max-width:960px;margin:0 auto;position:relative;z-index:1; }
+.how-header { text-align:center;margin-bottom:56px; }
+.how-eyebrow {
+  font-family:var(--font-m);font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--orange-300);margin-bottom:12px;
+}
+.how-title {
+  font-family:var(--font-d);font-size:clamp(28px,4vw,44px);
+  color:white;letter-spacing:.04em;text-transform:uppercase;line-height:.95;
+}
+.how-steps {
+  display:grid;grid-template-columns:repeat(3,1fr);gap:2px;
+  background:rgba(255,255,255,.06);border-radius:20px;overflow:hidden;
+}
+.how-step {
+  background:var(--navy-900);
+  padding:32px 28px;
+  position:relative;
+}
+.how-step-num {
+  font-family:var(--font-d);font-size:64px;color:rgba(255,255,255,.04);
+  line-height:1;margin-bottom:16px;letter-spacing:.04em;
+}
+.how-step-icon {
+  width:44px;height:44px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:16px;
+}
+.how-step-icon-orange { background:var(--orange-500); }
+.how-step-icon-blue   { background:#1E3A8A; }
+.how-step-icon-green  { background:#166534; }
+.how-step-title {
+  font-family:var(--font-d);font-size:18px;color:white;
+  letter-spacing:.04em;text-transform:uppercase;margin-bottom:8px;line-height:1.1;
+}
+.how-step-body { font-size:13px;color:rgba(255,255,255,.4);line-height:1.65; }
+.how-arrow {
+  position:absolute;top:50%;right:-12px;transform:translateY(-50%);
+  width:24px;height:24px;background:var(--orange-500);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;z-index:2;
+  font-size:10px;color:white;
+}
+
+/* ── SECTION: PILLARS ── */
+.pillars-section { background:white;padding:80px 24px; }
+.pillars-inner { max-width:960px;margin:0 auto; }
+.pillars-header { text-align:center;margin-bottom:48px; }
+.pillars-eyebrow {
+  font-family:var(--font-m);font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--orange-500);margin-bottom:12px;
+}
+.pillars-title {
+  font-family:var(--font-d);font-size:clamp(28px,4vw,40px);
+  color:var(--navy-900);letter-spacing:.04em;text-transform:uppercase;line-height:.95;
+}
+.pillars-title span { color:var(--orange-500); }
+.pillars-grid-new {
+  display:grid;grid-template-columns:repeat(5,1fr);gap:12px;
+}
+.pillar-card-new {
+  background:var(--navy-900);border-radius:16px;padding:24px 18px;
+  position:relative;overflow:hidden;
+  border:1px solid rgba(255,255,255,.06);
+  transition:transform .2s,border-color .2s;
+}
+.pillar-card-new:hover { transform:translateY(-4px);border-color:var(--orange-500); }
+.pillar-card-accent {
+  position:absolute;top:0;left:0;right:0;height:3px;
+  background:var(--orange-500);
+}
+.pillar-card-num {
+  font-family:var(--font-d);font-size:48px;color:rgba(255,255,255,.04);
+  line-height:1;margin-bottom:12px;
+}
+.pillar-card-name {
+  font-family:var(--font-d);font-size:15px;color:white;
+  letter-spacing:.04em;text-transform:uppercase;margin-bottom:8px;line-height:1.2;
+}
+.pillar-card-desc { font-size:12px;color:rgba(255,255,255,.4);line-height:1.6; }
+
+/* ── SECTION: BENTO ── */
+.bento-section { background:var(--grey-50);padding:80px 24px; }
+.bento-inner { max-width:1100px;margin:0 auto; }
+.bento-header { text-align:center;margin-bottom:40px; }
+.bento-eyebrow {
+  font-family:var(--font-m);font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--orange-500);margin-bottom:12px;
+}
+.bento-title {
+  font-family:var(--font-d);font-size:clamp(28px,4vw,40px);
+  color:var(--navy-900);letter-spacing:.04em;text-transform:uppercase;line-height:.95;
+}
+.bento-grid-new {
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  grid-template-rows:auto auto;
+  gap:16px;
+}
+.bento-card {
+  border-radius:20px;padding:32px 28px;position:relative;overflow:hidden;
+}
+.bento-card-dark {
+  background:var(--navy-900);
+  grid-column:span 2;
+}
+.bento-card-orange { background:var(--orange-500); }
+.bento-card-light {
+  background:white;border:1px solid var(--grey-100);
+  grid-column:span 3;
+}
+.bento-tag {
+  font-family:var(--font-m);font-size:9px;letter-spacing:.18em;text-transform:uppercase;
+  margin-bottom:14px;
+}
+.bento-tag-dark   { color:rgba(255,255,255,.4); }
+.bento-tag-orange { color:rgba(255,255,255,.7); }
+.bento-tag-light  { color:var(--orange-500); }
+.bento-card-title {
+  font-family:var(--font-d);font-size:clamp(20px,2.5vw,28px);
+  letter-spacing:.04em;text-transform:uppercase;line-height:1;margin-bottom:12px;
+}
+.bento-title-dark   { color:white; }
+.bento-title-orange { color:white; }
+.bento-title-light  { color:var(--navy-900); }
+.bento-body { font-size:13px;line-height:1.65;margin-bottom:16px; }
+.bento-body-dark   { color:rgba(255,255,255,.45); }
+.bento-body-orange { color:rgba(255,255,255,.8); }
+.bento-body-light  { color:var(--grey-500); }
+.bento-link {
+  font-family:var(--font-m);font-size:12px;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;text-decoration:none;
+  display:inline-flex;align-items:center;gap:6px;transition:gap .2s;
+}
+.bento-link:hover { gap:10px; }
+.bento-link-dark   { color:var(--orange-400); }
+.bento-link-orange { color:white; }
+.bento-link-light  { color:var(--orange-500); }
+.bento-bg-num {
+  position:absolute;bottom:-20px;right:-8px;
+  font-family:var(--font-d);font-size:120px;pointer-events:none;
+}
+.bento-bg-num-dark   { color:rgba(255,255,255,.03); }
+.bento-bg-num-orange { color:rgba(255,255,255,.08); }
+.bento-checks { display:flex;flex-direction:column;gap:8px;margin-bottom:20px; }
+.bento-check {
+  display:flex;gap:8px;align-items:flex-start;
+  font-size:13px;color:rgba(255,255,255,.55);line-height:1.5;
+}
+.bento-check-dot {
+  width:5px;height:5px;border-radius:50%;background:var(--orange-500);
+  flex-shrink:0;margin-top:6px;
+}
+.levels-bar-new {
+  display:flex;gap:12px;flex-wrap:wrap;
+}
+.level-chip {
+  padding:10px 16px;border-radius:10px;
+  font-family:var(--font-m);font-size:11px;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;
+  display:flex;align-items:center;gap:8px;
+}
+.level-chip-active {
+  background:var(--orange-500);color:white;
+}
+.level-chip-soon {
+  background:rgba(30,58,138,.08);color:var(--navy-700);
+  border:1px solid rgba(30,58,138,.12);
+}
+.level-chip-dot {
+  width:6px;height:6px;border-radius:50%;
+}
+.level-chip-dot-active { background:white; }
+.level-chip-dot-soon   { background:var(--grey-300); }
+
+/* ── CTA SECTION ── */
+.cta-section {
+  background:var(--navy-950);padding:80px 24px;
+  position:relative;overflow:hidden;
+}
+.cta-glow {
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:600px;height:400px;
+  background:radial-gradient(ellipse, rgba(232,99,10,.12), transparent 70%);
+  pointer-events:none;
+}
+.cta-inner {
+  max-width:640px;margin:0 auto;text-align:center;position:relative;z-index:1;
+}
+.cta-eyebrow {
+  font-family:var(--font-m);font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--orange-300);margin-bottom:16px;
+}
+.cta-title {
+  font-family:var(--font-d);font-size:clamp(32px,5vw,56px);
+  color:white;letter-spacing:.04em;text-transform:uppercase;
+  line-height:.92;margin-bottom:16px;
+}
+.cta-sub {
+  font-size:15px;color:rgba(255,255,255,.4);line-height:1.7;margin-bottom:36px;
+}
+.cta-btns { display:flex;gap:12px;justify-content:center;flex-wrap:wrap; }
+.cta-note {
+  margin-top:16px;font-family:var(--font-m);font-size:10px;
+  letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.2);
+}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px) {
+  .hero-paths { grid-template-columns:1fr; max-width:420px; }
+  .why-inner { grid-template-columns:1fr; gap:48px; }
+  .how-steps { grid-template-columns:1fr; gap:2px; }
+  .how-arrow { display:none; }
+  .pillars-grid-new { grid-template-columns:repeat(2,1fr); }
+  .pillars-grid-new .pillar-card-new:last-child { grid-column:span 2; }
+  .bento-grid-new { grid-template-columns:1fr; }
+  .bento-card-dark,.bento-card-light { grid-column:span 1; }
+}
+@media(max-width:540px) {
+  .hero { padding:90px 20px 48px; }
+  .hero-headline { letter-spacing:.01em; }
+  .path-card { padding:22px 20px; }
+  .how-step { padding:24px 20px; }
+  .pillar-card-new { padding:20px 14px; }
+  .pillars-grid-new { grid-template-columns:1fr; }
+  .pillars-grid-new .pillar-card-new:last-child { grid-column:span 1; }
+  .bento-card { padding:24px 20px; }
+}
+</style>
 </head>
 <body>
 
@@ -20,13 +504,7 @@
     </a>
     <div class="nav-links">
       <a class="nav-link" href="program.html">The Program</a>
-      <div class="nav-dropdown" id="nav-platform-wrap">
-        <button class="nav-link" id="nav-platform" onclick="toggleDropdown()">Platform &#9662;</button>
-        <div class="nav-dropdown-menu" id="navDropdown">
-          <a class="nav-dropdown-item" href="giq.html">&#129504; <strong>Gridiron IQ</strong> &mdash; Exam across 3 levels &amp; 5 pillars</a>
-          <a class="nav-dropdown-item" href="levels.html">&#128200; <strong>Levels</strong> &mdash; Foundations &middot; Middle School &middot; High School</a>
-        </div>
-      </div>
+      <a class="nav-link" href="giq.html">Gridiron IQ</a>
       <a class="nav-link" href="coaches.html">Coaches</a>
       <a class="nav-link" id="nav-dashboard" href="dashboard.html" style="display:none">Dashboard</a>
     </div>
@@ -43,138 +521,154 @@
 
 <!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu">
+  <a class="mobile-menu-item" href="giq-exam.html">Test Your Gridiron IQ</a>
   <a class="mobile-menu-item" href="program.html">The Program</a>
   <a class="mobile-menu-item" href="giq.html">Gridiron IQ</a>
-  <a class="mobile-menu-item" href="levels.html">Levels</a>
   <a class="mobile-menu-item" href="coaches.html">Coaches</a>
   <div class="mobile-menu-divider"></div>
   <a class="mobile-menu-item" href="auth.html" id="mobileSignupBtn">Sign Up Free</a>
   <a class="mobile-menu-item" href="auth.html">Log In</a>
 </div>
 
-<!-- HERO -->
-<section class="home-hero">
-  <div class="home-hero-grid"></div>
-  <div class="home-hero-glow"></div>
-  <div class="home-hero-inner">
-    <div class="home-hero-left">
-      <div class="home-hero-eyebrow">
-        <span class="home-hero-dot"></span>
-        <span class="home-hero-eyebrow-text">Foundations &middot; Middle School &middot; High School</span>
-      </div>
-      <h1 class="home-hero-headline">
-        BUILD THE
-        <span class="home-hero-accent">FOOTBALL IQ</span>
-        <span class="home-hero-ghost">THAT WINS.</span>
-      </h1>
-      <p class="home-hero-sub">First Down Academy is a complete football education platform for coaches who want smarter players — and players who want to understand the whole game, not just their role.</p>
-      <div class="home-hero-ctas">
-        <a href="coaches.html" class="btn-home-primary">Get Your Coach Link &rarr;</a>
-        <a href="program.html" class="btn-home-secondary">View the Curriculum</a>
-      </div>
-      <div class="home-hero-stats">
-        <div class="home-stat"><div class="home-stat-num">8</div><div class="home-stat-label">Modules</div></div>
-        <div class="home-stat"><div class="home-stat-num">84</div><div class="home-stat-label">Slides</div></div>
-        <div class="home-stat"><div class="home-stat-num">5</div><div class="home-stat-label">IQ Pillars</div></div>
-        <div class="home-stat"><div class="home-stat-num">8&ndash;18</div><div class="home-stat-label">Ages</div></div>
-      </div>
-    </div>
-    <div class="home-hero-right">
-      <div class="home-hero-right-bg"></div>
-      <div class="home-hero-right-grid"></div>
-      <div class="home-hero-right-glow"></div>
-      <div class="home-iq-card">
-        <div class="home-iq-header">
-          <span class="home-iq-label">Gridiron IQ Score</span>
-          <span class="home-iq-badge" style="background:rgba(34,197,94,.2);color:#22C55E;border-color:rgba(34,197,94,.4);">Live Now</span>
-        </div>
-        <div class="home-iq-score-row">
-          <div class="home-iq-num">84</div>
-          <div class="home-iq-meta">
-            <div class="home-iq-title">ADVANCED<br>PLAYMAKER</div>
-            <div class="home-iq-sub">Top 15% of players</div>
-          </div>
-        </div>
-        <div class="home-iq-bars">
-          <div class="home-iq-bar-row"><span class="home-iq-bar-label">Game Structure</span><div class="home-iq-bar-track"><div class="home-iq-bar-fill" style="width:92%"></div></div><span class="home-iq-bar-val">92</span></div>
-          <div class="home-iq-bar-row"><span class="home-iq-bar-label">Player Roles</span><div class="home-iq-bar-track"><div class="home-iq-bar-fill" style="width:88%"></div></div><span class="home-iq-bar-val">88</span></div>
-          <div class="home-iq-bar-row"><span class="home-iq-bar-label">Offense</span><div class="home-iq-bar-track"><div class="home-iq-bar-fill" style="width:79%"></div></div><span class="home-iq-bar-val">79</span></div>
-          <div class="home-iq-bar-row"><span class="home-iq-bar-label">Defense</span><div class="home-iq-bar-track"><div class="home-iq-bar-fill" style="width:74%"></div></div><span class="home-iq-bar-val">74</span></div>
-          <div class="home-iq-bar-row"><span class="home-iq-bar-label">Situational</span><div class="home-iq-bar-track"><div class="home-iq-bar-fill" style="width:68%"></div></div><span class="home-iq-bar-val">68</span></div>
-        </div>
-      </div>
-      <div class="home-pill-row">
-        <div class="home-pill"><div class="home-pill-val">3</div><div class="home-pill-label">Levels</div></div>
-        <div class="home-pill"><div class="home-pill-val">42</div><div class="home-pill-label">Quiz Qs</div></div>
-        <div class="home-pill"><div class="home-pill-val">70%</div><div class="home-pill-label">Pass Score</div></div>
-      </div>
-    </div>
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow-left"></div>
+  <div class="hero-glow-right"></div>
+
+  <div class="hero-eyebrow">
+    <span class="hero-eyebrow-dot"></span>
+    Football IQ Platform &mdash; Ages 8 to 18
   </div>
+
+  <h1 class="hero-headline">
+    TEST &amp; BUILD
+    <span class="hero-headline-accent">GRIDIRON IQ.</span>
+    <span class="hero-headline-sub">The game inside the game.</span>
+  </h1>
+
+  <p class="hero-sub">
+    Find out where your football knowledge stands. Then build it. First Down Academy is the only platform that tests your IQ, shows you where to improve, and tracks your growth over time.
+  </p>
+
+  <!-- TWO PATHS -->
+  <div class="hero-paths">
+
+    <!-- Path 1: Take the Quiz -->
+    <a href="giq-exam.html" class="path-card path-card-primary">
+      <div class="path-tag path-tag-primary">
+        <span class="path-tag-dot" style="background:rgba(255,255,255,.6);"></span>
+        Most Popular
+      </div>
+      <div class="path-title">Test Your<br>Gridiron IQ</div>
+      <p class="path-desc path-desc-primary">Jump straight into the adaptive quiz. See your grade in 5&ndash;10 minutes. No signup required to start.</p>
+      <div class="path-meta">
+        <span class="path-pill path-pill-primary">5&ndash;10 min</span>
+        <span class="path-pill path-pill-primary">15 questions</span>
+        <span class="path-pill path-pill-primary">Instant grade</span>
+      </div>
+      <div class="path-cta path-cta-primary">Take the Quiz &rarr;</div>
+      <div class="path-bg-letter path-bg-letter-primary">IQ</div>
+    </a>
+
+    <!-- Path 2: Start the Course -->
+    <a href="program.html" class="path-card path-card-secondary">
+      <div class="path-tag path-tag-secondary">
+        <span class="path-tag-dot" style="background:rgba(255,255,255,.3);"></span>
+        Build First
+      </div>
+      <div class="path-title">Start the<br>Rookie Course</div>
+      <p class="path-desc path-desc-secondary">Learn all 5 pillars through 8 modules, then test your IQ. See exactly how much you improved.</p>
+      <div class="path-meta">
+        <span class="path-pill path-pill-secondary">8 modules</span>
+        <span class="path-pill path-pill-secondary">Free forever</span>
+        <span class="path-pill path-pill-secondary">Quiz included</span>
+      </div>
+      <div class="path-cta path-cta-secondary">View the Course &rarr;</div>
+      <div class="path-bg-letter path-bg-letter-secondary">01</div>
+    </a>
+
+  </div>
+
+  <div class="hero-note">No credit card &nbsp;&middot;&nbsp; Free to start &nbsp;&middot;&nbsp; Results in minutes</div>
 </section>
 
 <!-- TICKER -->
 <div class="ticker">
   <div class="ticker-track">
-    <span class="ticker-item">Game Structure <span class="ticker-dot"></span></span>
-    <span class="ticker-item">Player Roles <span class="ticker-dot"></span></span>
-    <span class="ticker-item">Offensive Concepts <span class="ticker-dot"></span></span>
-    <span class="ticker-item">Defensive Concepts <span class="ticker-dot"></span></span>
-    <span class="ticker-item">Situational Strategy <span class="ticker-dot"></span></span>
-    <span class="ticker-item">Gridiron IQ <span class="ticker-dot"></span></span>
-    <span class="ticker-item">84 Slides <span class="ticker-dot"></span></span>
-    <span class="ticker-item">42 Quiz Questions <span class="ticker-dot"></span></span>
-    <span class="ticker-item">Game Structure <span class="ticker-dot"></span></span>
-    <span class="ticker-item">Player Roles <span class="ticker-dot"></span></span>
-    <span class="ticker-item">Offensive Concepts <span class="ticker-dot"></span></span>
-    <span class="ticker-item">Defensive Concepts <span class="ticker-dot"></span></span>
-    <span class="ticker-item">Situational Strategy <span class="ticker-dot"></span></span>
-    <span class="ticker-item">Gridiron IQ <span class="ticker-dot"></span></span>
-    <span class="ticker-item">84 Slides <span class="ticker-dot"></span></span>
-    <span class="ticker-item">42 Quiz Questions <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Gridiron IQ <span class="ticker-sep">&#9679;</span></span>
+    <span class="ticker-item">Rules &amp; Objectives <span class="ticker-sep">&#9679;</span></span>
+    <span class="ticker-item">Positions &amp; Responsibilities <span class="ticker-sep">&#9679;</span></span>
+    <span class="ticker-item">Formations &amp; Alignments <span class="ticker-sep">&#9679;</span></span>
+    <span class="ticker-item">Plays &amp; Concepts <span class="ticker-sep">&#9679;</span></span>
+    <span class="ticker-item">Situational Awareness <span class="ticker-sep">&#9679;</span></span>
+    <span class="ticker-item">Adaptive Scoring <span class="ticker-sep">&#9679;</span></span>
+    <span class="ticker-item">15 Questions <span class="ticker-sep">&#9679;</span></span>
+    <span class="ticker-item">Instant Grade <span class="ticker-sep">&#9679;</span></span>
+    <span class="ticker-item">Gridiron IQ <span class="ticker-sep">&#9679;</span></span>
+    <span class="ticker-item">Rules &amp; Objectives <span class="ticker-sep">&#9679;</span></span>
+    <span class="ticker-item">Positions &amp; Responsibilities <span class="ticker-sep">&#9679;</span></span>
+    <span class="ticker-item">Formations &amp; Alignments <span class="ticker-sep">&#9679;</span></span>
+    <span class="ticker-item">Plays &amp; Concepts <span class="ticker-sep">&#9679;</span></span>
+    <span class="ticker-item">Situational Awareness <span class="ticker-sep">&#9679;</span></span>
+    <span class="ticker-item">Adaptive Scoring <span class="ticker-sep">&#9679;</span></span>
+    <span class="ticker-item">15 Questions <span class="ticker-sep">&#9679;</span></span>
+    <span class="ticker-item">Instant Grade <span class="ticker-sep">&#9679;</span></span>
   </div>
 </div>
 
-<!-- CONCEPT SECTION -->
-<section class="home-concept">
-  <div class="home-concept-inner">
-    <div class="home-concept-left">
-      <div class="section-eyebrow">The Core Concept</div>
-      <h2 class="section-title">GRIDIRON IQ IS THE EDGE MOST PLAYERS <span class="text-orange">DON&rsquo;T HAVE.</span></h2>
-      <p class="section-body">Most players know their assignment. The ones who stand out understand <strong>the entire play</strong> &mdash; what the defense is showing, why the blocking scheme works, and how to react when the play breaks down.</p>
-      <p class="section-body">That&rsquo;s Gridiron IQ. It isn&rsquo;t about size or speed. It&rsquo;s about <strong>football intelligence</strong> &mdash; and it can be developed. Players with a high Gridiron IQ process the game faster, adjust when things break down, and get more out of every rep at practice.</p>
-      <p class="section-body">First Down Academy builds it systematically. Every slide. Every module. Every quiz &mdash; designed to raise football IQ so players arrive at practice with the foundation already installed.</p>
+<!-- WHY FDA -->
+<section class="why-section">
+  <div class="why-inner">
+    <div class="why-left">
+      <div class="why-eyebrow">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="var(--orange-500)" stroke-width="1.5"/><path d="M7 4v3l2 1.5" stroke="var(--orange-500)" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Why Gridiron IQ Matters
+      </div>
+      <h2 class="why-title">
+        FOOTBALL IQ IS THE EDGE <span>MOST PLAYERS DON&rsquo;T HAVE.</span>
+      </h2>
+      <p class="why-body">Most players know their assignment. The ones who stand out understand <strong>the entire play</strong> — what the defense is showing, why the blocking scheme works, and how to react when everything breaks down.</p>
+      <p class="why-body">That&rsquo;s Gridiron IQ. It isn&rsquo;t about size or speed. It&rsquo;s about <strong>football intelligence</strong> — and it can be built systematically. Players who understand the whole game process decisions faster, adjust when plays break down, and get more out of every rep at practice.</p>
+      <p class="why-body">First Down Academy measures it, shows you where to improve, and helps you build it over time.</p>
     </div>
-    <div class="home-concept-right">
-      <div class="home-pillars">
-        <div class="home-pillar featured">
-          <div class="home-pillar-icon-wrap"><svg width="28" height="28" viewBox="0 0 32 32" fill="none"><rect x="2" y="6" width="28" height="20" rx="2" stroke="rgba(255,255,255,.7)" stroke-width="2"/><line x1="16" y1="6" x2="16" y2="26" stroke="rgba(255,255,255,.5)" stroke-width="1.5" stroke-dasharray="3 2"/><line x1="8" y1="6" x2="8" y2="26" stroke="rgba(255,255,255,.3)" stroke-width="1"/><line x1="24" y1="6" x2="24" y2="26" stroke="rgba(255,255,255,.3)" stroke-width="1"/></svg></div>
-          <div class="home-pillar-label">01</div>
-          <div class="home-pillar-name">GAME STRUCTURE</div>
-          <div class="home-pillar-desc">Field layout, downs, scoring, penalties, and how a football game works from kickoff to final whistle.</div>
+    <div class="why-right">
+      <div class="why-points">
+        <div class="why-point">
+          <div class="why-point-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 11l3 3L22 4" stroke="var(--orange-500)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" stroke="var(--orange-500)" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <div>
+            <div class="why-point-title">Adaptive Testing</div>
+            <div class="why-point-body">The quiz adjusts to your level in real time — harder questions if you're strong, easier if you're struggling. Your score reflects your true IQ.</div>
+          </div>
         </div>
-        <div class="home-pillar">
-          <div class="home-pillar-icon-wrap"><svg width="28" height="28" viewBox="0 0 32 32" fill="none"><circle cx="12" cy="10" r="4" stroke="var(--orange-500)" stroke-width="2"/><path d="M4 26c0-4.4 3.6-8 8-8s8 3.6 8 8" stroke="var(--orange-500)" stroke-width="2" stroke-linecap="round"/><circle cx="22" cy="10" r="3" stroke="var(--grey-300)" stroke-width="1.5"/><path d="M26 24c0-3.3-2-6-4.5-7" stroke="var(--grey-300)" stroke-width="1.5" stroke-linecap="round"/></svg></div>
-          <div class="home-pillar-label">02</div>
-          <div class="home-pillar-name">PLAYER ROLES</div>
-          <div class="home-pillar-desc">Every position on offense, defense, and special teams — what they do and why it matters.</div>
+        <div class="why-point">
+          <div class="why-point-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" stroke="var(--orange-500)" stroke-width="2"/><path d="M8 12h8M8 8h8M8 16h5" stroke="var(--orange-500)" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <div>
+            <div class="why-point-title">5 Pillar Breakdown</div>
+            <div class="why-point-body">See exactly where your football knowledge is strong and where to build — across Rules, Positions, Formations, Concepts, and Situational Awareness.</div>
+          </div>
         </div>
-        <div class="home-pillar">
-          <div class="home-pillar-icon-wrap"><svg width="28" height="28" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="22" r="3" fill="var(--orange-500)"/><path d="M16 19V10" stroke="var(--orange-500)" stroke-width="2" stroke-linecap="round"/><path d="M16 10 Q23 14 27 9" stroke="var(--orange-500)" stroke-width="2" stroke-linecap="round" fill="none"/><path d="M7 15l5 4M25 15l-5 4" stroke="var(--grey-300)" stroke-width="1.5" stroke-linecap="round"/></svg></div>
-          <div class="home-pillar-label">03</div>
-          <div class="home-pillar-name">OFFENSE</div>
-          <div class="home-pillar-desc">Formations, run plays, passing routes, blocking, and how offenses attack defenses.</div>
+        <div class="why-point">
+          <div class="why-point-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 20L10 14L14 18L20 10" stroke="var(--orange-500)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div>
+            <div class="why-point-title">Track Improvement Over Time</div>
+            <div class="why-point-body">Every quiz result is saved. Take the course, retake the quiz, and see exactly how much your Gridiron IQ improved.</div>
+          </div>
         </div>
-        <div class="home-pillar">
-          <div class="home-pillar-icon-wrap"><svg width="28" height="28" viewBox="0 0 32 32" fill="none"><path d="M16 3L3 8.5v8c0 6.5 5.5 11.5 13 13.5 7.5-2 13-7 13-13.5v-8L16 3z" stroke="var(--orange-500)" stroke-width="2" stroke-linejoin="round"/><path d="M10 16l4 4 8-8" stroke="var(--orange-500)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-          <div class="home-pillar-label">04</div>
-          <div class="home-pillar-name">DEFENSE</div>
-          <div class="home-pillar-desc">Coverage schemes, defensive fronts, tackling fundamentals, and forcing turnovers.</div>
-        </div>
-        <div class="home-pillar">
-          <div class="home-pillar-icon-wrap"><svg width="28" height="28" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="12" stroke="var(--orange-500)" stroke-width="2"/><path d="M16 8v8l5 3" stroke="var(--orange-500)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-          <div class="home-pillar-label">05</div>
-          <div class="home-pillar-name">SITUATIONAL</div>
-          <div class="home-pillar-desc">3rd down, red zone, 4th down decisions, clock management, and game-flow awareness.</div>
+        <div class="why-point">
+          <div class="why-point-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="var(--orange-500)" stroke-width="2"/><path d="M12 7v5l3 3" stroke="var(--orange-500)" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <div>
+            <div class="why-point-title">Free to Start</div>
+            <div class="why-point-body">The quiz, the Rookie course, and your first two results are completely free. No credit card. No setup. Just football.</div>
+          </div>
         </div>
       </div>
     </div>
@@ -182,128 +676,155 @@
 </section>
 
 <!-- HOW IT WORKS -->
-<section class="home-loop">
-  <div class="home-loop-grid"></div>
-  <div class="home-loop-inner">
-    <div class="home-loop-header">
-      <div class="section-eyebrow" style="color:var(--orange-300);justify-content:center;">How It Works</div>
-      <h2 class="section-title" style="color:white;text-align:center;">LEARN OFF THE FIELD.<br>PERFORM ON IT.</h2>
-      <p class="home-loop-sub">The most effective way to improve football IQ is to teach the game away from the field &mdash; when there is no pressure, no whistle, no time limit.</p>
+<section class="how-section">
+  <div class="how-grid-bg"></div>
+  <div class="how-inner">
+    <div class="how-header">
+      <div class="how-eyebrow">How It Works</div>
+      <h2 class="how-title">TWO PATHS.<br>ONE GOAL.</h2>
     </div>
-    <div class="home-loop-steps">
-      <div class="home-loop-step">
-        <div class="home-step-num">01</div>
-        <div class="home-step-icon orange">
-          <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect x="4" y="6" width="20" height="16" rx="3" stroke="white" stroke-width="2"/><path d="M9 11h10M9 15h7" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+    <div class="how-steps">
+      <div class="how-step" style="position:relative;">
+        <div class="how-step-num">01</div>
+        <div class="how-step-icon how-step-icon-orange">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="white" stroke-width="2"/><path d="M12 8v4l3 3" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
         </div>
-        <div class="home-step-title">PLAYERS LEARN THE GAME</div>
-        <p class="home-step-body">Short slide-based lessons covering all 5 pillars of football knowledge &mdash; on their own time, before practice.</p>
+        <div class="how-step-title">Test or Learn</div>
+        <p class="how-step-body">Jump into the quiz and get your grade in 10 minutes. Or start the Rookie course and build your IQ before you test. Either path works.</p>
+        <div class="how-arrow">&#8594;</div>
       </div>
-      <div class="home-loop-arrow">&rarr;</div>
-      <div class="home-loop-step">
-        <div class="home-step-num">02</div>
-        <div class="home-step-icon navy">
-          <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M14 4L4 10v14h20V10L14 4z" stroke="white" stroke-width="2" stroke-linejoin="round" opacity=".5"/><path d="M10 15l3 3 6-6" stroke="#E8630A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="how-step" style="position:relative;">
+        <div class="how-step-num">02</div>
+        <div class="how-step-icon how-step-icon-blue">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M9 11l3 3 8-8" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
         </div>
-        <div class="home-step-title">TEST YOUR GRIDIRON IQ</div>
-        <p class="home-step-body">Take the Gridiron IQ exam across 3 levels — Rookie, Pro, and MVP. Rate your confidence on each answer. Your score reflects what you know and how well you know it.</p>
+        <div class="how-step-title">See Your Grade</div>
+        <p class="how-step-body">Your letter grade appears instantly. Sign up free to unlock your full score, pillar breakdown, and a personalized recommendation for what to work on.</p>
+        <div class="how-arrow">&#8594;</div>
       </div>
-      <div class="home-loop-arrow">&rarr;</div>
-      <div class="home-loop-step">
-        <div class="home-step-num">03</div>
-        <div class="home-step-icon green">
-          <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M6 20L12 14L16 18L22 10" stroke="#22C55E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M22 10H18M22 10V14" stroke="#22C55E" stroke-width="2.5" stroke-linecap="round"/></svg>
+      <div class="how-step">
+        <div class="how-step-num">03</div>
+        <div class="how-step-icon how-step-icon-green">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 20L10 14L14 18L20 10" stroke="#22C55E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
-        <div class="home-step-title">GRIDIRON IQ GOES UP</div>
-        <p class="home-step-body">See your score by pillar. Know exactly where you&rsquo;re strong and where to build. Every rep on the field gets better.</p>
-      </div>
-    </div>
-
-    <!-- GIQ Promo Banner -->
-    <div style="margin-top:56px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:32px 36px;display:flex;align-items:center;justify-content:space-between;gap:28px;flex-wrap:wrap;position:relative;overflow:hidden;">
-      <div style="position:absolute;inset:0;background:radial-gradient(ellipse 50% 100% at 100% 50%,rgba(232,99,10,.1),transparent);pointer-events:none;"></div>
-      <div style="position:relative;z-index:1;">
-        <div style="font-family:var(--font-m);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--orange-300);margin-bottom:10px;">Now Available &mdash; Free</div>
-        <div style="font-family:var(--font-d);font-size:clamp(22px,3vw,32px);color:white;letter-spacing:.04em;text-transform:uppercase;line-height:1;margin-bottom:8px;">TAKE THE GRIDIRON IQ EXAM</div>
-        <p style="font-size:14px;color:rgba(255,255,255,.45);max-width:400px;line-height:1.65;margin:0;">3 levels. 5 pillars. Confidence-based scoring. Find out exactly where your football IQ stands — and what to work on.</p>
-        <div style="display:flex;gap:12px;margin-top:16px;flex-wrap:wrap;">
-          <div style="display:flex;align-items:center;gap:6px;font-family:var(--font-m);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.4);">
-            <div style="width:6px;height:6px;border-radius:50%;background:#94A3B8;"></div>Rookie
-          </div>
-          <div style="display:flex;align-items:center;gap:6px;font-family:var(--font-m);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.4);">
-            <div style="width:6px;height:6px;border-radius:50%;background:var(--orange-500);"></div>Pro
-          </div>
-          <div style="display:flex;align-items:center;gap:6px;font-family:var(--font-m);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.4);">
-            <div style="width:6px;height:6px;border-radius:50%;background:#22C55E;"></div>MVP
-          </div>
-        </div>
-      </div>
-      <div style="position:relative;z-index:1;flex-shrink:0;">
-        <a href="giq-exam.html" class="btn-home-primary" style="font-size:14px;padding:16px 36px;">Take the Exam &rarr;</a>
-        <div style="font-family:var(--font-m);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.2);text-align:center;margin-top:10px;">Free Account Required</div>
+        <div class="how-step-title">Build &amp; Improve</div>
+        <p class="how-step-body">Take the course targeting your weak pillars. Retake the quiz. Watch your IQ score climb. Your results are saved so you can see exactly how much you&rsquo;ve grown.</p>
       </div>
     </div>
-
   </div>
 </section>
 
-<!-- BENTO GRID -->
-<section class="home-bento">
-  <div class="home-bento-header">
-    <div class="section-eyebrow">The Platform</div>
-    <h2 class="section-title">BUILT FOR EVERY<br>PART OF THE GAME.</h2>
+<!-- 5 PILLARS -->
+<section class="pillars-section">
+  <div class="pillars-inner">
+    <div class="pillars-header">
+      <div class="pillars-eyebrow">5 Core Pillars</div>
+      <h2 class="pillars-title">YOUR IQ SCORED ACROSS <span>EVERY DIMENSION.</span></h2>
+    </div>
+    <div class="pillars-grid-new">
+      <div class="pillar-card-new">
+        <div class="pillar-card-accent"></div>
+        <div class="pillar-card-num">01</div>
+        <div class="pillar-card-name">Rules &amp;<br>Objectives</div>
+        <div class="pillar-card-desc">Scoring, downs, penalties, turnovers, and how the game is officiated.</div>
+      </div>
+      <div class="pillar-card-new">
+        <div class="pillar-card-accent" style="background:#3B82F6;"></div>
+        <div class="pillar-card-num">02</div>
+        <div class="pillar-card-name">Positions &amp;<br>Responsibilities</div>
+        <div class="pillar-card-desc">Every position on offense, defense, and special teams — what they do and why.</div>
+      </div>
+      <div class="pillar-card-new">
+        <div class="pillar-card-accent" style="background:#8B5CF6;"></div>
+        <div class="pillar-card-num">03</div>
+        <div class="pillar-card-name">Formations &amp;<br>Alignments</div>
+        <div class="pillar-card-desc">How teams line up, why spacing matters, and what pre-snap tells you.</div>
+      </div>
+      <div class="pillar-card-new">
+        <div class="pillar-card-accent" style="background:#F59E0B;"></div>
+        <div class="pillar-card-num">04</div>
+        <div class="pillar-card-name">Plays &amp;<br>Concepts</div>
+        <div class="pillar-card-desc">Run concepts, pass routes, blitz packages, and coverage schemes.</div>
+      </div>
+      <div class="pillar-card-new">
+        <div class="pillar-card-accent" style="background:#22C55E;"></div>
+        <div class="pillar-card-num">05</div>
+        <div class="pillar-card-name">Situational<br>Awareness</div>
+        <div class="pillar-card-desc">3rd down, red zone, clock management, and game-flow decisions.</div>
+      </div>
+    </div>
   </div>
-  <div class="home-bento-grid">
-    <div class="home-bcard dark">
-      <div class="home-bcard-tag">For Coaches</div>
-      <div class="home-bcard-title">YOUR ROSTER.<br>SMARTER.<br>BEFORE PRACTICE.</div>
-      <div class="home-bcard-checks">
-        <div class="home-bcard-check"><div class="home-check-dot"></div><span>Share one link with your entire team in 60 seconds</span></div>
-        <div class="home-bcard-check"><div class="home-check-dot"></div><span>Players arrive knowing positions, formations, and plays</span></div>
-        <div class="home-bcard-check"><div class="home-check-dot"></div><span>Reclaim 15&ndash;20 minutes of practice time every session</span></div>
-        <div class="home-bcard-check"><div class="home-check-dot"></div><span>No cost to you or your program &mdash; ever</span></div>
-      </div>
-      <a href="coaches.html" class="home-bcard-link">Get Your Coach Link &rarr;</a>
-      <div class="home-bcard-bgnum">C</div>
+</section>
+
+<!-- BENTO -->
+<section class="bento-section">
+  <div class="bento-inner">
+    <div class="bento-header">
+      <div class="bento-eyebrow">The Platform</div>
+      <h2 class="bento-title">BUILT FOR EVERY PART OF THE GAME.</h2>
     </div>
-    <div class="home-bcard orange">
-      <div class="home-bcard-tag">For Players</div>
-      <div class="home-bcard-title">UNDERSTAND<br>THE WHOLE<br>GAME.</div>
-      <p class="home-bcard-body">Not just your position. Every player on the field, every concept, every decision &mdash; built into your football IQ through 84 slides and 42 quiz questions.</p>
-      <a href="auth.html" class="home-bcard-link">Start Learning &rarr;</a>
-      <div class="home-bcard-bgnum">P</div>
-    </div>
-    <div class="home-bcard dark full">
-      <div class="home-bcard-tag">The Roadmap</div>
-      <div class="home-bcard-full-inner">
-        <div>
-          <div class="home-bcard-title">THREE LEVELS.<br>ONE ACADEMY.</div>
-          <p class="home-bcard-body" style="max-width:400px;margin-top:8px;">First Down Academy grows with every player &mdash; from little league through high school. Each level goes deeper into the same 5 pillars.</p>
+    <div class="bento-grid-new">
+
+      <!-- Coaches card -->
+      <div class="bento-card bento-card-dark">
+        <div class="bento-tag bento-tag-dark">For Coaches</div>
+        <div class="bento-card-title bento-title-dark">YOUR ROSTER.<br>SMARTER.</div>
+        <div class="bento-checks">
+          <div class="bento-check"><div class="bento-check-dot"></div><span>Share one link — your whole team is enrolled in 60 seconds</span></div>
+          <div class="bento-check"><div class="bento-check-dot"></div><span>Track every player&rsquo;s IQ score and course progress</span></div>
+          <div class="bento-check"><div class="bento-check-dot"></div><span>Players arrive knowing positions, formations, and plays</span></div>
+          <div class="bento-check"><div class="bento-check-dot"></div><span>Reclaim 15&ndash;20 minutes of practice time every session</span></div>
         </div>
-        <div class="home-levels-bar">
-          <div class="home-level active"><div class="home-level-num">1</div><div class="home-level-name">Foundations</div><span class="home-level-badge live">Live Now</span></div>
-          <div class="home-level"><div class="home-level-num">2</div><div class="home-level-name">Middle School</div><span class="home-level-badge soon">Coming Soon</span></div>
-          <div class="home-level"><div class="home-level-num">3</div><div class="home-level-name">High School</div><span class="home-level-badge future">Future</span></div>
+        <a href="coaches.html" class="bento-link bento-link-dark">Get Your Coach Link &rarr;</a>
+        <div class="bento-bg-num bento-bg-num-dark">C</div>
+      </div>
+
+      <!-- Players card -->
+      <div class="bento-card bento-card-orange">
+        <div class="bento-tag bento-tag-orange">For Players</div>
+        <div class="bento-card-title bento-title-orange">TEST.<br>LEARN.<br>IMPROVE.</div>
+        <p class="bento-body bento-body-orange">Quiz in 10 minutes. Course in your own time. Your IQ score tracked every step of the way.</p>
+        <a href="giq-exam.html" class="bento-link bento-link-orange">Take the Quiz &rarr;</a>
+        <div class="bento-bg-num bento-bg-num-orange">P</div>
+      </div>
+
+      <!-- Levels card -->
+      <div class="bento-card bento-card-light">
+        <div class="bento-tag bento-tag-light">The Roadmap</div>
+        <div class="bento-card-title bento-title-light">THREE LEVELS. ONE ACADEMY.</div>
+        <p class="bento-body bento-body-light">First Down Academy grows with every player — from little league through high school. Each level goes deeper into the same 5 pillars with more advanced content and higher-difficulty questions.</p>
+        <div class="levels-bar-new" style="margin-top:16px;">
+          <div class="level-chip level-chip-active">
+            <div class="level-chip-dot level-chip-dot-active"></div>
+            Rookie &mdash; Live Now
+          </div>
+          <div class="level-chip level-chip-soon">
+            <div class="level-chip-dot level-chip-dot-soon"></div>
+            Starter &mdash; Coming Soon
+          </div>
+          <div class="level-chip level-chip-soon">
+            <div class="level-chip-dot level-chip-dot-soon"></div>
+            Elite &mdash; Coming Soon
+          </div>
         </div>
       </div>
+
     </div>
   </div>
 </section>
 
 <!-- CTA -->
-<section class="home-cta-section">
-  <div class="home-cta-box">
-    <div class="home-cta-glow"></div>
-    <div class="home-cta-left">
-      <div class="home-cta-tag">Ready to Start?</div>
-      <h2 class="home-cta-title">YOUR ROSTER.<br>SMARTER.<br>NEXT PRACTICE.</h2>
-      <p class="home-cta-sub">Share one link. First Down Academy installs the football knowledge. You run the practice you actually want to run.</p>
+<section class="cta-section">
+  <div class="cta-glow"></div>
+  <div class="cta-inner">
+    <div class="cta-eyebrow">Ready to Find Out?</div>
+    <h2 class="cta-title">WHAT&rsquo;S YOUR<br>GRIDIRON IQ?</h2>
+    <p class="cta-sub">Take the adaptive quiz in 10 minutes. See your grade instantly. Sign up free to unlock your full score and start building your football intelligence.</p>
+    <div class="cta-btns">
+      <a href="giq-exam.html" class="btn-home-primary" style="font-size:15px;padding:18px 44px;">Test Your Gridiron IQ &rarr;</a>
+      <a href="program.html" class="btn-home-secondary" style="font-size:15px;">View the Course</a>
     </div>
-    <div class="home-cta-right">
-      <a href="coaches.html" class="btn-home-primary">Get Your Coach Link &rarr;</a>
-      <a href="program.html" class="btn-home-secondary">View the Curriculum</a>
-      <div class="home-cta-note">No setup required &middot; No credit card</div>
-    </div>
+    <div class="cta-note">No signup required to start &nbsp;&middot;&nbsp; Free forever</div>
   </div>
 </section>
 
@@ -314,20 +835,32 @@
       <a class="logo" href="index.html" style="margin-bottom:12px;display:inline-flex;">
         <img src="logo.png" alt="First Down Academy" style="height:52px;width:auto;object-fit:contain;" onerror="this.style.display='none'">
       </a>
-      <p class="footer-tagline">The football education platform built for coaches who want smarter players.</p>
+      <p class="footer-tagline">Test your Gridiron IQ. Build your football intelligence. Perform on the field.</p>
     </div>
     <div class="footer-links">
       <div class="footer-col">
         <div class="footer-col-label">Platform</div>
-        <ul><li><a href="program.html">The Program</a></li><li><a href="giq.html">Gridiron IQ</a></li><li><a href="levels.html">Levels</a></li><li><a href="coaches.html">Coaches</a></li></ul>
+        <ul>
+          <li><a href="giq-exam.html">Take the Quiz</a></li>
+          <li><a href="program.html">The Program</a></li>
+          <li><a href="giq.html">Gridiron IQ</a></li>
+          <li><a href="coaches.html">Coaches</a></li>
+        </ul>
       </div>
       <div class="footer-col">
         <div class="footer-col-label">Account</div>
-        <ul><li><a href="auth.html">Sign Up</a></li><li><a href="auth.html">Log In</a></li><li><a href="dashboard.html">Dashboard</a></li></ul>
+        <ul>
+          <li><a href="auth.html">Sign Up</a></li>
+          <li><a href="auth.html">Log In</a></li>
+          <li><a href="dashboard.html">Dashboard</a></li>
+        </ul>
       </div>
       <div class="footer-col">
         <div class="footer-col-label">Legal</div>
-        <ul><li><a href="legal.html">Privacy Policy</a></li><li><a href="legal.html">Terms of Service</a></li></ul>
+        <ul>
+          <li><a href="legal.html">Privacy Policy</a></li>
+          <li><a href="legal.html">Terms of Service</a></li>
+        </ul>
       </div>
     </div>
   </div>
@@ -363,13 +896,12 @@ document.addEventListener('click', function(e) {
     if (dd) dd.classList.remove('open');
   }
 });
-// Check if logged in via Supabase session
 (async function() {
   try {
     var s = window.supabase;
     if (!s) return;
     var { createClient } = s;
-    var db = createClient('PASTE_YOUR_SUPABASE_URL_HERE', 'PASTE_YOUR_PUBLISHABLE_KEY_HERE');
+    var db = createClient('https://wzylgwvifdfnkmuleoxn.supabase.co', 'sb_publishable_FaPj5NQeqzsRE8kOme2lKQ_uXrHArbt');
     var result = await db.auth.getSession();
     if (result.data && result.data.session) {
       var authBtns = document.getElementById('navAuthBtns');
