@@ -1218,6 +1218,15 @@ function buildRecommendation(result) {
   rc.style.display = 'block';
 }
 
+function storeGradeForAuth(result) {
+  if (!result) return;
+  var grade = getLetterGrade(result.score);
+  var tier  = getTierInfo(result.score);
+  sessionStorage.setItem('pendingGrade', grade);
+  sessionStorage.setItem('pendingTier', tier.name);
+  sessionStorage.setItem('pendingScore', JSON.stringify(result));
+}
+
 function buildActions(result) {
   var el = document.getElementById('resultsActions');
   if (state.loggedIn) {
@@ -1227,8 +1236,8 @@ function buildActions(result) {
       '<button class="action-btn-secondary" onclick="retakeQuiz()" style="border:none;cursor:pointer;">Retake Quiz</button>';
   } else {
     el.innerHTML =
-      '<a href="auth.html" class="action-btn-primary">Create Free Account to Unlock &rarr;</a>' +
-      '<a href="auth.html?tab=login" class="action-btn-secondary">Already have an account? Sign In</a>' +
+      '<button class="action-btn-primary" onclick="storeGradeForAuth(state.lastResult);window.location.href='auth.html?next=giq-exam.html'">Unlock Full Results — Free &rarr;</button>' +
+      '<button class="action-btn-secondary" onclick="storeGradeForAuth(state.lastResult);window.location.href='auth.html?tab=login&next=giq-exam.html'">Already have an account? Sign In</button>' +
       '<button class="action-btn-secondary" onclick="retakeQuiz()" style="border:none;cursor:pointer;">Retake Without Saving</button>';
   }
 }
@@ -1254,10 +1263,12 @@ function showScreen(id) {
 async function saveScore(result) {
   try {
     if (typeof db === 'undefined' || !currentUser) return;
+    var grade = getLetterGrade(result.score);
     var payload = {
       user_id:    currentUser.id,
-      level:      result.peakBand,
+      level:      result.peakBand || 'adaptive',
       score:      result.score,
+      grade:      grade,
       correct:    result.correct,
       total:      15,
       raw_score:  result.rawScore,
@@ -1293,12 +1304,41 @@ function updateNavForLoggedIn() {}
 document.addEventListener('sessionReady', function() {
   if (currentUser) {
     state.loggedIn = true;
+
     // If results are already showing, rebuild sections
     if (document.getElementById('screenResults').classList.contains('active') && state.answers.length === 15) {
       var result = calcScore();
+      state.lastResult = result;
       buildPillarSection(result);
       buildRecommendation(result);
       buildActions(result);
+      // Clean up stored session data
+      sessionStorage.removeItem('pendingGrade');
+      sessionStorage.removeItem('pendingTier');
+      sessionStorage.removeItem('pendingScore');
+      return;
+    }
+
+    // Returning from auth page with a stored score — restore and show results
+    var stored = sessionStorage.getItem('pendingScore');
+    if (stored) {
+      try {
+        var result = JSON.parse(stored);
+        state.lastResult = result;
+        state.answers = new Array(15); // placeholder so checks pass
+        // Show results screen
+        document.querySelectorAll('.exam-screen').forEach(function(s){ s.classList.remove('active'); });
+        var resScreen = document.getElementById('screenResults');
+        if (resScreen) resScreen.classList.add('active');
+        // Populate grade/tier header
+        buildResultHeader(result);
+        buildPillarSection(result);
+        buildRecommendation(result);
+        buildActions(result);
+        sessionStorage.removeItem('pendingGrade');
+        sessionStorage.removeItem('pendingTier');
+        sessionStorage.removeItem('pendingScore');
+      } catch(e) { console.log('Score restore failed:', e); }
     }
   }
 });

@@ -6,8 +6,8 @@
 
 // ── SUPABASE CONFIG ──
 // Replace these with your real keys
-const SUPABASE_URL = 'https://wzylgwvifdfnkmuleoxn.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_FaPj5NQeqzsRE8kOme2lKQ_uXrHArbt';
+const SUPABASE_URL = 'PASTE_YOUR_SUPABASE_URL_HERE';
+const SUPABASE_KEY = 'PASTE_YOUR_PUBLISHABLE_KEY_HERE';
 
 const { createClient } = supabase;
 const db = createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -585,106 +585,227 @@ function buildDashModuleList() {
 // ══════════════════════════════════════════
 // GRIDIRON IQ DASHBOARD
 // ══════════════════════════════════════════
+
+var PILLAR_COLORS_DASH = ['#E8630A','#3B82F6','#8B5CF6','#F59E0B','#22C55E'];
+var PILLAR_NAMES_DASH  = ['Rules & Objectives','Positions & Responsibilities','Formations & Alignments','Plays & Concepts','Situational Awareness'];
+var PILLAR_SHORT       = ['Rules','Positions','Formations','Plays','Situational'];
+
+function getLetterGrade(score) {
+  if (score >= 97) return 'A+';
+  if (score >= 93) return 'A';
+  if (score >= 90) return 'A-';
+  if (score >= 87) return 'B+';
+  if (score >= 83) return 'B';
+  if (score >= 80) return 'B-';
+  if (score >= 77) return 'C+';
+  if (score >= 73) return 'C';
+  if (score >= 70) return 'C-';
+  if (score >= 60) return 'D';
+  return 'F';
+}
+
+function getTierName(score) {
+  if (score >= 85) return { name:'Elite IQ',   color:'#22C55E' };
+  if (score >= 70) return { name:'Advanced',    color:'#E8630A' };
+  if (score >= 55) return { name:'Developing',  color:'#F59E0B' };
+  if (score >= 40) return { name:'Learning',    color:'#3B82F6' };
+  return                   { name:'Rookie',     color:'#94A3B8' };
+}
+
 async function loadGIQScore() {
-  var card = document.getElementById('giqDashCard');
-  if (!card || !currentUser) return;
+  if (!currentUser) return;
 
   try {
+    // Load all scores sorted by most recent
     var result = await db
-      .from('giq_scores')
-      .select('score, level, correct, total, raw_score, taken_at')
-      .eq('user_id', currentUser.id)
-      .order('score', { ascending: false })
-      .limit(1);
-
-    if (result.error || !result.data || result.data.length === 0) {
-      // No score yet — show prompt
-      return;
-    }
-
-    var best = result.data[0];
-    var lvlColors = { rookie:'#94A3B8', pro:'#E8630A', mvp:'#22C55E' };
-    var color = lvlColors[best.level] || '#E8630A';
-
-    // Score display
-    var scoreEl = document.getElementById('giqDashScore');
-    if (scoreEl) {
-      scoreEl.innerHTML = best.score + '<span class="giq-dash-denom">/100</span>';
-    }
-
-    // Tier label
-    var tier;
-    if (best.score >= 90) tier = 'Elite IQ';
-    else if (best.score >= 75) tier = 'Advanced';
-    else if (best.score >= 60) tier = 'Developing';
-    else if (best.score >= 40) tier = 'Learning';
-    else tier = 'Rookie';
-
-    var metaEl = document.getElementById('giqDashMeta');
-    if (metaEl) {
-      var lvlName = best.level.charAt(0).toUpperCase() + best.level.slice(1);
-      var date = new Date(best.taken_at).toLocaleDateString('en-US', { month:'short', day:'numeric' });
-      metaEl.innerHTML =
-        '<div class="giq-dash-tier" style="color:' + color + '">' + tier + '</div>' +
-        '<div>' + lvlName + ' Level &middot; ' + best.correct + '/' + best.total + ' correct &middot; ' + date + '</div>';
-    }
-
-    // Update button to "Retake"
-    var btn = document.getElementById('giqDashBtn');
-    if (btn) {
-      btn.textContent = 'Retake Exam →';
-      btn.classList.add('retake');
-    }
-
-    // Fetch all scores for pillar data if available
-    var allResult = await db
       .from('giq_scores')
       .select('*')
       .eq('user_id', currentUser.id)
-      .order('taken_at', { ascending: false })
-      .limit(1);
+      .order('taken_at', { ascending: false });
 
-    if (allResult.data && allResult.data.length > 0) {
-      var latest = allResult.data[0];
-      var PILLARS = [
-        { key:'pillarrulesobjectives',    label:'Rules' },
-        { key:'pillarpositionsresponsibilities', label:'Positions' },
-        { key:'pillarformationsalignments', label:'Formations' },
-        { key:'pillarplaysconcepts',      label:'Plays' },
-        { key:'pillarsituationalawareness', label:'Situational' }
-      ];
+    var scores = result.data || [];
+    var quizCount = scores.length;
 
-      var pillarsEl = document.getElementById('giqDashPillars');
-      if (pillarsEl) {
-        pillarsEl.style.display = 'flex';
-        pillarsEl.innerHTML = '';
-        PILLARS.forEach(function(p) {
-          var raw = latest[p.key];
-          var pct = 0;
-          if (raw && raw.includes('/')) {
-            var parts = raw.split('/');
-            pct = parts[1] > 0 ? Math.round((parseInt(parts[0]) / parseInt(parts[1])) * 100) : 0;
-          }
-          var row = document.createElement('div');
-          row.className = 'giq-dash-pillar-row';
-          row.innerHTML =
-            '<div class="giq-dash-pillar-name">' + p.label + '</div>' +
-            '<div class="giq-dash-pillar-track"><div class="giq-dash-pillar-fill" style="width:0%;background:' + color + '" data-pct="' + pct + '"></div></div>' +
-            '<div class="giq-dash-pillar-pct">' + pct + '%</div>';
-          pillarsEl.appendChild(row);
-        });
-        // Animate bars
-        setTimeout(function() {
-          document.querySelectorAll('.giq-dash-pillar-fill').forEach(function(el) {
-            el.style.width = el.getAttribute('data-pct') + '%';
-          });
-        }, 300);
+    // ── Quiz count indicator ──
+    var countEl = document.getElementById('giqQuizCount');
+    if (countEl) {
+      if (quizCount === 0) {
+        countEl.textContent = '2 free quizzes available';
+      } else if (quizCount === 1) {
+        countEl.textContent = '1 free quiz remaining';
+      } else {
+        countEl.textContent = quizCount + ' quizzes taken';
       }
     }
 
+    if (quizCount === 0) {
+      // No score yet — show empty state + quiz CTA recommendation
+      updateRecommendation('quiz', null, null);
+      return;
+    }
+
+    // ── Best score for main display ──
+    var best = scores.reduce(function(b, s) { return (s.score > b.score) ? s : b; }, scores[0]);
+    var latest = scores[0];
+    var grade = best.grade || getLetterGrade(best.score);
+    var tier  = getTierName(best.score);
+
+    // Switch to score state
+    var emptyEl = document.getElementById('giqEmpty');
+    var scoreEl = document.getElementById('giqScoreState');
+    if (emptyEl) emptyEl.style.display = 'none';
+    if (scoreEl) scoreEl.style.display = 'block';
+
+    // Populate grade/tier
+    var gradeEl = document.getElementById('giqGrade');
+    if (gradeEl) { gradeEl.textContent = grade; gradeEl.style.color = tier.color; }
+    var tierEl = document.getElementById('giqTier');
+    if (tierEl) { tierEl.textContent = tier.name; tierEl.style.color = tier.color; }
+    var scoreNumEl = document.getElementById('giqScoreNum');
+    if (scoreNumEl) scoreNumEl.textContent = best.score + ' / 100';
+
+    // Update button
+    var btn = document.getElementById('giqDashBtn');
+    if (btn) btn.textContent = 'Retake Quiz →';
+
+    // ── Pillar bars ──
+    var pillarsEl = document.getElementById('giqDashPillars');
+    if (pillarsEl && latest) {
+      pillarsEl.style.display = 'flex';
+      pillarsEl.innerHTML = '';
+      PILLAR_NAMES_DASH.forEach(function(p, i) {
+        var key = 'pillar_' + p.replace(/[^a-zA-Z]/g,'').toLowerCase();
+        var raw = latest[key];
+        var pct = 0;
+        if (raw && raw.includes('/')) {
+          var parts = raw.split('/');
+          pct = parseInt(parts[1]) > 0 ? Math.round(parseInt(parts[0]) / parseInt(parts[1]) * 100) : 0;
+        }
+        var row = document.createElement('div');
+        row.className = 'db-iq-pillar-row';
+        row.innerHTML =
+          '<div class="db-iq-pillar-name">' + PILLAR_SHORT[i] + '</div>' +
+          '<div class="db-iq-pillar-track"><div class="db-iq-pillar-fill" style="width:0%;background:' + PILLAR_COLORS_DASH[i] + '" data-pct="' + pct + '"></div></div>' +
+          '<div class="db-iq-pillar-pct">' + pct + '%</div>';
+        pillarsEl.appendChild(row);
+      });
+      setTimeout(function() {
+        document.querySelectorAll('.db-iq-pillar-fill').forEach(function(el) {
+          el.style.width = el.getAttribute('data-pct') + '%';
+        });
+      }, 300);
+    }
+
+    // ── Recommendation ──
+    updateRecommendation('scored', best, latest);
+
+    // ── Quiz History ──
+    buildQuizHistory(scores);
+
   } catch(e) {
-    console.error('GIQ score load error:', e);
+    console.error('GIQ load error:', e);
   }
+}
+
+function updateRecommendation(type, best, latest) {
+  var eyebrow = document.getElementById('dbRecEyebrow');
+  var title   = document.getElementById('dbRecTitle');
+  var body    = document.getElementById('dbRecBody');
+  var btn     = document.getElementById('dbRecBtn');
+  var card    = document.getElementById('dbRecCard');
+
+  if (!eyebrow || !title || !body || !btn) return;
+
+  if (type === 'quiz') {
+    // No score yet
+    eyebrow.textContent = 'Start Here';
+    title.textContent   = 'TAKE THE GRIDIRON IQ QUIZ';
+    body.textContent    = 'Find out where your football knowledge stands. 15 adaptive questions. Instant grade. Free.';
+    btn.href = 'giq-exam.html';
+    btn.textContent = 'Start Quiz →';
+    if (card) card.style.borderLeftColor = 'var(--orange-500)';
+    return;
+  }
+
+  var score = best.score;
+
+  if (score >= 85) {
+    // Elite — point to upcoming content
+    eyebrow.textContent = 'Strong Gridiron IQ';
+    title.textContent   = "YOU'RE AHEAD OF THE CURVE.";
+    body.textContent    = "Your score puts you in the top tier. Pro and Elite level content is coming soon — you'll be the first to know when it drops.";
+    btn.href = 'giq-exam.html';
+    btn.textContent = 'Retake Quiz →';
+    if (card) card.style.borderLeftColor = '#22C55E';
+    if (eyebrow) eyebrow.style.color = '#16A34A';
+    return;
+  }
+
+  // Find weakest pillar from latest attempt
+  var weakest = null;
+  var weakestPct = 1;
+  var weakestModule = 'Module 8';
+  var pillarModules = {
+    'Rules & Objectives': 'Modules 1 & 2',
+    'Positions & Responsibilities': 'Modules 4 & 5',
+    'Formations & Alignments': 'Module 6',
+    'Plays & Concepts': 'Modules 6 & 7',
+    'Situational Awareness': 'Module 8'
+  };
+
+  if (latest) {
+    PILLAR_NAMES_DASH.forEach(function(p) {
+      var key = 'pillar_' + p.replace(/[^a-zA-Z]/g,'').toLowerCase();
+      var raw = latest[key];
+      if (raw && raw.includes('/')) {
+        var parts = raw.split('/');
+        var pct = parseInt(parts[1]) > 0 ? parseInt(parts[0]) / parseInt(parts[1]) : 0;
+        if (pct < weakestPct) { weakestPct = pct; weakest = p; weakestModule = pillarModules[p] || 'Module 8'; }
+      }
+    });
+  }
+
+  if (score >= 70 && weakest) {
+    eyebrow.textContent = 'Targeted Improvement';
+    title.textContent   = 'BUILD ' + weakest.toUpperCase() + '.';
+    body.textContent    = 'Your weakest pillar is ' + weakest + '. ' + weakestModule + ' in the Rookie course targets this directly. Complete it and retake the quiz to see your score improve.';
+    btn.href = 'program.html';
+    btn.textContent = 'Start the Course →';
+  } else {
+    eyebrow.textContent = 'Recommended Next Step';
+    title.textContent   = 'COMPLETE THE ROOKIE COURSE.';
+    body.textContent    = 'Your score shows room to build across multiple pillars. The free Rookie course covers all 5 pillars in 8 modules. Finish it and retake the quiz — the improvement will be measurable.';
+    btn.href = 'program.html';
+    btn.textContent = 'Start the Course →';
+  }
+}
+
+function buildQuizHistory(scores) {
+  if (!scores || scores.length === 0) return;
+
+  var section = document.getElementById('dbHistorySection');
+  var list    = document.getElementById('dbHistoryList');
+  if (!section || !list) return;
+
+  section.style.display = 'block';
+  list.innerHTML = '';
+
+  scores.slice(0, 5).forEach(function(s) {
+    var grade = s.grade || getLetterGrade(s.score);
+    var tier  = getTierName(s.score);
+    var date  = new Date(s.taken_at).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
+
+    var row = document.createElement('div');
+    row.className = 'db-history-row';
+    row.innerHTML =
+      '<div class="db-history-grade" style="color:' + tier.color + '">' + grade + '</div>' +
+      '<div class="db-history-info">' +
+        '<div class="db-history-tier" style="color:' + tier.color + '">' + tier.name + '</div>' +
+        '<div class="db-history-meta">' + date + ' &middot; ' + (s.correct || '?') + '/15 correct</div>' +
+      '</div>' +
+      '<div class="db-history-score" style="color:' + tier.color + '">' + s.score + '<span>/100</span></div>';
+    list.appendChild(row);
+  });
 }
 
 // ══════════════════════════════════════════

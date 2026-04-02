@@ -488,16 +488,51 @@
       <div class="auth-brand-mark">FDA</div>
       <span class="auth-brand-name">FIRST DOWN <span>ACADEMY</span></span>
     </div>
-    <h1 class="auth-left-headline">
-      BUILD YOUR
-      <span class="acc">FOOTBALL IQ</span>
-      <span class="ghost">TODAY.</span>
+    <h1 class="auth-left-headline" id="authLeftHeadline">
+      UNLOCK YOUR
+      <span class="acc">GRIDIRON IQ</span>
+      <span class="ghost">RESULTS.</span>
     </h1>
-    <p class="auth-left-sub">Join thousands of players and coaches using First Down Academy to understand the whole game — not just one position.</p>
-    <div class="auth-left-stats">
+    <p class="auth-left-sub" id="authLeftSub">You completed the quiz. Create a free account to unlock your full score, pillar breakdown, and personalized improvement plan.</p>
+
+    <!-- Quiz result preview — shown when coming from exam -->
+    <div id="authGradePreview" style="display:none;background:rgba(232,99,10,.1);border:1px solid rgba(232,99,10,.2);border-radius:16px;padding:20px 22px;margin-bottom:28px;">
+      <div style="font-family:var(--font-m);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--orange-300);margin-bottom:8px;">Your Quiz Result</div>
+      <div style="display:flex;align-items:center;gap:16px;">
+        <div id="authGradeDisplay" style="font-family:var(--font-d);font-size:64px;color:white;line-height:1;letter-spacing:.02em;"></div>
+        <div>
+          <div id="authTierDisplay" style="font-family:var(--font-d);font-size:18px;color:white;letter-spacing:.06em;text-transform:uppercase;"></div>
+          <div style="font-size:12px;color:rgba(255,255,255,.4);margin-top:4px;">Sign up to unlock your full results</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- What they unlock -->
+    <div id="authUnlockList" style="margin-bottom:32px;">
+      <div style="font-family:var(--font-m);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:14px;">What you unlock — free</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:rgba(255,255,255,.6);">
+          <span style="color:var(--orange-400);font-size:16px;">&#128200;</span> Exact Gridiron IQ score (0–100)
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:rgba(255,255,255,.6);">
+          <span style="color:var(--orange-400);font-size:16px;">&#129504;</span> Score breakdown across all 5 pillars
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:rgba(255,255,255,.6);">
+          <span style="color:var(--orange-400);font-size:16px;">&#127942;</span> Personalized improvement plan
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:rgba(255,255,255,.6);">
+          <span style="color:var(--orange-400);font-size:16px;">&#128203;</span> Quiz history — track your improvement
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:rgba(255,255,255,.6);">
+          <span style="color:var(--orange-400);font-size:16px;">&#128218;</span> Full Rookie course — 8 modules, free
+        </div>
+      </div>
+    </div>
+
+    <div class="auth-left-stats" id="authLeftStats">
+      <div><div class="auth-stat-num">15</div><div class="auth-stat-label">Questions</div></div>
+      <div><div class="auth-stat-num">5</div><div class="auth-stat-label">Pillars</div></div>
       <div><div class="auth-stat-num">8</div><div class="auth-stat-label">Modules</div></div>
-      <div><div class="auth-stat-num">84</div><div class="auth-stat-label">Slides</div></div>
-      <div><div class="auth-stat-num">5</div><div class="auth-stat-label">IQ Pillars</div></div>
       <div><div class="auth-stat-num">Free</div><div class="auth-stat-label">Always</div></div>
     </div>
   </div>
@@ -521,8 +556,8 @@
       <!-- ── SIGN UP FORM ── -->
       <div id="formSignup">
 
-        <div class="auth-mode-label" id="signupModeLabel">Create your account</div>
-        <div class="auth-right-title" id="signupTitle">Join Free</div>
+        <div class="auth-mode-label" id="signupModeLabel">Create your free account</div>
+        <div class="auth-right-title" id="signupTitle">Unlock Your Results</div>
 
         <!-- Role selector -->
         <div class="auth-role-row">
@@ -691,12 +726,16 @@ function showPage(name) {
 }
 
 function updateNavForLoggedIn() {
-  window.location.href = 'dashboard.html';
+  var next = new URLSearchParams(window.location.search).get('next');
+  window.location.href = next || 'dashboard.html';
 }
 
-// If already logged in go to dashboard
+// If already logged in — redirect to next page or dashboard
 document.addEventListener('sessionReady', function() {
-  if (currentUser) window.location.href = 'dashboard.html';
+  if (currentUser) {
+    var next = new URLSearchParams(window.location.search).get('next');
+    window.location.href = next || 'dashboard.html';
+  }
 });
 
 // Forgot password — sends reset email then shows confirmation
@@ -722,9 +761,40 @@ function handleForgotPassword() {
 }
 
 // Show login tab if ?tab=login
-if (new URLSearchParams(window.location.search).get('tab') === 'login') {
+var _params = new URLSearchParams(window.location.search);
+if (_params.get('tab') === 'login') {
   document.addEventListener('DOMContentLoaded', function() { switchTab('login'); });
 }
+
+// Handle ?next=giq-exam.html — show quiz result context on left panel
+(function() {
+  var next = _params.get('next');
+  var isFromQuiz = next && next.indexOf('giq-exam') !== -1;
+
+  // Try to read stored grade from sessionStorage (set by giq-exam.html before redirect)
+  var storedGrade = sessionStorage.getItem('pendingGrade');
+  var storedTier  = sessionStorage.getItem('pendingTier');
+
+  if (!isFromQuiz) {
+    // Generic signup — update messaging
+    var headline = document.getElementById('authLeftHeadline');
+    if (headline) headline.innerHTML = 'BUILD YOUR <span class="acc">FOOTBALL IQ</span> <span class="ghost">TODAY.</span>';
+    var sub = document.getElementById('authLeftSub');
+    if (sub) sub.textContent = 'Join First Down Academy free. Take the Gridiron IQ quiz, build your football knowledge, and track your improvement over time.';
+    var unlockList = document.getElementById('authUnlockList');
+    // Keep the unlock list — it's relevant for all signups
+  }
+
+  if (isFromQuiz && storedGrade) {
+    // Show the grade preview card
+    var preview = document.getElementById('authGradePreview');
+    if (preview) preview.style.display = 'block';
+    var gradeEl = document.getElementById('authGradeDisplay');
+    if (gradeEl) gradeEl.textContent = storedGrade;
+    var tierEl = document.getElementById('authTierDisplay');
+    if (tierEl) tierEl.textContent = storedTier || '';
+  }
+})();
 
 // ── Tab switching ──
 function switchTab(tab) {
