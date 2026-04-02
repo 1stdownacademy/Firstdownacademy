@@ -1903,3 +1903,36 @@ footer { background:var(--navy); padding:48px 0 32px; border-top:1px solid rgba(
   .db-history-row { padding:12px 16px; }
   .db-history-header { padding:16px 16px 12px; }
 }
+
+/* ── PILLAR LINE CHART ── */
+.pillar-chart-wrap {
+  background:rgba(10,15,40,.6);
+  border-radius:12px;
+  padding:16px 12px 8px;
+  margin-bottom:16px;
+  border:1px solid rgba(255,255,255,.06);
+}
+.pillar-section-unlocked { }
+.pillar-unlocked-head {
+  font-family:var(--font-m);
+  font-size:10px;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--grey-400);
+  margin-bottom:14px;
+}
+.pillar-unlocked-body { display:flex;flex-direction:column;gap:8px; }
+.pillar-row-full { display:flex;align-items:center;gap:12px; }
+.pillar-name-full {
+  font-size:11px;font-weight:600;
+  width:80px;flex-shrink:0;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.pillar-track-full {
+  flex:1;height:5px;background:var(--grey-100);border-radius:100px;overflow:hidden;
+}
+.pillar-fill-full { height:100%;border-radius:100px;transition:width 1s ease; }
+.pillar-pct-full {
+  font-family:var(--font-m);font-size:11px;color:var(--grey-500);
+  width:32px;text-align:right;flex-shrink:0;
+}

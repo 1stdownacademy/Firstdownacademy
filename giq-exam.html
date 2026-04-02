@@ -860,6 +860,11 @@ function buildBlock(diff, exclude, count) {
   return result.slice(0, count);
 }
 
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
+  document.getElementById(id).classList.add('active');
+}
+
 function startQuiz() {
   // Build block 1 (always easy)
   var block1 = buildBlock('easy', [], BLOCK_SIZE);
@@ -1143,39 +1148,98 @@ function showResults() {
 
 function buildPillarSection(result) {
   var PILLARS = ['Rules & Objectives','Positions & Responsibilities','Formations & Alignments','Plays & Concepts','Situational Awareness'];
+  var SHORT   = ['Rules','Positions','Formations','Plays','Situational'];
+  var COLORS  = ['#E8630A','#3B82F6','#8B5CF6','#F59E0B','#22C55E'];
   var el = document.getElementById('pillarSection');
+  if (!el) return;
 
   if (state.loggedIn) {
-    // Full unlocked view
-    var html = '<div class="pillar-section-unlocked"><div class="pillar-unlocked-head">Pillar Breakdown</div><div class="pillar-unlocked-body">';
-    PILLARS.forEach(function(p) {
+    var scores = PILLARS.map(function(p) {
+      var d = result.pillarData[p];
+      return d ? d.pct : 0;
+    });
+
+    // Build SVG line chart
+    var W = 480, H = 160, PAD = 40;
+    var chartW = W - PAD * 2;
+    var chartH = H - 30;
+    var step = chartW / (PILLARS.length - 1);
+
+    // Points
+    var points = scores.map(function(s, i) {
+      return { x: PAD + i * step, y: 16 + ((100 - s) / 100) * chartH };
+    });
+
+    // Grid lines
+    var gridLines = '';
+    [0, 25, 50, 75, 100].forEach(function(v) {
+      var y = 16 + ((100 - v) / 100) * chartH;
+      gridLines += '<line x1="' + PAD + '" y1="' + y + '" x2="' + (W - PAD) + '" y2="' + y + '" stroke="rgba(255,255,255,.06)" stroke-width="1"/>';
+      gridLines += '<text x="' + (PAD - 6) + '" y="' + (y + 4) + '" text-anchor="end" font-size="9" fill="rgba(255,255,255,.25)" font-family="sans-serif">' + v + '</text>';
+    });
+
+    // Filled area under line
+    var areaPath = 'M ' + points[0].x + ' ' + points[0].y;
+    points.slice(1).forEach(function(p) { areaPath += ' L ' + p.x + ' ' + p.y; });
+    areaPath += ' L ' + points[points.length-1].x + ' ' + (H - 14) + ' L ' + points[0].x + ' ' + (H - 14) + ' Z';
+
+    // Line path
+    var linePath = 'M ' + points[0].x + ' ' + points[0].y;
+    points.slice(1).forEach(function(p) { linePath += ' L ' + p.x + ' ' + p.y; });
+
+    // Dots and labels
+    var dots = '';
+    points.forEach(function(p, i) {
+      var score = scores[i];
+      dots += '<circle cx="' + p.x + '" cy="' + p.y + '" r="5" fill="' + COLORS[i] + '" stroke="white" stroke-width="1.5"/>';
+      dots += '<text x="' + p.x + '" y="' + (H - 2) + '" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.4)" font-family="sans-serif">' + SHORT[i] + '</text>';
+      // Score tooltip above dot
+      dots += '<text x="' + p.x + '" y="' + (p.y - 10) + '" text-anchor="middle" font-size="10" fill="white" font-family="sans-serif" font-weight="bold">' + score + '%</text>';
+    });
+
+    var svgChart =
+      '<svg viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">' +
+        gridLines +
+        '<path d="' + areaPath + '" fill="url(#areaGrad)" opacity="0.4"/>' +
+        '<defs><linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#E8630A" stop-opacity="0.6"/><stop offset="100%" stop-color="#E8630A" stop-opacity="0"/></linearGradient></defs>' +
+        '<path d="' + linePath + '" fill="none" stroke="#E8630A" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>' +
+        dots +
+      '</svg>';
+
+    // Pillar bars below chart
+    var bars = PILLARS.map(function(p, i) {
       var d = result.pillarData[p];
       var pct = d ? d.pct : 0;
-      var color = result.tierColor;
-      html += '<div class="pillar-row-full">' +
-        '<div class="pillar-name-full">' + p + '</div>' +
-        '<div class="pillar-track-full"><div class="pillar-fill-full" style="width:0%;background:' + color + '" data-pct="' + pct + '"></div></div>' +
+      return '<div class="pillar-row-full">' +
+        '<div class="pillar-name-full" style="color:' + COLORS[i] + '">' + SHORT[i] + '</div>' +
+        '<div class="pillar-track-full"><div class="pillar-fill-full" style="width:0%;background:' + COLORS[i] + '" data-pct="' + pct + '"></div></div>' +
         '<div class="pillar-pct-full">' + pct + '%</div>' +
         '</div>';
-    });
-    html += '</div></div>';
-    el.innerHTML = html;
+    }).join('');
+
+    el.innerHTML =
+      '<div class="pillar-section-unlocked">' +
+        '<div class="pillar-unlocked-head">Pillar Breakdown</div>' +
+        '<div class="pillar-chart-wrap">' + svgChart + '</div>' +
+        '<div class="pillar-unlocked-body">' + bars + '</div>' +
+      '</div>';
+
     setTimeout(function() {
       document.querySelectorAll('.pillar-fill-full').forEach(function(bar) {
         bar.style.width = bar.getAttribute('data-pct') + '%';
       });
-    }, 200);
+    }, 300);
+
   } else {
-    // Locked view with blur
+    // Locked view
     var html = '<div class="locked-section">' +
       '<div class="locked-head">' +
-        '<div class="locked-head-title">Pillar Breakdown</div>' +
+        '<div class="locked-head-title">Pillar Breakdown + Chart</div>' +
         '<div class="lock-badge">&#128274; Free to unlock</div>' +
       '</div>' +
       '<div class="locked-body">' +
         '<div class="pillar-rows-preview">';
-    PILLARS.forEach(function(p) {
-      // Show fake bars (blurred anyway)
+    PILLARS.forEach(function(p, i) {
       var fakePct = Math.floor(Math.random() * 40) + 40;
       html += '<div class="pillar-row-prev">' +
         '<div class="pillar-name-prev">' + p + '</div>' +
@@ -1187,12 +1251,13 @@ function buildPillarSection(result) {
       '<div class="locked-overlay">' +
         '<div class="locked-overlay-icon">&#128274;</div>' +
         '<div class="locked-overlay-title">Unlock Your Full Results</div>' +
-        '<div class="locked-overlay-sub">Create a free account to see your exact score, pillar breakdown, and personalized recommendation.</div>' +
+        '<div class="locked-overlay-sub">Create a free account to see your exact score, pillar chart, and personalized recommendation.</div>' +
       '</div>' +
       '</div></div>';
     el.innerHTML = html;
   }
 }
+
 
 function buildRecommendation(result) {
   var rc = document.getElementById('recCard');
@@ -1255,11 +1320,6 @@ function retakeQuiz() {
 }
 
 // ── UTILS ──────────────────────────────────────────────────────────────────
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
-  document.getElementById(id).classList.add('active');
-}
-
 async function saveScore(result) {
   try {
     if (typeof db === 'undefined' || !currentUser) return;
