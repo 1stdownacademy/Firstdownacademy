@@ -6,914 +6,710 @@
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>First Down Academy — Test & Build Your Gridiron IQ</title>
-<meta name="description" content="Test your football IQ, see where you rank, and build the football intelligence that separates good players from great ones. Free. For all ages.">
-<link rel="stylesheet" href="style.css?v=3">
+<title>First Down Academy — Gridiron Intelligence Platform</title>
+<meta name="description" content="Test your Gridiron IQ. Build your football knowledge. Track your improvement. Free for players ages 8–18.">
+<link rel="stylesheet" href="style.css?v=4">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;0,900;1,800;1,900&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-/* ── PAGE-LEVEL ANIMATIONS ── */
-@keyframes fadeUp {
-  from { opacity:0; transform:translateY(24px); }
-  to   { opacity:1; transform:translateY(0); }
+/* ── HOME PAGE STYLES ── */
+:root {
+  --bg:   #020f1e;
+  --bg2:  #081b2c;
+  --bg3:  #0d2134;
+  --lime: #C1FF22;
+  --lime2:#a8e01e;
+  --muted:#9eacc0;
+  --border:#3c495a;
+  --fd:   'Barlow Condensed',sans-serif;
+  --fb:   'Barlow',sans-serif;
 }
-@keyframes fadeIn {
-  from { opacity:0; } to { opacity:1; }
+
+/* ── HOME NAV OVERRIDES ── */
+.home-nav {
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  background:rgba(2,10,20,.92);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  height:64px;display:flex;align-items:center;
+  padding:0 24px;justify-content:space-between;
+  border-bottom:1px solid rgba(255,255,255,.06);
 }
-@keyframes pulse-ring {
-  0%   { transform:scale(1);   opacity:.6; }
-  100% { transform:scale(1.5); opacity:0;  }
+.home-nav-brand {
+  font-family:var(--fd);font-size:20px;font-weight:900;
+  letter-spacing:.08em;text-transform:uppercase;
+  color:var(--lime);font-style:italic;text-decoration:none;
 }
-@keyframes float {
-  0%,100% { transform:translateY(0); }
-  50%      { transform:translateY(-8px); }
+.home-nav-right { display:flex;align-items:center;gap:12px; }
+.home-nav-iq {
+  background:var(--bg3);padding:6px 14px;border-radius:2px;
+  font-family:var(--fd);font-size:13px;font-weight:900;
+  color:var(--lime);letter-spacing:.08em;text-transform:uppercase;
+  cursor:pointer;border:none;display:none;
 }
-@keyframes bar-grow {
-  from { width:0; }
+.home-nav-cta {
+  background:var(--lime);color:#1a2800;
+  font-family:var(--fd);font-size:13px;font-weight:900;
+  letter-spacing:.1em;text-transform:uppercase;
+  padding:8px 18px;border:none;cursor:pointer;
+  text-decoration:none;border-radius:2px;transition:background .18s;
 }
+.home-nav-cta:hover { background:var(--lime2); }
+.home-nav-login {
+  font-family:var(--fd);font-size:13px;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(255,255,255,.5);text-decoration:none;transition:color .18s;
+}
+.home-nav-login:hover { color:#fff; }
+.home-nav-dash {
+  display:none;
+  background:var(--bg3);border:1px solid rgba(255,255,255,.12);
+  color:#fff;font-family:var(--fd);font-size:13px;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;
+  padding:8px 16px;border-radius:2px;text-decoration:none;transition:background .18s;
+}
+.home-nav-dash:hover { background:var(--bg2); }
 
 /* ── HERO ── */
-.hero {
-  min-height:100vh;
-  background:var(--navy-950);
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  padding:100px 24px 60px;
-  position:relative;
-  overflow:hidden;
-  text-align:center;
+.home-hero {
+  position:relative;min-height:100vh;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  overflow:hidden;padding-top:64px;
+  background:var(--bg);
 }
-.hero-grid {
-  position:absolute;inset:0;
+.home-hero-img {
+  position:absolute;inset:0;z-index:0;
+  background:
+    linear-gradient(to top,var(--bg) 0%,rgba(2,15,30,.6) 55%,rgba(2,15,30,.3) 100%),
+    linear-gradient(160deg,rgba(193,255,34,.04) 0%,transparent 60%);
+}
+.home-hero-grid {
+  position:absolute;inset:0;z-index:1;
   background-image:
-    linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
-  background-size:60px 60px;
+    repeating-linear-gradient(90deg,rgba(255,255,255,.02) 0,rgba(255,255,255,.02) 1px,transparent 1px,transparent 80px),
+    repeating-linear-gradient(0deg,rgba(255,255,255,.015) 0,rgba(255,255,255,.015) 1px,transparent 1px,transparent 80px);
   pointer-events:none;
 }
-.hero-glow-left {
-  position:absolute;top:-200px;left:-200px;
-  width:600px;height:600px;
-  background:radial-gradient(circle, rgba(232,99,10,.15), transparent 70%);
-  pointer-events:none;
-}
-.hero-glow-right {
-  position:absolute;bottom:-200px;right:-200px;
-  width:500px;height:500px;
-  background:radial-gradient(circle, rgba(30,58,138,.2), transparent 70%);
-  pointer-events:none;
-}
-.hero-eyebrow {
-  display:inline-flex;align-items:center;gap:8px;
-  font-family:var(--font-m);font-size:11px;letter-spacing:.2em;text-transform:uppercase;
-  color:var(--orange-300);margin-bottom:24px;
-  animation:fadeIn .6s ease both;
-}
-.hero-eyebrow-dot {
-  width:6px;height:6px;border-radius:50%;background:var(--orange-500);
-  position:relative;
-}
-.hero-eyebrow-dot::after {
-  content:'';position:absolute;inset:-3px;border-radius:50%;
-  border:1px solid var(--orange-400);
-  animation:pulse-ring 2s ease-out infinite;
-}
-.hero-headline {
-  font-family:var(--font-d);
-  font-size:clamp(44px,8vw,96px);
-  color:white;
-  letter-spacing:.02em;
-  text-transform:uppercase;
-  line-height:.9;
-  margin-bottom:12px;
-  animation:fadeUp .7s .1s ease both;
-}
-.hero-headline-accent {
-  color:var(--orange-500);
-  display:block;
-}
-.hero-headline-sub {
-  color:rgba(255,255,255,.12);
-  display:block;
-  font-size:.55em;
-  letter-spacing:.06em;
-}
-.hero-sub {
-  font-size:clamp(15px,2vw,18px);
-  color:rgba(255,255,255,.45);
-  max-width:540px;
-  margin:0 auto 48px;
-  line-height:1.7;
-  animation:fadeUp .7s .2s ease both;
-}
-
-/* ── TWO PATH CARDS ── */
-.hero-paths {
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:16px;
-  max-width:760px;
-  width:100%;
-  margin:0 auto 40px;
-  animation:fadeUp .7s .3s ease both;
-}
-.path-card {
-  border-radius:20px;
-  padding:28px 26px;
-  text-align:left;
-  cursor:pointer;
-  transition:transform .2s, box-shadow .2s;
-  text-decoration:none;
-  display:block;
-  position:relative;
-  overflow:hidden;
-}
-.path-card:hover { transform:translateY(-4px); }
-.path-card-primary {
-  background:var(--orange-500);
-  box-shadow:0 8px 32px rgba(232,99,10,.35);
-}
-.path-card-primary:hover {
-  box-shadow:0 16px 48px rgba(232,99,10,.5);
-}
-.path-card-secondary {
-  background:rgba(255,255,255,.05);
-  border:1.5px solid rgba(255,255,255,.12);
-}
-.path-card-secondary:hover {
-  background:rgba(255,255,255,.09);
-  border-color:rgba(255,255,255,.25);
-}
-.path-tag {
-  font-family:var(--font-m);font-size:9px;letter-spacing:.18em;text-transform:uppercase;
-  margin-bottom:14px;display:flex;align-items:center;gap:6px;
-}
-.path-tag-primary { color:rgba(255,255,255,.7); }
-.path-tag-secondary { color:rgba(255,255,255,.4); }
-.path-tag-dot {
-  width:5px;height:5px;border-radius:50%;flex-shrink:0;
-}
-.path-title {
-  font-family:var(--font-d);font-size:clamp(20px,3vw,28px);
-  text-transform:uppercase;letter-spacing:.04em;line-height:1;
-  margin-bottom:10px;color:white;
-}
-.path-desc {
-  font-size:13px;line-height:1.6;margin-bottom:18px;
-}
-.path-desc-primary { color:rgba(255,255,255,.8); }
-.path-desc-secondary { color:rgba(255,255,255,.4); }
-.path-meta {
-  display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px;
-}
-.path-pill {
-  font-family:var(--font-m);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
-  padding:4px 10px;border-radius:100px;
-}
-.path-pill-primary { background:rgba(255,255,255,.2);color:rgba(255,255,255,.9); }
-.path-pill-secondary { background:rgba(255,255,255,.06);color:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.08); }
-.path-cta {
-  font-family:var(--font-m);font-size:13px;font-weight:700;letter-spacing:.08em;
-  text-transform:uppercase;display:flex;align-items:center;gap:6px;
-}
-.path-cta-primary { color:white; }
-.path-cta-secondary { color:rgba(255,255,255,.5); }
-.path-bg-letter {
-  position:absolute;bottom:-20px;right:-10px;
-  font-family:var(--font-d);font-size:120px;letter-spacing:.04em;
-  line-height:1;pointer-events:none;text-transform:uppercase;
-}
-.path-bg-letter-primary { color:rgba(255,255,255,.08); }
-.path-bg-letter-secondary { color:rgba(255,255,255,.03); }
-
-.hero-note {
-  font-family:var(--font-m);font-size:11px;letter-spacing:.08em;text-transform:uppercase;
-  color:rgba(255,255,255,.2);
-  animation:fadeIn 1s .5s ease both;
-}
-
-/* ── TICKER ── */
-.ticker { background:var(--orange-500);padding:12px 0;overflow:hidden; }
-.ticker-track {
-  display:flex;gap:0;white-space:nowrap;
-  animation:ticker-scroll 30s linear infinite;
-}
-@keyframes ticker-scroll {
-  from { transform:translateX(0); }
-  to   { transform:translateX(-50%); }
-}
-.ticker-item {
-  font-family:var(--font-m);font-size:12px;font-weight:700;
-  letter-spacing:.12em;text-transform:uppercase;color:white;
-  padding:0 28px;display:flex;align-items:center;gap:16px;flex-shrink:0;
-}
-.ticker-sep { color:rgba(255,255,255,.4);font-size:8px; }
-
-/* ── SECTION: WHY FDA ── */
-.why-section {
-  background:white;
-  padding:80px 24px;
-}
-.why-inner {
-  max-width:1100px;margin:0 auto;
-  display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;
-}
-.why-left {}
-.why-eyebrow {
-  font-family:var(--font-m);font-size:10px;letter-spacing:.18em;text-transform:uppercase;
-  color:var(--orange-500);margin-bottom:16px;display:flex;align-items:center;gap:8px;
-}
-.why-title {
-  font-family:var(--font-d);font-size:clamp(28px,4vw,44px);
-  color:var(--navy-900);letter-spacing:.04em;text-transform:uppercase;
-  line-height:.95;margin-bottom:20px;
-}
-.why-title span { color:var(--orange-500); }
-.why-body {
-  font-size:15px;color:var(--grey-500);line-height:1.75;margin-bottom:16px;
-}
-.why-body strong { color:var(--navy-900); }
-.why-right {}
-.why-points { display:flex;flex-direction:column;gap:20px; }
-.why-point {
-  display:flex;gap:16px;align-items:flex-start;
-  padding:20px;border-radius:16px;
-  background:var(--grey-50);border:1px solid var(--grey-100);
-  transition:border-color .2s,transform .2s;
-}
-.why-point:hover { border-color:var(--orange-300);transform:translateX(4px); }
-.why-point-icon {
-  width:40px;height:40px;background:var(--navy-900);border-radius:12px;
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;
-}
-.why-point-title {
-  font-family:var(--font-m);font-size:13px;font-weight:700;
-  letter-spacing:.06em;text-transform:uppercase;color:var(--navy-900);margin-bottom:4px;
-}
-.why-point-body { font-size:13px;color:var(--grey-500);line-height:1.6; }
-
-/* ── SECTION: HOW IT WORKS ── */
-.how-section {
-  background:var(--navy-950);
-  padding:80px 24px;
-  position:relative;overflow:hidden;
-}
-.how-grid-bg {
-  position:absolute;inset:0;
-  background-image:
-    linear-gradient(rgba(255,255,255,.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
-  background-size:40px 40px;pointer-events:none;
-}
-.how-inner { max-width:960px;margin:0 auto;position:relative;z-index:1; }
-.how-header { text-align:center;margin-bottom:56px; }
-.how-eyebrow {
-  font-family:var(--font-m);font-size:10px;letter-spacing:.18em;text-transform:uppercase;
-  color:var(--orange-300);margin-bottom:12px;
-}
-.how-title {
-  font-family:var(--font-d);font-size:clamp(28px,4vw,44px);
-  color:white;letter-spacing:.04em;text-transform:uppercase;line-height:.95;
-}
-.how-steps {
-  display:grid;grid-template-columns:repeat(3,1fr);gap:2px;
-  background:rgba(255,255,255,.06);border-radius:20px;overflow:hidden;
-}
-.how-step {
-  background:var(--navy-900);
-  padding:32px 28px;
-  position:relative;
-}
-.how-step-num {
-  font-family:var(--font-d);font-size:64px;color:rgba(255,255,255,.04);
-  line-height:1;margin-bottom:16px;letter-spacing:.04em;
-}
-.how-step-icon {
-  width:44px;height:44px;border-radius:14px;
-  display:flex;align-items:center;justify-content:center;
-  margin-bottom:16px;
-}
-.how-step-icon-orange { background:var(--orange-500); }
-.how-step-icon-blue   { background:#1E3A8A; }
-.how-step-icon-green  { background:#166534; }
-.how-step-title {
-  font-family:var(--font-d);font-size:18px;color:white;
-  letter-spacing:.04em;text-transform:uppercase;margin-bottom:8px;line-height:1.1;
-}
-.how-step-body { font-size:13px;color:rgba(255,255,255,.4);line-height:1.65; }
-.how-arrow {
-  position:absolute;top:50%;right:-12px;transform:translateY(-50%);
-  width:24px;height:24px;background:var(--orange-500);border-radius:50%;
-  display:flex;align-items:center;justify-content:center;z-index:2;
-  font-size:10px;color:white;
-}
-
-/* ── SECTION: PILLARS ── */
-.pillars-section { background:white;padding:80px 24px; }
-.pillars-inner { max-width:960px;margin:0 auto; }
-.pillars-header { text-align:center;margin-bottom:48px; }
-.pillars-eyebrow {
-  font-family:var(--font-m);font-size:10px;letter-spacing:.18em;text-transform:uppercase;
-  color:var(--orange-500);margin-bottom:12px;
-}
-.pillars-title {
-  font-family:var(--font-d);font-size:clamp(28px,4vw,40px);
-  color:var(--navy-900);letter-spacing:.04em;text-transform:uppercase;line-height:.95;
-}
-.pillars-title span { color:var(--orange-500); }
-.pillars-grid-new {
-  display:grid;grid-template-columns:repeat(5,1fr);gap:12px;
-}
-.pillar-card-new {
-  background:var(--navy-900);border-radius:16px;padding:24px 18px;
-  position:relative;overflow:hidden;
-  border:1px solid rgba(255,255,255,.06);
-  transition:transform .2s,border-color .2s;
-}
-.pillar-card-new:hover { transform:translateY(-4px);border-color:var(--orange-500); }
-.pillar-card-accent {
-  position:absolute;top:0;left:0;right:0;height:3px;
-  background:var(--orange-500);
-}
-.pillar-card-num {
-  font-family:var(--font-d);font-size:48px;color:rgba(255,255,255,.04);
-  line-height:1;margin-bottom:12px;
-}
-.pillar-card-name {
-  font-family:var(--font-d);font-size:15px;color:white;
-  letter-spacing:.04em;text-transform:uppercase;margin-bottom:8px;line-height:1.2;
-}
-.pillar-card-desc { font-size:12px;color:rgba(255,255,255,.4);line-height:1.6; }
-
-/* ── SECTION: BENTO ── */
-.bento-section { background:var(--grey-50);padding:80px 24px; }
-.bento-inner { max-width:1100px;margin:0 auto; }
-.bento-header { text-align:center;margin-bottom:40px; }
-.bento-eyebrow {
-  font-family:var(--font-m);font-size:10px;letter-spacing:.18em;text-transform:uppercase;
-  color:var(--orange-500);margin-bottom:12px;
-}
-.bento-title {
-  font-family:var(--font-d);font-size:clamp(28px,4vw,40px);
-  color:var(--navy-900);letter-spacing:.04em;text-transform:uppercase;line-height:.95;
-}
-.bento-grid-new {
-  display:grid;
-  grid-template-columns:1fr 1fr 1fr;
-  grid-template-rows:auto auto;
-  gap:16px;
-}
-.bento-card {
-  border-radius:20px;padding:32px 28px;position:relative;overflow:hidden;
-}
-.bento-card-dark {
-  background:var(--navy-900);
-  grid-column:span 2;
-}
-.bento-card-orange { background:var(--orange-500); }
-.bento-card-light {
-  background:white;border:1px solid var(--grey-100);
-  grid-column:span 3;
-}
-.bento-tag {
-  font-family:var(--font-m);font-size:9px;letter-spacing:.18em;text-transform:uppercase;
-  margin-bottom:14px;
-}
-.bento-tag-dark   { color:rgba(255,255,255,.4); }
-.bento-tag-orange { color:rgba(255,255,255,.7); }
-.bento-tag-light  { color:var(--orange-500); }
-.bento-card-title {
-  font-family:var(--font-d);font-size:clamp(20px,2.5vw,28px);
-  letter-spacing:.04em;text-transform:uppercase;line-height:1;margin-bottom:12px;
-}
-.bento-title-dark   { color:white; }
-.bento-title-orange { color:white; }
-.bento-title-light  { color:var(--navy-900); }
-.bento-body { font-size:13px;line-height:1.65;margin-bottom:16px; }
-.bento-body-dark   { color:rgba(255,255,255,.45); }
-.bento-body-orange { color:rgba(255,255,255,.8); }
-.bento-body-light  { color:var(--grey-500); }
-.bento-link {
-  font-family:var(--font-m);font-size:12px;font-weight:700;
-  letter-spacing:.08em;text-transform:uppercase;text-decoration:none;
-  display:inline-flex;align-items:center;gap:6px;transition:gap .2s;
-}
-.bento-link:hover { gap:10px; }
-.bento-link-dark   { color:var(--orange-400); }
-.bento-link-orange { color:white; }
-.bento-link-light  { color:var(--orange-500); }
-.bento-bg-num {
-  position:absolute;bottom:-20px;right:-8px;
-  font-family:var(--font-d);font-size:120px;pointer-events:none;
-}
-.bento-bg-num-dark   { color:rgba(255,255,255,.03); }
-.bento-bg-num-orange { color:rgba(255,255,255,.08); }
-.bento-checks { display:flex;flex-direction:column;gap:8px;margin-bottom:20px; }
-.bento-check {
-  display:flex;gap:8px;align-items:flex-start;
-  font-size:13px;color:rgba(255,255,255,.55);line-height:1.5;
-}
-.bento-check-dot {
-  width:5px;height:5px;border-radius:50%;background:var(--orange-500);
-  flex-shrink:0;margin-top:6px;
-}
-.levels-bar-new {
-  display:flex;gap:12px;flex-wrap:wrap;
-}
-.level-chip {
-  padding:10px 16px;border-radius:10px;
-  font-family:var(--font-m);font-size:11px;font-weight:700;
+.home-hero-photo {
+  position:absolute;bottom:0;right:0;
+  width:52%;max-width:500px;height:88%;
+  z-index:2;overflow:hidden;
+}
+.home-hero-photo img {
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;object-position:center top;display:block;
+  filter:grayscale(85%) brightness(0.55) contrast(1.1);
+  mask-image:linear-gradient(to top,transparent 0%,black 12%,black 90%,transparent 100%),
+             linear-gradient(to right,transparent 0%,black 20%);
+  -webkit-mask-image:linear-gradient(to top,transparent 0%,black 12%,black 90%,transparent 100%),
+                     linear-gradient(to right,transparent 0%,black 20%);
+  mask-composite:intersect;-webkit-mask-composite:source-in;
+}
+.home-hero-content {
+  position:relative;z-index:3;
+  padding:0 28px 52px;max-width:600px;
+}
+.home-hero-badge {
+  display:inline-block;background:var(--lime);color:#1a2800;
+  font-family:var(--fd);font-size:10px;font-weight:800;
+  letter-spacing:.2em;text-transform:uppercase;
+  padding:4px 10px;border-radius:2px;margin-bottom:16px;
+}
+.home-hero-h1 {
+  font-family:var(--fd);
+  font-size:clamp(60px,13vw,104px);font-weight:900;
+  line-height:.86;letter-spacing:-.01em;text-transform:uppercase;
+  color:#fff;margin-bottom:20px;
+}
+.home-hero-h1 .lime { color:var(--lime); }
+.home-hero-h1 .outline {
+  -webkit-text-stroke:2px rgba(255,255,255,.22);color:transparent;
+}
+.home-hero-sub {
+  font-size:16px;font-weight:400;color:var(--muted);
+  line-height:1.75;max-width:420px;margin-bottom:36px;
+}
+.home-hero-sub strong { color:#fff;font-weight:500; }
+.home-hero-btns { display:flex;align-items:center;gap:12px;flex-wrap:wrap; }
+.btn-lime {
+  background:var(--lime);color:#1a2800;
+  font-family:var(--fd);font-size:14px;font-weight:900;
   letter-spacing:.1em;text-transform:uppercase;
-  display:flex;align-items:center;gap:8px;
+  padding:14px 32px;border:none;cursor:pointer;
+  text-decoration:none;display:inline-flex;align-items:center;gap:8px;
+  border-radius:2px;transition:all .18s;
 }
-.level-chip-active {
-  background:var(--orange-500);color:white;
+.btn-lime:hover { background:var(--lime2);transform:translateY(-2px); }
+.btn-ghost-home {
+  background:transparent;color:#fff;
+  font-family:var(--fd);font-size:14px;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;
+  padding:13px 24px;border:1.5px solid var(--border);
+  cursor:pointer;text-decoration:none;border-radius:2px;transition:border-color .18s;
 }
-.level-chip-soon {
-  background:rgba(30,58,138,.08);color:var(--navy-700);
-  border:1px solid rgba(30,58,138,.12);
-}
-.level-chip-dot {
-  width:6px;height:6px;border-radius:50%;
-}
-.level-chip-dot-active { background:white; }
-.level-chip-dot-soon   { background:var(--grey-300); }
+.btn-ghost-home:hover { border-color:rgba(255,255,255,.4); }
 
-/* ── CTA SECTION ── */
-.cta-section {
-  background:var(--navy-950);padding:80px 24px;
+/* ── MARQUEE ── */
+.home-marquee {
+  background:#C8102E;height:44px;overflow:hidden;display:flex;align-items:center;
+}
+.home-marquee-track {
+  display:inline-flex;white-space:nowrap;
+  animation:hm-scroll 24s linear infinite;
+}
+@keyframes hm-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.home-marquee-item {
+  font-family:var(--fd);font-size:12px;font-weight:800;
+  letter-spacing:.18em;text-transform:uppercase;
+  color:#fff;padding:0 28px;
+  display:inline-flex;align-items:center;gap:24px;
+}
+.home-marquee-item::after{content:"◆";font-size:6px;opacity:.5;}
+
+/* ── MODULES ── */
+.home-modules { padding:56px 28px;background:rgba(13,33,52,.5); }
+.home-modules-header { margin-bottom:28px; }
+.home-section-label {
+  font-family:var(--fd);font-size:11px;font-weight:700;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;
+}
+.home-section-title {
+  font-family:var(--fd);font-size:clamp(36px,6vw,52px);font-weight:900;
+  letter-spacing:-.01em;text-transform:uppercase;line-height:.9;color:#fff;
+}
+.home-section-title .dim { color:var(--muted);opacity:.3; }
+.home-modules-scroll {
+  display:grid;grid-template-columns:repeat(3,280px);
+  gap:12px;overflow-x:auto;padding-bottom:8px;
+  -ms-overflow-style:none;scrollbar-width:none;
+}
+.home-modules-scroll::-webkit-scrollbar { display:none; }
+.home-module-card {
+  background:var(--bg3);border-radius:2px;padding:24px;
   position:relative;overflow:hidden;
 }
-.cta-glow {
-  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-  width:600px;height:400px;
-  background:radial-gradient(ellipse, rgba(232,99,10,.12), transparent 70%);
-  pointer-events:none;
+.home-module-accent {
+  position:absolute;bottom:0;left:0;right:0;height:2px;
+  background:var(--lime);transform:scaleX(0);transform-origin:left;transition:transform .3s;
 }
-.cta-inner {
-  max-width:640px;margin:0 auto;text-align:center;position:relative;z-index:1;
+.home-module-card:hover .home-module-accent { transform:scaleX(1); }
+.home-module-bg {
+  position:absolute;top:-8px;right:-8px;font-size:80px;opacity:.04;
+  color:var(--lime);pointer-events:none;font-family:var(--fd);font-weight:900;
 }
-.cta-eyebrow {
-  font-family:var(--font-m);font-size:10px;letter-spacing:.18em;text-transform:uppercase;
-  color:var(--orange-300);margin-bottom:16px;
+.home-module-level {
+  font-family:var(--fd);font-size:10px;font-weight:700;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--lime);margin-bottom:6px;
 }
-.cta-title {
-  font-family:var(--font-d);font-size:clamp(32px,5vw,56px);
-  color:white;letter-spacing:.04em;text-transform:uppercase;
-  line-height:.92;margin-bottom:16px;
+.home-module-title {
+  font-family:var(--fd);font-size:24px;font-weight:900;
+  text-transform:uppercase;color:#fff;margin-bottom:10px;line-height:1;
 }
-.cta-sub {
-  font-size:15px;color:rgba(255,255,255,.4);line-height:1.7;margin-bottom:36px;
+.home-module-desc { font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:16px; }
+.home-module-footer {
+  padding-top:14px;border-top:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
 }
-.cta-btns { display:flex;gap:12px;justify-content:center;flex-wrap:wrap; }
-.cta-note {
-  margin-top:16px;font-family:var(--font-m);font-size:10px;
-  letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.2);
+.home-module-count {
+  font-family:var(--fd);font-size:12px;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;color:#d9e7fc;
+}
+.home-module-arrow { color:var(--lime);font-size:18px; }
+
+/* ── PATHS ── */
+.home-paths { display:grid;grid-template-columns:1fr; }
+.home-path {
+  display:grid;grid-template-columns:1fr 1fr;
+  min-height:500px;overflow:hidden;
+}
+.home-path-player { background:var(--bg); }
+.home-path-coach  { background:#040e04; }
+.home-path-text {
+  padding:60px 48px;display:flex;flex-direction:column;
+  justify-content:center;position:relative;z-index:2;
+}
+.home-path-player .home-path-text { order:1; }
+.home-path-coach  .home-path-text { order:2; }
+.home-path-photo {
+  position:relative;overflow:hidden;min-height:500px;
+}
+.home-path-player .home-path-photo { order:2; }
+.home-path-coach  .home-path-photo { order:1; }
+.home-path-photo img {
+  width:100%;height:100%;object-fit:cover;
+  object-position:center top;display:block;
+  position:absolute;inset:0;
+}
+.home-path-fade {
+  position:absolute;inset:0;pointer-events:none;z-index:1;
+}
+.home-path-fade-l { background:linear-gradient(to right,var(--bg) 0%,rgba(2,15,30,.7) 25%,transparent 65%); }
+.home-path-fade-r { background:linear-gradient(to left,#040e04 0%,rgba(4,14,4,.7) 25%,transparent 65%); }
+.home-path-tag {
+  font-family:var(--fd);font-size:11px;font-weight:700;
+  letter-spacing:.22em;text-transform:uppercase;
+  margin-bottom:16px;display:flex;align-items:center;gap:10px;
+  color:rgba(193,255,34,.8);
+}
+.home-path-tag::before { content:'';display:block;width:18px;height:1.5px;background:rgba(193,255,34,.5); }
+.home-path-title {
+  font-family:var(--fd);font-size:clamp(52px,5.5vw,80px);font-weight:900;
+  text-transform:uppercase;line-height:.88;letter-spacing:-.01em;
+  margin-bottom:20px;color:var(--lime);
+  text-shadow:0 2px 24px rgba(0,0,0,.9);
+}
+.home-path-coach .home-path-title { color:#fff; }
+.home-path-body {
+  font-size:14px;line-height:1.7;margin-bottom:32px;
+  color:rgba(200,220,255,.75);max-width:280px;
+  text-shadow:0 1px 8px rgba(0,0,0,.9);
+}
+.home-path-coach .home-path-body { color:rgba(210,230,200,.75); }
+
+/* Path buttons */
+.home-path-btn {
+  display:inline-flex;align-items:center;gap:12px;
+  font-family:var(--fd);font-size:15px;font-weight:900;
+  letter-spacing:.12em;text-transform:uppercase;
+  text-decoration:none;padding:14px 28px;
+  border:none;cursor:pointer;align-self:flex-start;
+  transition:all .2s;border-radius:2px;position:relative;overflow:hidden;
+}
+.home-path-btn::after {
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent);
+  transform:translateX(-100%);transition:transform .45s;
+}
+.home-path-btn:hover::after { transform:translateX(100%); }
+.home-path-btn:hover { transform:translateY(-2px); }
+.home-path-btn-arrow {
+  display:inline-flex;align-items:center;justify-content:center;
+  width:26px;height:26px;border-radius:50%;flex-shrink:0;transition:transform .2s;
+}
+.home-path-btn:hover .home-path-btn-arrow { transform:translateX(4px); }
+.home-btn-player {
+  background:var(--lime);color:#0d1a00;
+  box-shadow:0 4px 20px rgba(193,255,34,.35);
+}
+.home-btn-player:hover { background:#d0ff55;box-shadow:0 8px 32px rgba(193,255,34,.55); }
+.home-btn-player .home-path-btn-arrow { background:rgba(0,0,0,.12); }
+.home-btn-coach {
+  background:#fff;color:#001f3f;
+  box-shadow:0 4px 20px rgba(255,255,255,.15);
+}
+.home-btn-coach:hover { background:#eef6ff;box-shadow:0 8px 32px rgba(255,255,255,.25); }
+.home-btn-coach .home-path-btn-arrow { background:rgba(0,30,60,.1); }
+
+/* ── OFFERINGS / WHY IQ ── */
+.home-offerings { padding:56px 28px;background:var(--bg2); }
+.home-offerings-header { margin-bottom:32px; }
+.home-offerings-grid { display:grid;grid-template-columns:1fr;gap:2px; }
+.home-offering {
+  background:var(--bg2);border-left:2px solid transparent;
+  padding:24px;display:flex;align-items:flex-start;gap:16px;
+  transition:border-color .2s,background .2s;cursor:default;
+}
+.home-offering:hover { border-left-color:var(--lime);background:var(--bg3); }
+.home-offering-icon {
+  width:36px;height:36px;background:var(--bg3);border-radius:2px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;
+}
+.home-offering-name {
+  font-family:var(--fd);font-size:20px;font-weight:800;
+  letter-spacing:.04em;text-transform:uppercase;
+  color:#fff;margin-bottom:5px;line-height:1;
+}
+.home-offering-desc { font-size:14px;color:var(--muted);line-height:1.6; }
+.home-offering-tag {
+  font-family:var(--fd);font-size:10px;font-weight:700;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:var(--lime);margin-top:8px;display:block;
 }
 
-/* ── RESPONSIVE ── */
-@media(max-width:900px) {
-  .hero-paths { grid-template-columns:1fr; max-width:420px; }
-  .why-inner { grid-template-columns:1fr; gap:48px; }
-  .how-steps { grid-template-columns:1fr; gap:2px; }
-  .how-arrow { display:none; }
-  .pillars-grid-new { grid-template-columns:repeat(2,1fr); }
-  .pillars-grid-new .pillar-card-new:last-child { grid-column:span 2; }
-  .bento-grid-new { grid-template-columns:1fr; }
-  .bento-card-dark,.bento-card-light { grid-column:span 1; }
+/* ── FINAL CTA ── */
+.home-cta {
+  margin:0 28px 56px;background:var(--bg2);border-radius:2px;
+  padding:36px 28px;position:relative;overflow:hidden;
+  border-left:3px solid var(--lime);
 }
-@media(max-width:540px) {
-  .hero { padding:90px 20px 48px; }
-  .hero-headline { letter-spacing:.01em; }
-  .path-card { padding:22px 20px; }
-  .how-step { padding:24px 20px; }
-  .pillar-card-new { padding:20px 14px; }
-  .pillars-grid-new { grid-template-columns:1fr; }
-  .pillars-grid-new .pillar-card-new:last-child { grid-column:span 1; }
-  .bento-card { padding:24px 20px; }
+.home-cta::before {
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(193,255,34,.04),transparent 60%);
+  pointer-events:none;
+}
+.home-cta-inner { position:relative;z-index:1; }
+.home-cta-title {
+  font-family:var(--fd);font-size:clamp(32px,7vw,48px);font-weight:900;
+  text-transform:uppercase;line-height:.9;color:#fff;margin-bottom:12px;
+}
+.home-cta-body { font-size:15px;color:var(--muted);line-height:1.65;margin-bottom:28px; }
+
+/* ── HOME FOOTER ── */
+.home-footer {
+  background:var(--bg);border-top:1px solid var(--border);
+  padding:28px 28px 90px;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:14px;
+}
+.home-footer-brand {
+  font-family:var(--fd);font-size:18px;font-weight:900;
+  letter-spacing:.08em;text-transform:uppercase;font-style:italic;color:var(--lime);
+}
+.home-footer-links { display:flex;gap:20px; }
+.home-footer-link {
+  font-family:var(--fd);font-size:11px;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);text-decoration:none;transition:color .18s;
+}
+.home-footer-link:hover { color:#fff; }
+.home-footer-copy { font-size:11px;color:rgba(255,255,255,.18); }
+
+/* ── BOTTOM NAV ── */
+.home-bottom-nav {
+  position:fixed;bottom:0;left:0;right:0;z-index:100;
+  background:linear-gradient(to top,rgba(2,10,20,1) 70%,rgba(2,10,20,.9));
+  backdrop-filter:blur(12px);padding:10px 0 18px;
+  display:flex;justify-content:space-around;
+  border-top:1px solid rgba(255,255,255,.04);
+}
+.home-bnav-item {
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  color:rgba(255,255,255,.3);text-decoration:none;
+  font-family:var(--fd);font-size:10px;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;
+  transition:color .18s;padding:4px 16px;border-top:2px solid transparent;
+}
+.home-bnav-item.active { color:var(--lime);border-top-color:var(--lime); }
+.home-bnav-item:hover { color:rgba(255,255,255,.7); }
+.home-bnav-icon { width:22px;height:22px;display:flex;align-items:center;justify-content:center; }
+
+/* ── ANIMATIONS ── */
+@keyframes hm-fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.hm-a1{opacity:0;animation:hm-fadeUp .6s .1s ease forwards;}
+.hm-a2{opacity:0;animation:hm-fadeUp .6s .2s ease forwards;}
+.hm-a3{opacity:0;animation:hm-fadeUp .6s .35s ease forwards;}
+.hm-a4{opacity:0;animation:hm-fadeUp .6s .5s ease forwards;}
+.hm-reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease;}
+.hm-reveal.on{opacity:1;transform:translateY(0);}
+.hm-reveal2{opacity:0;transform:translateY(24px);transition:opacity .6s .12s ease,transform .6s .12s ease;}
+.hm-reveal2.on{opacity:1;transform:translateY(0);}
+.hm-reveal3{opacity:0;transform:translateY(24px);transition:opacity .6s .24s ease,transform .6s .24s ease;}
+.hm-reveal3.on{opacity:1;transform:translateY(0);}
+
+@media (max-width:700px) {
+  .home-path { grid-template-columns:1fr; }
+  .home-path-player .home-path-photo,
+  .home-path-coach  .home-path-photo { order:1;min-height:260px; }
+  .home-path-player .home-path-text,
+  .home-path-coach  .home-path-text  { order:2; }
+  .home-path-fade-l,.home-path-fade-r {
+    background:linear-gradient(to top,rgba(2,15,30,1) 0%,transparent 50%);
+  }
+  .home-hero-photo { width:100%;max-width:none;height:60%; }
 }
 </style>
 </head>
-<body>
+<body style="background:#020f1e;margin:0;">
 
 <!-- NAV -->
-<nav>
-  <div class="nav-inner">
-    <a class="logo" href="index.html">
-      <img src="logo.png" alt="First Down Academy" style="height:52px;width:auto;object-fit:contain;" onerror="this.style.display='none'">
-    </a>
-    <div class="nav-links">
-      <a class="nav-link" href="program.html">The Program</a>
-      <a class="nav-link" href="giq.html">Gridiron IQ</a>
-      <a class="nav-link" href="coaches.html">Coaches</a>
-      <a class="nav-link" id="nav-dashboard" href="dashboard.html" style="display:none">Dashboard</a>
-    </div>
-    <div class="nav-auth-btns" id="navAuthBtns">
-      <a class="btn btn-outline nav-login-btn" href="auth.html">Log In</a>
-      <a class="btn btn-primary nav-signup-btn" href="auth.html">Sign Up</a>
-    </div>
-    <a class="btn btn-primary nav-cta" id="navDashBtn" href="dashboard.html" style="display:none">Dashboard</a>
-    <button class="hamburger" onclick="toggleMobileMenu()" id="hamburger">
-      <span></span><span></span><span></span>
-    </button>
+<nav class="home-nav">
+  <a href="index.html" class="home-nav-brand">First Down Academy</a>
+  <div class="home-nav-right">
+    <button class="home-nav-iq" id="homeNavIQ" onclick="window.location.href='dashboard.html'"></button>
+    <a href="coaches.html" class="home-nav-login" id="homeNavLogin">Coaches</a>
+    <a href="auth.html" class="home-nav-login" id="homeNavSignin">Sign In</a>
+    <a href="dashboard.html" class="home-nav-dash" id="homeNavDash">Dashboard</a>
+    <a href="giq-exam.html" class="home-nav-cta">Test Your IQ</a>
   </div>
 </nav>
 
-<!-- MOBILE MENU -->
-<div class="mobile-menu" id="mobileMenu">
-  <a class="mobile-menu-item" href="giq-exam.html">Test Your Gridiron IQ</a>
-  <a class="mobile-menu-item" href="program.html">The Program</a>
-  <a class="mobile-menu-item" href="giq.html">Gridiron IQ</a>
-  <a class="mobile-menu-item" href="coaches.html">Coaches</a>
-  <div class="mobile-menu-divider"></div>
-  <a class="mobile-menu-item" href="auth.html" id="mobileSignupBtn">Sign Up Free</a>
-  <a class="mobile-menu-item" href="auth.html">Log In</a>
-</div>
-
-<!-- ── HERO ── -->
-<section class="hero">
-  <div class="hero-grid"></div>
-  <div class="hero-glow-left"></div>
-  <div class="hero-glow-right"></div>
-
-  <div class="hero-eyebrow">
-    <span class="hero-eyebrow-dot"></span>
-    Football IQ Platform &mdash; Ages 8 to 18
+<!-- HERO -->
+<section class="home-hero">
+  <div class="home-hero-img"></div>
+  <div class="home-hero-grid"></div>
+  <div class="home-hero-photo">
+    <img src="football_qb_action.png" alt="Football quarterback throwing">
   </div>
-
-  <h1 class="hero-headline">
-    TEST &amp; BUILD
-    <span class="hero-headline-accent">GRIDIRON IQ.</span>
-    <span class="hero-headline-sub">The game inside the game.</span>
-  </h1>
-
-  <p class="hero-sub">
-    Find out where your football knowledge stands. Then build it. First Down Academy is the only platform that tests your IQ, shows you where to improve, and tracks your growth over time.
-  </p>
-
-  <!-- TWO PATHS -->
-  <div class="hero-paths">
-
-    <!-- Path 1: Take the Quiz -->
-    <a href="giq-exam.html" class="path-card path-card-primary">
-      <div class="path-tag path-tag-primary">
-        <span class="path-tag-dot" style="background:rgba(255,255,255,.6);"></span>
-        Most Popular
-      </div>
-      <div class="path-title">Test Your<br>Gridiron IQ</div>
-      <p class="path-desc path-desc-primary">Jump straight into the adaptive quiz. See your grade in 5&ndash;10 minutes. No signup required to start.</p>
-      <div class="path-meta">
-        <span class="path-pill path-pill-primary">5&ndash;10 min</span>
-        <span class="path-pill path-pill-primary">15 questions</span>
-        <span class="path-pill path-pill-primary">Instant grade</span>
-      </div>
-      <div class="path-cta path-cta-primary">Take the Quiz &rarr;</div>
-      <div class="path-bg-letter path-bg-letter-primary">IQ</div>
-    </a>
-
-    <!-- Path 2: Start the Course -->
-    <a href="program.html" class="path-card path-card-secondary">
-      <div class="path-tag path-tag-secondary">
-        <span class="path-tag-dot" style="background:rgba(255,255,255,.3);"></span>
-        Build First
-      </div>
-      <div class="path-title">Start the<br>Rookie Course</div>
-      <p class="path-desc path-desc-secondary">Learn all 5 pillars through 8 modules, then test your IQ. See exactly how much you improved.</p>
-      <div class="path-meta">
-        <span class="path-pill path-pill-secondary">8 modules</span>
-        <span class="path-pill path-pill-secondary">Free forever</span>
-        <span class="path-pill path-pill-secondary">Quiz included</span>
-      </div>
-      <div class="path-cta path-cta-secondary">View the Course &rarr;</div>
-      <div class="path-bg-letter path-bg-letter-secondary">01</div>
-    </a>
-
+  <div class="home-hero-content">
+    <span class="home-hero-badge hm-a1">Gridiron Intelligence Platform</span>
+    <h1 class="home-hero-h1 hm-a2">
+      Master the<br>
+      <span class="lime">Game.</span><br>
+      <span class="outline">Build Your IQ.</span>
+    </h1>
+    <p class="home-hero-sub hm-a3">
+      <strong>High-performance football education</strong> for players ages 8–18. Test your Gridiron IQ. Build what's missing. Track every improvement.
+    </p>
+    <div class="home-hero-btns hm-a4">
+      <a href="giq-exam.html" class="btn-lime">Start IQ Quiz &#x2192;</a>
+      <a href="program.html" class="btn-ghost-home">View Course</a>
+    </div>
   </div>
-
-  <div class="hero-note">No credit card &nbsp;&middot;&nbsp; Free to start &nbsp;&middot;&nbsp; Results in minutes</div>
 </section>
 
-<!-- TICKER -->
-<div class="ticker">
-  <div class="ticker-track">
-    <span class="ticker-item">Gridiron IQ <span class="ticker-sep">&#9679;</span></span>
-    <span class="ticker-item">Rules &amp; Objectives <span class="ticker-sep">&#9679;</span></span>
-    <span class="ticker-item">Positions &amp; Responsibilities <span class="ticker-sep">&#9679;</span></span>
-    <span class="ticker-item">Formations &amp; Alignments <span class="ticker-sep">&#9679;</span></span>
-    <span class="ticker-item">Plays &amp; Concepts <span class="ticker-sep">&#9679;</span></span>
-    <span class="ticker-item">Situational Awareness <span class="ticker-sep">&#9679;</span></span>
-    <span class="ticker-item">Adaptive Scoring <span class="ticker-sep">&#9679;</span></span>
-    <span class="ticker-item">15 Questions <span class="ticker-sep">&#9679;</span></span>
-    <span class="ticker-item">Instant Grade <span class="ticker-sep">&#9679;</span></span>
-    <span class="ticker-item">Gridiron IQ <span class="ticker-sep">&#9679;</span></span>
-    <span class="ticker-item">Rules &amp; Objectives <span class="ticker-sep">&#9679;</span></span>
-    <span class="ticker-item">Positions &amp; Responsibilities <span class="ticker-sep">&#9679;</span></span>
-    <span class="ticker-item">Formations &amp; Alignments <span class="ticker-sep">&#9679;</span></span>
-    <span class="ticker-item">Plays &amp; Concepts <span class="ticker-sep">&#9679;</span></span>
-    <span class="ticker-item">Situational Awareness <span class="ticker-sep">&#9679;</span></span>
-    <span class="ticker-item">Adaptive Scoring <span class="ticker-sep">&#9679;</span></span>
-    <span class="ticker-item">15 Questions <span class="ticker-sep">&#9679;</span></span>
-    <span class="ticker-item">Instant Grade <span class="ticker-sep">&#9679;</span></span>
+<!-- MARQUEE -->
+<div class="home-marquee">
+  <div class="home-marquee-track">
+    <span class="home-marquee-item">Gridiron IQ Quiz</span>
+    <span class="home-marquee-item">Adaptive Testing</span>
+    <span class="home-marquee-item">5 Pillars of Knowledge</span>
+    <span class="home-marquee-item">Free Rookie Course</span>
+    <span class="home-marquee-item">Coach Dashboard</span>
+    <span class="home-marquee-item">Track Your Improvement</span>
+    <span class="home-marquee-item">Ages 8 to 18</span>
+    <span class="home-marquee-item">Instant Grade</span>
+    <span class="home-marquee-item">Gridiron IQ Quiz</span>
+    <span class="home-marquee-item">Adaptive Testing</span>
+    <span class="home-marquee-item">5 Pillars of Knowledge</span>
+    <span class="home-marquee-item">Free Rookie Course</span>
+    <span class="home-marquee-item">Coach Dashboard</span>
+    <span class="home-marquee-item">Track Your Improvement</span>
+    <span class="home-marquee-item">Ages 8 to 18</span>
+    <span class="home-marquee-item">Instant Grade</span>
   </div>
 </div>
 
-<!-- WHY FDA -->
-<section class="why-section">
-  <div class="why-inner">
-    <div class="why-left">
-      <div class="why-eyebrow">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="var(--orange-500)" stroke-width="1.5"/><path d="M7 4v3l2 1.5" stroke="var(--orange-500)" stroke-width="1.5" stroke-linecap="round"/></svg>
-        Why Gridiron IQ Matters
+<!-- MODULES -->
+<div class="home-modules">
+  <div class="home-modules-header hm-reveal">
+    <div class="home-section-label">Training Modules</div>
+    <div class="home-section-title">Three <span class="dim">Levels</span></div>
+  </div>
+  <div class="home-modules-scroll">
+    <div class="home-module-card hm-reveal">
+      <div class="home-module-accent"></div>
+      <div class="home-module-bg">01</div>
+      <div class="home-module-level">Level 01</div>
+      <div class="home-module-title">Rookie</div>
+      <div class="home-module-desc">Fundamentals of formation, positions, basic route trees, and essential football terminology.</div>
+      <div class="home-module-footer">
+        <span class="home-module-count">8 Modules &middot; Live Now</span>
+        <a href="program.html" class="home-module-arrow">&#x2192;</a>
       </div>
-      <h2 class="why-title">
-        FOOTBALL IQ IS THE EDGE <span>MOST PLAYERS DON&rsquo;T HAVE.</span>
-      </h2>
-      <p class="why-body">Most players know their assignment. The ones who stand out understand <strong>the entire play</strong> — what the defense is showing, why the blocking scheme works, and how to react when everything breaks down.</p>
-      <p class="why-body">That&rsquo;s Gridiron IQ. It isn&rsquo;t about size or speed. It&rsquo;s about <strong>football intelligence</strong> — and it can be built systematically. Players who understand the whole game process decisions faster, adjust when plays break down, and get more out of every rep at practice.</p>
-      <p class="why-body">First Down Academy measures it, shows you where to improve, and helps you build it over time.</p>
     </div>
-    <div class="why-right">
-      <div class="why-points">
-        <div class="why-point">
-          <div class="why-point-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 11l3 3L22 4" stroke="var(--orange-500)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" stroke="var(--orange-500)" stroke-width="2" stroke-linecap="round"/></svg>
-          </div>
-          <div>
-            <div class="why-point-title">Adaptive Testing</div>
-            <div class="why-point-body">The quiz adjusts to your level in real time — harder questions if you're strong, easier if you're struggling. Your score reflects your true IQ.</div>
-          </div>
-        </div>
-        <div class="why-point">
-          <div class="why-point-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" stroke="var(--orange-500)" stroke-width="2"/><path d="M8 12h8M8 8h8M8 16h5" stroke="var(--orange-500)" stroke-width="2" stroke-linecap="round"/></svg>
-          </div>
-          <div>
-            <div class="why-point-title">5 Pillar Breakdown</div>
-            <div class="why-point-body">See exactly where your football knowledge is strong and where to build — across Rules, Positions, Formations, Concepts, and Situational Awareness.</div>
-          </div>
-        </div>
-        <div class="why-point">
-          <div class="why-point-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 20L10 14L14 18L20 10" stroke="var(--orange-500)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-          <div>
-            <div class="why-point-title">Track Improvement Over Time</div>
-            <div class="why-point-body">Every quiz result is saved. Take the course, retake the quiz, and see exactly how much your Gridiron IQ improved.</div>
-          </div>
-        </div>
-        <div class="why-point">
-          <div class="why-point-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="var(--orange-500)" stroke-width="2"/><path d="M12 7v5l3 3" stroke="var(--orange-500)" stroke-width="2" stroke-linecap="round"/></svg>
-          </div>
-          <div>
-            <div class="why-point-title">Free to Start</div>
-            <div class="why-point-body">The quiz, the Rookie course, and your first two results are completely free. No credit card. No setup. Just football.</div>
-          </div>
-        </div>
+    <div class="home-module-card hm-reveal2">
+      <div class="home-module-accent"></div>
+      <div class="home-module-bg">02</div>
+      <div class="home-module-level">Level 02</div>
+      <div class="home-module-title">Starter</div>
+      <div class="home-module-desc">Defensive scheme recognition, gap analysis, coverages, and situational decision-making.</div>
+      <div class="home-module-footer">
+        <span class="home-module-count">Coming Soon</span>
+        <span class="home-module-arrow" style="opacity:.3">&#x2192;</span>
+      </div>
+    </div>
+    <div class="home-module-card hm-reveal3">
+      <div class="home-module-accent"></div>
+      <div class="home-module-bg">03</div>
+      <div class="home-module-level">Level 03</div>
+      <div class="home-module-title">Elite</div>
+      <div class="home-module-desc">Advanced game management, complex RPO logic, and pro-grade film study concepts.</div>
+      <div class="home-module-footer">
+        <span class="home-module-count">Coming Soon</span>
+        <span class="home-module-arrow" style="opacity:.3">&#x2192;</span>
       </div>
     </div>
   </div>
-</section>
+</div>
 
-<!-- HOW IT WORKS -->
-<section class="how-section">
-  <div class="how-grid-bg"></div>
-  <div class="how-inner">
-    <div class="how-header">
-      <div class="how-eyebrow">How It Works</div>
-      <h2 class="how-title">TWO PATHS.<br>ONE GOAL.</h2>
+<!-- TWO PATHS -->
+<div class="home-paths">
+
+  <!-- PLAYER -->
+  <div class="home-path home-path-player hm-reveal">
+    <div class="home-path-text">
+      <div class="home-path-tag">I&rsquo;m a Player</div>
+      <div class="home-path-title">Test.<br>Build.<br>Rise.</div>
+      <p class="home-path-body">Quiz in 8 minutes. Course at your pace. Your IQ tracked every step.</p>
+      <a href="giq-exam.html" class="home-path-btn home-btn-player">
+        Take the IQ Quiz
+        <span class="home-path-btn-arrow">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+      </a>
     </div>
-    <div class="how-steps">
-      <div class="how-step" style="position:relative;">
-        <div class="how-step-num">01</div>
-        <div class="how-step-icon how-step-icon-orange">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="white" stroke-width="2"/><path d="M12 8v4l3 3" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
-        </div>
-        <div class="how-step-title">Test or Learn</div>
-        <p class="how-step-body">Jump into the quiz and get your grade in 10 minutes. Or start the Rookie course and build your IQ before you test. Either path works.</p>
-        <div class="how-arrow">&#8594;</div>
+    <div class="home-path-photo">
+      <img src="football_rb_action.png" alt="Football player running"
+        style="filter:grayscale(80%) brightness(0.7) contrast(1.1);">
+      <div class="home-path-fade home-path-fade-l"></div>
+    </div>
+  </div>
+
+  <!-- COACH -->
+  <div class="home-path home-path-coach hm-reveal2">
+    <div class="home-path-photo">
+      <img src="coach_top_left.png" alt="Football coach"
+        style="filter:grayscale(60%) brightness(0.65) contrast(1.05) sepia(10%);">
+      <div class="home-path-fade home-path-fade-r"></div>
+    </div>
+    <div class="home-path-text">
+      <div class="home-path-tag">I&rsquo;m a Coach</div>
+      <div class="home-path-title">One Link.<br>Smarter<br>Team.</div>
+      <p class="home-path-body">Share your referral link. Whole roster enrolled. Run the practice you want.</p>
+      <a href="coaches.html" class="home-path-btn home-btn-coach">
+        Get Your Coach Link
+        <span class="home-path-btn-arrow">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<!-- WHY IQ MATTERS -->
+<div class="home-offerings">
+  <div class="home-offerings-header hm-reveal">
+    <div class="home-section-label">What's Inside</div>
+    <div class="home-section-title">Why IQ <span class="dim">Matters</span></div>
+  </div>
+  <div class="home-offerings-grid">
+    <div class="home-offering hm-reveal">
+      <div class="home-offering-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#C1FF22" stroke-width="1.5"/><path d="M12 8v4l3 2" stroke="#C1FF22" stroke-width="1.5" stroke-linecap="round"/></svg>
       </div>
-      <div class="how-step" style="position:relative;">
-        <div class="how-step-num">02</div>
-        <div class="how-step-icon how-step-icon-blue">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M9 11l3 3 8-8" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
-        </div>
-        <div class="how-step-title">See Your Grade</div>
-        <p class="how-step-body">Your letter grade appears instantly. Sign up free to unlock your full score, pillar breakdown, and a personalized recommendation for what to work on.</p>
-        <div class="how-arrow">&#8594;</div>
+      <div>
+        <div class="home-offering-name">IQ Quiz</div>
+        <div class="home-offering-desc">15 adaptive questions. Difficulty adjusts in real time. Letter grade the instant you finish.</div>
+        <span class="home-offering-tag">Free &middot; No signup to start</span>
       </div>
-      <div class="how-step">
-        <div class="how-step-num">03</div>
-        <div class="how-step-icon how-step-icon-green">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 20L10 14L14 18L20 10" stroke="#22C55E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-        <div class="how-step-title">Build &amp; Improve</div>
-        <p class="how-step-body">Take the course targeting your weak pillars. Retake the quiz. Watch your IQ score climb. Your results are saved so you can see exactly how much you&rsquo;ve grown.</p>
+    </div>
+    <div class="home-offering hm-reveal">
+      <div class="home-offering-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2" stroke="#C1FF22" stroke-width="1.5"/><path d="M9 9h6M9 12h4" stroke="#C1FF22" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </div>
+      <div>
+        <div class="home-offering-name">Training</div>
+        <div class="home-offering-desc">8 modules. 84 slides. All 5 pillars of football knowledge. Self-paced and free.</div>
+        <span class="home-offering-tag">Rookie Course &mdash; Free</span>
+      </div>
+    </div>
+    <div class="home-offering hm-reveal">
+      <div class="home-offering-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 20L10 14L14 18L20 10" stroke="#C1FF22" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div>
+        <div class="home-offering-name">Improvement</div>
+        <div class="home-offering-desc">Take the course. Retake the quiz. Every result saved. Watch your IQ score climb.</div>
+        <span class="home-offering-tag">Track your progress</span>
+      </div>
+    </div>
+    <div class="home-offering hm-reveal">
+      <div class="home-offering-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke="#C1FF22" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </div>
+      <div>
+        <div class="home-offering-name">Coach Tools</div>
+        <div class="home-offering-desc">One link enrolls your whole roster. See every player's IQ score and module progress.</div>
+        <span class="home-offering-tag">Free for coaches</span>
       </div>
     </div>
   </div>
-</section>
-
-<!-- 5 PILLARS -->
-<section class="pillars-section">
-  <div class="pillars-inner">
-    <div class="pillars-header">
-      <div class="pillars-eyebrow">5 Core Pillars</div>
-      <h2 class="pillars-title">YOUR IQ SCORED ACROSS <span>EVERY DIMENSION.</span></h2>
-    </div>
-    <div class="pillars-grid-new">
-      <div class="pillar-card-new">
-        <div class="pillar-card-accent"></div>
-        <div class="pillar-card-num">01</div>
-        <div class="pillar-card-name">Rules &amp;<br>Objectives</div>
-        <div class="pillar-card-desc">Scoring, downs, penalties, turnovers, and how the game is officiated.</div>
-      </div>
-      <div class="pillar-card-new">
-        <div class="pillar-card-accent" style="background:#3B82F6;"></div>
-        <div class="pillar-card-num">02</div>
-        <div class="pillar-card-name">Positions &amp;<br>Responsibilities</div>
-        <div class="pillar-card-desc">Every position on offense, defense, and special teams — what they do and why.</div>
-      </div>
-      <div class="pillar-card-new">
-        <div class="pillar-card-accent" style="background:#8B5CF6;"></div>
-        <div class="pillar-card-num">03</div>
-        <div class="pillar-card-name">Formations &amp;<br>Alignments</div>
-        <div class="pillar-card-desc">How teams line up, why spacing matters, and what pre-snap tells you.</div>
-      </div>
-      <div class="pillar-card-new">
-        <div class="pillar-card-accent" style="background:#F59E0B;"></div>
-        <div class="pillar-card-num">04</div>
-        <div class="pillar-card-name">Plays &amp;<br>Concepts</div>
-        <div class="pillar-card-desc">Run concepts, pass routes, blitz packages, and coverage schemes.</div>
-      </div>
-      <div class="pillar-card-new">
-        <div class="pillar-card-accent" style="background:#22C55E;"></div>
-        <div class="pillar-card-num">05</div>
-        <div class="pillar-card-name">Situational<br>Awareness</div>
-        <div class="pillar-card-desc">3rd down, red zone, clock management, and game-flow decisions.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- BENTO -->
-<section class="bento-section">
-  <div class="bento-inner">
-    <div class="bento-header">
-      <div class="bento-eyebrow">The Platform</div>
-      <h2 class="bento-title">BUILT FOR EVERY PART OF THE GAME.</h2>
-    </div>
-    <div class="bento-grid-new">
-
-      <!-- Coaches card -->
-      <div class="bento-card bento-card-dark">
-        <div class="bento-tag bento-tag-dark">For Coaches</div>
-        <div class="bento-card-title bento-title-dark">YOUR ROSTER.<br>SMARTER.</div>
-        <div class="bento-checks">
-          <div class="bento-check"><div class="bento-check-dot"></div><span>Share one link — your whole team is enrolled in 60 seconds</span></div>
-          <div class="bento-check"><div class="bento-check-dot"></div><span>Track every player&rsquo;s IQ score and course progress</span></div>
-          <div class="bento-check"><div class="bento-check-dot"></div><span>Players arrive knowing positions, formations, and plays</span></div>
-          <div class="bento-check"><div class="bento-check-dot"></div><span>Reclaim 15&ndash;20 minutes of practice time every session</span></div>
-        </div>
-        <a href="coaches.html" class="bento-link bento-link-dark">Get Your Coach Link &rarr;</a>
-        <div class="bento-bg-num bento-bg-num-dark">C</div>
-      </div>
-
-      <!-- Players card -->
-      <div class="bento-card bento-card-orange">
-        <div class="bento-tag bento-tag-orange">For Players</div>
-        <div class="bento-card-title bento-title-orange">TEST.<br>LEARN.<br>IMPROVE.</div>
-        <p class="bento-body bento-body-orange">Quiz in 10 minutes. Course in your own time. Your IQ score tracked every step of the way.</p>
-        <a href="giq-exam.html" class="bento-link bento-link-orange">Take the Quiz &rarr;</a>
-        <div class="bento-bg-num bento-bg-num-orange">P</div>
-      </div>
-
-      <!-- Levels card -->
-      <div class="bento-card bento-card-light">
-        <div class="bento-tag bento-tag-light">The Roadmap</div>
-        <div class="bento-card-title bento-title-light">THREE LEVELS. ONE ACADEMY.</div>
-        <p class="bento-body bento-body-light">First Down Academy grows with every player — from little league through high school. Each level goes deeper into the same 5 pillars with more advanced content and higher-difficulty questions.</p>
-        <div class="levels-bar-new" style="margin-top:16px;">
-          <div class="level-chip level-chip-active">
-            <div class="level-chip-dot level-chip-dot-active"></div>
-            Rookie &mdash; Live Now
-          </div>
-          <div class="level-chip level-chip-soon">
-            <div class="level-chip-dot level-chip-dot-soon"></div>
-            Starter &mdash; Coming Soon
-          </div>
-          <div class="level-chip level-chip-soon">
-            <div class="level-chip-dot level-chip-dot-soon"></div>
-            Elite &mdash; Coming Soon
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
+</div>
 
 <!-- CTA -->
-<section class="cta-section">
-  <div class="cta-glow"></div>
-  <div class="cta-inner">
-    <div class="cta-eyebrow">Ready to Find Out?</div>
-    <h2 class="cta-title">WHAT&rsquo;S YOUR<br>GRIDIRON IQ?</h2>
-    <p class="cta-sub">Take the adaptive quiz in 10 minutes. See your grade instantly. Sign up free to unlock your full score and start building your football intelligence.</p>
-    <div class="cta-btns">
-      <a href="giq-exam.html" class="btn-home-primary" style="font-size:15px;padding:18px 44px;">Test Your Gridiron IQ &rarr;</a>
-      <a href="program.html" class="btn-home-secondary" style="font-size:15px;">View the Course</a>
-    </div>
-    <div class="cta-note">No signup required to start &nbsp;&middot;&nbsp; Free forever</div>
+<div class="home-cta hm-reveal">
+  <div class="home-cta-inner">
+    <div class="home-cta-title">Stay Ahead of<br>the Chains.</div>
+    <p class="home-cta-body">Join the FDA Briefing &mdash; weekly tactical breakdowns and playbook insights for players and coaches.</p>
+    <a href="auth.html" class="btn-lime">Join the List &#x2192;</a>
   </div>
-</section>
+</div>
 
 <!-- FOOTER -->
-<footer>
-  <div class="footer-inner">
-    <div class="footer-brand">
-      <a class="logo" href="index.html" style="margin-bottom:12px;display:inline-flex;">
-        <img src="logo.png" alt="First Down Academy" style="height:52px;width:auto;object-fit:contain;" onerror="this.style.display='none'">
-      </a>
-      <p class="footer-tagline">Test your Gridiron IQ. Build your football intelligence. Perform on the field.</p>
-    </div>
-    <div class="footer-links">
-      <div class="footer-col">
-        <div class="footer-col-label">Platform</div>
-        <ul>
-          <li><a href="giq-exam.html">Take the Quiz</a></li>
-          <li><a href="program.html">The Program</a></li>
-          <li><a href="giq.html">Gridiron IQ</a></li>
-          <li><a href="coaches.html">Coaches</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <div class="footer-col-label">Account</div>
-        <ul>
-          <li><a href="auth.html">Sign Up</a></li>
-          <li><a href="auth.html">Log In</a></li>
-          <li><a href="dashboard.html">Dashboard</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <div class="footer-col-label">Legal</div>
-        <ul>
-          <li><a href="legal.html">Privacy Policy</a></li>
-          <li><a href="legal.html">Terms of Service</a></li>
-        </ul>
-      </div>
-    </div>
+<footer class="home-footer">
+  <div class="home-footer-brand">First Down Academy</div>
+  <div class="home-footer-links">
+    <a href="program.html" class="home-footer-link">Program</a>
+    <a href="giq.html" class="home-footer-link">Gridiron IQ</a>
+    <a href="coaches.html" class="home-footer-link">Coaches</a>
+    <a href="legal.html" class="home-footer-link">Privacy</a>
+    <a href="legal.html" class="home-footer-link">Terms</a>
   </div>
-  <div class="footer-bottom">
-    <span>&copy; 2026 First Down Academy. All Rights Reserved.</span>
-    <div>
-      <a href="legal.html" onclick="sessionStorage.setItem('legalDoc','privacy')">Privacy Policy</a>
-      <a href="legal.html" onclick="sessionStorage.setItem('legalDoc','terms')">Terms of Service</a>
-    </div>
-  </div>
+  <div class="home-footer-copy">&copy; 2026 First Down Academy</div>
 </footer>
 
-<script>
-function toggleMobileMenu() {
-  var menu = document.getElementById('mobileMenu');
-  var burger = document.getElementById('hamburger');
-  if (!menu) return;
-  menu.classList.toggle('open');
-  var isOpen = menu.classList.contains('open');
-  var spans = burger.querySelectorAll('span');
-  if (spans[0]) spans[0].style.transform = isOpen ? 'rotate(45deg) translate(5px,5px)' : '';
-  if (spans[1]) spans[1].style.opacity = isOpen ? '0' : '';
-  if (spans[2]) spans[2].style.transform = isOpen ? 'rotate(-45deg) translate(5px,-5px)' : '';
-}
-function toggleDropdown() {
-  var dd = document.getElementById('navDropdown');
-  if (dd) dd.classList.toggle('open');
-}
-document.addEventListener('click', function(e) {
-  var wrap = document.getElementById('nav-platform-wrap');
-  if (wrap && !wrap.contains(e.target)) {
-    var dd = document.getElementById('navDropdown');
-    if (dd) dd.classList.remove('open');
-  }
-});
-(async function() {
-  try {
-    var s = window.supabase;
-    if (!s) return;
-    var { createClient } = s;
-    var db = createClient('https://wzylgwvifdfnkmuleoxn.supabase.co', 'sb_publishable_FaPj5NQeqzsRE8kOme2lKQ_uXrHArbt');
-    var result = await db.auth.getSession();
-    if (result.data && result.data.session) {
-      var authBtns = document.getElementById('navAuthBtns');
-      if (authBtns) authBtns.style.display = 'none';
-      var dashBtn = document.getElementById('navDashBtn');
-      if (dashBtn) dashBtn.style.display = 'inline-flex';
-      var dashLink = document.getElementById('nav-dashboard');
-      if (dashLink) dashLink.style.display = 'block';
-    }
-  } catch(e) {}
-})();
-</script>
+<!-- BOTTOM NAV -->
+<nav class="home-bottom-nav">
+  <a href="index.html" class="home-bnav-item active">
+    <div class="home-bnav-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 9.5L12 4l9 5.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+    </div>
+    Home
+  </a>
+  <a href="giq-exam.html" class="home-bnav-item">
+    <div class="home-bnav-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/><path d="M12 8v4l3 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </div>
+    IQ Lab
+  </a>
+  <a href="coaches.html" class="home-bnav-item">
+    <div class="home-bnav-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </div>
+    Coaches
+  </a>
+  <a href="auth.html" class="home-bnav-item" id="homeNavLoginBtn">
+    <div class="home-bnav-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.5"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </div>
+    Login
+  </a>
+</nav>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="curriculum.js?v=4"></script>
+<script src="app.js?v=4"></script>
+<script>
+// Scroll reveal
+var hmObs = new IntersectionObserver(function(entries){
+  entries.forEach(function(e){ if(e.isIntersecting) e.target.classList.add('on'); });
+},{threshold:.1,rootMargin:'0px 0px -30px 0px'});
+document.querySelectorAll('.hm-reveal,.hm-reveal2,.hm-reveal3').forEach(function(el){hmObs.observe(el);});
+
+// Page stubs for app.js compatibility
+function showPage(n){
+  var m={'home':'index.html','course':'program.html','giq':'giq.html',
+         'coaches':'coaches.html','signup':'auth.html','dashboard':'dashboard.html'};
+  if(m[n]) window.location.href=m[n];
+}
+function buildModuleList(){}
+function loadDashboard(){}
+function buildDashModuleList(){}
+function loadGIQScore(){}
+
+// Auth-aware nav
+function updateNavForLoggedIn(){
+  // Show IQ badge with score if available
+  var iqBtn = document.getElementById('homeNavIQ');
+  var dashBtn = document.getElementById('homeNavDash');
+  var signinBtn = document.getElementById('homeNavSignin');
+  var loginBtn = document.getElementById('homeNavLoginBtn');
+  if(iqBtn) iqBtn.style.display='inline-block';
+  if(dashBtn) dashBtn.style.display='inline-flex';
+  if(signinBtn) signinBtn.style.display='none';
+  if(loginBtn){ loginBtn.href='dashboard.html'; loginBtn.querySelector('div+div,div:last-child,span'); }
+  // Load IQ score for badge
+  if(typeof db!=='undefined' && currentUser){
+    db.from('giq_scores').select('grade').eq('user_id',currentUser.id)
+      .order('taken_at',{ascending:false}).limit(1)
+      .then(function(r){
+        if(r.data && r.data.length > 0 && iqBtn){
+          iqBtn.textContent = (r.data[0].grade || '') + ' IQ';
+        } else if(iqBtn){
+          iqBtn.textContent = 'My IQ';
+        }
+      }).catch(function(){});
+  }
+}
+
+document.addEventListener('sessionReady', function(){
+  if(currentUser) updateNavForLoggedIn();
+});
+</script>
 </body>
 </html>
