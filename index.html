@@ -403,15 +403,65 @@ img { display:block; max-width:100%; }
 .hm-reveal3.on{opacity:1;transform:translateY(0);}
 
 @media (max-width:700px) {
-  .home-path { grid-template-columns:1fr; }
-  .home-path-player .home-path-photo,
-  .home-path-coach  .home-path-photo { order:1;min-height:260px; }
-  .home-path-player .home-path-text,
-  .home-path-coach  .home-path-text  { order:2; }
-  .home-path-fade-l,.home-path-fade-r {
-    background:linear-gradient(to top,rgba(2,15,30,1) 0%,transparent 50%);
+  /* Hero — remove blank gap, photo fills from nav down */
+  .home-hero { min-height:100svh; }
+  .home-hero-photo {
+    width:100%; max-width:none;
+    height:65%; top:64px; bottom:auto;
+    right:0; left:0;
   }
-  .home-hero-photo { width:100%;max-width:none;height:60%; }
+  .home-hero-photo img {
+    mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+    mask-composite: unset;
+    -webkit-mask-composite: unset;
+    object-position: center 20%;
+  }
+  .home-hero-content {
+    padding: 0 20px 40px;
+  }
+  .home-hero-h1 { font-size: clamp(48px, 14vw, 80px); }
+
+  /* Modules — single column, full width */
+  .home-modules { padding: 40px 16px; }
+  .home-modules-scroll {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .home-module-card { width: 100%; }
+
+  /* Paths — stack vertically, photo on top smaller, text below */
+  .home-path { grid-template-columns: 1fr; min-height: auto; }
+  .home-path-player .home-path-photo,
+  .home-path-coach  .home-path-photo { order:1; min-height:220px; max-height:260px; }
+  .home-path-player .home-path-text,
+  .home-path-coach  .home-path-text  { order:2; padding:32px 24px 40px; justify-content:flex-start; }
+  .home-path-fade-l {
+    background:linear-gradient(to top,#020f1e 0%,rgba(2,15,30,.3) 60%, transparent 100%);
+  }
+  .home-path-fade-r {
+    background:linear-gradient(to top,#040e04 0%,rgba(4,14,4,.3) 60%, transparent 100%);
+  }
+  .home-path-title { font-size: clamp(48px,12vw,72px); margin-bottom:14px; }
+  .home-path-body { max-width:100%; margin-bottom:24px; font-size:15px; }
+  .home-path-btn { width:100%; justify-content:center; padding:15px 20px; }
+
+  /* Offerings */
+  .home-offerings { padding:40px 16px; }
+
+  /* CTA */
+  .home-cta { margin:0 16px 40px; padding:28px 20px; }
+
+  /* Footer */
+  .home-footer { padding:24px 16px 90px; flex-direction:column; gap:16px; align-items:flex-start; }
+  .home-footer-links { flex-wrap:wrap; gap:12px; }
+
+  /* Nav — wrap on mobile */
+  .home-nav { padding:0 16px; height:auto; min-height:64px; flex-wrap:wrap; gap:8px; padding-top:12px; padding-bottom:12px; }
+  .home-nav-brand { font-size:18px; }
+  .home-nav-right { gap:8px; }
+  .home-nav-cta { padding:8px 14px; font-size:12px; }
+  .home-nav-login { font-size:12px; }
 }
 </style>
 </head>
