@@ -7,130 +7,346 @@
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Coaches — First Down Academy</title>
-<link rel="stylesheet" href="style.css?v=2">
+<meta name="description" content="Share one link. Your whole roster learns football. Free for coaches and programs.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;0,900;1,800&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:#020f1e;color:#d9e7fc;font-family:'Barlow',sans-serif;overflow-x:hidden;line-height:1.6;}
+a{text-decoration:none;}
+img{display:block;max-width:100%;}
+/* NAV */
+.pg-nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(2,10,20,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);height:64px;display:flex;align-items:center;padding:0 24px;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.06);}
+.pg-nav-brand{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#C1FF22;font-style:italic;}
+.pg-nav-links{display:flex;align-items:center;gap:28px;}
+.pg-nav-link{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.4);transition:color .18s;}
+.pg-nav-link:hover,.pg-nav-link.active{color:#fff;}
+.pg-nav-right{display:flex;align-items:center;gap:10px;}
+.pg-nav-signin{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.35);transition:color .18s;}
+.pg-nav-signin:hover{color:#fff;}
+.pg-nav-cta{background:#C1FF22;color:#0d1a00;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;padding:8px 18px;border-radius:2px;transition:background .18s;}
+.pg-nav-cta:hover{background:#a8e01e;}
+.pg-nav-dash{display:none;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:7px 14px;border-radius:2px;}
+/* HERO */
+.pg-hero{min-height:100vh;background:#020f1e;display:flex;flex-direction:column;justify-content:flex-end;padding-top:64px;position:relative;overflow:hidden;}
+.pg-hero-grid{position:absolute;inset:0;background-image:repeating-linear-gradient(90deg,rgba(255,255,255,.02) 0,rgba(255,255,255,.02) 1px,transparent 1px,transparent 80px),repeating-linear-gradient(0deg,rgba(255,255,255,.015) 0,rgba(255,255,255,.015) 1px,transparent 1px,transparent 80px);pointer-events:none;}
+.pg-hero-glow{position:absolute;bottom:-10%;right:-5%;width:600px;height:500px;background:radial-gradient(ellipse,rgba(193,255,34,.06),transparent 70%);pointer-events:none;}
+.pg-hero-inner{position:relative;z-index:3;padding:80px 28px 60px;max-width:860px;}
+.pg-hero-badge{display:inline-flex;align-items:center;gap:10px;background:rgba(193,255,34,.1);border:1px solid rgba(193,255,34,.2);padding:6px 14px;border-radius:2px;margin-bottom:28px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#C1FF22;}
+.pg-hero-dot{width:7px;height:7px;border-radius:50%;background:#C1FF22;box-shadow:0 0 8px #C1FF22;animation:dot-pulse 2s ease-in-out infinite;}
+@keyframes dot-pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.pg-hero-h1{font-family:'Barlow Condensed',sans-serif;font-size:clamp(56px,10vw,96px);font-weight:900;line-height:.86;letter-spacing:-.01em;text-transform:uppercase;color:#fff;margin-bottom:20px;}
+.pg-hero-h1 .lime{color:#C1FF22;}
+.pg-hero-sub{font-size:17px;font-weight:300;color:rgba(255,255,255,.55);line-height:1.75;max-width:520px;margin-bottom:40px;}
+.pg-hero-sub strong{color:#fff;font-weight:500;}
+.pg-hero-btns{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.btn-lime{background:#C1FF22;color:#0d1a00;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;padding:14px 32px;border:none;cursor:pointer;border-radius:2px;display:inline-flex;align-items:center;gap:8px;transition:all .18s;position:relative;overflow:hidden;}
+.btn-lime::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);transform:translateX(-100%);transition:transform .4s;}
+.btn-lime:hover::after{transform:translateX(100%);}
+.btn-lime:hover{background:#d0ff55;transform:translateY(-2px);box-shadow:0 8px 28px rgba(193,255,34,.35);}
+.btn-ghost{background:transparent;color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:13px 24px;border:1.5px solid rgba(255,255,255,.2);cursor:pointer;border-radius:2px;transition:border-color .18s;}
+.btn-ghost:hover{border-color:rgba(255,255,255,.5);}
+/* Stats */
+.pg-stats{position:relative;z-index:3;border-top:1px solid rgba(255,255,255,.06);display:grid;grid-template-columns:repeat(4,1fr);background:rgba(255,255,255,.02);}
+.pg-stat{padding:24px 28px;border-right:1px solid rgba(255,255,255,.06);}
+.pg-stat:last-child{border-right:none;}
+.pg-stat-num{font-family:'Barlow Condensed',sans-serif;font-size:36px;font-weight:900;color:#C1FF22;line-height:1;letter-spacing:-.01em;margin-bottom:4px;}
+.pg-stat-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.3);}
+/* Marquee */
+.pg-marquee{background:#0d2134;border-top:1px solid rgba(193,255,34,.15);border-bottom:1px solid rgba(193,255,34,.15);height:44px;overflow:hidden;display:flex;align-items:center;}
+.pg-marquee-track{display:inline-flex;white-space:nowrap;animation:pg-scroll 26s linear infinite;}
+@keyframes pg-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.pg-marquee-item{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:#C1FF22;padding:0 28px;display:inline-flex;align-items:center;gap:24px;}
+.pg-marquee-item::after{content:"\25C6";font-size:6px;opacity:.5;}
+/* Sections */
+.pg-section{padding:72px 28px;}
+.pg-section-inner{max-width:960px;margin:0 auto;position:relative;z-index:1;}
+.pg-label{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:10px;}
+.pg-title{font-family:'Barlow Condensed',sans-serif;font-size:clamp(36px,5.5vw,54px);font-weight:900;letter-spacing:-.01em;text-transform:uppercase;line-height:.9;color:#fff;margin-bottom:16px;}
+.pg-title .lime{color:#C1FF22;}
+/* Steps */
+.pg-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:48px;}
+.pg-step{background:#081b2c;padding:32px 28px;position:relative;overflow:hidden;border-left:2px solid rgba(193,255,34,.1);transition:border-color .2s;}
+.pg-step:hover{border-left-color:#C1FF22;}
+.pg-step-bg{font-family:'Barlow Condensed',sans-serif;font-size:80px;font-weight:900;color:rgba(193,255,34,.04);position:absolute;top:-8px;right:-4px;line-height:1;pointer-events:none;}
+.pg-step-icon{width:44px;height:44px;background:#0d2134;border-radius:2px;display:flex;align-items:center;justify-content:center;margin-bottom:18px;}
+.pg-step-title{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;letter-spacing:.04em;text-transform:uppercase;color:#fff;margin-bottom:8px;line-height:1;}
+.pg-step-body{font-size:14px;color:#9eacc0;line-height:1.65;}
+/* Free strip */
+.pg-free{background:#0d2134;border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06);padding:24px 28px;display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;}
+.pg-free-pill{background:rgba(193,255,34,.08);border:1px solid rgba(193,255,34,.2);border-radius:2px;padding:7px 16px;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#C1FF22;}
+/* Benefits */
+.pg-benefits{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:48px;}
+.pg-benefit{background:#081b2c;padding:28px;border-left:2px solid rgba(193,255,34,.08);transition:border-color .2s,background .2s;}
+.pg-benefit:hover{border-left-color:#C1FF22;background:#0d2134;}
+.pg-benefit-icon{width:40px;height:40px;background:#0d2134;border-radius:2px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;}
+.pg-benefit-title{font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:#fff;margin-bottom:8px;}
+.pg-benefit-body{font-size:14px;color:#9eacc0;line-height:1.65;}
+/* CTA */
+.pg-cta{background:#081b2c;margin:0 28px 56px;border-radius:2px;padding:48px 40px;position:relative;overflow:hidden;border-left:3px solid #C1FF22;}
+.pg-cta::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(193,255,34,.04),transparent 60%);pointer-events:none;}
+.pg-cta-inner{position:relative;z-index:2;max-width:560px;}
+.pg-cta-title{font-family:'Barlow Condensed',sans-serif;font-size:clamp(36px,5vw,52px);font-weight:900;text-transform:uppercase;line-height:.9;color:#fff;margin-bottom:14px;}
+.pg-cta-body{font-size:15px;color:#9eacc0;line-height:1.65;margin-bottom:28px;}
+.pg-cta-note{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.2);margin-top:12px;}
+/* Footer */
+.pg-footer{background:#020f1e;border-top:1px solid rgba(255,255,255,.06);padding:28px 28px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;}
+.pg-footer-brand{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;font-style:italic;color:#C1FF22;}
+.pg-footer-links{display:flex;gap:20px;flex-wrap:wrap;}
+.pg-footer-link{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3);transition:color .18s;}
+.pg-footer-link:hover{color:#fff;}
+.pg-footer-copy{font-size:11px;color:rgba(255,255,255,.15);}
+/* Reveal */
+.rv{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease;}
+.rv.on{opacity:1;transform:translateY(0);}
+.rv2{opacity:0;transform:translateY(24px);transition:opacity .6s .12s ease,transform .6s .12s ease;}
+.rv2.on{opacity:1;transform:translateY(0);}
+.rv3{opacity:0;transform:translateY(24px);transition:opacity .6s .24s ease,transform .6s .24s ease;}
+.rv3.on{opacity:1;transform:translateY(0);}
+@media(max-width:700px){
+  .pg-nav-links{display:none;}
+  .pg-hero-inner{padding:56px 20px 48px;}
+  .pg-stats{grid-template-columns:repeat(2,1fr);}
+  .pg-steps{grid-template-columns:1fr;}
+  .pg-benefits{grid-template-columns:1fr;}
+  .pg-section{padding:48px 20px;}
+  .pg-cta{margin:0 20px 40px;padding:32px 24px;}
+  .pg-footer{padding:24px 20px 48px;}
+}
+
+/* ── TEXTURES ── */
+
+/* Diagonal hash mark pattern — football field inspired */
+.tx-hash {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background-image:
+    repeating-linear-gradient(
+      -55deg,
+      transparent,
+      transparent 28px,
+      rgba(193,255,34,.018) 28px,
+      rgba(193,255,34,.018) 29px
+    );
+}
+
+/* Dot grid */
+.tx-dots {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background-image: radial-gradient(circle, rgba(193,255,34,.09) 1px, transparent 1px);
+  background-size: 36px 36px;
+}
+
+/* Yard line grid — horizontal stripes */
+.tx-yard {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 59px,
+      rgba(255,255,255,.025) 59px,
+      rgba(255,255,255,.025) 60px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 59px,
+      rgba(255,255,255,.015) 59px,
+      rgba(255,255,255,.015) 60px
+    );
+}
+
+/* Large faint text watermark — "IQ" or "FDA" */
+.tx-watermark {
+  position: absolute; pointer-events: none; z-index: 0;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900; font-style: italic;
+  text-transform: uppercase;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(193,255,34,.06);
+  user-select: none; line-height: 1; letter-spacing: -.02em;
+}
+
+/* Corner accent — radiating lines from corner */
+.tx-corner {
+  position: absolute; pointer-events: none; z-index: 0;
+  width: 600px; height: 600px;
+}
+
+/* Section divider accent line */
+.tx-accent-line {
+  position: absolute; pointer-events: none; z-index: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(193,255,34,.3) 20%, rgba(193,255,34,.1) 60%, transparent 100%);
+}
+</style>
 </head>
 <body>
-<nav>
-  <div class="nav-inner">
-    <a class="logo" href="index.html"><img src="logo.png" alt="First Down Academy" style="height:52px;width:auto;object-fit:contain;" onerror="this.style.display:'none'">First Down Academy</a>
-    <div class="nav-links">
-      <a class="nav-link" href="program.html">The Program</a>
-      <a class="nav-link active" href="coaches.html">Coaches</a>
-      <a class="nav-link" id="nav-dashboard" href="dashboard.html" style="display:none">Dashboard</a>
-    </div>
-    <div class="nav-auth-btns" id="navAuthBtns">
-      <a class="btn btn-outline nav-login-btn" href="auth.html?tab=login">Log In</a>
-      <a class="btn btn-primary nav-signup-btn" href="auth.html">Sign Up</a>
-    </div>
-    <a class="btn btn-primary nav-cta" id="navDashBtn" href="dashboard.html" style="display:none">Dashboard</a>
+<nav class="pg-nav">
+  <a href="index.html" class="pg-nav-brand">First Down Academy</a>
+  <div class="pg-nav-links">
+    <a href="program.html" class="pg-nav-link">The Program</a>
+    <a href="giq-exam.html" class="pg-nav-link">Gridiron IQ</a>
+    <a href="coaches.html" class="pg-nav-link active">Coaches</a>
+    <a href="dashboard.html" class="pg-nav-link" id="nav-dashboard" style="display:none;">Dashboard</a>
+  </div>
+  <div class="pg-nav-right">
+    <a href="auth.html?tab=login" class="pg-nav-signin" id="navSignin">Sign In</a>
+    <a href="dashboard.html" class="pg-nav-dash" id="navDashBtn">Dashboard</a>
+    <a href="auth.html" class="pg-nav-cta">Get Coach Link</a>
   </div>
 </nav>
 
-<div class="page-hero">
-  <div class="container page-hero-inner">
-    <span class="tag">For Coaches</span>
-    <h1>Your Roster. Smarter. Before Practice.</h1>
-    <p>Share one link. First Down Academy installs the football knowledge. You run the practice you actually want to run.</p>
-    <a href="auth.html" class="btn btn-primary" style="margin-top:24px;display:inline-flex;align-items:center;gap:8px;">Get Your Free Coach Link &rarr;</a>
+<section class="pg-hero">
+  <div class="pg-hero-grid"></div>
+  <div class="pg-hero-glow"></div>
+
+  <!-- Diagonal hash texture -->
+  <div class="tx-hash"></div>
+
+  <!-- Radiating corner lines (top-right) -->
+  <svg class="tx-corner" style="top:-60px;right:-60px;opacity:.5;" viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <line x1="600" y1="0" x2="0" y2="600" stroke="rgba(193,255,34,.06)" stroke-width="1"/>
+    <line x1="600" y1="0" x2="100" y2="600" stroke="rgba(193,255,34,.05)" stroke-width="1"/>
+    <line x1="600" y1="0" x2="200" y2="600" stroke="rgba(193,255,34,.04)" stroke-width="1"/>
+    <line x1="600" y1="0" x2="350" y2="600" stroke="rgba(193,255,34,.035)" stroke-width="1"/>
+    <line x1="600" y1="0" x2="500" y2="600" stroke="rgba(193,255,34,.025)" stroke-width="1"/>
+    <line x1="600" y1="0" x2="600" y2="400" stroke="rgba(193,255,34,.04)" stroke-width="1"/>
+    <line x1="600" y1="0" x2="600" y2="200" stroke="rgba(193,255,34,.05)" stroke-width="1"/>
+    <line x1="600" y1="100" x2="0" y2="500" stroke="rgba(193,255,34,.03)" stroke-width="1"/>
+  </svg>
+
+  <!-- Faint IQ watermark -->
+  <div class="tx-watermark" style="font-size:380px;bottom:-40px;right:-20px;opacity:.7;">IQ</div>
+  <div class="pg-hero-inner">
+    <div class="pg-hero-badge"><span class="pg-hero-dot"></span>For Coaches &amp; Programs</div>
+    <h1 class="pg-hero-h1">Your Roster.<br><span class="lime">Smarter.</span><br>Before Practice.</h1>
+    <p class="pg-hero-sub"><strong>Share one link.</strong> First Down Academy installs the football knowledge. You run the practice you actually want to run.</p>
+    <div class="pg-hero-btns">
+      <a href="auth.html" class="btn-lime">Get Your Free Coach Link &rarr;</a>
+      <a href="program.html" class="btn-ghost">View the Curriculum</a>
+    </div>
+  </div>
+  <div class="pg-stats">
+    <div class="pg-stat"><div class="pg-stat-num">60s</div><div class="pg-stat-label">To Enroll Your Team</div></div>
+    <div class="pg-stat"><div class="pg-stat-num">8</div><div class="pg-stat-label">Free Modules</div></div>
+    <div class="pg-stat"><div class="pg-stat-num">Free</div><div class="pg-stat-label">For All Programs</div></div>
+    <div class="pg-stat"><div class="pg-stat-num">8&ndash;18</div><div class="pg-stat-label">Ages Served</div></div>
+  </div>
+</section>
+
+<div class="pg-marquee">
+  <div class="pg-marquee-track">
+    <span class="pg-marquee-item">Free for Coaches</span><span class="pg-marquee-item">One Referral Link</span><span class="pg-marquee-item">Roster IQ Tracking</span><span class="pg-marquee-item">Smarter Players</span><span class="pg-marquee-item">Reclaim Practice Time</span><span class="pg-marquee-item">No Setup Required</span>
+    <span class="pg-marquee-item">Free for Coaches</span><span class="pg-marquee-item">One Referral Link</span><span class="pg-marquee-item">Roster IQ Tracking</span><span class="pg-marquee-item">Smarter Players</span><span class="pg-marquee-item">Reclaim Practice Time</span><span class="pg-marquee-item">No Setup Required</span>
   </div>
 </div>
 
-<div style="padding:80px 0;background:var(--white);">
-  <div class="container" style="max-width:900px;">
-    <div style="text-align:center;margin-bottom:60px;">
-      <div class="section-eyebrow" style="justify-content:center;">How It Works</div>
-      <h2 class="section-title">THREE STEPS TO A <span class="text-orange">SMARTER ROSTER.</span></h2>
-    </div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:32px;">
-      <div style="text-align:center;">
-        <div style="width:64px;height:64px;background:var(--orange);border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-family:var(--font-d);font-size:28px;color:white;">1</div>
-        <div style="font-family:var(--font-d);font-size:20px;color:var(--navy);letter-spacing:.04em;margin-bottom:10px;">SIGN UP FREE</div>
-        <p style="font-size:14px;color:var(--muted);line-height:1.7;">Create your coach account in under 2 minutes. No credit card, no setup fee — ever.</p>
+<div class="pg-section" style="background:#020f1e;position:relative;overflow:hidden;">
+  <div class="tx-yard"></div>
+  <div class="pg-section-inner">
+    <div class="rv"><div class="pg-label">How It Works</div><div class="pg-title">Three Steps to a <span class="lime">Smarter Roster.</span></div></div>
+    <div class="pg-steps">
+      <div class="pg-step rv">
+        <div class="pg-step-bg">01</div>
+        <div class="pg-step-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="#C1FF22" stroke-width="1.5"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="#C1FF22" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        <div class="pg-step-title">Sign Up Free</div>
+        <p class="pg-step-body">Create your coach account in under 2 minutes. You get a unique referral link tied to your team. Players join instantly using your link.</p>
       </div>
-      <div style="text-align:center;">
-        <div style="width:64px;height:64px;background:var(--navy);border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-family:var(--font-d);font-size:28px;color:white;">2</div>
-        <div style="font-family:var(--font-d);font-size:20px;color:var(--navy);letter-spacing:.04em;margin-bottom:10px;">SHARE YOUR LINK</div>
-        <p style="font-size:14px;color:var(--muted);line-height:1.7;">You get a unique referral link tied to your team. Share it in your team group chat or at practice.</p>
+      <div class="pg-step rv2">
+        <div class="pg-step-bg">02</div>
+        <div class="pg-step-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M8 12h8M12 8v8" stroke="#C1FF22" stroke-width="1.5" stroke-linecap="round"/><rect x="3" y="3" width="18" height="18" rx="2" stroke="#C1FF22" stroke-width="1.5"/></svg></div>
+        <div class="pg-step-title">Share Your Link</div>
+        <p class="pg-step-body">Drop it in your team group chat or text it to parents. One link &mdash; your entire roster is enrolled in under 60 seconds.</p>
       </div>
-      <div style="text-align:center;">
-        <div style="width:64px;height:64px;background:var(--green);border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-family:var(--font-d);font-size:28px;color:white;">3</div>
-        <div style="font-family:var(--font-d);font-size:20px;color:var(--navy);letter-spacing:.04em;margin-bottom:10px;">PLAYERS LEARN</div>
-        <p style="font-size:14px;color:var(--muted);line-height:1.7;">Players complete 8 modules on their own time. They arrive at practice knowing the game — not learning it.</p>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div style="padding:80px 0;background:var(--off);">
-  <div class="container" style="max-width:900px;">
-    <div style="text-align:center;margin-bottom:60px;">
-      <div class="section-eyebrow" style="justify-content:center;">The Benefits</div>
-      <h2 class="section-title">WHAT COACHES <span class="text-orange">ACTUALLY GET.</span></h2>
-    </div>
-    <div class="coaches-benefits-grid">
-      <div class="coach-benefit-card">
-        <div class="coach-benefit-icon">
-          <svg width="24" height="24" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="12" stroke="var(--orange-500)" stroke-width="2"/><path d="M16 8v8l5 3" stroke="var(--orange-500)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 8l2 2M26 8l-2 2" stroke="var(--orange-500)" stroke-width="1.5" stroke-linecap="round" opacity=".4"/></svg>
-        </div>
-        <div class="coach-benefit-title">Reclaim Practice Time</div>
-        <p class="coach-benefit-desc">Stop spending the first 20 minutes explaining what a down is. Players arrive with the foundation already installed — you run the practice you actually want to run.</p>
-      </div>
-      <div class="coach-benefit-card">
-        <div class="coach-benefit-icon">
-          <svg width="24" height="24" viewBox="0 0 32 32" fill="none"><path d="M10 6c-3 0-6 2.5-6 6 0 1.4.5 2.7 1.3 3.6C4.5 16.6 4 18 4 19.5 4 23 7 26 11 26h10c4 0 7-3 7-6.5 0-1.5-.5-2.9-1.3-3.9C27.5 14.7 28 13.4 28 12c0-3.5-3-6-7-6-1 0-2 .3-2.8.7C17.4 6.3 16.3 6 15 6h-5z" stroke="var(--orange-500)" stroke-width="2" stroke-linejoin="round"/><path d="M16 11v5M13 14h6" stroke="var(--orange-500)" stroke-width="1.5" stroke-linecap="round" opacity=".6"/></svg>
-        </div>
-        <div class="coach-benefit-title">Smarter Players</div>
-        <p class="coach-benefit-desc">Players who understand the whole game make faster decisions, adjust when plays break down, and get more out of every rep at practice.</p>
-      </div>
-      <div class="coach-benefit-card">
-        <div class="coach-benefit-icon">
-          <svg width="24" height="24" viewBox="0 0 32 32" fill="none"><rect x="4" y="20" width="6" height="8" rx="1" fill="var(--orange-500)" opacity=".3"/><rect x="13" y="14" width="6" height="14" rx="1" fill="var(--orange-500)" opacity=".6"/><rect x="22" y="8" width="6" height="20" rx="1" fill="var(--orange-500)"/><path d="M4 28h24" stroke="var(--orange-500)" stroke-width="1.5" stroke-linecap="round"/><path d="M7 19L14 13l6 4 7-8" stroke="var(--navy)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity=".3"/></svg>
-        </div>
-        <div class="coach-benefit-title">Track Your Roster</div>
-        <p class="coach-benefit-desc">Your coach dashboard shows every player who signed up with your link, when they joined, and their progress through the curriculum.</p>
-      </div>
-      <div class="coach-benefit-card">
-        <div class="coach-benefit-icon">
-          <svg width="24" height="24" viewBox="0 0 32 32" fill="none"><path d="M16 3l3.5 8.5H28l-7 5.5 2.7 9L16 21l-7.7 5 2.7-9-7-5.5h8.5z" stroke="var(--orange-500)" stroke-width="2" stroke-linejoin="round"/></svg>
-        </div>
-        <div class="coach-benefit-title">Free for Your Program</div>
-        <p class="coach-benefit-desc">First Down Academy is completely free for coaches and their players. No budget request. No approval needed. No credit card. Ever.</p>
+      <div class="pg-step rv3">
+        <div class="pg-step-bg">03</div>
+        <div class="pg-step-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 20L10 14L14 18L20 10" stroke="#C1FF22" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="pg-step-title">Players Learn</div>
+        <p class="pg-step-body">Players complete 8 modules on their own time. They arrive knowing the game &mdash; not learning it. You run the practice you want.</p>
       </div>
     </div>
   </div>
 </div>
 
-<div style="padding:80px var(--gutter);background:var(--navy);">
-  <div style="max-width:700px;margin:0 auto;text-align:center;">
-    <div style="font-family:var(--font-d);font-size:clamp(36px,5vw,56px);color:white;letter-spacing:.04em;line-height:.95;margin-bottom:16px;">GET YOUR FREE COACH LINK TODAY.</div>
-    <p style="font-size:16px;color:rgba(255,255,255,.5);line-height:1.7;margin-bottom:32px;">Takes 2 minutes. No credit card. Your players can start learning tonight.</p>
-    <a href="auth.html" class="btn btn-primary" style="font-size:15px;padding:16px 40px;display:inline-flex;align-items:center;gap:8px;">Create Your Coach Account &rarr;</a>
+<div class="pg-free">
+  <div class="pg-free-pill">Built for youth football programs</div>
+  <div class="pg-free-pill">Ages 8 to 18</div>
+  <div class="pg-free-pill">Works on any device</div>
+  <div class="pg-free-pill">No setup required</div>
+</div>
+
+<div class="pg-section" style="background:#081b2c;position:relative;overflow:hidden;">
+  <div class="tx-dots"></div>
+  <div class="pg-section-inner">
+    <div class="rv"><div class="pg-label">The Benefits</div><div class="pg-title">What Coaches <span class="lime">Actually Get.</span></div></div>
+    <div class="pg-benefits">
+      <div class="pg-benefit rv">
+        <div class="pg-benefit-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#C1FF22" stroke-width="1.5"/><path d="M12 7v5l3 2" stroke="#C1FF22" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        <div class="pg-benefit-title">Reclaim Practice Time</div>
+        <p class="pg-benefit-body">Stop spending 20 minutes explaining what a down is. Players arrive with the foundation already installed &mdash; you run the reps that actually improve performance.</p>
+      </div>
+      <div class="pg-benefit rv2">
+        <div class="pg-benefit-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2C9 2 6.5 4.5 6.5 7c0 2.5 1.5 4.5 3.5 5.5V14h4v-1.5c2-1 3.5-3 3.5-5.5C17.5 4.5 15 2 12 2z" stroke="#C1FF22" stroke-width="1.5" stroke-linejoin="round"/><rect x="9" y="14" width="6" height="2" rx="1" fill="#C1FF22" opacity=".4"/></svg></div>
+        <div class="pg-benefit-title">Smarter Players</div>
+        <p class="pg-benefit-body">Players who understand the whole game make faster decisions, adjust when plays break down, and get more out of every rep at practice.</p>
+      </div>
+      <div class="pg-benefit rv">
+        <div class="pg-benefit-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke="#C1FF22" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        <div class="pg-benefit-title">Track Your Roster</div>
+        <p class="pg-benefit-body">Your coach dashboard shows every player enrolled with your link, their Gridiron IQ score, and progress through every module.</p>
+      </div>
+      <div class="pg-benefit rv2">
+        <div class="pg-benefit-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2l2.5 7.5H22l-6.5 4.5 2.5 7.5L12 17l-6 4.5 2.5-7.5L3 9.5h7.5z" stroke="#C1FF22" stroke-width="1.5" stroke-linejoin="round"/></svg></div>
+        <div class="pg-benefit-title">Completely Free</div>
+        <p class="pg-benefit-body">First Down Academy is free for coaches and players. Built to be accessible to every program, regardless of size or budget.</p>
+      </div>
+    </div>
   </div>
 </div>
 
-<footer>
-  <div class="footer-inner">
-    <div class="footer-brand"><a class="logo" href="index.html"><img src="logo.png" alt="" style="height:36px;width:36px;object-fit:contain;" onerror="this.style.display:'none'">First Down Academy</a></div>
-    <div class="footer-links">
-      <div class="footer-col"><div class="footer-col-label">Platform</div><ul><li><a href="program.html">The Program</a></li><li><a href="coaches.html">Coaches</a></li></ul></div>
-      <div class="footer-col"><div class="footer-col-label">Account</div><ul><li><a href="auth.html">Sign Up</a></li><li><a href="auth.html?tab=login">Log In</a></li></ul></div>
-    </div>
+<div class="pg-cta rv" style="position:relative;overflow:hidden;">
+  <div class="tx-hash" style="opacity:.6;"></div>
+  <svg style="position:absolute;bottom:-30px;right:20px;opacity:.06;pointer-events:none;" width="300" height="220" viewBox="0 0 300 220" fill="none">
+    <text x="0" y="200" font-family="Barlow Condensed" font-size="220" font-weight="900" font-style="italic" fill="#C1FF22">1</text>
+  </svg>
+  <div class="pg-cta-inner">
+    <div class="pg-cta-title">Build a Smarter Roster.</div>
+    <p class="pg-cta-body">Two minutes to set up. Your players can start building football IQ tonight.</p>
+    <a href="auth.html" class="btn-lime">Create Your Coach Account &rarr;</a>
+    
   </div>
-  <div class="footer-bottom"><span>&copy; 2026 First Down Academy</span></div>
+</div>
+
+<footer class="pg-footer">
+  <div class="pg-footer-brand">First Down Academy</div>
+  <div class="pg-footer-links">
+    <a href="program.html" class="pg-footer-link">Program</a>
+    <a href="giq-exam.html" class="pg-footer-link">Gridiron IQ</a>
+    <a href="coaches.html" class="pg-footer-link">Coaches</a>
+    <a href="legal.html" class="pg-footer-link">Privacy</a>
+    <a href="legal.html" class="pg-footer-link">Terms</a>
+  </div>
+  <div class="pg-footer-copy">&copy; 2026 First Down Academy</div>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="curriculum.js?v=2"></script>
-<script src="app.js?v=2"></script>
+<script src="curriculum.js?v=4"></script>
+<script src="app.js?v=4"></script>
 <script>
-function showPage(name) {
-  var m = {'home':'index.html','signup':'auth.html','dashboard':'dashboard.html'};
-  if (m[name]) window.location.href = m[name];
-}
-function updateNavForLoggedIn() {
-  var ab = document.getElementById('navAuthBtns'); if (ab) ab.style.display = 'none';
-  var db = document.getElementById('navDashBtn'); if (db) db.style.display = 'inline-flex';
-  var dl = document.getElementById('nav-dashboard'); if (dl) dl.style.display = 'block';
+var obs=new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting)x.target.classList.add("on");});},{threshold:.1,rootMargin:"0px 0px -30px 0px"});
+document.querySelectorAll(".rv,.rv2,.rv3").forEach(function(el){obs.observe(el);});
+function showPage(n){var m={"home":"index.html","signup":"auth.html","dashboard":"dashboard.html"};if(m[n])window.location.href=m[n];}
+function buildModuleList(){}
+function loadDashboard(){}
+function buildDashModuleList(){}
+function loadGIQScore(){}
+function updateNavForLoggedIn(){
+  var si=document.getElementById("navSignin");if(si)si.style.display="none";
+  var db=document.getElementById("navDashBtn");if(db)db.style.display="inline-flex";
+  var dl=document.getElementById("nav-dashboard");if(dl)dl.style.display="block";
 }
 </script>
 </body>

@@ -5,516 +5,671 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gridiron IQ Quiz — First Down Academy</title>
 <link rel="icon" type="image/x-icon" href="favicon.ico">
-<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
-<link rel="stylesheet" href="style.css?v=3">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;0,900;1,800&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-/* ── BASE ── */
+/* ── RESET ── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-.exam-page{min-height:100vh;background:#04091A;font-family:var(--font-b,Arial,sans-serif);}
+html{scroll-behavior:smooth;}
+body{background:#020f1e;color:#d9e7fc;font-family:'Barlow',sans-serif;overflow-x:hidden;min-height:100vh;}
+a{text-decoration:none;}
+
+/* ── TOKENS ── */
+:root{
+  --bg:#020f1e; --bg2:#081b2c; --bg3:#0d2134; --bg4:#12273c;
+  --lime:#C1FF22; --lime2:#a8e01e;
+  --muted:#9eacc0; --border:#3c495a;
+  --fd:'Barlow Condensed',sans-serif;
+  --fb:'Barlow',sans-serif;
+}
 
 /* ── SCREENS ── */
-.screen{display:none;min-height:100vh;}
-.screen.active{display:flex;flex-direction:column;}
+.screen{display:none;min-height:100vh;flex-direction:column;}
+.screen.active{display:flex;}
 
-/* ════════════════════════════════════
+/* ══════════════════════════
    INTRO SCREEN
-════════════════════════════════════ */
+══════════════════════════ */
 .intro-screen{
-  align-items:center;justify-content:center;
-  padding:80px 24px 60px;text-align:center;
+  background:#020f1e;
+  min-height:100vh;
+  display:flex;align-items:center;justify-content:center;
+  padding:80px 24px 40px;
   position:relative;overflow:hidden;
 }
+/* Field grid bg */
 .intro-grid{
   position:absolute;inset:0;
-  background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
-  background-size:50px 50px;pointer-events:none;
-}
-.intro-glow{
-  position:absolute;top:-200px;left:50%;transform:translateX(-50%);
-  width:600px;height:500px;
-  background:radial-gradient(ellipse,rgba(232,99,10,.12),transparent 70%);
+  background-image:
+    repeating-linear-gradient(90deg,rgba(255,255,255,.02) 0,rgba(255,255,255,.02) 1px,transparent 1px,transparent 80px),
+    repeating-linear-gradient(0deg,rgba(255,255,255,.015) 0,rgba(255,255,255,.015) 1px,transparent 1px,transparent 80px);
   pointer-events:none;
 }
-.intro-inner{max-width:600px;width:100%;position:relative;z-index:1;}
+.intro-glow{
+  position:absolute;bottom:-20%;left:50%;transform:translateX(-50%);
+  width:600px;height:400px;
+  background:radial-gradient(ellipse,rgba(193,255,34,.08),transparent 70%);
+  pointer-events:none;
+}
+.intro-inner{
+  position:relative;z-index:1;
+  width:100%;max-width:560px;
+}
 .intro-badge{
-  display:inline-flex;align-items:center;gap:8px;
-  background:rgba(232,99,10,.12);border:1px solid rgba(232,99,10,.25);
-  border-radius:100px;padding:6px 16px;margin-bottom:24px;
-  font-family:var(--font-m);font-size:10px;letter-spacing:.18em;
-  text-transform:uppercase;color:var(--orange-300);
+  display:inline-flex;align-items:center;gap:10px;
+  background:rgba(193,255,34,.1);border:1px solid rgba(193,255,34,.2);
+  padding:6px 14px;border-radius:2px;margin-bottom:28px;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+  color:#C1FF22;
 }
 .intro-badge-dot{
-  width:6px;height:6px;border-radius:50%;background:var(--orange-500);
-  animation:pulse 2s ease-in-out infinite;
+  width:7px;height:7px;border-radius:50%;background:#C1FF22;
+  box-shadow:0 0 8px #C1FF22;
+  animation:ib-pulse 2s ease-in-out infinite;
 }
-@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+@keyframes ib-pulse{0%,100%{opacity:1}50%{opacity:.4}}
 .intro-title{
-  font-family:var(--font-d);font-size:clamp(36px,7vw,72px);
-  color:white;letter-spacing:.03em;text-transform:uppercase;
-  line-height:.9;margin-bottom:16px;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(52px,10vw,88px);font-weight:900;
+  line-height:.86;letter-spacing:-.01em;text-transform:uppercase;
+  color:#fff;margin-bottom:20px;
 }
-.intro-title span{color:var(--orange-500);display:block;}
+.intro-title span{color:#C1FF22;}
 .intro-sub{
-  font-size:16px;color:rgba(255,255,255,.4);
-  line-height:1.7;margin-bottom:36px;max-width:480px;margin-left:auto;margin-right:auto;
+  font-size:16px;font-weight:300;color:#9eacc0;
+  line-height:1.7;max-width:460px;margin-bottom:36px;
 }
+/* Feat row */
 .intro-features{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:12px;
-  margin-bottom:36px;
+  display:flex;gap:2px;margin-bottom:32px;
 }
 .intro-feat{
-  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);
-  border-radius:14px;padding:18px 14px;text-align:center;
+  flex:1;background:#081b2c;padding:18px 16px;
+  border-left:2px solid rgba(193,255,34,.15);
+  transition:border-color .2s;
 }
+.intro-feat:hover{border-left-color:#C1FF22;}
 .intro-feat-num{
-  font-family:var(--font-d);font-size:28px;color:var(--orange-400);
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:32px;font-weight:900;color:#C1FF22;
   line-height:1;margin-bottom:4px;
 }
 .intro-feat-label{
-  font-family:var(--font-m);font-size:10px;letter-spacing:.12em;
-  text-transform:uppercase;color:rgba(255,255,255,.35);
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+  color:#9eacc0;
 }
-.intro-start-btn{
-  width:100%;padding:18px;background:var(--orange-500);color:white;
-  font-family:var(--font-m);font-size:15px;font-weight:700;
-  letter-spacing:.1em;text-transform:uppercase;
-  border:none;border-radius:14px;cursor:pointer;
-  transition:all .2s;margin-bottom:12px;
-}
-.intro-start-btn:hover{background:var(--orange-400);transform:translateY(-2px);box-shadow:0 8px 24px rgba(232,99,10,.35);}
-.intro-note{
-  font-family:var(--font-m);font-size:10px;letter-spacing:.1em;
-  text-transform:uppercase;color:rgba(255,255,255,.2);
-}
-.intro-scoring{
-  background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);
-  border-radius:16px;padding:20px 20px 14px;margin-bottom:24px;text-align:left;
-}
+/* Scoring grid */
+.intro-scoring{margin-bottom:36px;}
 .intro-scoring-label{
-  font-family:var(--font-m);font-size:10px;letter-spacing:.16em;
-  text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:14px;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+  color:#9eacc0;margin-bottom:12px;
 }
-.intro-scoring-grid{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:6px;
+.intro-scoring-grid{display:grid;grid-template-columns:repeat(3,1fr) 1fr 1fr;gap:2px;}
+.intro-sc-item{background:#081b2c;padding:14px 10px;text-align:center;}
+.intro-sc-pts{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;margin-bottom:4px;}
+.intro-sc-desc{font-size:11px;color:#9eacc0;line-height:1.4;}
+/* Start button */
+.intro-start-btn{
+  width:100%;padding:17px;
+  background:#C1FF22;color:#0d1a00;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:15px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;
+  border:none;border-radius:2px;cursor:pointer;
+  transition:all .2s;margin-bottom:12px;
+  position:relative;overflow:hidden;
 }
-.intro-sc-item{
-  text-align:center;background:rgba(255,255,255,.03);
-  border-radius:10px;padding:10px 6px;
+.intro-start-btn::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);
+  transform:translateX(-100%);transition:transform .4s;
 }
-.intro-sc-pts{
-  font-family:var(--font-d);font-size:20px;line-height:1;margin-bottom:3px;
+.intro-start-btn:hover::after{transform:translateX(100%);}
+.intro-start-btn:hover{background:#d0ff55;transform:translateY(-2px);box-shadow:0 8px 28px rgba(193,255,34,.35);}
+.intro-note{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(255,255,255,.2);text-align:center;
 }
-.intro-sc-desc{font-size:10px;color:rgba(255,255,255,.3);line-height:1.4;}
 
-/* ════════════════════════════════════
+
+/* ── VALUE PROP ── */
+.intro-value-prop {
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(18px,3.5vw,24px);font-weight:700;
+  letter-spacing:.04em;text-transform:uppercase;
+  color:#C1FF22;opacity:.85;
+  margin-bottom:28px;line-height:1.2;
+}
+
+/* ── PRIMARY CTA ── */
+.intro-cta-wrap {
+  margin-bottom:32px;
+}
+.intro-cta-sub {
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+  color:rgba(255,255,255,.35);text-align:center;margin-top:10px;
+}
+
+/* ── SUPPORTING DESC ── */
+.intro-desc {
+  font-size:15px;font-weight:300;color:rgba(255,255,255,.5);
+  line-height:1.7;max-width:460px;margin-bottom:36px;
+}
+
+/* ── FEAT ICONS ── */
+.intro-feat-icon {
+  margin-bottom:10px;opacity:.9;
+}
+.intro-feat {
+  display:flex;flex-direction:column;align-items:center;text-align:center;
+}
+.intro-feat-num {
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:28px;font-weight:900;color:#C1FF22;
+  line-height:1;margin-bottom:4px;
+}
+.intro-feat-label {
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:#9eacc0;
+}
+
+/* ── PROGRESSION ── */
+.intro-progression {
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(255,255,255,.25);text-align:center;
+  margin-top:14px;margin-bottom:40px;
+  padding:10px 0;border-top:1px solid rgba(255,255,255,.06);
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+
+/* ── WHY IT MATTERS ── */
+.intro-why {
+  display:grid;grid-template-columns:repeat(3,1fr);gap:2px;
+  margin-bottom:28px;
+}
+.intro-why-item {
+  background:#081b2c;padding:20px 16px;text-align:center;
+  border-left:2px solid rgba(193,255,34,.1);
+  transition:border-color .2s;
+}
+.intro-why-item:hover { border-left-color:#C1FF22; }
+.intro-why-icon { margin-bottom:10px; display:flex;justify-content:center; }
+.intro-why-title {
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:14px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+  color:#fff;margin-bottom:6px;line-height:1.1;
+}
+.intro-why-body {
+  font-size:12px;color:#9eacc0;line-height:1.5;
+}
+
+/* ── SCORING TOGGLE ── */
+.intro-scoring-toggle { margin-bottom:24px; }
+.intro-scoring-toggle-btn {
+  background:none;border:none;cursor:pointer;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(255,255,255,.35);padding:0;
+  transition:color .18s;display:block;margin:0 auto;
+}
+.intro-scoring-toggle-btn:hover { color:rgba(255,255,255,.6); }
+.intro-scoring-panel {
+  margin-top:14px;padding:16px;background:#081b2c;
+  border-radius:2px;border:1px solid rgba(255,255,255,.06);
+}
+.intro-scoring-note {
+  font-size:13px;color:#9eacc0;line-height:1.6;margin-bottom:14px;
+}
+.intro-scoring-grid {
+  display:grid;grid-template-columns:repeat(5,1fr);gap:2px;
+}
+
+/* Override title for better hierarchy */
+.intro-title {
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(52px,10vw,88px);font-weight:900;
+  line-height:.86;letter-spacing:-.01em;text-transform:uppercase;
+  color:rgba(255,255,255,.75);margin-bottom:14px;
+}
+.intro-title span {
+  color:#fff;display:block;
+  font-size:clamp(62px,12vw,108px);
+  line-height:.86;
+}
+
+@media(max-width:540px){
+  .intro-why { grid-template-columns:1fr; gap:2px; }
+  .intro-why-item { text-align:left;padding:14px 16px; display:flex;align-items:flex-start;gap:12px; }
+  .intro-why-icon { margin-bottom:0;flex-shrink:0;margin-top:2px; }
+  .intro-feat { padding:14px 8px; }
+  .intro-scoring-grid { grid-template-columns:repeat(3,1fr) repeat(2,1fr); gap:1px; }
+  .intro-progression { margin-bottom:28px; }
+}
+
+/* ══════════════════════════
    QUIZ SCREEN
-════════════════════════════════════ */
-.quiz-screen{background:#04091A;}
-
+══════════════════════════ */
 .quiz-header{
-  background:#06101F;border-bottom:1px solid rgba(255,255,255,.06);
-  padding:14px 0;position:sticky;top:0;z-index:50;
+  position:sticky;top:0;z-index:50;
+  background:rgba(2,10,20,.92);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(255,255,255,.06);
+  padding:12px 20px;
 }
 .quiz-header-inner{
-  max-width:680px;margin:0 auto;padding:0 24px;
-  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  max-width:640px;margin:0 auto;
+  display:flex;align-items:center;gap:16px;
 }
-.quiz-logo{height:36px;width:auto;}
-.quiz-prog-wrap{flex:1;max-width:240px;}
+.quiz-logo{height:36px;width:auto;flex-shrink:0;}
+.quiz-prog-wrap{flex:1;}
 .quiz-prog-label{
-  font-family:var(--font-m);font-size:9px;letter-spacing:.12em;
-  text-transform:uppercase;color:rgba(255,255,255,.3);
-  margin-bottom:5px;display:flex;justify-content:space-between;
+  display:flex;justify-content:space-between;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:#9eacc0;margin-bottom:6px;
 }
-.quiz-prog-track{
-  height:4px;background:rgba(255,255,255,.08);border-radius:100px;overflow:hidden;
-}
-.quiz-prog-fill{
-  height:100%;background:var(--orange-500);border-radius:100px;
-  transition:width .5s cubic-bezier(.4,0,.2,1);
-}
+.quiz-prog-track{height:3px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;}
+.quiz-prog-fill{height:100%;background:#C1FF22;transition:width .4s ease;border-radius:2px;}
 .quiz-q-counter{
-  font-family:var(--font-d);font-size:14px;color:rgba(255,255,255,.35);
-  white-space:nowrap;flex-shrink:0;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(255,255,255,.3);flex-shrink:0;white-space:nowrap;
 }
-.quiz-q-counter span{color:var(--orange-400);font-size:20px;}
-
 .quiz-body{
   flex:1;display:flex;align-items:flex-start;
-  justify-content:center;padding:36px 24px 80px;
+  justify-content:center;padding:28px 20px 80px;
 }
-
-/* ── QUESTION CARD ── */
+/* Question card */
 .q-card{
-  background:white;border-radius:24px;width:100%;max-width:640px;
-  overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.5);
+  background:#081b2c;width:100%;max-width:640px;
+  border-radius:2px;overflow:hidden;
+  border:1px solid rgba(255,255,255,.06);
   animation:cardIn .3s cubic-bezier(.4,0,.2,1);
 }
-@keyframes cardIn{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
-
+@keyframes cardIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 .q-head{
-  background:#04091A;padding:24px 28px;
+  background:#0d2134;padding:24px 24px 20px;
   display:flex;align-items:flex-start;gap:14px;
+  border-bottom:1px solid rgba(255,255,255,.06);
 }
 .q-num-badge{
-  width:36px;height:36px;background:var(--orange-500);border-radius:10px;
+  width:36px;height:36px;border-radius:2px;
+  background:#C1FF22;color:#0d1a00;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:18px;font-weight:900;
   display:flex;align-items:center;justify-content:center;
-  font-family:var(--font-d);font-size:16px;color:white;flex-shrink:0;margin-top:2px;
+  flex-shrink:0;
 }
 .q-meta-top{
-  font-family:var(--font-m);font-size:10px;letter-spacing:.14em;
-  text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:5px;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+  color:rgba(255,255,255,.3);margin-bottom:8px;
+  display:flex;align-items:center;gap:8px;
 }
-.q-diff-chip{
-  display:inline-block;padding:2px 8px;border-radius:100px;
-  font-family:var(--font-m);font-size:9px;letter-spacing:.1em;
-  text-transform:uppercase;margin-left:6px;
+.q-diff-badge{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  padding:2px 8px;border-radius:2px;
 }
-.diff-easy  {background:rgba(34,197,94,.15);color:#22C55E;}
-.diff-medium{background:rgba(232,99,10,.15);color:#F59E0B;}
-.diff-hard  {background:rgba(239,68,68,.15);color:#EF4444;}
+.diff-easy  {background:rgba(34,197,94,.15);color:#22C55E;border:1px solid rgba(34,197,94,.2);}
+.diff-medium{background:rgba(193,255,34,.1);color:#C1FF22;border:1px solid rgba(193,255,34,.2);}
+.diff-hard  {background:rgba(239,68,68,.12);color:#EF4444;border:1px solid rgba(239,68,68,.2);}
 .q-text{
-  font-family:var(--font-d);font-size:clamp(17px,2.5vw,22px);
-  color:white;letter-spacing:.03em;line-height:1.25;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(18px,2.8vw,24px);font-weight:700;
+  color:#fff;line-height:1.2;letter-spacing:.02em;
 }
-.q-body{padding:24px 28px;}
-
-/* OPTIONS */
-.q-options{display:flex;flex-direction:column;gap:9px;margin-bottom:20px;}
+/* Options */
+.q-opts-wrap{padding:20px 24px;}
+.q-opts{display:flex;flex-direction:column;gap:8px;margin-bottom:20px;}
 .q-opt{
   display:flex;align-items:center;gap:12px;
-  padding:14px 16px;border:2px solid #E2E8F0;border-radius:12px;
-  cursor:pointer;transition:all .15s;background:white;
-  text-align:left;width:100%;
+  padding:13px 16px;border-radius:2px;
+  border:1.5px solid rgba(255,255,255,.08);
+  background:rgba(255,255,255,.02);
+  cursor:pointer;transition:all .15s;text-align:left;width:100%;
 }
-.q-opt:hover{border-color:#94A3B8;background:#F8FAFF;transform:translateX(3px);}
-.q-opt.selected{border-color:var(--orange-500);background:rgba(232,99,10,.04);}
+.q-opt:hover{border-color:rgba(193,255,34,.4);background:rgba(193,255,34,.04);}
+.q-opt.selected{border-color:#C1FF22;background:rgba(193,255,34,.08);}
 .q-opt-letter{
-  width:28px;height:28px;border-radius:7px;
-  background:#F1F5F9;border:1.5px solid #E2E8F0;
-  display:flex;align-items:center;justify-content:center;
-  font-family:var(--font-m);font-size:11px;font-weight:700;
-  color:#64748B;flex-shrink:0;transition:all .15s;
+  width:28px;height:28px;border-radius:2px;
+  background:#0d2134;border:1px solid rgba(255,255,255,.1);
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:13px;font-weight:800;color:#9eacc0;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  transition:all .15s;
 }
-.q-opt.selected .q-opt-letter{background:var(--orange-500);border-color:var(--orange-500);color:white;}
-.q-opt-text{font-size:14px;color:#1E293B;line-height:1.4;}
-
-/* CONFIDENCE */
-.conf-section{display:none;margin-bottom:20px;animation:cardIn .25s ease;}
+.q-opt.selected .q-opt-letter{background:#C1FF22;border-color:#C1FF22;color:#0d1a00;}
+.q-opt-text{font-size:14px;color:#d9e7fc;line-height:1.4;}
+/* Confidence */
+.conf-section{
+  display:none;padding:16px 24px 20px;
+  border-top:1px solid rgba(255,255,255,.06);
+  animation:cardIn .25s ease;
+}
 .conf-section.show{display:block;}
 .conf-label{
-  font-family:var(--font-m);font-size:10px;letter-spacing:.14em;
-  text-transform:uppercase;color:#64748B;margin-bottom:10px;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+  color:#9eacc0;margin-bottom:10px;
 }
 .conf-btns{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px;}
 .conf-btn{
-  display:flex;flex-direction:column;align-items:center;gap:4px;
-  padding:12px 8px;border:2px solid #E2E8F0;border-radius:12px;
-  background:white;cursor:pointer;transition:all .15s;
+  display:flex;flex-direction:column;align-items:center;gap:5px;
+  padding:12px 8px;border-radius:2px;
+  border:1.5px solid rgba(255,255,255,.08);
+  background:rgba(255,255,255,.02);cursor:pointer;transition:all .15s;
 }
-.conf-btn:hover{border-color:#94A3B8;background:#F8FAFF;}
-.conf-btn.active{border-color:var(--orange-500);background:rgba(232,99,10,.05);}
-.conf-emoji{font-size:22px;line-height:1;}
+.conf-btn:hover{border-color:rgba(193,255,34,.4);background:rgba(193,255,34,.04);}
+.conf-btn.active{border-color:#C1FF22;background:rgba(193,255,34,.08);}
+.conf-emoji{font-size:20px;line-height:1;}
 .conf-name{
-  font-family:var(--font-m);font-size:10px;font-weight:700;
-  letter-spacing:.06em;text-transform:uppercase;color:#1E293B;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+  color:#d9e7fc;
 }
-.conf-pts{font-size:10px;color:#94A3B8;text-align:center;line-height:1.3;}
-.conf-warn{
-  font-size:11px;color:#94A3B8;text-align:center;
-  padding:8px 12px;background:#F8FAFF;border-radius:8px;
-  border:1px solid #E2E8F0;line-height:1.5;
+.conf-pts{font-size:10px;color:#9eacc0;text-align:center;line-height:1.3;}
+.conf-note{
+  font-size:11px;color:#9eacc0;text-align:center;
+  padding:8px 12px;background:#0d2134;border-radius:2px;
+  border:1px solid rgba(255,255,255,.06);line-height:1.5;
 }
-
-/* NEXT BUTTON */
+/* Next button */
 .next-btn{
-  width:100%;padding:15px;background:#1E293B;color:white;
-  font-family:var(--font-m);font-size:13px;font-weight:600;
-  letter-spacing:.1em;text-transform:uppercase;
-  border:none;border-radius:12px;cursor:pointer;transition:all .2s;
-  opacity:.3;pointer-events:none;
+  width:100%;padding:14px;
+  background:#12273c;color:rgba(255,255,255,.25);
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:13px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
+  border:1px solid rgba(255,255,255,.08);border-radius:2px;cursor:not-allowed;
+  transition:all .2s;margin:0 24px 24px;width:calc(100% - 48px);
 }
-.next-btn.ready{opacity:1;pointer-events:all;background:var(--orange-500);}
-.next-btn.ready:hover{background:var(--orange-400);transform:translateY(-1px);}
+.next-btn.ready{
+  background:#C1FF22;color:#0d1a00;border-color:#C1FF22;cursor:pointer;
+  box-shadow:0 4px 20px rgba(193,255,34,.3);
+}
+.next-btn.ready:hover{background:#d0ff55;transform:translateY(-1px);box-shadow:0 8px 28px rgba(193,255,34,.4);}
 
-/* ════════════════════════════════════
+/* ══════════════════════════
    RESULTS SCREEN
-════════════════════════════════════ */
+══════════════════════════ */
 .results-screen{
-  align-items:center;justify-content:flex-start;
-  padding:60px 24px 80px;background:#04091A;
-  position:relative;overflow:hidden;
+  background:#020f1e;min-height:100vh;
+  display:flex;align-items:flex-start;justify-content:center;
+  padding:28px 20px 80px;position:relative;overflow:hidden;
 }
 .results-glow{
-  position:absolute;top:0;left:50%;transform:translateX(-50%);
-  width:700px;height:400px;
-  background:radial-gradient(ellipse,rgba(232,99,10,.1),transparent 70%);
+  position:absolute;top:-10%;left:50%;transform:translateX(-50%);
+  width:600px;height:400px;
+  background:radial-gradient(ellipse,rgba(193,255,34,.06),transparent 70%);
   pointer-events:none;
 }
-.results-inner{max-width:580px;width:100%;position:relative;z-index:1;}
-
-/* GRADE CARD */
+.results-inner{
+  position:relative;z-index:1;width:100%;max-width:560px;
+}
+/* Grade card */
 .grade-card{
-  background:white;border-radius:24px;overflow:hidden;
-  box-shadow:0 24px 64px rgba(0,0,0,.5);margin-bottom:16px;
-  animation:cardIn .5s ease;
+  background:#081b2c;border:1px solid rgba(255,255,255,.08);
+  border-radius:2px;overflow:hidden;margin-bottom:12px;
 }
 .grade-head{
-  background:#04091A;padding:36px 36px 28px;text-align:center;
-  position:relative;overflow:hidden;
+  background:#0d2134;padding:36px 28px 32px;
+  text-align:center;position:relative;overflow:hidden;
 }
 .grade-head-glow{
-  position:absolute;inset:0;
-  background:radial-gradient(ellipse 80% 100% at 50% 110%,rgba(232,99,10,.15),transparent);
+  position:absolute;bottom:-40px;left:50%;transform:translateX(-50%);
+  width:300px;height:200px;
+  background:radial-gradient(ellipse,rgba(193,255,34,.1),transparent 70%);
   pointer-events:none;
 }
 .grade-eyebrow{
-  font-family:var(--font-m);font-size:10px;letter-spacing:.18em;
-  text-transform:uppercase;color:var(--orange-300);margin-bottom:20px;
-  position:relative;z-index:1;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
+  color:#C1FF22;margin-bottom:14px;position:relative;z-index:1;
 }
 .grade-display{
-  font-family:var(--font-d);font-size:clamp(72px,15vw,120px);
-  line-height:.85;letter-spacing:.02em;margin-bottom:10px;
-  position:relative;z-index:1;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:96px;font-weight:900;line-height:.85;
+  letter-spacing:-.02em;color:#fff;
+  position:relative;z-index:1;margin-bottom:6px;
 }
 .grade-tier{
-  font-family:var(--font-d);font-size:24px;letter-spacing:.08em;
-  text-transform:uppercase;margin-bottom:4px;position:relative;z-index:1;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:22px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+  position:relative;z-index:1;margin-bottom:4px;
 }
 .grade-tier-sub{
-  font-family:var(--font-m);font-size:11px;letter-spacing:.1em;
-  text-transform:uppercase;color:rgba(255,255,255,.35);position:relative;z-index:1;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(255,255,255,.3);position:relative;z-index:1;
 }
-
-/* STATS ROW */
-.stats-row{
-  display:grid;grid-template-columns:repeat(3,1fr);
-  gap:0;border-top:1px solid #F1F5F9;
+.grade-body{padding:24px 28px;}
+/* Stats row */
+.grade-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-bottom:16px;}
+.grade-stat{background:#0d2134;padding:16px 8px;text-align:center;}
+.grade-stat-n{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:28px;font-weight:900;color:#fff;line-height:1;margin-bottom:3px;
 }
-.stat-item{
-  padding:16px 12px;text-align:center;
-  border-right:1px solid #F1F5F9;
+.grade-stat-l{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:#9eacc0;
 }
-.stat-item:last-child{border-right:none;}
-.stat-num{
-  font-family:var(--font-d);font-size:24px;
-  color:#1E293B;line-height:1;margin-bottom:3px;
+/* Pillar section */
+.pillar-section{margin-bottom:12px;}
+.pillar-unlocked-head{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+  color:#9eacc0;margin-bottom:12px;
 }
-.stat-label{
-  font-family:var(--font-m);font-size:9px;letter-spacing:.1em;
-  text-transform:uppercase;color:#94A3B8;
+/* Line chart */
+.pillar-chart-wrap{
+  background:#0d2134;border:1px solid rgba(255,255,255,.06);
+  border-radius:2px;padding:16px 12px 8px;margin-bottom:14px;
 }
-
-/* LOCKED SECTION */
-.locked-section{
-  background:white;border-radius:20px;overflow:hidden;
-  box-shadow:0 8px 32px rgba(0,0,0,.3);margin-bottom:16px;
-  animation:cardIn .6s .1s ease both;
-}
-.locked-head{
-  padding:20px 24px;border-bottom:1px solid #F1F5F9;
-  display:flex;align-items:center;justify-content:space-between;
-}
-.locked-head-title{
-  font-family:var(--font-m);font-size:11px;font-weight:700;
-  letter-spacing:.12em;text-transform:uppercase;color:#1E293B;
-}
-.lock-badge{
-  display:flex;align-items:center;gap:5px;
-  background:#FEF3C7;border:1px solid #FDE68A;border-radius:100px;
-  padding:3px 10px;
-  font-family:var(--font-m);font-size:9px;letter-spacing:.1em;
-  text-transform:uppercase;color:#92400E;
-}
-.locked-body{padding:20px 24px;position:relative;}
-.pillar-rows-preview{
-  display:flex;flex-direction:column;gap:10px;
-  filter:blur(5px);-webkit-filter:blur(5px);
-  user-select:none;pointer-events:none;
-}
+/* Pillar bars */
+.pillar-unlocked-body{display:flex;flex-direction:column;gap:8px;}
+.pillar-row-full{display:flex;align-items:center;gap:10px;}
+.pillar-name-full{font-size:11px;font-weight:500;color:#9eacc0;width:80px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pillar-track-full{flex:1;height:4px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;}
+.pillar-fill-full{height:100%;border-radius:2px;transition:width 1s ease;}
+.pillar-pct-full{font-family:'Barlow Condensed',sans-serif;font-size:11px;color:#9eacc0;width:32px;text-align:right;flex-shrink:0;}
+/* Locked overlay */
+.locked-section{background:#0d2134;border:1px solid rgba(255,255,255,.06);border-radius:2px;padding:0;overflow:hidden;margin-bottom:12px;}
+.locked-head{padding:16px 20px 14px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:space-between;}
+.locked-head-title{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#fff;}
+.lock-badge{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#C1FF22;background:rgba(193,255,34,.1);border:1px solid rgba(193,255,34,.2);padding:3px 8px;border-radius:2px;}
+.locked-body{position:relative;}
+.pillar-rows-preview{padding:16px 20px;display:flex;flex-direction:column;gap:8px;}
 .pillar-row-prev{display:flex;align-items:center;gap:10px;}
-.pillar-name-prev{
-  font-size:12px;color:#1E293B;font-weight:500;
-  width:160px;flex-shrink:0;
-}
-.pillar-track-prev{
-  flex:1;height:6px;background:#F1F5F9;border-radius:100px;overflow:hidden;
-}
-.pillar-fill-prev{
-  height:100%;background:var(--orange-500);border-radius:100px;
-}
-.pillar-pct-prev{
-  font-family:var(--font-m);font-size:11px;color:#94A3B8;
-  width:32px;text-align:right;flex-shrink:0;
-}
+.pillar-name-prev{font-size:11px;color:#9eacc0;width:80px;flex-shrink:0;}
+.pillar-track-prev{flex:1;height:4px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;}
+.pillar-fill-prev{height:100%;background:#C1FF22;border-radius:2px;opacity:.4;}
+.pillar-pct-prev{font-family:'Barlow Condensed',sans-serif;font-size:11px;color:#9eacc0;width:32px;text-align:right;flex-shrink:0;}
 .locked-overlay{
   position:absolute;inset:0;
-  background:rgba(255,255,255,.85);
-  backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  background:rgba(8,27,44,.8);
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:8px;border-radius:0 0 20px 20px;padding:24px;text-align:center;
+  gap:8px;padding:24px;text-align:center;
 }
 .locked-overlay-icon{font-size:28px;}
-.locked-overlay-title{
-  font-family:var(--font-d);font-size:20px;color:#1E293B;
-  letter-spacing:.04em;text-transform:uppercase;
-}
-.locked-overlay-sub{font-size:13px;color:#64748B;line-height:1.55;max-width:280px;}
-
-/* LOGGED-IN PILLAR SECTION */
-.pillar-section-unlocked{
-  background:white;border-radius:20px;overflow:hidden;
-  box-shadow:0 8px 32px rgba(0,0,0,.3);margin-bottom:16px;
-  animation:cardIn .6s .1s ease both;
-}
-.pillar-unlocked-head{
-  padding:18px 24px;border-bottom:1px solid #F1F5F9;
-  font-family:var(--font-m);font-size:11px;font-weight:700;
-  letter-spacing:.12em;text-transform:uppercase;color:#1E293B;
-}
-.pillar-unlocked-body{padding:20px 24px;}
-.pillar-row-full{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
-.pillar-row-full:last-child{margin-bottom:0;}
-.pillar-name-full{font-size:12px;color:#1E293B;font-weight:500;width:160px;flex-shrink:0;}
-.pillar-track-full{flex:1;height:6px;background:#F1F5F9;border-radius:100px;overflow:hidden;}
-.pillar-fill-full{height:100%;border-radius:100px;transition:width 1s ease;}
-.pillar-pct-full{font-family:var(--font-m);font-size:11px;color:#64748B;width:32px;text-align:right;flex-shrink:0;}
-
-/* RECOMMENDATION CARD */
-.rec-card{
-  background:#04091A;border:1px solid rgba(255,255,255,.08);
-  border-radius:20px;padding:24px;margin-bottom:16px;
-  animation:cardIn .6s .15s ease both;
-}
-.rec-eyebrow{
-  font-family:var(--font-m);font-size:10px;letter-spacing:.16em;
-  text-transform:uppercase;color:var(--orange-300);margin-bottom:10px;
-}
-.rec-text{
-  font-size:14px;color:rgba(255,255,255,.55);line-height:1.7;
-}
-.rec-text strong{color:white;}
-
-/* ACTION BUTTONS */
-.results-actions{
-  display:flex;flex-direction:column;gap:10px;
-  animation:cardIn .6s .2s ease both;
-}
+.locked-overlay-title{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;letter-spacing:.04em;text-transform:uppercase;color:#fff;}
+.locked-overlay-sub{font-size:13px;color:#9eacc0;line-height:1.5;max-width:260px;}
+/* Recommendation */
+.rec-card{border-radius:2px;padding:16px 18px;margin-bottom:12px;border-left:3px solid #C1FF22;background:rgba(193,255,34,.05);}
+.rec-card-green{background:rgba(34,197,94,.05);border-left-color:#22C55E;}
+.rec-eyebrow{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#C1FF22;margin-bottom:5px;}
+.rec-eyebrow-green{color:#22C55E;}
+.rec-title{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;letter-spacing:.04em;text-transform:uppercase;color:#fff;margin-bottom:4px;}
+.rec-body{font-size:13px;color:#9eacc0;line-height:1.6;}
+/* Action buttons */
 .action-btn-primary{
-  display:block;width:100%;padding:16px;background:var(--orange-500);color:white;
-  font-family:var(--font-m);font-size:14px;font-weight:700;letter-spacing:.1em;
-  text-transform:uppercase;border:none;border-radius:12px;cursor:pointer;
-  text-align:center;text-decoration:none;transition:all .2s;box-sizing:border-box;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  width:100%;padding:14px;margin-bottom:8px;
+  background:#C1FF22;color:#0d1a00;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:13px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;
+  border:none;border-radius:2px;cursor:pointer;text-decoration:none;
+  transition:all .18s;box-sizing:border-box;text-align:center;
 }
-.action-btn-primary:hover{background:var(--orange-400);transform:translateY(-1px);}
+.action-btn-primary:hover{background:#d0ff55;transform:translateY(-1px);}
 .action-btn-secondary{
-  display:block;width:100%;padding:15px;background:rgba(255,255,255,.05);
-  color:rgba(255,255,255,.7);font-family:var(--font-m);font-size:13px;
-  font-weight:600;letter-spacing:.08em;text-transform:uppercase;
-  border:1px solid rgba(255,255,255,.1);border-radius:12px;cursor:pointer;
-  text-align:center;text-decoration:none;transition:all .2s;box-sizing:border-box;
+  display:flex;align-items:center;justify-content:center;
+  width:100%;padding:13px;margin-bottom:8px;
+  background:transparent;color:#d9e7fc;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  border:1.5px solid rgba(255,255,255,.12);border-radius:2px;cursor:pointer;
+  text-decoration:none;transition:all .18s;box-sizing:border-box;text-align:center;
 }
-.action-btn-secondary:hover{background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.2);}
+.action-btn-secondary:hover{border-color:rgba(255,255,255,.35);background:rgba(255,255,255,.04);}
+/* Results actions wrapper */
+#resultsActions{padding:0;}
 
-/* ── RESPONSIVE ── */
-@media(max-width:480px){
-  .intro-features{grid-template-columns:repeat(3,1fr);}
-  .intro-scoring-grid{grid-template-columns:repeat(3,1fr);}
-  .q-head{padding:18px 20px;}
-  .q-body{padding:18px 20px;}
-  .grade-head{padding:28px 20px 22px;}
-  .grade-display{font-size:80px;}
-  .pillar-name-prev,.pillar-name-full{width:110px;font-size:11px;}
-  .locked-head,.locked-body,.pillar-unlocked-body{padding:16px 18px;}
-  .rec-card{padding:18px;}
-  .results-screen{padding:50px 16px 60px;}
+/* ── MOBILE ── */
+@media(max-width:540px){
+  .intro-screen{padding:72px 16px 32px;}
+  .intro-title{font-size:clamp(44px,12vw,72px);}
+  .intro-features{gap:1px;}
+  .intro-feat{padding:14px 10px;}
+  .intro-scoring-grid{grid-template-columns:repeat(3,1fr) repeat(2,1fr);gap:1px;}
+  .quiz-body{padding:20px 12px 80px;}
+  .q-head{padding:18px 16px 16px;}
+  .q-opts-wrap{padding:16px 16px;}
+  .conf-section{padding:12px 16px 16px;}
+  .conf-btns{gap:6px;}
+  .next-btn{margin:0 16px 20px;width:calc(100% - 32px);}
+  .results-screen{padding:20px 12px 80px;}
+  .grade-head{padding:28px 20px 24px;}
+  .grade-display{font-size:72px;}
+  .grade-body{padding:20px 16px;}
 }
 </style>
 </head>
-<body class="exam-page">
+<body>
 
-<!-- ══════════════════════════════════════
-     SCREEN 1: INTRO
-══════════════════════════════════════ -->
+<!-- ═══════ INTRO ═══════ -->
 <div class="screen active" id="screenIntro">
   <section class="intro-screen">
     <div class="intro-grid"></div>
     <div class="intro-glow"></div>
     <div class="intro-inner">
 
+      <!-- BADGE -->
       <div class="intro-badge">
         <span class="intro-badge-dot"></span>
-        Gridiron IQ &mdash; Adaptive Quiz
+        Gridiron Intelligence Platform
       </div>
 
+      <!-- HEADLINE -->
       <h1 class="intro-title">
-        What&rsquo;s Your
+        What&rsquo;s Your<br>
         <span>Gridiron IQ?</span>
       </h1>
 
-      <p class="intro-sub">
-        15 adaptive questions. The quiz adjusts to your level in real time — harder if you're getting them right, easier if you're not. Your grade appears the moment you finish.
+      <!-- VALUE PROP -->
+      <p class="intro-value-prop">Get your score. See where you stand. Improve your game.</p>
+
+      <!-- PRIMARY CTA -->
+      <div class="intro-cta-wrap">
+        <button class="intro-start-btn" onclick="startQuiz()">
+          Start Your Gridiron IQ Test &rarr;
+        </button>
+        <div class="intro-cta-sub">15 questions &nbsp;&bull;&nbsp; 5&ndash;8 minutes</div>
+      </div>
+
+      <!-- SUPPORTING DESC -->
+      <p class="intro-desc">
+        15 adaptive questions that adjust to your level in real time. Your results show instantly when you finish.
       </p>
 
+      <!-- STATS ROW -->
       <div class="intro-features">
         <div class="intro-feat">
+          <div class="intro-feat-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2C9 2 6.5 4 6.5 7c0 2.5 1.5 4.5 3.5 5.5V14h4v-1.5c2-1 3.5-3 3.5-5.5C17.5 4 15 2 12 2z" stroke="#C1FF22" stroke-width="1.5" stroke-linejoin="round"/><rect x="9" y="14" width="6" height="2" rx="1" fill="#C1FF22" opacity=".4"/><rect x="10" y="16" width="4" height="3" rx="1" fill="#C1FF22" opacity=".3"/></svg>
+          </div>
           <div class="intro-feat-num">15</div>
-          <div class="intro-feat-label">Questions</div>
+          <div class="intro-feat-label">Adaptive Questions</div>
         </div>
         <div class="intro-feat">
-          <div class="intro-feat-num">~8</div>
+          <div class="intro-feat-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#C1FF22" stroke-width="1.5"/><path d="M12 7v5l3 2" stroke="#C1FF22" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div class="intro-feat-num">5&ndash;8</div>
           <div class="intro-feat-label">Minutes</div>
         </div>
         <div class="intro-feat">
+          <div class="intro-feat-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2" stroke="#C1FF22" stroke-width="1.5"/><path d="M7 9h10M7 12h7M7 15h4" stroke="#C1FF22" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
           <div class="intro-feat-num">5</div>
-          <div class="intro-feat-label">Pillars</div>
+          <div class="intro-feat-label">Skill Categories</div>
         </div>
       </div>
 
-      <div class="intro-scoring">
-        <div class="intro-scoring-label">Confidence Scoring — Rate your certainty after each answer</div>
-        <div class="intro-scoring-grid">
-          <div class="intro-sc-item">
-            <div class="intro-sc-pts" style="color:#22C55E;">+3</div>
-            <div class="intro-sc-desc">Correct<br>+ Certain</div>
+      <!-- PROGRESSION CONTEXT -->
+      <div class="intro-progression">
+        Part of the Rookie &rarr; Starter &rarr; Elite progression system
+      </div>
+
+      <!-- WHY IT MATTERS -->
+      <div class="intro-why">
+        <div class="intro-why-item">
+          <div class="intro-why-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="#C1FF22" stroke-width="1.5" stroke-linejoin="round"/></svg>
           </div>
-          <div class="intro-sc-item">
-            <div class="intro-sc-pts" style="color:#22C55E;">+2</div>
-            <div class="intro-sc-desc">Correct<br>+ Pretty Sure</div>
+          <div class="intro-why-title">Know Your Strengths</div>
+          <div class="intro-why-body">See which football skills you&rsquo;ve already mastered</div>
+        </div>
+        <div class="intro-why-item">
+          <div class="intro-why-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="#C1FF22" stroke-width="1.5"/><path d="M21 21l-4.35-4.35" stroke="#C1FF22" stroke-width="1.5" stroke-linecap="round"/></svg>
           </div>
-          <div class="intro-sc-item">
-            <div class="intro-sc-pts" style="color:#22C55E;">+1</div>
-            <div class="intro-sc-desc">Correct<br>+ Not Sure</div>
+          <div class="intro-why-title">Find Weak Spots</div>
+          <div class="intro-why-body">Pinpoint exactly where to focus your training</div>
+        </div>
+        <div class="intro-why-item">
+          <div class="intro-why-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 20L10 14L14 18L20 10" stroke="#C1FF22" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          <div class="intro-sc-item">
-            <div class="intro-sc-pts" style="color:#94A3B8;">0</div>
-            <div class="intro-sc-desc">Wrong<br>+ Not Sure</div>
-          </div>
-          <div class="intro-sc-item">
-            <div class="intro-sc-pts" style="color:#EF4444;">&minus;1</div>
-            <div class="intro-sc-desc">Wrong<br>+ Pretty Sure</div>
-          </div>
-          <div class="intro-sc-item">
-            <div class="intro-sc-pts" style="color:#EF4444;">&minus;2</div>
-            <div class="intro-sc-desc">Wrong<br>+ Certain</div>
+          <div class="intro-why-title">Train Smarter</div>
+          <div class="intro-why-body">Target the gaps that will move you up the fastest</div>
+        </div>
+      </div>
+
+      <!-- SCORING TOGGLE -->
+      <div class="intro-scoring-toggle">
+        <button class="intro-scoring-toggle-btn" onclick="toggleScoring()">
+          How scoring works &darr;
+        </button>
+        <div class="intro-scoring-panel" id="scoringPanel" style="display:none;">
+          <p class="intro-scoring-note">Your score rewards both accuracy and confidence. Correct answers score higher when you&rsquo;re certain. Wrong answers when overconfident cost more points.</p>
+          <div class="intro-scoring-grid">
+            <div class="intro-sc-item"><div class="intro-sc-pts" style="color:#22C55E;">+3</div><div class="intro-sc-desc">Correct + Certain</div></div>
+            <div class="intro-sc-item"><div class="intro-sc-pts" style="color:#22C55E;">+2</div><div class="intro-sc-desc">Correct + Sure</div></div>
+            <div class="intro-sc-item"><div class="intro-sc-pts" style="color:#22C55E;">+1</div><div class="intro-sc-desc">Correct + Unsure</div></div>
+            <div class="intro-sc-item"><div class="intro-sc-pts" style="color:#EF4444;">&minus;1</div><div class="intro-sc-desc">Wrong + Sure</div></div>
+            <div class="intro-sc-item"><div class="intro-sc-pts" style="color:#EF4444;">&minus;2</div><div class="intro-sc-desc">Wrong + Certain</div></div>
           </div>
         </div>
       </div>
 
-      <button class="intro-start-btn" onclick="startQuiz()">
-        Start Quiz &rarr;
-      </button>
-      <div class="intro-note">No signup required &nbsp;&middot;&nbsp; Results in minutes &nbsp;&middot;&nbsp; Free</div>
+      <div class="intro-note">No signup required &nbsp;&middot;&nbsp; Free &nbsp;&middot;&nbsp; Ages 8&ndash;18</div>
 
     </div>
   </section>
 </div>
 
-<!-- ══════════════════════════════════════
-     SCREEN 2: QUIZ
-══════════════════════════════════════ -->
+<!-- ═══════ QUIZ ═══════ -->
 <div class="screen" id="screenQuiz">
   <div class="quiz-header">
     <div class="quiz-header-inner">
@@ -523,7 +678,7 @@
       </a>
       <div class="quiz-prog-wrap">
         <div class="quiz-prog-label">
-          <span>Progress</span>
+          <span id="qPillar">Gridiron IQ</span>
           <span id="progLabel">1 of 15</span>
         </div>
         <div class="quiz-prog-track">
@@ -538,103 +693,75 @@
     <div class="q-card" id="qCard">
       <div class="q-head">
         <div class="q-num-badge" id="qBadge">1</div>
-        <div>
+        <div style="flex:1;">
           <div class="q-meta-top">
-            <span id="qPillar">Rules &amp; Objectives</span>
+            <span id="qPillarHead">Rules &amp; Objectives</span>
+            <span class="q-diff-badge diff-easy" id="qDiffBadge">Easy</span>
           </div>
           <div class="q-text" id="qText">Loading...</div>
         </div>
       </div>
-      <div class="q-body">
-        <div class="q-options" id="qOptions"></div>
+      <div class="q-opts-wrap">
+        <div class="q-opts" id="qOptions"></div>
 
-        <!-- Confidence -->
         <div class="conf-section" id="confSection">
           <div class="conf-label">How confident are you?</div>
           <div class="conf-btns">
             <button class="conf-btn" id="conf1" onclick="selectConf(1)">
               <span class="conf-emoji">&#129300;</span>
               <span class="conf-name">Not Sure</span>
-              <span class="conf-pts">+1 correct / 0 wrong</span>
+              <span class="conf-pts">+1 / 0</span>
             </button>
             <button class="conf-btn" id="conf2" onclick="selectConf(2)">
               <span class="conf-emoji">&#128578;</span>
               <span class="conf-name">Pretty Sure</span>
-              <span class="conf-pts">+2 correct / &minus;1 wrong</span>
+              <span class="conf-pts">+2 / &minus;1</span>
             </button>
             <button class="conf-btn" id="conf3" onclick="selectConf(3)">
               <span class="conf-emoji">&#128170;</span>
               <span class="conf-name">Certain</span>
-              <span class="conf-pts">+3 correct / &minus;2 wrong</span>
+              <span class="conf-pts">+3 / &minus;2</span>
             </button>
           </div>
-          <div class="conf-warn">Guessing confidently costs points. Only go Certain when you really know it.</div>
+          <div class="conf-note">Guessing confidently costs points. Only mark Certain when you know it.</div>
         </div>
 
-        <button class="next-btn" id="nextBtn" onclick="nextQuestion()">
-          Next Question &rarr;
-        </button>
+        <button class="next-btn" id="nextBtn" onclick="nextQuestion()">Next Question &rarr;</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════
-     SCREEN 3: RESULTS
-══════════════════════════════════════ -->
+<!-- ═══════ RESULTS ═══════ -->
 <div class="screen" id="screenResults">
   <section class="results-screen">
     <div class="results-glow"></div>
     <div class="results-inner">
 
-      <!-- GRADE CARD -->
       <div class="grade-card">
         <div class="grade-head">
           <div class="grade-head-glow"></div>
-          <div class="grade-eyebrow">Gridiron IQ &mdash; Adaptive Quiz</div>
-          <div class="grade-display" id="gradeDisplay" style="color:white;">B+</div>
-          <div class="grade-tier" id="gradeTier" style="color:var(--orange-400);">Developing</div>
-          <div class="grade-tier-sub" id="gradeTierSub">Strong base — keep building</div>
+          <div class="grade-eyebrow">Gridiron IQ &mdash; Result</div>
+          <div class="grade-display" id="gradeDisplay">B+</div>
+          <div class="grade-tier" id="gradeTier">Advanced</div>
+          <div class="grade-tier-sub" id="gradeTierSub">Strong football knowledge</div>
         </div>
-        <div class="stats-row">
-          <div class="stat-item">
-            <div class="stat-num" id="statCorrect">0</div>
-            <div class="stat-label">Correct</div>
+        <div class="grade-body">
+          <div class="grade-stats">
+            <div class="grade-stat"><div class="grade-stat-n" id="statCorrect">0</div><div class="grade-stat-l">Correct</div></div>
+            <div class="grade-stat"><div class="grade-stat-n" id="statWrong">0</div><div class="grade-stat-l">Missed</div></div>
+            <div class="grade-stat"><div class="grade-stat-n" id="statAcc">0%</div><div class="grade-stat-l">Accuracy</div></div>
           </div>
-          <div class="stat-item">
-            <div class="stat-num" id="statPeak">Easy</div>
-            <div class="stat-label">Peak Level</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-num" id="statAcc">0%</div>
-            <div class="stat-label">Accuracy</div>
-          </div>
+          <div id="pillarSection"></div>
+          <div id="recSection"></div>
+          <div id="resultsActions"></div>
         </div>
-      </div>
-
-      <!-- PILLAR BREAKDOWN — LOCKED or UNLOCKED depending on auth state -->
-      <div id="pillarSection">
-        <!-- Populated by JS -->
-      </div>
-
-      <!-- RECOMMENDATION -->
-      <div class="rec-card" id="recCard" style="display:none;">
-        <div class="rec-eyebrow">Your Recommendation</div>
-        <div class="rec-text" id="recText"></div>
-      </div>
-
-      <!-- ACTIONS -->
-      <div class="results-actions" id="resultsActions">
-        <!-- Populated by JS -->
       </div>
 
     </div>
   </section>
 </div>
 
-<!-- ══════════════════════════════════════
-     QUESTION BANK
-══════════════════════════════════════ -->
 <script>
 // ── QUESTION BANK ──────────────────────────────────────────────────────────
 // All 150 questions tagged with pillar and difficulty
@@ -1115,8 +1242,8 @@ function calcScore() {
 }
 
 // ── RESULTS ────────────────────────────────────────────────────────────────
-function showResults() {
-  var result = calcScore();
+function showResults(preResult) {
+  var result = preResult || calcScore();
   state.pillarData = result.pillarData;
 
   showScreen('screenResults');
@@ -1301,8 +1428,8 @@ function buildActions(result) {
       '<button class="action-btn-secondary" onclick="retakeQuiz()" style="border:none;cursor:pointer;">Retake Quiz</button>';
   } else {
     el.innerHTML =
-      '<button class="action-btn-primary" onclick="storeGradeForAuth(state.lastResult);window.location.href='auth.html?next=giq-exam.html'">Unlock Full Results — Free &rarr;</button>' +
-      '<button class="action-btn-secondary" onclick="storeGradeForAuth(state.lastResult);window.location.href='auth.html?tab=login&next=giq-exam.html'">Already have an account? Sign In</button>' +
+      '<button class="action-btn-primary" onclick="storeGradeForAuth(state.lastResult);window.location.href=\u0027auth.html?next=giq-exam.html\u0027">Unlock Full Results — Free &rarr;</button>' +
+      '<button class="action-btn-secondary" onclick="storeGradeForAuth(state.lastResult);window.location.href=\u0027auth.html?tab=login&next=giq-exam.html\u0027">Already have an account? Sign In</button>' +
       '<button class="action-btn-secondary" onclick="retakeQuiz()" style="border:none;cursor:pointer;">Retake Without Saving</button>';
   }
 }
@@ -1347,7 +1474,6 @@ async function saveScore(result) {
 }
 </script>
 
-<!-- APP SCRIPTS -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="curriculum.js?v=3"></script>
 <script src="app.js?v=3"></script>
@@ -1366,9 +1492,8 @@ document.addEventListener('sessionReady', function() {
     state.loggedIn = true;
 
     // If results are already showing, rebuild sections
-    if (document.getElementById('screenResults').classList.contains('active') && state.answers.length === 15) {
-      var result = calcScore();
-      state.lastResult = result;
+    if (document.getElementById('screenResults').classList.contains('active') && state.lastResult) {
+      var result = state.lastResult;
       buildPillarSection(result);
       buildRecommendation(result);
       buildActions(result);
@@ -1385,16 +1510,8 @@ document.addEventListener('sessionReady', function() {
       try {
         var result = JSON.parse(stored);
         state.lastResult = result;
-        state.answers = new Array(15); // placeholder so checks pass
-        // Show results screen
-        document.querySelectorAll('.exam-screen').forEach(function(s){ s.classList.remove('active'); });
-        var resScreen = document.getElementById('screenResults');
-        if (resScreen) resScreen.classList.add('active');
-        // Populate grade/tier header
-        buildResultHeader(result);
-        buildPillarSection(result);
-        buildRecommendation(result);
-        buildActions(result);
+        // Show results with pre-computed result (skip calcScore)
+        showResults(result);
         sessionStorage.removeItem('pendingGrade');
         sessionStorage.removeItem('pendingTier');
         sessionStorage.removeItem('pendingScore');
@@ -1402,6 +1519,15 @@ document.addEventListener('sessionReady', function() {
     }
   }
 });
+
+function toggleScoring() {
+  var panel = document.getElementById('scoringPanel');
+  var btn   = document.querySelector('.intro-scoring-toggle-btn');
+  if (!panel) return;
+  var open = panel.style.display !== 'none';
+  panel.style.display = open ? 'none' : 'block';
+  if (btn) btn.textContent = open ? 'How scoring works ↓' : 'Hide scoring ↑';
+}
 </script>
 </body>
 </html>

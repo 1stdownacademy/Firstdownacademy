@@ -8,290 +8,539 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Program — First Down Academy</title>
 <meta name="description" content="8 modules, 28 lessons, 84 slides. Built around 5 pillars of football knowledge.">
-<link rel="stylesheet" href="style.css?v=2">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;0,900;1,800&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:#020f1e;color:#d9e7fc;font-family:'Barlow',sans-serif;overflow-x:hidden;line-height:1.6;}
+a{text-decoration:none;}
+img{display:block;max-width:100%;}
+/* NAV */
+.pg-nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(2,10,20,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);height:64px;display:flex;align-items:center;padding:0 24px;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.06);}
+.pg-nav-brand{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#C1FF22;font-style:italic;}
+.pg-nav-links{display:flex;align-items:center;gap:28px;}
+.pg-nav-link{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.4);transition:color .18s;}
+.pg-nav-link:hover,.pg-nav-link.active{color:#fff;}
+.pg-nav-right{display:flex;align-items:center;gap:10px;}
+.pg-nav-signin{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.35);transition:color .18s;}
+.pg-nav-signin:hover{color:#fff;}
+.pg-nav-cta{background:#C1FF22;color:#0d1a00;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;padding:8px 18px;border-radius:2px;transition:background .18s;}
+.pg-nav-cta:hover{background:#a8e01e;}
+.pg-nav-dash{display:none;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:7px 14px;border-radius:2px;}
+/* HERO */
+.pg-hero{min-height:70vh;background:#020f1e;display:flex;flex-direction:column;justify-content:flex-end;padding-top:64px;position:relative;overflow:hidden;}
+.pg-hero-grid{position:absolute;inset:0;background-image:repeating-linear-gradient(90deg,rgba(255,255,255,.02) 0,rgba(255,255,255,.02) 1px,transparent 1px,transparent 80px),repeating-linear-gradient(0deg,rgba(255,255,255,.015) 0,rgba(255,255,255,.015) 1px,transparent 1px,transparent 80px);pointer-events:none;}
+.pg-hero-glow{position:absolute;top:20%;right:-5%;width:500px;height:400px;background:radial-gradient(ellipse,rgba(193,255,34,.05),transparent 70%);pointer-events:none;}
+.pg-hero-inner{position:relative;z-index:3;padding:72px 28px 56px;max-width:840px;}
+.pg-hero-badge{display:inline-flex;align-items:center;gap:10px;background:rgba(193,255,34,.1);border:1px solid rgba(193,255,34,.2);padding:6px 14px;border-radius:2px;margin-bottom:24px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#C1FF22;}
+.pg-hero-dot{width:7px;height:7px;border-radius:50%;background:#C1FF22;box-shadow:0 0 8px #C1FF22;animation:dot-p 2s ease-in-out infinite;}
+@keyframes dot-p{0%,100%{opacity:1}50%{opacity:.4}}
+.pg-hero-h1{font-family:'Barlow Condensed',sans-serif;font-size:clamp(52px,9vw,88px);font-weight:900;line-height:.86;letter-spacing:-.01em;text-transform:uppercase;color:#fff;margin-bottom:18px;}
+.pg-hero-h1 .lime{color:#C1FF22;}
+.pg-hero-sub{font-size:16px;font-weight:300;color:rgba(255,255,255,.5);line-height:1.75;max-width:560px;}
+/* Stats */
+.pg-stats{position:relative;z-index:3;border-top:1px solid rgba(255,255,255,.06);display:grid;grid-template-columns:repeat(4,1fr);background:rgba(255,255,255,.02);}
+.pg-stat{padding:22px 28px;border-right:1px solid rgba(255,255,255,.06);}
+.pg-stat:last-child{border-right:none;}
+.pg-stat-num{font-family:'Barlow Condensed',sans-serif;font-size:34px;font-weight:900;color:#C1FF22;line-height:1;margin-bottom:4px;}
+.pg-stat-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.3);}
+/* Marquee */
+.pg-marquee{background:#0d2134;border-top:1px solid rgba(193,255,34,.15);border-bottom:1px solid rgba(193,255,34,.15);height:44px;overflow:hidden;display:flex;align-items:center;}
+.pg-marquee-track{display:inline-flex;white-space:nowrap;animation:pg-s 28s linear infinite;}
+@keyframes pg-s{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.pg-marquee-item{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:#C1FF22;padding:0 28px;display:inline-flex;align-items:center;gap:24px;}
+.pg-marquee-item::after{content:"\25C6";font-size:6px;opacity:.5;}
+/* Sections */
+.pg-section{padding:64px 28px;}
+.pg-section-inner{max-width:960px;margin:0 auto;position:relative;z-index:1;}
+.pg-label{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:10px;}
+.pg-title{font-family:'Barlow Condensed',sans-serif;font-size:clamp(32px,5vw,52px);font-weight:900;letter-spacing:-.01em;text-transform:uppercase;line-height:.9;color:#fff;margin-bottom:8px;}
+.pg-title .lime{color:#C1FF22;}
+.pg-title .dim{color:rgba(255,255,255,.2);}
+/* Level cards */
+.pg-levels{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:40px;}
+.pg-level{background:#081b2c;padding:28px 24px;position:relative;overflow:hidden;border-left:2px solid rgba(193,255,34,.1);}
+.pg-level.active{border-left-color:#C1FF22;}
+.pg-level.dim{opacity:.55;}
+.pg-level-bg{font-family:'Barlow Condensed',sans-serif;font-size:80px;font-weight:900;color:rgba(193,255,34,.04);position:absolute;bottom:-10px;right:-4px;line-height:1;pointer-events:none;}
+.pg-level-tag{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#C1FF22;margin-bottom:8px;}
+.pg-level.dim .pg-level-tag{color:rgba(255,255,255,.25);}
+.pg-level-name{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;text-transform:uppercase;color:#fff;margin-bottom:6px;}
+.pg-level.dim .pg-level-name{color:rgba(255,255,255,.4);}
+.pg-level-meta{font-size:12px;color:rgba(255,255,255,.3);margin-bottom:14px;}
+.pg-level-badge{display:inline-flex;align-items:center;gap:6px;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;background:rgba(34,197,94,.12);color:#22C55E;border:1px solid rgba(34,197,94,.25);border-radius:2px;padding:4px 10px;}
+.pg-level-badge.soon{background:rgba(255,255,255,.05);color:rgba(255,255,255,.3);border-color:rgba(255,255,255,.1);}
+.pg-level-divider{height:1px;background:rgba(255,255,255,.06);margin:18px 0;}
+.pg-level-focuses{display:flex;flex-direction:column;gap:8px;}
+.pg-level-focus{font-size:13px;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:8px;line-height:1.3;}
+.pg-level.dim .pg-level-focus{color:rgba(255,255,255,.25);}
+.pg-focus-dot{width:5px;height:5px;border-radius:50%;background:#C1FF22;flex-shrink:0;}
+.pg-level.dim .pg-focus-dot{background:rgba(255,255,255,.2);}
+.pg-level-iq{display:flex;align-items:center;justify-content:space-between;}
+.pg-level-iq-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.2);}
+.pg-level-iq-range{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(193,255,34,.5);}
+.pg-level.dim .pg-level-iq-range{color:rgba(255,255,255,.15);}
+/* Module list */
+.pg-modules{display:flex;flex-direction:column;gap:2px;margin-top:40px;}
+.pg-module{background:#081b2c;padding:0;border-left:2px solid rgba(193,255,34,.08);transition:border-color .2s;display:grid;grid-template-columns:56px 1fr auto;align-items:start;}
+.pg-module:hover{border-left-color:#C1FF22;}
+.pg-module-num{padding:24px 0 24px 20px;font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:rgba(193,255,34,.2);line-height:1;}
+.pg-module-body{padding:20px 20px 20px 0;}
+.pg-module-name{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:#fff;margin-bottom:5px;line-height:1;}
+.pg-module-desc{font-size:13px;color:#9eacc0;line-height:1.6;margin-bottom:10px;}
+.pg-module-pills{display:flex;flex-wrap:wrap;gap:4px;}
+.pg-module-pill{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:2px;padding:3px 8px;color:rgba(255,255,255,.4);}
+.pg-module-meta{padding:20px 20px 20px 0;text-align:right;flex-shrink:0;}
+.pg-module-count{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:3px;white-space:nowrap;}
+.pg-module-slides{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(193,255,34,.4);white-space:nowrap;}
+/* Pillars */
+.pg-pillars{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;margin-top:40px;}
+.pg-pillar{background:#081b2c;padding:24px 18px;border-top:2px solid rgba(193,255,34,.1);transition:border-color .2s;}
+.pg-pillar:hover{border-top-color:#C1FF22;}
+.pg-pillar-num{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(193,255,34,.4);margin-bottom:10px;}
+.pg-pillar-name{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:#fff;margin-bottom:6px;line-height:1.1;}
+.pg-pillar-desc{font-size:12px;color:#9eacc0;line-height:1.6;}
+/* CTA */
+.pg-cta{background:#081b2c;margin:0 28px 56px;border-radius:2px;padding:48px 40px;position:relative;overflow:hidden;border-left:3px solid #C1FF22;}
+.pg-cta::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(193,255,34,.04),transparent 60%);pointer-events:none;}
+.pg-cta-inner{position:relative;z-index:2;max-width:560px;}
+.pg-cta-title{font-family:'Barlow Condensed',sans-serif;font-size:clamp(32px,5vw,48px);font-weight:900;text-transform:uppercase;line-height:.9;color:#fff;margin-bottom:14px;}
+.pg-cta-body{font-size:15px;color:#9eacc0;line-height:1.65;margin-bottom:28px;}
+.pg-cta-note{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.2);margin-top:12px;}
+.btn-lime{background:#C1FF22;color:#0d1a00;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;padding:14px 32px;border:none;cursor:pointer;border-radius:2px;display:inline-flex;align-items:center;gap:8px;transition:all .18s;position:relative;overflow:hidden;}
+.btn-lime::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);transform:translateX(-100%);transition:transform .4s;}
+.btn-lime:hover::after{transform:translateX(100%);}
+.btn-lime:hover{background:#d0ff55;transform:translateY(-2px);box-shadow:0 8px 28px rgba(193,255,34,.35);}
+.btn-ghost{background:transparent;color:#d9e7fc;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:13px 24px;border:1.5px solid rgba(255,255,255,.15);cursor:pointer;border-radius:2px;transition:border-color .18s;display:inline-flex;align-items:center;gap:8px;margin-left:10px;}
+.btn-ghost:hover{border-color:rgba(255,255,255,.4);}
+/* Footer */
+.pg-footer{background:#020f1e;border-top:1px solid rgba(255,255,255,.06);padding:28px 28px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;}
+.pg-footer-brand{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;font-style:italic;color:#C1FF22;}
+.pg-footer-links{display:flex;gap:20px;flex-wrap:wrap;}
+.pg-footer-link{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3);transition:color .18s;}
+.pg-footer-link:hover{color:#fff;}
+.pg-footer-copy{font-size:11px;color:rgba(255,255,255,.15);}
+/* Reveal */
+.rv{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease;}
+.rv.on{opacity:1;transform:translateY(0);}
+.rv2{opacity:0;transform:translateY(24px);transition:opacity .6s .1s ease,transform .6s .1s ease;}
+.rv2.on{opacity:1;transform:translateY(0);}
+@media(max-width:700px){
+  .pg-nav-links{display:none;}
+  .pg-hero-inner{padding:48px 20px 40px;}
+  .pg-stats{grid-template-columns:repeat(2,1fr);}
+  .pg-levels{grid-template-columns:1fr;}
+  .pg-pillars{grid-template-columns:repeat(2,1fr);}
+  .pg-pillars .pg-pillar:last-child{grid-column:span 2;}
+  .pg-module{grid-template-columns:40px 1fr auto;}
+  .pg-module-num{padding:18px 0 18px 14px;font-size:20px;}
+  .pg-module-body{padding:14px 12px 14px 0;}
+  .pg-module-meta{padding:14px 14px 14px 0;}
+  .pg-section{padding:48px 20px;}
+  .pg-cta{margin:0 20px 40px;padding:32px 24px;}
+  .pg-footer{padding:24px 20px 48px;}
+  .btn-ghost{margin-left:0;margin-top:8px;}
+}
+
+/* ── TEXTURES ── */
+.tx-hash {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background-image: repeating-linear-gradient(
+    -55deg, transparent, transparent 28px,
+    rgba(193,255,34,.018) 28px, rgba(193,255,34,.018) 29px
+  );
+}
+.tx-dots {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background-image: radial-gradient(circle, rgba(193,255,34,.08) 1px, transparent 1px);
+  background-size: 36px 36px;
+}
+.tx-yard {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(255,255,255,.022) 59px, rgba(255,255,255,.022) 60px),
+    repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(255,255,255,.012) 59px, rgba(255,255,255,.012) 60px);
+}
+.tx-watermark {
+  position: absolute; pointer-events: none; z-index: 0;
+  font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-style: italic;
+  text-transform: uppercase; color: transparent;
+  -webkit-text-stroke: 1px rgba(193,255,34,.055); user-select: none; line-height: 1; letter-spacing: -.02em;
+}
+.tx-corner { position: absolute; pointer-events: none; z-index: 0; }
+</style>
 </head>
 <body>
-
-<nav>
-  <div class="nav-inner">
-    <a class="logo" href="index.html">
-      <img src="logo.png" alt="First Down Academy" style="height:52px;width:auto;object-fit:contain;" onerror="this.style.display='none'">
-    </a>
-    <div class="nav-links">
-      <a class="nav-link active" href="program.html">The Program</a>
-      <a class="nav-link" href="giq.html">Gridiron IQ</a>
-      <a class="nav-link" href="coaches.html">Coaches</a>
-      <a class="nav-link" id="nav-dashboard" href="dashboard.html" style="display:none">Dashboard</a>
-    </div>
-    <div class="nav-auth-btns" id="navAuthBtns">
-      <a class="btn btn-outline nav-login-btn" href="auth.html?tab=login">Log In</a>
-      <a class="btn btn-primary nav-signup-btn" href="auth.html">Sign Up</a>
-    </div>
-    <a class="btn btn-primary nav-cta" id="navDashBtn" href="dashboard.html" style="display:none">Dashboard</a>
-    <button class="hamburger" onclick="toggleMobileNav()" id="hamburger"><span></span><span></span><span></span></button>
+<nav class="pg-nav">
+  <a href="index.html" class="pg-nav-brand">First Down Academy</a>
+  <div class="pg-nav-links">
+    <a href="program.html" class="pg-nav-link active">The Program</a>
+    <a href="giq-exam.html" class="pg-nav-link">Gridiron IQ</a>
+    <a href="coaches.html" class="pg-nav-link">Coaches</a>
+    <a href="dashboard.html" class="pg-nav-link" id="nav-dashboard" style="display:none;">Dashboard</a>
+  </div>
+  <div class="pg-nav-right">
+    <a href="auth.html?tab=login" class="pg-nav-signin" id="navSignin">Sign In</a>
+    <a href="dashboard.html" class="pg-nav-dash" id="navDashBtn">Dashboard</a>
+    <a href="auth.html" class="pg-nav-cta">Start Free</a>
   </div>
 </nav>
 
-<div class="mobile-menu" id="mobileMenu">
-  <a class="mobile-menu-item" href="program.html">The Program</a>
-  <a class="mobile-menu-item" href="giq.html">Gridiron IQ</a>
-  <a class="mobile-menu-item" href="coaches.html">Coaches</a>
-  <div class="mobile-menu-divider"></div>
-  <a class="mobile-menu-item" href="auth.html">Sign Up Free</a>
-  <a class="mobile-menu-item" href="auth.html?tab=login">Log In</a>
-</div>
+<section class="pg-hero">
+  <div class="pg-hero-grid"></div>
+  <div class="pg-hero-glow"></div>
+  <div class="tx-hash"></div>
 
-<!-- HERO -->
-<div class="page-hero">
-  <div class="container page-hero-inner">
-    <span class="tag">Level 1 &middot; Foundations</span>
-    <h1>The Program</h1>
-    <p>8 modules. 28 lessons. 84 slides. Built around 5 pillars of football knowledge — structured to give every player a complete understanding of the game.</p>
+  <!-- Radiating lines — bottom left -->
+  <svg class="tx-corner" style="bottom:-80px;left:-80px;width:500px;height:500px;opacity:.6;" viewBox="0 0 500 500" fill="none">
+    <line x1="0" y1="500" x2="500" y2="0" stroke="rgba(193,255,34,.07)" stroke-width="1"/>
+    <line x1="0" y1="500" x2="400" y2="0" stroke="rgba(193,255,34,.05)" stroke-width="1"/>
+    <line x1="0" y1="500" x2="300" y2="0" stroke="rgba(193,255,34,.04)" stroke-width="1"/>
+    <line x1="0" y1="500" x2="150" y2="0" stroke="rgba(193,255,34,.03)" stroke-width="1"/>
+    <line x1="0" y1="500" x2="0" y2="200" stroke="rgba(193,255,34,.05)" stroke-width="1"/>
+    <line x1="0" y1="500" x2="0" y2="350" stroke="rgba(193,255,34,.06)" stroke-width="1"/>
+    <line x1="100" y1="500" x2="500" y2="100" stroke="rgba(193,255,34,.03)" stroke-width="1"/>
+  </svg>
+
+  <!-- Faint "5" pillar watermark -->
+  <div class="tx-watermark" style="font-size:460px;bottom:-60px;right:-30px;opacity:.5;">5</div>
+  <div class="pg-hero-inner">
+    <div class="pg-hero-badge"><span class="pg-hero-dot"></span>Level 1 &middot; Foundations</div>
+    <h1 class="pg-hero-h1">The Program.<br><span class="lime">8 Modules.</span></h1>
+    <p class="pg-hero-sub">28 lessons. 84 slides. Built around 5 pillars of football knowledge &mdash; structured to give every player a complete understanding of the game before they set foot on the field.</p>
+  </div>
+  <div class="pg-stats">
+    <div class="pg-stat"><div class="pg-stat-num">8</div><div class="pg-stat-label">Modules</div></div>
+    <div class="pg-stat"><div class="pg-stat-num">28</div><div class="pg-stat-label">Lessons</div></div>
+    <div class="pg-stat"><div class="pg-stat-num">84</div><div class="pg-stat-label">Slides</div></div>
+    <div class="pg-stat"><div class="pg-stat-num">Free</div><div class="pg-stat-label">Always</div></div>
+  </div>
+</section>
+
+<div class="pg-marquee">
+  <div class="pg-marquee-track">
+    <span class="pg-marquee-item">Game Structure</span><span class="pg-marquee-item">Player Roles</span><span class="pg-marquee-item">Offensive Concepts</span><span class="pg-marquee-item">Defensive Concepts</span><span class="pg-marquee-item">Situational Strategy</span><span class="pg-marquee-item">5 Pillars</span><span class="pg-marquee-item">Free Course</span>
+    <span class="pg-marquee-item">Game Structure</span><span class="pg-marquee-item">Player Roles</span><span class="pg-marquee-item">Offensive Concepts</span><span class="pg-marquee-item">Defensive Concepts</span><span class="pg-marquee-item">Situational Strategy</span><span class="pg-marquee-item">5 Pillars</span><span class="pg-marquee-item">Free Course</span>
   </div>
 </div>
 
-<!-- LEVELS OVERVIEW -->
-<div style="background:var(--off);padding:48px 0;border-bottom:1px solid var(--gray);">
-  <div class="container">
-    <div class="level-cards-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:800px;margin:0 auto;">
+<!-- LEVELS -->
+<div class="pg-section" style="background:#020f1e;position:relative;overflow:hidden;">
+  <div class="tx-yard"></div>
+  <div class="pg-section-inner">
+    <div class="rv"><div class="pg-label">The Progression</div><div class="pg-title">Three <span class="lime">Levels.</span></div></div>
+    <div class="pg-levels">
 
-      <!-- Level 1 — Active -->
-      <div style="background:var(--navy);border-radius:var(--r-lg);padding:24px 20px;border-left:4px solid var(--orange);position:relative;overflow:hidden;">
-        <div style="font-family:var(--font-d);font-size:48px;color:rgba(255,255,255,.06);position:absolute;right:-4px;bottom:-10px;line-height:1;">1</div>
-        <div style="font-family:var(--font-m);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--orange);margin-bottom:8px;">Now Available</div>
-        <div style="font-family:var(--font-d);font-size:24px;color:white;letter-spacing:.04em;margin-bottom:6px;">FOUNDATIONS</div>
-        <div style="font-size:12px;color:rgba(255,255,255,.4);">Ages 8&ndash;18 &middot; 8 modules &middot; 84 slides</div>
-        <div style="margin-top:14px;display:inline-flex;align-items:center;gap:6px;font-family:var(--font-m);font-size:10px;letter-spacing:.1em;text-transform:uppercase;background:rgba(34,197,94,.15);color:#22C55E;border:1px solid rgba(34,197,94,.3);border-radius:100px;padding:4px 10px;">&#10003; Live Now</div>
-      </div>
-
-      <!-- Level 2 — Coming Soon -->
-      <div style="background:var(--white);border-radius:var(--r-lg);padding:24px 20px;border:1px solid var(--gray);opacity:.7;position:relative;overflow:hidden;">
-        <div style="font-family:var(--font-d);font-size:48px;color:var(--gray);position:absolute;right:-4px;bottom:-10px;line-height:1;">2</div>
-        <div style="font-family:var(--font-m);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Coming Soon</div>
-        <div style="font-family:var(--font-d);font-size:24px;color:var(--muted);letter-spacing:.04em;margin-bottom:6px;">MIDDLE SCHOOL</div>
-        <div style="font-size:12px;color:var(--muted);">Ages 11&ndash;14 &middot; Advanced concepts</div>
-        <div style="margin-top:14px;display:inline-flex;align-items:center;gap:6px;font-family:var(--font-m);font-size:10px;letter-spacing:.1em;text-transform:uppercase;background:var(--off);color:var(--muted);border:1px solid var(--gray);border-radius:100px;padding:4px 10px;">In Development</div>
-      </div>
-
-      <!-- Level 3 — Future -->
-      <div style="background:var(--white);border-radius:var(--r-lg);padding:24px 20px;border:1px solid var(--gray);opacity:.45;position:relative;overflow:hidden;">
-        <div style="font-family:var(--font-d);font-size:48px;color:var(--gray);position:absolute;right:-4px;bottom:-10px;line-height:1;">3</div>
-        <div style="font-family:var(--font-m);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Future Release</div>
-        <div style="font-family:var(--font-d);font-size:24px;color:var(--muted);letter-spacing:.04em;margin-bottom:6px;">HIGH SCHOOL</div>
-        <div style="font-size:12px;color:var(--muted);">Ages 14&ndash;18 &middot; Pro-level IQ</div>
-        <div style="margin-top:14px;display:inline-flex;align-items:center;gap:6px;font-family:var(--font-m);font-size:10px;letter-spacing:.1em;text-transform:uppercase;background:var(--off);color:var(--muted);border:1px solid var(--gray);border-radius:100px;padding:4px 10px;">Planned</div>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-<!-- FOUNDATIONS CURRICULUM OVERVIEW -->
-<div style="padding:72px 0;background:var(--white);">
-  <div class="container" style="max-width:900px;">
-
-    <div style="margin-bottom:40px;">
-      <div class="section-eyebrow">Level 1 — Foundations Curriculum</div>
-      <h2 class="section-title">8 MODULES. <span class="text-orange">5 PILLARS.</span></h2>
-      <p style="font-size:16px;color:var(--muted);max-width:560px;line-height:1.7;margin-top:8px;">Create a free account to access the full curriculum, track your progress, and earn module completions.</p>
-    </div>
-
-    <!-- Module list — display only, no clicking into lessons -->
-    <div style="display:flex;flex-direction:column;gap:12px;">
-
-      <div class="prog-module-row">
-        <div class="prog-module-num">1</div>
-        <div class="prog-module-body">
-          <div class="prog-module-name">The Field</div>
-          <div class="prog-module-desc">Field layout, yard lines, hash marks, end zones, and boundaries.</div>
-          <div class="prog-module-lessons">
-            <span class="prog-lesson-pill">The Football Field</span>
-            <span class="prog-lesson-pill">Yard Lines and Hash Marks</span>
-            <span class="prog-lesson-pill">End Zones and Boundaries</span>
+      <!-- LEVEL 1 — ACTIVE -->
+      <div class="pg-level active rv">
+        <div class="pg-level-bg">1</div>
+        <div class="pg-level-tag">Now Available</div>
+        <div class="pg-level-name">Foundations</div>
+        <div class="pg-level-meta">Ages 8&ndash;18 &middot; 8 Modules &middot; 84 Slides</div>
+        <div class="pg-level-divider"></div>
+        <div class="pg-level-focuses">
+          <div class="pg-level-focus">
+            <span class="pg-focus-dot"></span>Rules &amp; Game Structure
+          </div>
+          <div class="pg-level-focus">
+            <span class="pg-focus-dot"></span>All 22 Positions Explained
+          </div>
+          <div class="pg-level-focus">
+            <span class="pg-focus-dot"></span>Offensive &amp; Defensive Concepts
+          </div>
+          <div class="pg-level-focus">
+            <span class="pg-focus-dot"></span>Situational Awareness
           </div>
         </div>
-        <div class="prog-module-meta">
-          <div class="prog-module-count">3 lessons</div>
-          <div class="prog-module-slides">9 slides</div>
+        <div class="pg-level-divider"></div>
+        <div class="pg-level-iq">
+          <span class="pg-level-iq-label">Gridiron IQ Test</span>
+          <span class="pg-level-iq-range">Rookie &rarr; Pro level</span>
         </div>
+        <div class="pg-level-badge" style="margin-top:20px;">&#10003; Available Now</div>
       </div>
 
-      <div class="prog-module-row">
-        <div class="prog-module-num">2</div>
-        <div class="prog-module-body">
-          <div class="prog-module-name">How the Game Works</div>
-          <div class="prog-module-desc">Downs, first downs, possession, scoring, and turnovers.</div>
-          <div class="prog-module-lessons">
-            <span class="prog-lesson-pill">Downs and Distance</span>
-            <span class="prog-lesson-pill">Earning a First Down</span>
-            <span class="prog-lesson-pill">Scoring</span>
-            <span class="prog-lesson-pill">Possession and Turnovers</span>
+      <!-- LEVEL 2 — COMING SOON -->
+      <div class="pg-level dim rv2">
+        <div class="pg-level-bg">2</div>
+        <div class="pg-level-tag">In Development</div>
+        <div class="pg-level-name">Starter</div>
+        <div class="pg-level-meta">Ages 11&ndash;14 &middot; 10+ Modules</div>
+        <div class="pg-level-divider"></div>
+        <div class="pg-level-focuses">
+          <div class="pg-level-focus">
+            <span class="pg-focus-dot"></span>Scheme Recognition
+          </div>
+          <div class="pg-level-focus">
+            <span class="pg-focus-dot"></span>Gap Analysis &amp; Leverage
+          </div>
+          <div class="pg-level-focus">
+            <span class="pg-focus-dot"></span>Audibles &amp; Pre-snap Reads
+          </div>
+          <div class="pg-level-focus">
+            <span class="pg-focus-dot"></span>Advanced Route Concepts
           </div>
         </div>
-        <div class="prog-module-meta">
-          <div class="prog-module-count">4 lessons</div>
-          <div class="prog-module-slides">12 slides</div>
+        <div class="pg-level-divider"></div>
+        <div class="pg-level-iq">
+          <span class="pg-level-iq-label">Gridiron IQ Test</span>
+          <span class="pg-level-iq-range">Pro &rarr; MVP level</span>
         </div>
+        <div class="pg-level-badge soon" style="margin-top:20px;">Coming Soon</div>
       </div>
 
-      <div class="prog-module-row">
-        <div class="prog-module-num">3</div>
-        <div class="prog-module-body">
-          <div class="prog-module-name">Penalties and Kicking</div>
-          <div class="prog-module-desc">Basic penalties, kickoffs, punts, and the kicking game.</div>
-          <div class="prog-module-lessons">
-            <span class="prog-lesson-pill">Common Penalties</span>
-            <span class="prog-lesson-pill">Kickoffs and Touchbacks</span>
-            <span class="prog-lesson-pill">Punting and Field Position</span>
+      <!-- LEVEL 3 — PLANNED -->
+      <div class="pg-level dim rv2" style="opacity:.45;">
+        <div class="pg-level-bg">3</div>
+        <div class="pg-level-tag">Planned</div>
+        <div class="pg-level-name">Elite</div>
+        <div class="pg-level-meta">Ages 14&ndash;18 &middot; Film &amp; Strategy</div>
+        <div class="pg-level-divider"></div>
+        <div class="pg-level-focuses">
+          <div class="pg-level-focus">
+            <span class="pg-focus-dot"></span>Film Study Fundamentals
+          </div>
+          <div class="pg-level-focus">
+            <span class="pg-focus-dot"></span>Complex RPO Logic
+          </div>
+          <div class="pg-level-focus">
+            <span class="pg-focus-dot"></span>Advanced Game Management
+          </div>
+          <div class="pg-level-focus">
+            <span class="pg-focus-dot"></span>Recruiting &amp; Performance IQ
           </div>
         </div>
-        <div class="prog-module-meta">
-          <div class="prog-module-count">3 lessons</div>
-          <div class="prog-module-slides">9 slides</div>
+        <div class="pg-level-divider"></div>
+        <div class="pg-level-iq">
+          <span class="pg-level-iq-label">Gridiron IQ Test</span>
+          <span class="pg-level-iq-range">MVP &rarr; Elite level</span>
         </div>
-      </div>
-
-      <div class="prog-module-row">
-        <div class="prog-module-num">4</div>
-        <div class="prog-module-body">
-          <div class="prog-module-name">Offensive Players</div>
-          <div class="prog-module-desc">Every offensive position — their identity and role on each play.</div>
-          <div class="prog-module-lessons">
-            <span class="prog-lesson-pill">The Quarterback</span>
-            <span class="prog-lesson-pill">Running Backs and the Offensive Line</span>
-            <span class="prog-lesson-pill">Wide Receivers and Tight Ends</span>
-          </div>
-        </div>
-        <div class="prog-module-meta">
-          <div class="prog-module-count">3 lessons</div>
-          <div class="prog-module-slides">9 slides</div>
-        </div>
-      </div>
-
-      <div class="prog-module-row">
-        <div class="prog-module-num">5</div>
-        <div class="prog-module-body">
-          <div class="prog-module-name">Defensive Players and Special Teams</div>
-          <div class="prog-module-desc">Every defensive position and the players who cover kicks.</div>
-          <div class="prog-module-lessons">
-            <span class="prog-lesson-pill">Defensive Line and Linebackers</span>
-            <span class="prog-lesson-pill">Cornerbacks and Safeties</span>
-            <span class="prog-lesson-pill">Kicker, Punter, and Returner</span>
-          </div>
-        </div>
-        <div class="prog-module-meta">
-          <div class="prog-module-count">3 lessons</div>
-          <div class="prog-module-slides">9 slides</div>
-        </div>
-      </div>
-
-      <div class="prog-module-row">
-        <div class="prog-module-num">6</div>
-        <div class="prog-module-body">
-          <div class="prog-module-name">Offensive Concepts</div>
-          <div class="prog-module-desc">Run vs pass, handoffs, blocking, formations, and routes.</div>
-          <div class="prog-module-lessons">
-            <span class="prog-lesson-pill">Run Plays</span>
-            <span class="prog-lesson-pill">Blocking</span>
-            <span class="prog-lesson-pill">Offensive Formations</span>
-            <span class="prog-lesson-pill">Pass Routes</span>
-          </div>
-        </div>
-        <div class="prog-module-meta">
-          <div class="prog-module-count">4 lessons</div>
-          <div class="prog-module-slides">12 slides</div>
-        </div>
-      </div>
-
-      <div class="prog-module-row">
-        <div class="prog-module-num">7</div>
-        <div class="prog-module-body">
-          <div class="prog-module-name">Defensive Concepts</div>
-          <div class="prog-module-desc">Tackling, stopping the run, covering receivers, and turnovers.</div>
-          <div class="prog-module-lessons">
-            <span class="prog-lesson-pill">Tackling Fundamentals</span>
-            <span class="prog-lesson-pill">Stopping the Run</span>
-            <span class="prog-lesson-pill">Coverage Concepts</span>
-            <span class="prog-lesson-pill">Creating Turnovers</span>
-          </div>
-        </div>
-        <div class="prog-module-meta">
-          <div class="prog-module-count">4 lessons</div>
-          <div class="prog-module-slides">12 slides</div>
-        </div>
-      </div>
-
-      <div class="prog-module-row">
-        <div class="prog-module-num">8</div>
-        <div class="prog-module-body">
-          <div class="prog-module-name">Situational Strategy</div>
-          <div class="prog-module-desc">3rd down, 4th down, red zone, field position, and game awareness.</div>
-          <div class="prog-module-lessons">
-            <span class="prog-lesson-pill">Third Down</span>
-            <span class="prog-lesson-pill">Fourth Down Decisions</span>
-            <span class="prog-lesson-pill">Red Zone and Scoring Decisions</span>
-            <span class="prog-lesson-pill">Field Position Awareness</span>
-          </div>
-        </div>
-        <div class="prog-module-meta">
-          <div class="prog-module-count">4 lessons</div>
-          <div class="prog-module-slides">12 slides</div>
-        </div>
+        <div class="pg-level-badge soon" style="margin-top:20px;">Planned</div>
       </div>
 
     </div>
   </div>
 </div>
 
-<!-- CTA GATE -->
-<div style="padding:72px var(--gutter);background:var(--navy);">
-  <div style="max-width:680px;margin:0 auto;text-align:center;">
-    <div style="font-family:var(--font-m);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--orange-300);margin-bottom:16px;">Ready to Start?</div>
-    <h2 style="font-family:var(--font-d);font-size:clamp(36px,5vw,56px);color:white;letter-spacing:.04em;line-height:.95;margin-bottom:16px;">CREATE YOUR FREE ACCOUNT TO BEGIN.</h2>
-    <p style="font-size:16px;color:rgba(255,255,255,.45);line-height:1.7;margin-bottom:36px;">Your progress is saved after every module so you can pick up where you left off on any device.</p>
-    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
-      <a href="auth.html" class="btn-home-primary">Create Free Account &rarr;</a>
-      <a href="auth.html?tab=login" class="btn-home-secondary">Already have an account? Log In</a>
+<!-- 5 PILLARS -->
+<div class="pg-section" style="background:#081b2c;position:relative;overflow:hidden;">
+  <div class="tx-dots"></div>
+  <!-- Faint field goal uprights SVG -->
+  <svg style="position:absolute;top:0;right:60px;opacity:.04;pointer-events:none;" width="180" height="100%" viewBox="0 0 180 400" fill="none" preserveAspectRatio="none">
+    <line x1="90" y1="0" x2="90" y2="400" stroke="#C1FF22" stroke-width="2"/>
+    <line x1="90" y1="120" x2="0" y2="40" stroke="#C1FF22" stroke-width="2"/>
+    <line x1="90" y1="120" x2="180" y2="40" stroke="#C1FF22" stroke-width="2"/>
+  </svg>
+  <div class="pg-section-inner">
+    <div class="rv"><div class="pg-label">What Gets Covered</div><div class="pg-title">5 Pillars. <span class="dim">One Score.</span></div></div>
+    <div class="pg-pillars">
+      <div class="pg-pillar rv">
+        <div class="pg-pillar-num">01</div>
+        <div class="pg-pillar-name">Rules &amp; Objectives</div>
+        <p class="pg-pillar-desc">Scoring, downs, penalties, turnovers, and how the game works from kickoff to final whistle.</p>
+      </div>
+      <div class="pg-pillar rv2">
+        <div class="pg-pillar-num">02</div>
+        <div class="pg-pillar-name">Positions &amp; Roles</div>
+        <p class="pg-pillar-desc">Every position on offense, defense, and special teams &mdash; what they do and why it matters.</p>
+      </div>
+      <div class="pg-pillar rv">
+        <div class="pg-pillar-num">03</div>
+        <div class="pg-pillar-name">Formations</div>
+        <p class="pg-pillar-desc">How teams line up, why spacing matters, and what pre-snap alignment tells you.</p>
+      </div>
+      <div class="pg-pillar rv2">
+        <div class="pg-pillar-num">04</div>
+        <div class="pg-pillar-name">Plays &amp; Concepts</div>
+        <p class="pg-pillar-desc">Routes, coverages, run schemes, blitzes, and how plays attack and defend.</p>
+      </div>
+      <div class="pg-pillar rv">
+        <div class="pg-pillar-num">05</div>
+        <div class="pg-pillar-name">Situational</div>
+        <p class="pg-pillar-desc">3rd down, red zone, clock management, and thinking under game pressure.</p>
+      </div>
     </div>
   </div>
 </div>
 
-<footer>
-  <div class="footer-inner">
-    <div class="footer-brand">
-      <a class="logo" href="index.html"><img src="logo.png" alt="" style="height:36px;width:36px;object-fit:contain;" onerror="this.style.display='none'">First Down Academy</a>
-      <p class="footer-tagline">The football education platform built for coaches who want smarter players.</p>
+<!-- MODULES -->
+<div class="pg-section" style="background:#020f1e;position:relative;overflow:hidden;">
+  <div class="tx-hash" style="opacity:.6;"></div>
+  <div class="pg-section-inner">
+    <div class="rv">
+      <div class="pg-label">Level 1 &mdash; Foundations Curriculum</div>
+      <div class="pg-title">8 Modules. <span class="lime">5 Pillars.</span></div>
+      <p style="font-size:15px;color:rgba(255,255,255,.4);margin-top:8px;margin-bottom:0;">Create an account to access the full curriculum, track your progress, and earn module completions.</p>
     </div>
-    <div class="footer-links">
-      <div class="footer-col"><div class="footer-col-label">Platform</div><ul><li><a href="program.html">The Program</a></li><li><a href="giq.html">Gridiron IQ</a></li><li><a href="coaches.html">Coaches</a></li></ul></div>
-      <div class="footer-col"><div class="footer-col-label">Account</div><ul><li><a href="auth.html">Sign Up</a></li><li><a href="auth.html?tab=login">Log In</a></li><li><a href="dashboard.html">Dashboard</a></li></ul></div>
-      <div class="footer-col"><div class="footer-col-label">Legal</div><ul><li><a href="legal.html">Privacy Policy</a></li><li><a href="legal.html">Terms of Service</a></li></ul></div>
+    <div class="pg-modules">
+
+      <div class="pg-module rv">
+        <div class="pg-module-num">1</div>
+        <div class="pg-module-body">
+          <div class="pg-module-name">The Field</div>
+          <div class="pg-module-desc">Field layout, yard lines, hash marks, end zones, and boundaries.</div>
+          <div class="pg-module-pills">
+            <span class="pg-module-pill">The Football Field</span>
+            <span class="pg-module-pill">Yard Lines &amp; Hash Marks</span>
+            <span class="pg-module-pill">End Zones &amp; Boundaries</span>
+          </div>
+        </div>
+        <div class="pg-module-meta"><div class="pg-module-count">3 lessons</div><div class="pg-module-slides">9 slides</div></div>
+      </div>
+
+      <div class="pg-module rv">
+        <div class="pg-module-num">2</div>
+        <div class="pg-module-body">
+          <div class="pg-module-name">How the Game Works</div>
+          <div class="pg-module-desc">Downs, first downs, possession, scoring, and turnovers.</div>
+          <div class="pg-module-pills">
+            <span class="pg-module-pill">Downs and Distance</span>
+            <span class="pg-module-pill">Earning a First Down</span>
+            <span class="pg-module-pill">Scoring</span>
+            <span class="pg-module-pill">Possession and Turnovers</span>
+          </div>
+        </div>
+        <div class="pg-module-meta"><div class="pg-module-count">4 lessons</div><div class="pg-module-slides">12 slides</div></div>
+      </div>
+
+      <div class="pg-module rv">
+        <div class="pg-module-num">3</div>
+        <div class="pg-module-body">
+          <div class="pg-module-name">Penalties and Kicking</div>
+          <div class="pg-module-desc">Basic penalties, kickoffs, punts, and the kicking game.</div>
+          <div class="pg-module-pills">
+            <span class="pg-module-pill">Common Penalties</span>
+            <span class="pg-module-pill">Kickoffs and Touchbacks</span>
+            <span class="pg-module-pill">Punting and Field Position</span>
+          </div>
+        </div>
+        <div class="pg-module-meta"><div class="pg-module-count">3 lessons</div><div class="pg-module-slides">9 slides</div></div>
+      </div>
+
+      <div class="pg-module rv">
+        <div class="pg-module-num">4</div>
+        <div class="pg-module-body">
+          <div class="pg-module-name">Offensive Players</div>
+          <div class="pg-module-desc">Every offensive position &mdash; their identity and role on each play.</div>
+          <div class="pg-module-pills">
+            <span class="pg-module-pill">The Quarterback</span>
+            <span class="pg-module-pill">Running Backs &amp; O-Line</span>
+            <span class="pg-module-pill">Wide Receivers &amp; Tight Ends</span>
+          </div>
+        </div>
+        <div class="pg-module-meta"><div class="pg-module-count">3 lessons</div><div class="pg-module-slides">9 slides</div></div>
+      </div>
+
+      <div class="pg-module rv">
+        <div class="pg-module-num">5</div>
+        <div class="pg-module-body">
+          <div class="pg-module-name">Defensive Players &amp; Special Teams</div>
+          <div class="pg-module-desc">Every defensive position and the players who cover kicks.</div>
+          <div class="pg-module-pills">
+            <span class="pg-module-pill">D-Line &amp; Linebackers</span>
+            <span class="pg-module-pill">Cornerbacks &amp; Safeties</span>
+            <span class="pg-module-pill">Kicker, Punter &amp; Returner</span>
+          </div>
+        </div>
+        <div class="pg-module-meta"><div class="pg-module-count">3 lessons</div><div class="pg-module-slides">9 slides</div></div>
+      </div>
+
+      <div class="pg-module rv">
+        <div class="pg-module-num">6</div>
+        <div class="pg-module-body">
+          <div class="pg-module-name">Offensive Concepts</div>
+          <div class="pg-module-desc">Run vs pass, handoffs, blocking, formations, and routes.</div>
+          <div class="pg-module-pills">
+            <span class="pg-module-pill">Run Plays</span>
+            <span class="pg-module-pill">Blocking</span>
+            <span class="pg-module-pill">Offensive Formations</span>
+            <span class="pg-module-pill">Pass Routes</span>
+          </div>
+        </div>
+        <div class="pg-module-meta"><div class="pg-module-count">4 lessons</div><div class="pg-module-slides">12 slides</div></div>
+      </div>
+
+      <div class="pg-module rv">
+        <div class="pg-module-num">7</div>
+        <div class="pg-module-body">
+          <div class="pg-module-name">Defensive Concepts</div>
+          <div class="pg-module-desc">Tackling, stopping the run, covering receivers, and creating turnovers.</div>
+          <div class="pg-module-pills">
+            <span class="pg-module-pill">Tackling Fundamentals</span>
+            <span class="pg-module-pill">Stopping the Run</span>
+            <span class="pg-module-pill">Coverage Concepts</span>
+            <span class="pg-module-pill">Creating Turnovers</span>
+          </div>
+        </div>
+        <div class="pg-module-meta"><div class="pg-module-count">4 lessons</div><div class="pg-module-slides">12 slides</div></div>
+      </div>
+
+      <div class="pg-module rv">
+        <div class="pg-module-num">8</div>
+        <div class="pg-module-body">
+          <div class="pg-module-name">Situational Strategy</div>
+          <div class="pg-module-desc">3rd down, 4th down, red zone, field position, and game awareness.</div>
+          <div class="pg-module-pills">
+            <span class="pg-module-pill">Third Down</span>
+            <span class="pg-module-pill">Fourth Down Decisions</span>
+            <span class="pg-module-pill">Red Zone Decisions</span>
+            <span class="pg-module-pill">Field Position Awareness</span>
+          </div>
+        </div>
+        <div class="pg-module-meta"><div class="pg-module-count">4 lessons</div><div class="pg-module-slides">12 slides</div></div>
+      </div>
+
     </div>
   </div>
-  <div class="footer-bottom">
-    <span>&copy; 2026 First Down Academy. All Rights Reserved.</span>
+</div>
+
+<!-- CTA -->
+<div class="pg-cta rv" style="position:relative;overflow:hidden;">
+  <div class="tx-hash" style="opacity:.5;"></div>
+  <!-- Large "8" watermark -->
+  <svg style="position:absolute;bottom:-20px;right:16px;opacity:.05;pointer-events:none;z-index:0;" width="260" height="200" viewBox="0 0 260 200" fill="none">
+    <text x="0" y="185" font-family="Barlow Condensed" font-size="200" font-weight="900" font-style="italic" fill="#C1FF22">8</text>
+  </svg>
+  <div class="pg-cta-inner">
+    <div class="pg-cta-title">Start Building Your Football IQ.</div>
+    <p class="pg-cta-body">Your progress is saved after every module so you can continue on any device, any time.</p>
+    <div style="display:flex;align-items:center;flex-wrap:wrap;gap:8px;">
+      <a href="auth.html" class="btn-lime">Create Free Account &rarr;</a>
+      <a href="auth.html?tab=login" class="btn-ghost">Already have an account?</a>
+    </div>
+    
   </div>
+</div>
+
+<footer class="pg-footer">
+  <div class="pg-footer-brand">First Down Academy</div>
+  <div class="pg-footer-links">
+    <a href="program.html" class="pg-footer-link">Program</a>
+    <a href="giq-exam.html" class="pg-footer-link">Gridiron IQ</a>
+    <a href="coaches.html" class="pg-footer-link">Coaches</a>
+    <a href="legal.html" class="pg-footer-link">Privacy</a>
+    <a href="legal.html" class="pg-footer-link">Terms</a>
+  </div>
+  <div class="pg-footer-copy">&copy; 2026 First Down Academy</div>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="curriculum.js?v=2"></script>
-<script src="app.js?v=2"></script>
+<script src="curriculum.js?v=4"></script>
+<script src="app.js?v=4"></script>
 <script>
-function updateNavForLoggedIn() {
-  var ab = document.getElementById('navAuthBtns'); if (ab) ab.style.display = 'none';
-  var db = document.getElementById('navDashBtn'); if (db) db.style.display = 'inline-flex';
-  var dl = document.getElementById('nav-dashboard'); if (dl) dl.style.display = 'block';
-}
-function toggleMobileNav() {
-  var menu = document.getElementById('mobileMenu');
-  var burger = document.getElementById('hamburger');
-  if (!menu) return;
-  menu.classList.toggle('open');
-  var isOpen = menu.classList.contains('open');
-  var spans = burger.querySelectorAll('span');
-  if (spans[0]) spans[0].style.transform = isOpen ? 'rotate(45deg) translate(5px,5px)' : '';
-  if (spans[1]) spans[1].style.opacity = isOpen ? '0' : '';
-  if (spans[2]) spans[2].style.transform = isOpen ? 'rotate(-45deg) translate(5px,-5px)' : '';
+var obs=new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting)x.target.classList.add("on");});},{threshold:.08,rootMargin:"0px 0px -20px 0px"});
+document.querySelectorAll(".rv,.rv2").forEach(function(el){obs.observe(el);});
+function showPage(n){var m={"home":"index.html","signup":"auth.html","dashboard":"dashboard.html"};if(m[n])window.location.href=m[n];}
+function buildModuleList(){}
+function loadDashboard(){}
+function buildDashModuleList(){}
+function loadGIQScore(){}
+function updateNavForLoggedIn(){
+  var si=document.getElementById("navSignin");if(si)si.style.display="none";
+  var db=document.getElementById("navDashBtn");if(db)db.style.display="inline-flex";
+  var dl=document.getElementById("nav-dashboard");if(dl)dl.style.display="block";
 }
 </script>
 </body>
