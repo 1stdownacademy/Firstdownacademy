@@ -1,0 +1,1491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gridiron IQ — Your Result | First Down Academy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+/* ── RESET & BASE ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:         #0a0e14;
+  --surface:    #111827;
+  --surface2:   #1a2332;
+  --border:     rgba(255,255,255,0.07);
+  --text:       #f0f4f8;
+  --muted:      #6b7280;
+  --lime:       #a3e635;
+  --lime-dim:   rgba(163,230,53,0.12);
+  --orange:     #E8630A;
+  --blue:       #3B82F6;
+  --purple:     #8B5CF6;
+  --amber:      #F59E0B;
+  --green:      #22C55E;
+
+  --p0: #E8630A;
+  --p1: #3B82F6;
+  --p2: #8B5CF6;
+  --p3: #F59E0B;
+  --p4: #22C55E;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Barlow', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── FIELD LINES BACKGROUND ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent calc(10% - 1px),
+      rgba(255,255,255,0.018) calc(10% - 1px),
+      rgba(255,255,255,0.018) 10%
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── AMBIENT GLOW ── */
+.glow-orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(120px);
+  pointer-events: none;
+  z-index: 0;
+}
+.glow-orb.top {
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(163,230,53,0.06) 0%, transparent 70%);
+  top: -200px; left: 50%; transform: translateX(-50%);
+}
+.glow-orb.bot {
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(59,130,246,0.05) 0%, transparent 70%);
+  bottom: -100px; right: -100px;
+}
+
+/* ── LAYOUT ── */
+.page {
+  position: relative;
+  z-index: 1;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 0 16px 48px;
+}
+
+/* ── HEADER ── */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 0 28px;
+}
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+.header-logo img {
+  width: 36px; height: 36px;
+}
+.header-brand {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  color: var(--text);
+  text-transform: uppercase;
+  line-height: 1.1;
+}
+.header-brand span { color: var(--lime); }
+.retake-link {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color .2s;
+}
+.retake-link:hover { color: var(--lime); }
+
+/* ── EXAM LABEL ── */
+.exam-label {
+  text-align: center;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--lime);
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: fadeUp .5s .1s ease forwards;
+}
+
+/* ── GRADE CARD ── */
+.grade-card {
+  background: linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 36px 24px 28px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 12px;
+  opacity: 0;
+  animation: fadeUp .6s .2s ease forwards;
+}
+
+.grade-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--lime), transparent);
+}
+
+.grade-ring {
+  width: 120px; height: 120px;
+  margin: 0 auto 16px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.grade-ring svg {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  transform: rotate(-90deg);
+}
+
+.grade-ring-track {
+  fill: none;
+  stroke: rgba(255,255,255,0.06);
+  stroke-width: 6;
+}
+
+.grade-ring-fill {
+  fill: none;
+  stroke: var(--lime);
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-dasharray: 339.3;
+  stroke-dashoffset: 339.3;
+  transition: stroke-dashoffset 1.4s cubic-bezier(0.22, 1, 0.36, 1) .5s;
+  filter: drop-shadow(0 0 8px rgba(163,230,53,0.5));
+}
+
+.grade-letter {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 64px;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--lime);
+  text-shadow: 0 0 40px rgba(163,230,53,0.4);
+  position: relative;
+  z-index: 1;
+}
+
+.tier-badge {
+  display: inline-block;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--lime);
+  background: var(--lime-dim);
+  border: 1px solid rgba(163,230,53,0.2);
+  border-radius: 6px;
+  padding: 4px 12px;
+  margin-bottom: 8px;
+}
+
+.tier-sub {
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+/* ── STAT ROW ── */
+.stat-row {
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr 1px 1fr;
+  gap: 0;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.stat-divider {
+  background: var(--border);
+}
+
+.stat-cell {
+  padding: 16px 8px;
+  text-align: center;
+}
+
+.stat-value {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.stat-value.good { color: var(--green); }
+.stat-value.bad  { color: var(--orange); }
+
+.stat-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ── SCORE BAR ── */
+.score-bar-wrap {
+  margin-top: 16px;
+  padding: 0 4px;
+}
+
+/* Tier zone track — colored segments behind the bar */
+.score-zone-track {
+  position: relative;
+  height: 10px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: linear-gradient(
+    to right,
+    #6b728040  0%,   /* Rookie  0-39 */
+    #6b728040  40%,
+    #3B82F640  40%,  /* Learning 40-54 */
+    #3B82F640  55%,
+    #F59E0B40  55%,  /* Developing 55-69 */
+    #F59E0B40  70%,
+    #E8630A40  70%,  /* Advanced 70-84 */
+    #E8630A40  85%,
+    #22C55E40  85%,  /* Elite 85-100 */
+    #22C55E40  100%
+  );
+  margin-bottom: 4px;
+}
+
+.score-bar-fill {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  border-radius: 999px;
+  width: 0%;
+  transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1) .8s;
+}
+
+/* Indicator dot that rides the end of the fill */
+.score-indicator {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  border: 2px solid var(--bg);
+  box-shadow: 0 0 10px currentColor;
+  left: 0%;
+  transition: left 1.2s cubic-bezier(0.22, 1, 0.36, 1) .8s;
+  z-index: 2;
+}
+
+/* Zone tick marks */
+.score-zone-ticks {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 2px;
+  margin-top: 6px;
+}
+
+.zone-tick {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.45;
+  transition: opacity .3s;
+}
+.zone-tick.active { opacity: 1; }
+
+.score-label {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2px;
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 500;
+}
+.score-label strong { color: var(--text); font-size: 13px; }
+
+/* ── PILLAR SECTION ── */
+.section-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 24px 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.pillars-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  opacity: 0;
+  animation: fadeUp .6s .5s ease forwards;
+}
+
+/* ── LOCKED STATE ── */
+.pillars-locked {
+  padding: 0;
+  position: relative;
+}
+
+.pillar-row-mock {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  user-select: none;
+  pointer-events: none;
+  transition: filter .3s;
+}
+.pillar-row-mock:last-child { border-bottom: none; }
+/* First 2 rows visible, rest progressively blurred */
+.pillar-row-mock:nth-child(1) { filter: none; opacity: 1; }
+.pillar-row-mock:nth-child(2) { filter: none; opacity: 1; }
+.pillar-row-mock:nth-child(3) { filter: blur(4px); opacity: 0.7; }
+.pillar-row-mock:nth-child(4) { filter: blur(6px); opacity: 0.45; }
+.pillar-row-mock:nth-child(5) { filter: blur(8px); opacity: 0.2; }
+
+.mock-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.mock-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--text);
+  width: 90px;
+  flex-shrink: 0;
+}
+
+.mock-track {
+  flex: 1;
+  height: 8px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.mock-fill {
+  height: 100%;
+  border-radius: 999px;
+  opacity: 0.6;
+}
+
+.mock-pct {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--muted);
+  width: 36px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.lock-overlay {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 72%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 20px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(10,14,20,0.6) 30%,
+    rgba(10,14,20,0.92) 60%,
+    rgba(10,14,20,0.97) 100%
+  );
+  gap: 6px;
+  cursor: pointer;
+  transition: opacity .2s;
+  border-radius: 0 0 16px 16px;
+}
+.lock-overlay:hover { opacity: 0.9; }
+
+.lock-icon {
+  width: 40px; height: 40px;
+  background: var(--lime-dim);
+  border: 1px solid rgba(163,230,53,0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lock-icon svg { width: 18px; height: 18px; fill: var(--lime); }
+
+.lock-text {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.lock-sub {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+/* ── UNLOCKED PILLARS ── */
+.pillars-unlocked { display: none; }
+
+.pillar-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+}
+.pillar-row:last-child { border-bottom: none; }
+
+.pillar-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.pillar-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--text);
+  width: 90px;
+  flex-shrink: 0;
+}
+
+.pillar-track {
+  flex: 1;
+  height: 8px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.pillar-fill {
+  height: 100%;
+  border-radius: 999px;
+  width: 0%;
+  transition: width 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.pillar-pct {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  width: 36px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* ── UNLOCK CTA CARD ── */
+.unlock-card {
+  background: linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%);
+  border: 1px solid rgba(163,230,53,0.2);
+  border-radius: 16px;
+  padding: 24px 20px;
+  text-align: center;
+  margin-top: 12px;
+  opacity: 0;
+  animation: fadeUp .6s .7s ease forwards;
+}
+
+.unlock-card-icon {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.unlock-card-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.unlock-card-body {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.5;
+  margin-bottom: 18px;
+}
+
+.btn-primary {
+  display: block;
+  width: 100%;
+  background: var(--lime);
+  color: #0a0e14;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 10px;
+  padding: 14px 24px;
+  cursor: pointer;
+  transition: transform .15s, box-shadow .15s, background .15s;
+}
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(163,230,53,0.25);
+  background: #b6f03f;
+}
+.btn-primary:active { transform: translateY(0); }
+.btn-primary:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+
+.btn-ghost {
+  display: block;
+  width: 100%;
+  background: transparent;
+  color: var(--muted);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 24px;
+  cursor: pointer;
+  transition: color .2s, border-color .2s;
+  margin-top: 8px;
+  text-decoration: none;
+  text-align: center;
+}
+.btn-ghost:hover { color: var(--text); border-color: rgba(255,255,255,0.2); }
+
+/* ── SHARE ROW ── */
+.share-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  opacity: 0;
+  animation: fadeUp .6s .9s ease forwards;
+}
+
+.share-btn {
+  flex: 1;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 8px;
+  text-align: center;
+  cursor: pointer;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  transition: color .2s, border-color .2s, background .2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.share-btn:hover { color: var(--text); border-color: rgba(255,255,255,0.2); background: var(--surface2); }
+.share-btn svg { width: 15px; height: 15px; fill: currentColor; }
+
+/* ── MODAL BACKDROP ── */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(8px);
+  z-index: 100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+.modal-backdrop.open { display: flex; }
+
+/* ── MODAL ── */
+.modal {
+  background: var(--surface);
+  border: 1px solid rgba(163,230,53,0.15);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 420px;
+  padding: 28px 24px;
+  position: relative;
+  animation: modalIn .3s ease;
+}
+
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.95) translateY(16px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.modal-close {
+  position: absolute;
+  top: 16px; right: 16px;
+  width: 32px; height: 32px;
+  background: rgba(255,255,255,0.06);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .2s, color .2s;
+}
+.modal-close:hover { background: rgba(255,255,255,0.12); color: var(--text); }
+
+/* Score preview inside modal */
+.modal-score-preview {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 20px;
+}
+
+.modal-grade-mini {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 40px;
+  font-weight: 900;
+  color: var(--lime);
+  line-height: 1;
+}
+
+.modal-score-info { flex: 1; }
+
+.modal-score-info .tier {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--lime);
+  margin-bottom: 2px;
+}
+
+.modal-score-info .detail {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.modal-lock-badge {
+  background: var(--lime-dim);
+  border: 1px solid rgba(163,230,53,0.2);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--lime);
+  text-align: center;
+  line-height: 1.3;
+}
+
+.modal-headline {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.modal-sub {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+/* Form */
+.form-field {
+  margin-bottom: 12px;
+}
+
+.form-field label {
+  display: block;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.form-field input,
+.form-field select {
+  width: 100%;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 11px 14px;
+  color: var(--text);
+  font-family: 'Barlow', sans-serif;
+  font-size: 15px;
+  outline: none;
+  transition: border-color .2s;
+  -webkit-appearance: none;
+}
+.form-field input::placeholder { color: var(--muted); }
+.form-field input:focus,
+.form-field select:focus { border-color: rgba(163,230,53,0.4); }
+.form-field select { cursor: pointer; }
+.form-field select option { background: #1a2332; }
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.modal-fine {
+  font-size: 11px;
+  color: var(--muted);
+  text-align: center;
+  margin-top: 10px;
+  line-height: 1.5;
+}
+
+.modal-login {
+  text-align: center;
+  margin-top: 14px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.modal-login a {
+  color: var(--lime);
+  text-decoration: none;
+  font-weight: 600;
+}
+.modal-login a:hover { text-decoration: underline; }
+
+/* Status message */
+.form-msg {
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 12px;
+  display: none;
+}
+.form-msg.error   { background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.25); color: #f87171; display: block; }
+.form-msg.loading { background: rgba(163,230,53,0.08); border: 1px solid rgba(163,230,53,0.15); color: var(--lime); display: block; }
+.form-msg.success { background: rgba(34,197,94,0.1);  border: 1px solid rgba(34,197,94,0.2);  color: var(--green); display: block; }
+
+/* ── SUCCESS STATE ── */
+.modal-success {
+  text-align: center;
+  padding: 8px 0;
+  display: none;
+}
+
+.success-check {
+  width: 64px; height: 64px;
+  background: rgba(34,197,94,0.12);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 16px;
+}
+.success-check svg { width: 30px; height: 30px; }
+
+.success-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.success-body {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── LOGGED IN VIEW ── */
+.logged-in-banner {
+  display: none;
+  background: rgba(34,197,94,0.08);
+  border: 1px solid rgba(34,197,94,0.15);
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--green);
+  font-weight: 500;
+  text-align: center;
+  opacity: 0;
+  animation: fadeUp .4s ease forwards;
+}
+</style>
+</head>
+<body>
+
+<div class="glow-orb top"></div>
+<div class="glow-orb bot"></div>
+
+<div class="page">
+
+  <!-- Header -->
+  <header class="header">
+    <a href="index.html" class="header-logo">
+      <img src="logo.png" alt="First Down Academy">
+      <div class="header-brand">First Down<br><span>Academy</span></div>
+    </a>
+    <a href="giq-exam.html" class="retake-link">Retake →</a>
+  </header>
+
+  <!-- Exam Label -->
+  <div class="exam-label">⚡ Gridiron IQ — Result</div>
+
+  <!-- Grade Card -->
+  <div class="grade-card">
+    <div class="grade-ring">
+      <svg viewBox="0 0 120 120">
+        <circle class="grade-ring-track" cx="60" cy="60" r="54"/>
+        <circle class="grade-ring-fill" id="ringFill" cx="60" cy="60" r="54"/>
+      </svg>
+      <div class="grade-letter" id="gradeLetter">A</div>
+    </div>
+
+    <div class="tier-badge" id="tierBadge">Elite IQ</div>
+    <div class="tier-sub">Top-Tier Football Intelligence</div>
+
+    <div class="stat-row">
+      <div class="stat-cell">
+        <div class="stat-value good" id="statCorrect">14</div>
+        <div class="stat-label">Correct</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-cell">
+        <div class="stat-value" id="statMissed">1</div>
+        <div class="stat-label">Missed</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-cell">
+        <div class="stat-value" id="statScore">93</div>
+        <div class="stat-label">Score</div>
+      </div>
+    </div>
+
+    <div class="score-bar-wrap">
+      <div class="score-zone-track">
+        <div class="score-bar-fill" id="scoreBarFill"></div>
+        <div class="score-indicator" id="scoreIndicator"></div>
+      </div>
+      <div class="score-zone-ticks">
+        <span class="zone-tick" id="zt0" style="color:#6b7280">Rookie</span>
+        <span class="zone-tick" id="zt1" style="color:#3B82F6">Learning</span>
+        <span class="zone-tick" id="zt2" style="color:#F59E0B">Developing</span>
+        <span class="zone-tick" id="zt3" style="color:#E8630A">Advanced</span>
+        <span class="zone-tick" id="zt4" style="color:#22C55E">Elite IQ</span>
+      </div>
+      <div class="score-label">
+        <span>0</span>
+        <strong id="scoreLabelVal">93 / 100</strong>
+        <span>100</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Logged-in saved banner -->
+  <div class="logged-in-banner" id="savedBanner">
+    ✓ Score saved to your account
+  </div>
+
+  <!-- Pillar Breakdown -->
+  <div class="section-title">Knowledge Breakdown</div>
+
+  <div class="pillars-card">
+    <!-- Locked (guest) view -->
+    <div class="pillars-locked" id="pillarsLocked">
+      <div class="pillar-row-mock">
+        <div class="mock-dot" style="background:var(--p0)"></div>
+        <div class="mock-name">Rules</div>
+        <div class="mock-track"><div class="mock-fill" style="background:var(--p0);width:85%"></div></div>
+        <div class="mock-pct">85%</div>
+      </div>
+      <div class="pillar-row-mock">
+        <div class="mock-dot" style="background:var(--p1)"></div>
+        <div class="mock-name">Positions</div>
+        <div class="mock-track"><div class="mock-fill" style="background:var(--p1);width:72%"></div></div>
+        <div class="mock-pct">72%</div>
+      </div>
+      <div class="pillar-row-mock">
+        <div class="mock-dot" style="background:var(--p2)"></div>
+        <div class="mock-name">Formations</div>
+        <div class="mock-track"><div class="mock-fill" style="background:var(--p2);width:60%"></div></div>
+        <div class="mock-pct">60%</div>
+      </div>
+      <div class="pillar-row-mock">
+        <div class="mock-dot" style="background:var(--p3)"></div>
+        <div class="mock-name">Plays</div>
+        <div class="mock-track"><div class="mock-fill" style="background:var(--p3);width:90%"></div></div>
+        <div class="mock-pct">90%</div>
+      </div>
+      <div class="pillar-row-mock">
+        <div class="mock-dot" style="background:var(--p4)"></div>
+        <div class="mock-name">Situational</div>
+        <div class="mock-track"><div class="mock-fill" style="background:var(--p4);width:55%"></div></div>
+        <div class="mock-pct">55%</div>
+      </div>
+
+      <div class="lock-overlay" id="lockOverlay" onclick="openModal()">
+        <div class="lock-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18 10h-1V7A5 5 0 0 0 7 7v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2zm-6 7a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm3.1-7H8.9V7a3.1 3.1 0 0 1 6.2 0v3z"/>
+          </svg>
+        </div>
+        <div class="lock-text">Unlock Full Breakdown</div>
+        <div class="lock-sub">Free account required</div>
+      </div>
+    </div>
+
+    <!-- Unlocked (logged in) view -->
+    <div class="pillars-unlocked" id="pillarsUnlocked">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+
+  <!-- Unlock CTA Card (guest only) -->
+  <div class="unlock-card" id="unlockCta">
+    <div class="unlock-card-icon">🏈</div>
+    <div class="unlock-card-title">Unlock Your Full Breakdown</div>
+    <div class="unlock-card-body">
+      See your score across all 5 pillars — then access <strong style="color:var(--lime)">free training</strong> built around your weakest areas. Most players improve their score by a full letter grade after completing the Rookie course.
+    </div>
+    <button class="btn-primary" onclick="openModal()">Create Free Account & Unlock →</button>
+    <a href="auth.html" class="btn-ghost">Already have an account? Log in</a>
+  </div>
+
+  <!-- Share Row -->
+  <div class="share-row">
+    <button class="share-btn" onclick="shareResult()">
+      <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>
+      Share
+    </button>
+    <button class="share-btn" onclick="copyResult()">
+      <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+      Copy
+    </button>
+    <a href="giq-exam.html" class="share-btn">
+      <svg viewBox="0 0 24 24"><path d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+      Retake
+    </a>
+  </div>
+
+</div><!-- /page -->
+
+
+<!-- ══════════════════════════════════════════
+     SIGN UP MODAL
+══════════════════════════════════════════ -->
+<div class="modal-backdrop" id="modalBackdrop" onclick="closeModalOutside(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+
+    <!-- Form state -->
+    <div id="modalForm">
+      <!-- Score preview -->
+      <div class="modal-score-preview">
+        <div class="modal-grade-mini" id="modalGrade">A</div>
+        <div class="modal-score-info">
+          <div class="tier" id="modalTier">Elite IQ</div>
+          <div class="detail" id="modalDetail">Score saved instantly on signup</div>
+        </div>
+        <div class="modal-lock-badge">5 Pillars<br>Locked</div>
+      </div>
+
+      <div class="modal-headline">Save Your Results</div>
+      <div class="modal-sub">Free account. Your score is saved the moment you sign up — no redirects.</div>
+
+      <div class="form-msg" id="formMsg"></div>
+
+      <div class="form-field">
+        <label>Full Name *</label>
+        <input type="text" id="mName" placeholder="Your name" autocomplete="name">
+      </div>
+
+      <div class="form-field">
+        <label>Email *</label>
+        <input type="email" id="mEmail" placeholder="you@email.com" autocomplete="email">
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label>Age *</label>
+          <input type="number" id="mAge" placeholder="13" min="8" max="25">
+        </div>
+        <div class="form-field">
+          <label>Position (optional)</label>
+          <select id="mPosition">
+            <option value="">Select...</option>
+            <option>Quarterback</option>
+            <option>Running Back</option>
+            <option>Wide Receiver</option>
+            <option>Tight End</option>
+            <option>Offensive Line</option>
+            <option>Defensive Line</option>
+            <option>Linebacker</option>
+            <option>Cornerback</option>
+            <option>Safety</option>
+            <option>Kicker / Punter</option>
+            <option>Athlete / Multi</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label>Password *</label>
+        <input type="password" id="mPassword" placeholder="At least 6 characters" autocomplete="new-password">
+      </div>
+
+      <button class="btn-primary" id="signupBtn" onclick="doModalSignup()">
+        Create Account & Unlock →
+      </button>
+
+      <div class="modal-fine">By signing up you agree to our Terms. No spam, ever.</div>
+
+      <div class="modal-login">
+        Already have an account? <a href="auth.html">Log in</a>
+      </div>
+    </div>
+
+    <!-- Success state -->
+    <div class="modal-success" id="modalSuccess">
+      <div class="success-check">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </div>
+      <div class="success-title">Score Saved!</div>
+      <div class="success-body" id="successBody">
+        Your score and pillar breakdown are now locked in. Taking you to your dashboard…
+      </div>
+      <button class="btn-primary" onclick="window.location.href='dashboard.html'">
+        View Full Dashboard →
+      </button>
+    </div>
+
+  </div>
+</div>
+
+
+<script>
+// ── SUPABASE CONFIG ──
+const SUPABASE_URL = 'PASTE_YOUR_SUPABASE_URL_HERE';
+const SUPABASE_KEY = 'PASTE_YOUR_PUBLISHABLE_KEY_HERE';
+const { createClient } = supabase;
+const db = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// ── PILLAR CONFIG ──
+const PILLAR_NAMES  = ['Rules & Objectives','Positions & Responsibilities','Formations & Alignments','Plays & Concepts','Situational Awareness'];
+const PILLAR_SHORT  = ['Rules','Positions','Formations','Plays','Situational'];
+const PILLAR_COLORS = ['#E8630A','#3B82F6','#8B5CF6','#F59E0B','#22C55E'];
+
+// ── GRADE HELPERS ──
+function getLetterGrade(score) {
+  if (score >= 97) return 'A+';
+  if (score >= 93) return 'A';
+  if (score >= 90) return 'A-';
+  if (score >= 87) return 'B+';
+  if (score >= 83) return 'B';
+  if (score >= 80) return 'B-';
+  if (score >= 77) return 'C+';
+  if (score >= 73) return 'C';
+  if (score >= 70) return 'C-';
+  if (score >= 60) return 'D';
+  return 'F';
+}
+
+function getTierName(score) {
+  if (score >= 85) return { name: 'Elite IQ',   color: '#22C55E' };
+  if (score >= 70) return { name: 'Advanced',    color: '#E8630A' };
+  if (score >= 55) return { name: 'Developing',  color: '#F59E0B' };
+  if (score >= 40) return { name: 'Learning',    color: '#3B82F6' };
+  return               { name: 'Rookie',      color: '#6b7280' };
+}
+
+// ── LOAD SCORE FROM URL PARAMS ──
+// giq-exam.html should redirect here with:
+// ?score=93&correct=14&missed=1&p0=3/3&p1=2/3&p2=3/3&p3=3/3&p4=3/3
+// Fall back to sessionStorage if params not present
+function getExamData() {
+  var params = new URLSearchParams(window.location.search);
+  var score   = parseInt(params.get('score'))   || parseInt(sessionStorage.getItem('giq_score'))   || 93;
+  var correct = parseInt(params.get('correct')) || parseInt(sessionStorage.getItem('giq_correct')) || 14;
+  var missed  = parseInt(params.get('missed'))  || parseInt(sessionStorage.getItem('giq_missed'))  || 1;
+  var grade   = params.get('grade')             || sessionStorage.getItem('giq_grade')             || getLetterGrade(score);
+  var pillars = {};
+  PILLAR_NAMES.forEach(function(p, i) {
+    var key = 'p' + i;
+    pillars[key] = params.get(key) || sessionStorage.getItem('giq_' + key) || '0/3';
+  });
+  return { score: score, correct: correct, missed: missed, grade: grade, pillars: pillars };
+}
+
+var examData = getExamData();
+var currentUser = null;
+
+// ── POPULATE UI ──
+function populateResults(data) {
+  var tier = getTierName(data.score);
+
+  // Grade letter
+  var gradeEl = document.getElementById('gradeLetter');
+  gradeEl.textContent = data.grade;
+  gradeEl.style.color = tier.color;
+  gradeEl.style.textShadow = '0 0 40px ' + tier.color + '66';
+
+  // Ring fill (circumference = 2π×54 ≈ 339.3)
+  var pct = data.score / 100;
+  var offset = 339.3 - (339.3 * pct);
+  setTimeout(function() {
+    var ring = document.getElementById('ringFill');
+    ring.style.stroke = tier.color;
+    ring.style.filter = 'drop-shadow(0 0 8px ' + tier.color + '80)';
+    ring.style.strokeDashoffset = offset;
+  }, 300);
+
+  // Tier badge
+  var badge = document.getElementById('tierBadge');
+  badge.textContent = tier.name;
+  badge.style.color = tier.color;
+  badge.style.background = tier.color + '18';
+  badge.style.borderColor = tier.color + '30';
+
+  // Stats
+  document.getElementById('statCorrect').textContent = data.correct;
+  document.getElementById('statMissed').textContent  = data.missed;
+  document.getElementById('statScore').textContent   = data.score;
+
+  var missedEl = document.getElementById('statMissed');
+  if (data.missed === 0) missedEl.className = 'stat-value good';
+  else if (data.missed <= 2) missedEl.className = 'stat-value';
+  else missedEl.className = 'stat-value bad';
+
+  // Score bar + moving indicator + tier tick highlight
+  document.getElementById('scoreLabelVal').textContent = data.score + ' / 100';
+  setTimeout(function() {
+    var fill = document.getElementById('scoreBarFill');
+    var dot  = document.getElementById('scoreIndicator');
+    fill.style.width     = data.score + '%';
+    fill.style.background = 'linear-gradient(90deg, ' + tier.color + '88, ' + tier.color + ')';
+    fill.style.boxShadow  = '0 0 10px ' + tier.color + '66';
+    var clampedPct = Math.min(Math.max(data.score, 2), 98);
+    dot.style.left       = clampedPct + '%';
+    dot.style.background = tier.color;
+    dot.style.boxShadow  = '0 0 10px ' + tier.color;
+  }, 400);
+  // Highlight active tier tick
+  var tierThresholds = [0, 40, 55, 70, 85];
+  var activeIdx = 0;
+  tierThresholds.forEach(function(t, i) { if (data.score >= t) activeIdx = i; });
+  for (var ti = 0; ti < 5; ti++) {
+    var el = document.getElementById('zt' + ti);
+    if (el) el.classList.toggle('active', ti === activeIdx);
+  }
+
+  // Modal preview
+  document.getElementById('modalGrade').textContent = data.grade;
+  document.getElementById('modalGrade').style.color = tier.color;
+  document.getElementById('modalTier').textContent  = tier.name;
+  document.getElementById('modalTier').style.color  = tier.color;
+}
+
+// ── RENDER UNLOCKED PILLARS ──
+function renderPillars(pillars) {
+  var container = document.getElementById('pillarsUnlocked');
+  container.innerHTML = '';
+  PILLAR_SHORT.forEach(function(name, i) {
+    var key = 'p' + i;
+    var raw = pillars[key] || '0/3';
+    var parts = raw.split('/');
+    var pct = parseInt(parts[1]) > 0
+      ? Math.round(parseInt(parts[0]) / parseInt(parts[1]) * 100)
+      : 0;
+
+    var row = document.createElement('div');
+    row.className = 'pillar-row';
+    row.innerHTML =
+      '<div class="pillar-dot" style="background:' + PILLAR_COLORS[i] + '"></div>' +
+      '<div class="pillar-name">' + name + '</div>' +
+      '<div class="pillar-track"><div class="pillar-fill" style="background:' + PILLAR_COLORS[i] + '" data-pct="' + pct + '"></div></div>' +
+      '<div class="pillar-pct">' + pct + '%</div>';
+    container.appendChild(row);
+  });
+
+  setTimeout(function() {
+    container.querySelectorAll('.pillar-fill').forEach(function(el) {
+      el.style.width = el.getAttribute('data-pct') + '%';
+    });
+  }, 200);
+}
+
+// ── SWITCH TO UNLOCKED VIEW ──
+function unlockPillars(pillars) {
+  document.getElementById('pillarsLocked').style.display   = 'none';
+  document.getElementById('pillarsUnlocked').style.display = 'block';
+  document.getElementById('unlockCta').style.display       = 'none';
+  renderPillars(pillars);
+
+  var banner = document.getElementById('savedBanner');
+  banner.style.display = 'block';
+}
+
+// ── CHECK AUTH ON LOAD ──
+async function initPage() {
+  populateResults(examData);
+
+  try {
+    var session = await db.auth.getSession();
+    if (session.data && session.data.session) {
+      currentUser = session.data.session.user;
+
+      // User is logged in — save score and show pillars
+      await saveScoreToSupabase(currentUser.id, examData);
+      unlockPillars(examData.pillars);
+    }
+    // else: guest state — locked pillars shown by default
+  } catch(e) {
+    console.error('Auth check failed:', e);
+  }
+}
+
+// ── SAVE SCORE ──
+async function saveScoreToSupabase(userId, data) {
+  try {
+    var pillarData = {};
+    PILLAR_NAMES.forEach(function(p, i) {
+      var key = 'pillar_' + p.replace(/[^a-zA-Z]/g,'').toLowerCase();
+      pillarData[key] = data.pillars['p' + i] || '0/3';
+    });
+
+    await db.from('giq_scores').insert({
+      user_id:  userId,
+      score:    data.score,
+      grade:    data.grade,
+      correct:  data.correct,
+      taken_at: new Date().toISOString(),
+      ...pillarData
+    });
+  } catch(e) {
+    console.error('Score save error:', e);
+  }
+}
+
+// ── MODAL ──
+function openModal() {
+  document.getElementById('modalBackdrop').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(function() {
+    document.getElementById('mName').focus();
+  }, 300);
+}
+
+function closeModal() {
+  document.getElementById('modalBackdrop').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function closeModalOutside(e) {
+  if (e.target === document.getElementById('modalBackdrop')) closeModal();
+}
+
+function showFormMsg(type, msg) {
+  var el = document.getElementById('formMsg');
+  el.className = 'form-msg ' + type;
+  el.textContent = msg;
+}
+
+// ── MODAL SIGNUP ──
+async function doModalSignup() {
+  var name     = document.getElementById('mName').value.trim();
+  var email    = document.getElementById('mEmail').value.trim();
+  var age      = document.getElementById('mAge').value.trim();
+  var position = document.getElementById('mPosition').value;
+  var password = document.getElementById('mPassword').value;
+
+  if (!name)     { showFormMsg('error', 'Please enter your name.'); return; }
+  if (!email)    { showFormMsg('error', 'Please enter your email.'); return; }
+  if (!age)      { showFormMsg('error', 'Please enter your age.'); return; }
+  if (!password) { showFormMsg('error', 'Please create a password.'); return; }
+  if (password.length < 6) { showFormMsg('error', 'Password must be at least 6 characters.'); return; }
+
+  var btn = document.getElementById('signupBtn');
+  btn.disabled = true;
+  btn.textContent = 'Saving your score…';
+  showFormMsg('loading', 'Creating your account and saving your score…');
+
+  try {
+    var signupResult = await db.auth.signUp({
+      email: email,
+      password: password,
+      options: {
+        data: { full_name: name, role: 'player', age: parseInt(age), position: position }
+      }
+    });
+
+    if (signupResult.error) {
+      showFormMsg('error', signupResult.error.message);
+      btn.disabled = false;
+      btn.textContent = 'Create Account & Unlock →';
+      return;
+    }
+
+    var userId = signupResult.data.user.id;
+    currentUser = signupResult.data.user;
+
+    // 1. Insert profile
+    await db.from('profiles').insert({
+      id:         userId,
+      full_name:  name,
+      age:        parseInt(age) || 0,
+      position:   position || null,
+      created_at: new Date().toISOString()
+    });
+
+    // 2. Save score atomically
+    await saveScoreToSupabase(userId, examData);
+
+    // 3. Show success
+    document.getElementById('modalForm').style.display    = 'none';
+    document.getElementById('modalSuccess').style.display = 'block';
+    document.getElementById('successBody').textContent =
+      'Your ' + examData.score + '/100 score and pillar breakdown are locked in. Heading to your dashboard…';
+
+    // 4. Unlock pillars on results page in background
+    unlockPillars(examData.pillars);
+
+    // 5. Redirect after delay
+    setTimeout(function() {
+      window.location.href = 'dashboard.html';
+    }, 3000);
+
+  } catch(err) {
+    console.error(err);
+    showFormMsg('error', 'Something went wrong. Please try again.');
+    btn.disabled = false;
+    btn.textContent = 'Create Account & Unlock →';
+  }
+}
+
+// ── SHARE ──
+function shareResult() {
+  var tier = getTierName(examData.score);
+  var text = 'I just scored ' + examData.score + '/100 on the Gridiron IQ Exam — ' + tier.name + ' rating! 🏈 Test your football knowledge at firstdownacademy.com';
+  if (navigator.share) {
+    navigator.share({ title: 'My Gridiron IQ Result', text: text, url: 'https://firstdownacademy.com' });
+  } else {
+    navigator.clipboard.writeText(text).then(function() {
+      alert('Result copied — share it with your team!');
+    });
+  }
+}
+
+function copyResult() {
+  var tier = getTierName(examData.score);
+  var text = 'Gridiron IQ: ' + examData.score + '/100 — ' + tier.name + ' | firstdownacademy.com';
+  navigator.clipboard.writeText(text).then(function() {
+    var btn = event.currentTarget;
+    var orig = btn.innerHTML;
+    btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:15px;height:15px;fill:currentColor"><polyline points="20 6 9 17 4 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" fill="none"/></svg> Copied!';
+    btn.style.color = 'var(--green)';
+    setTimeout(function() { btn.innerHTML = orig; btn.style.color = ''; }, 2000);
+  });
+}
+
+// ── INIT ──
+initPage();
+</script>
+</body>
+</html>
