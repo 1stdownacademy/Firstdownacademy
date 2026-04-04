@@ -334,16 +334,17 @@ async function doLogout() {
 
 function showAuthMsg(type, msg) {
   document.querySelectorAll('.auth-msg').forEach(function(e) { e.remove(); });
+  if (!msg && type !== 'success') return;
   var div = document.createElement('div');
-  div.className = 'auth-msg';
+  div.id = 'authMsg';
   var styles = {
-    error: 'background:#FEF2F2;border:1px solid #FECACA;color:#B91C1C;',
-    success: 'background:#F0FDF4;border:1px solid #BBF7D0;color:#15803D;',
-    loading: 'background:#EFF6FF;border:1px solid #BFDBFE;color:#1E40AF;'
+    error:   'background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);color:#fca5a5;',
+    success: 'background:rgba(193,255,34,.08);border:1px solid rgba(193,255,34,.2);color:#d9e7fc;',
+    loading: 'background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);color:#9eacc0;'
   };
-  var icons = { error:'⚠️', success:'✅', loading:'⏳' };
-  div.style.cssText = styles[type] + 'padding:12px 16px;border-radius:8px;font-size:14px;margin-top:12px;';
-  div.textContent = icons[type] + ' ' + msg;
+  var icons = { error:'⚠️ ', success:'', loading:'⏳ ' };
+  div.style.cssText = styles[type] + 'padding:14px 16px;border-radius:8px;font-size:13px;margin-top:12px;line-height:1.6;';
+  div.innerHTML = icons[type] + msg;
   var active = document.getElementById('formSignup') && document.getElementById('formSignup').style.display !== 'none'
     ? document.getElementById('formSignup') : document.getElementById('formLogin');
   if (active) active.appendChild(div);
