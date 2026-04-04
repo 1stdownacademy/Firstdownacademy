@@ -1438,7 +1438,7 @@ body::before {
     </a>
 
     <div class="sidebar-section-label" style="margin-top:20px;">Account</div>
-    <a class="sidebar-link" href="auth.html">
+    <a class="sidebar-link" href="auth.html" onclick="doLogout();return false;">
       <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
       Profile
     </a>
@@ -1765,7 +1765,7 @@ function buildModuleList() {}
 function showPage(name) {
   var map = {
     'home':'index.html','course':'program.html','giq':'giq.html',
-    'levels':'levels.html','coaches':'coaches.html','signup':'auth.html',
+    'levels':'levels.html','coaches':'coaches.html','signup':'signup.html',
     'dashboard':'dashboard.html','lesson':'lesson.html','legal':'legal.html'
   };
   if (map[name]) window.location.href = map[name];
@@ -1808,7 +1808,7 @@ document.addEventListener('sessionReady', async function() {
   var coachDash  = document.getElementById('dashCoach');
 
   if (!currentUser) {
-    window.location.href = 'auth.html?tab=login';
+    window.location.href = 'auth.html';
     return;
   }
 

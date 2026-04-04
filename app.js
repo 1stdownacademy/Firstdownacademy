@@ -445,7 +445,7 @@ async function loadCoachDashboard() {
   var teamEl = document.getElementById('dashCoachTeam');
   if (teamEl) teamEl.textContent = currentProfile.team_name || '';
   var refCode = currentProfile.referral_code || '';
-  var fullLink = 'https://firstdownacademy.com/auth.html?ref=' + refCode;
+  var fullLink = 'https://firstdownacademy.com/signup.html?ref=' + refCode;
   var refLinkEl = document.getElementById('coachRefLink');
   if (refLinkEl) refLinkEl.textContent = fullLink;
   var codeEl = document.getElementById('coachStatCode');
@@ -486,7 +486,7 @@ async function loadCoachDashboard() {
 
 function copyCoachLink() {
   var refCode = currentProfile ? currentProfile.referral_code : '';
-  var link = 'https://firstdownacademy.com/auth.html?ref=' + refCode;
+  var link = 'https://firstdownacademy.com/signup.html?ref=' + refCode;
   // Try clipboard API first, fall back to selecting the text
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(link).then(function() {
