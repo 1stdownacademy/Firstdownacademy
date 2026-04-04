@@ -746,12 +746,15 @@ a{text-decoration:none;}
         <div class="grade-body">
           <div class="grade-stats">
             <div class="grade-stat"><div class="grade-stat-n" id="statCorrect">0</div><div class="grade-stat-l">Correct</div></div>
-            <div class="grade-stat"><div class="grade-stat-n" id="statWrong">0</div><div class="grade-stat-l">Missed</div></div>
+            <div class="grade-stat"><div class="grade-stat-n" id="statPeak">—</div><div class="grade-stat-l">Level Reached</div></div>
             <div class="grade-stat"><div class="grade-stat-n" id="statAcc">0%</div><div class="grade-stat-l">Accuracy</div></div>
           </div>
           <div id="pillarSection"></div>
-          <div id="recSection"></div>
-          <div id="resultsActions"></div>
+          <div class="rec-card" id="recCard" style="display:none;margin-top:12px;">
+            <div class="rec-eyebrow">Your Next Step</div>
+            <div class="rec-body" id="recText"></div>
+          </div>
+          <div id="resultsActions" style="margin-top:12px;"></div>
         </div>
       </div>
 
