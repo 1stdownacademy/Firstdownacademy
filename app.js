@@ -6,8 +6,8 @@
 
 // ── SUPABASE CONFIG ──
 // Replace these with your real keys
-const SUPABASE_URL = 'https://wzylgwvifdfnkmuleoxn.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_FaPj5NQeqzsRE8kOme2lKQ_uXrHArbt';
+const SUPABASE_URL = 'PASTE_YOUR_SUPABASE_URL_HERE';
+const SUPABASE_KEY = 'PASTE_YOUR_PUBLISHABLE_KEY_HERE';
 
 var db = null;
 try {
@@ -167,6 +167,31 @@ async function checkSession() {
       currentUser = result.data.session.user;
       await loadProfile();
       updateNavForLoggedIn();
+
+      // If there is a pending quiz score in localStorage and we are NOT
+      // already on giq-exam.html, redirect there so the score can be restored.
+      var onQuizPage = window.location.pathname.indexOf('giq-exam') >= 0;
+      if (!onQuizPage) {
+        var pending = null;
+        try { pending = localStorage.getItem('fda_pendingScore'); } catch(e) {}
+        if (pending) {
+          var ts = 0;
+          try { ts = parseInt(localStorage.getItem('fda_pendingTS') || '0'); } catch(e) {}
+          var age = ts ? (Date.now() - ts) : 0;
+          if (age < 7 * 24 * 60 * 60 * 1000) {
+            window.location.href = 'giq-exam.html';
+            return;
+          } else {
+            // Expired — clean up
+            try {
+              localStorage.removeItem('fda_pendingScore');
+              localStorage.removeItem('fda_pendingGrade');
+              localStorage.removeItem('fda_pendingTier');
+              localStorage.removeItem('fda_pendingTS');
+            } catch(e) {}
+          }
+        }
+      }
     }
     // Signal that session check is complete
     document.dispatchEvent(new Event('sessionReady'));

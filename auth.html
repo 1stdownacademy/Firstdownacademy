@@ -727,4 +727,71 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
       }
       if (!terms || !terms.checked) {
-        showToast
+        showToas('error', 'Please agree to the Terms of Service and Privacy Policy.');
+        return;
+      }
+      doCoachSignup();
+    };
+  }
+
+  // ── Score recovery — show badge if pending score in localStorage ──
+  function checkPendingScore() {
+    var grade = null;
+    var ts    = null;
+    try {
+      grade = localStorage.getItem('fda_pendingGrade');
+      ts    = parseInt(localStorage.getItem('fda_pendingTS') || '0');
+    } catch(e) {}
+
+    if (!grade) return;
+
+    // Only show if score is less than 7 days old
+    var age = ts ? (Date.now() - ts) : 0;
+    if (age > 7 * 24 * 60 * 60 * 1000) {
+      try { localStorage.removeItem('fda_pendingGrade'); } catch(e) {}
+      return;
+    }
+
+    // Build the score recovery banner
+    var eyebrow = document.getElementById('authLeftEyebrow');
+    var sub     = document.getElementById('authLeftSub');
+    var preview = document.getElementById('authGradePreview');
+    var unlock  = document.getElementById('authUnlockList');
+    var grade_el = document.getElementById('authPreviewGrade');
+    var tier_el  = document.getElementById('authPreviewTier');
+    var signupTitle = document.getElementById('signupTitle');
+    var modeLabel   = document.getElementById('signupModeLabel');
+    var tier = null;
+    try { tier = localStorage.getItem('fda_pendingTier'); } catch(e) {}
+
+    if (eyebrow) eyebrow.textContent = 'Your Score Is Saved';
+    if (signupTitle) signupTitle.textContent = 'Unlock Your Results';
+    if (modeLabel)   modeLabel.textContent   = 'Create your free account';
+    if (sub) sub.textContent = 'Sign up or log in and your Gridiron IQ score will be waiting for you — no retake needed.';
+    if (grade_el) grade_el.textContent = grade;
+    if (tier_el)  tier_el.textContent  = tier || '';
+    if (preview)  preview.style.display = 'block';
+    if (unlock)   unlock.style.display  = 'none';
+
+    // Add a reassurance note under the tab bar
+    var tabBar = document.querySelector('.auth-tab-bar');
+    if (tabBar && !document.getElementById('scoreNote')) {
+      var note = document.createElement('div');
+      note.id = 'scoreNote';
+      note.style.cssText = 'background:rgba(193,255,34,.07);border:1px solid rgba(193,255,34,.15);border-radius:8px;padding:10px 14px;margin-bottom:18px;display:flex;align-items:center;gap:10px;';
+      note.innerHTML =
+        '<div style="font-size:20px;flex-shrink:0">🏈</div>' +
+        '<div>' +
+          '<div style="font-family:Barlow Condensed,sans-serif;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#C1FF22;margin-bottom:2px;">Your Score Is Saved</div>' +
+          '<div style="font-size:12px;color:rgba(255,255,255,.5);line-height:1.4;">Grade <strong style="color:#C1FF22">' + grade + '</strong> is waiting — sign up or log in to unlock your full results.</div>' +
+        '</div>';
+      tabBar.parentNode.insertBefore(note, tabBar.nextSibling);
+    }
+  }
+
+  checkPendingScore();
+
+});
+</script>
+</body>
+</html>

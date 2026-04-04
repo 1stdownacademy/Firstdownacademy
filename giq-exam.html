@@ -1413,9 +1413,18 @@ function storeGradeForAuth(result) {
   if (!result) return;
   var grade = getLetterGrade(result.score);
   var tier  = getTierInfo(result.score);
-  sessionStorage.setItem('pendingGrade', grade);
-  sessionStorage.setItem('pendingTier', tier.name);
-  sessionStorage.setItem('pendingScore', JSON.stringify(result));
+  // Use localStorage so score survives email confirmation + tab close
+  try {
+    localStorage.setItem('fda_pendingGrade', grade);
+    localStorage.setItem('fda_pendingTier', tier.name);
+    localStorage.setItem('fda_pendingScore', JSON.stringify(result));
+    localStorage.setItem('fda_pendingTS', Date.now().toString());
+  } catch(e) {
+    // Fallback to sessionStorage
+    sessionStorage.setItem('pendingGrade', grade);
+    sessionStorage.setItem('pendingTier', tier.name);
+    sessionStorage.setItem('pendingScore', JSON.stringify(result));
+  }
 }
 
 function buildActions(result) {
@@ -1491,29 +1500,50 @@ function updateNavForLoggedIn() {}
 document.addEventListener('sessionReady', function() {
   if (currentUser) {
     state.loggedIn = true;
+
+    // Already showing results — just rebuild sections with logged-in state
     if (document.getElementById('screenResults').classList.contains('active') && state.lastResult) {
-      var result = state.lastResult;
-      buildPillarSection(result);
-      buildRecommendation(result);
-      buildActions(result);
-      sessionStorage.removeItem('pendingGrade');
-      sessionStorage.removeItem('pendingTier');
-      sessionStorage.removeItem('pendingScore');
+      buildPillarSection(state.lastResult);
+      buildRecommendation(state.lastResult);
+      buildActions(state.lastResult);
+      clearPendingScore();
       return;
     }
-    var stored = sessionStorage.getItem('pendingScore');
+
+    // Check localStorage first (survives email confirmation), then sessionStorage
+    var stored = null;
+    try { stored = localStorage.getItem('fda_pendingScore'); } catch(e) {}
+    if (!stored) { try { stored = sessionStorage.getItem('pendingScore'); } catch(e) {} }
+
     if (stored) {
       try {
         var result = JSON.parse(stored);
-        state.lastResult = result;
-        showResults(result);
-        sessionStorage.removeItem('pendingGrade');
-        sessionStorage.removeItem('pendingTier');
-        sessionStorage.removeItem('pendingScore');
+        // Validate — reject scores older than 7 days
+        var ts = null;
+        try { ts = parseInt(localStorage.getItem('fda_pendingTS') || '0'); } catch(e) {}
+        var age = ts ? (Date.now() - ts) : 0;
+        if (age < 7 * 24 * 60 * 60 * 1000) {
+          state.lastResult = result;
+          state.loggedIn   = true;
+          showResults(result);
+        }
+        clearPendingScore();
       } catch(e) { console.log('Score restore failed:', e); }
     }
   }
 });
+
+function clearPendingScore() {
+  try {
+    localStorage.removeItem('fda_pendingGrade');
+    localStorage.removeItem('fda_pendingTier');
+    localStorage.removeItem('fda_pendingScore');
+    localStorage.removeItem('fda_pendingTS');
+  } catch(e) {}
+  sessionStorage.removeItem('pendingGrade');
+  sessionStorage.removeItem('pendingTier');
+  sessionStorage.removeItem('pendingScore');
+}
 
 function toggleScoring() {
   var panel = document.getElementById('scoringPanel');
