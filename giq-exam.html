@@ -1424,12 +1424,16 @@ function buildActions(result) {
   if (state.loggedIn) {
     el.innerHTML =
       '<a href="dashboard.html" class="action-btn-primary">Go to Dashboard &rarr;</a>' +
+      '<button class="action-btn-secondary share-imessage-btn" onclick="shareScore()" style="border:none;cursor:pointer;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;gap:8px;">' +
+        '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>' +
+        'Share My Score' +
+      '</button>' +
       '<a href="program.html" class="action-btn-secondary">Start the Rookie Course</a>' +
       '<button class="action-btn-secondary" onclick="retakeQuiz()" style="border:none;cursor:pointer;">Retake Quiz</button>';
   } else {
     el.innerHTML =
-      '<button class="action-btn-primary" onclick="storeGradeForAuth(state.lastResult);window.location.href=\u0027auth.html?next=giq-exam.html\u0027">Unlock Full Results — Free &rarr;</button>' +
-      '<button class="action-btn-secondary" onclick="storeGradeForAuth(state.lastResult);window.location.href=\u0027auth.html?tab=login&next=giq-exam.html\u0027">Already have an account? Sign In</button>' +
+      '<button class="action-btn-primary" onclick="storeGradeForAuth(state.lastResult);window.location.href=\u0027signup.html?next=giq-exam.html\u0027">Unlock Full Results — Free &rarr;</button>' +
+      '<button class="action-btn-secondary" onclick="storeGradeForAuth(state.lastResult);window.location.href=\u0027auth.html?next=giq-exam.html\u0027">Already have an account? Sign In</button>' +
       '<button class="action-btn-secondary" onclick="retakeQuiz()" style="border:none;cursor:pointer;">Retake Without Saving</button>';
   }
 }
@@ -1449,7 +1453,13 @@ function retakeQuiz() {
 // ── UTILS ──────────────────────────────────────────────────────────────────
 async function saveScore(result) {
   try {
-    if (typeof db === 'undefined' || !currentUser) return;
+    // Wait briefly for sessionReady if needed
+    if (typeof db === 'undefined') return;
+    if (!currentUser) {
+      // Give session up to 2s to resolve before giving up
+      await new Promise(function(resolve) { setTimeout(resolve, 2000); });
+      if (!currentUser) return;
+    }
     var grade = getLetterGrade(result.score);
     var payload = {
       user_id:    currentUser.id,
@@ -1497,7 +1507,7 @@ document.addEventListener('sessionReady', function() {
       buildPillarSection(result);
       buildRecommendation(result);
       buildActions(result);
-      // Clean up stored session data
+      saveScore(result); // re-attempt save now that user is confirmed
       sessionStorage.removeItem('pendingGrade');
       sessionStorage.removeItem('pendingTier');
       sessionStorage.removeItem('pendingScore');
@@ -1519,6 +1529,165 @@ document.addEventListener('sessionReady', function() {
     }
   }
 });
+
+// ── SHARE SCORE ──────────────────────────────────────────────────────────
+function shareScore() {
+  var result = state.lastResult;
+  if (!result) return;
+
+  // Get player name
+  var playerName = (currentProfile && currentProfile.full_name)
+    ? currentProfile.full_name.split(' ')[0]
+    : (currentUser && currentUser.user_metadata && currentUser.user_metadata.full_name
+        ? currentUser.user_metadata.full_name.split(' ')[0]
+        : 'Player');
+
+  var grade     = getLetterGrade(result.score);
+  var tierInfo  = getTierInfo(result.score);
+  var score     = result.score;
+  var correct   = result.correct;
+
+  // Build canvas share image
+  var canvas = document.createElement('canvas');
+  canvas.width  = 1080;
+  canvas.height = 1080;
+  var ctx = canvas.getContext('2d');
+
+  // Background
+  var bgGrad = ctx.createLinearGradient(0, 0, 1080, 1080);
+  bgGrad.addColorStop(0, '#020f1e');
+  bgGrad.addColorStop(1, '#0d2134');
+  ctx.fillStyle = bgGrad;
+  ctx.fillRect(0, 0, 1080, 1080);
+
+  // Field grid lines
+  ctx.strokeStyle = 'rgba(255,255,255,0.03)';
+  ctx.lineWidth = 1;
+  for (var x = 0; x < 1080; x += 108) {
+    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, 1080); ctx.stroke();
+  }
+  for (var y = 0; y < 1080; y += 108) {
+    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(1080, y); ctx.stroke();
+  }
+
+  // Lime glow behind grade
+  var glowGrad = ctx.createRadialGradient(540, 420, 0, 540, 420, 400);
+  glowGrad.addColorStop(0, 'rgba(193,255,34,0.18)');
+  glowGrad.addColorStop(1, 'rgba(193,255,34,0)');
+  ctx.fillStyle = glowGrad;
+  ctx.fillRect(0, 0, 1080, 1080);
+
+  // Top accent line
+  var accentGrad = ctx.createLinearGradient(0, 0, 1080, 0);
+  accentGrad.addColorStop(0, 'rgba(193,255,34,0)');
+  accentGrad.addColorStop(0.5, '#C1FF22');
+  accentGrad.addColorStop(1, 'rgba(193,255,34,0)');
+  ctx.fillStyle = accentGrad;
+  ctx.fillRect(0, 0, 1080, 4);
+
+  // FDA label
+  ctx.fillStyle = 'rgba(193,255,34,0.7)';
+  ctx.font = 'bold 28px sans-serif';
+  ctx.letterSpacing = '8px';
+  ctx.textAlign = 'center';
+  ctx.fillText('GRIDIRON IQ  ·  FIRST DOWN ACADEMY', 540, 100);
+
+  // Player name
+  ctx.fillStyle = 'rgba(255,255,255,0.5)';
+  ctx.font = '300 36px sans-serif';
+  ctx.fillText(playerName.toUpperCase() + ''S RESULT', 540, 168);
+
+  // Grade letter — huge
+  ctx.fillStyle = tierInfo.color;
+  ctx.font = 'bold 380px sans-serif';
+  ctx.shadowColor = tierInfo.color;
+  ctx.shadowBlur = 80;
+  ctx.textAlign = 'center';
+  ctx.fillText(grade, 540, 570);
+  ctx.shadowBlur = 0;
+
+  // Tier badge pill
+  var pillW = 320, pillH = 58, pillX = 540 - pillW/2, pillY = 600;
+  ctx.fillStyle = tierInfo.color + '22';
+  ctx.strokeStyle = tierInfo.color + '55';
+  ctx.lineWidth = 2;
+  roundRect(ctx, pillX, pillY, pillW, pillH, 29);
+  ctx.fill(); ctx.stroke();
+  ctx.fillStyle = tierInfo.color;
+  ctx.font = 'bold 26px sans-serif';
+  ctx.fillText(tierInfo.name.toUpperCase(), 540, 638);
+
+  // Stats row
+  var stats = [
+    { label: 'SCORE',   value: score + '/100' },
+    { label: 'CORRECT', value: correct + '/15'  },
+    { label: 'ACCURACY',value: result.accuracy + '%' }
+  ];
+  var statY = 740;
+  var colW  = 1080 / 3;
+  stats.forEach(function(s, i) {
+    var cx = colW * i + colW / 2;
+    // divider
+    if (i > 0) {
+      ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(colW * i, statY - 40); ctx.lineTo(colW * i, statY + 80); ctx.stroke();
+    }
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 56px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(s.value, cx, statY + 10);
+    ctx.fillStyle = 'rgba(255,255,255,0.35)';
+    ctx.font = '500 22px sans-serif';
+    ctx.fillText(s.label, cx, statY + 52);
+  });
+
+  // Bottom CTA
+  ctx.fillStyle = 'rgba(255,255,255,0.18)';
+  ctx.font = '400 26px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('Test your Gridiron IQ at firstdownacademy.com', 540, 960);
+
+  // Bottom lime line
+  ctx.fillStyle = accentGrad;
+  ctx.fillRect(0, 1076, 1080, 4);
+
+  // Convert to blob and share
+  canvas.toBlob(function(blob) {
+    var file = new File([blob], 'gridiron-iq-' + grade + '.png', { type: 'image/png' });
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      navigator.share({
+        files: [file],
+        title: playerName + ' got ' + grade + ' on the Gridiron IQ Exam!',
+        text: playerName + ' scored ' + score + '/100 (' + tierInfo.name + ') on the Gridiron IQ Exam by First Down Academy. Can you beat it? firstdownacademy.com'
+      }).catch(function(e) { if (e.name !== 'AbortError') fallbackShare(canvas, grade); });
+    } else {
+      fallbackShare(canvas, grade);
+    }
+  }, 'image/png');
+}
+
+function fallbackShare(canvas, grade) {
+  // Download the image as fallback
+  var link = document.createElement('a');
+  link.download = 'gridiron-iq-' + grade + '.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  ctx.lineTo(x + r, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+  ctx.lineTo(x, y + r);
+  ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.closePath();
+}
 
 function toggleScoring() {
   var panel = document.getElementById('scoringPanel');
