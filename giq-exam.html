@@ -375,7 +375,7 @@ a{text-decoration:none;}
   font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
   color:#d9e7fc;
 }
-.conf-pts{display:none;}
+.conf-pts{font-size:10px;color:#9eacc0;text-align:center;line-height:1.3;}
 .conf-note{
   font-size:11px;color:#9eacc0;text-align:center;
   padding:8px 12px;background:#0d2134;border-radius:2px;
@@ -419,77 +419,36 @@ a{text-decoration:none;}
   border-radius:2px;overflow:hidden;margin-bottom:12px;
 }
 .grade-head{
-  background:linear-gradient(160deg,#081b2c 0%,#0d2134 60%,#091622 100%);
-  padding:40px 28px 36px;
+  background:#0d2134;padding:36px 28px 32px;
   text-align:center;position:relative;overflow:hidden;
 }
-.grade-head::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:3px;
-  background:linear-gradient(90deg,transparent,var(--tier-color,#C1FF22),transparent);
-}
 .grade-head-glow{
-  position:absolute;top:20px;left:50%;transform:translateX(-50%);
-  width:340px;height:340px;
-  background:radial-gradient(ellipse,rgba(193,255,34,.12),transparent 70%);
+  position:absolute;bottom:-40px;left:50%;transform:translateX(-50%);
+  width:300px;height:200px;
+  background:radial-gradient(ellipse,rgba(193,255,34,.1),transparent 70%);
   pointer-events:none;
 }
 .grade-eyebrow{
   font-family:'Barlow Condensed',sans-serif;
   font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
-  color:#C1FF22;margin-bottom:18px;position:relative;z-index:1;
-}
-/* Shield wrap */
-.grade-shield-wrap{
-  position:relative;z-index:1;
-  display:inline-flex;align-items:center;justify-content:center;
-  margin-bottom:16px;
-  width:220px;height:240px;
-}
-.grade-shield-svg{
-  position:absolute;inset:0;width:100%;height:100%;
+  color:#C1FF22;margin-bottom:14px;position:relative;z-index:1;
 }
 .grade-display{
   font-family:'Barlow Condensed',sans-serif;
-  font-size:110px;font-weight:900;line-height:1;
-  letter-spacing:-.04em;color:#fff;
-  position:relative;z-index:2;
-  margin-top:8px;
-  text-shadow:0 0 40px var(--tier-color,rgba(255,255,255,.5));
-  filter:drop-shadow(0 0 20px var(--tier-color,rgba(255,255,255,.4)));
+  font-size:96px;font-weight:900;line-height:.85;
+  letter-spacing:-.02em;color:#fff;
+  position:relative;z-index:1;margin-bottom:6px;
 }
 .grade-tier{
   font-family:'Barlow Condensed',sans-serif;
-  font-size:14px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;
-  position:relative;z-index:1;margin-bottom:16px;
-  display:inline-block;
-  background:rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.1);
-  border-radius:999px;padding:5px 18px;
+  font-size:22px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+  position:relative;z-index:1;margin-bottom:4px;
 }
 .grade-tier-sub{
   font-family:'Barlow Condensed',sans-serif;
   font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
-  color:rgba(255,255,255,.25);position:relative;z-index:1;margin-bottom:20px;
-  display:block;
+  color:rgba(255,255,255,.3);position:relative;z-index:1;
 }
-/* Share button inline in grade head */
-.grade-share-btn{
-  display:inline-flex;align-items:center;gap:7px;
-  background:rgba(255,255,255,.07);
-  border:1px solid rgba(255,255,255,.12);
-  border-radius:999px;padding:9px 20px;
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
-  color:rgba(255,255,255,.6);cursor:pointer;
-  transition:background .2s,border-color .2s,color .2s;
-  position:relative;z-index:1;
-}
-.grade-share-btn:hover{
-  background:rgba(255,255,255,.12);
-  border-color:rgba(255,255,255,.25);
-  color:#fff;
-}
-.grade-share-btn svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;}
 .grade-body{padding:24px 28px;}
 /* Stats row */
 .grade-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-bottom:16px;}
@@ -510,12 +469,11 @@ a{text-decoration:none;}
   font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
   color:#9eacc0;margin-bottom:12px;
 }
-/* Radar chart */
+/* Line chart */
 .pillar-chart-wrap{
-  display:flex;justify-content:center;align-items:center;
-  padding:16px 0 8px;margin-bottom:14px;
+  background:#0d2134;border:1px solid rgba(255,255,255,.06);
+  border-radius:2px;padding:16px 12px 8px;margin-bottom:14px;
 }
-.radar-svg{width:240px;height:240px;flex-shrink:0;}
 /* Pillar bars */
 .pillar-unlocked-body{display:flex;flex-direction:column;gap:8px;}
 .pillar-row-full{display:flex;align-items:center;gap:10px;}
@@ -575,74 +533,6 @@ a{text-decoration:none;}
 .action-btn-secondary:hover{border-color:rgba(255,255,255,.35);background:rgba(255,255,255,.04);}
 /* Results actions wrapper */
 #resultsActions{padding:0;}
-
-/* Guest CTA card */
-.guest-cta-card{
-  background:linear-gradient(135deg,#081b2c 0%,#0d2134 100%);
-  border:1px solid rgba(193,255,34,.15);
-  border-radius:2px;padding:20px;margin-bottom:12px;
-  position:relative;overflow:hidden;
-}
-.guest-cta-card::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,transparent,#C1FF22,transparent);
-}
-.guest-cta-eyebrow{
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
-  color:#C1FF22;margin-bottom:8px;
-}
-.guest-cta-title{
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:20px;font-weight:900;letter-spacing:.02em;text-transform:uppercase;
-  color:#fff;margin-bottom:6px;line-height:1.1;
-}
-.guest-cta-body{font-size:13px;color:#9eacc0;line-height:1.6;margin-bottom:16px;}
-.guest-cta-perks{
-  display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;
-}
-.guest-cta-perk{
-  display:flex;align-items:center;gap:5px;
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
-  color:#C1FF22;background:rgba(193,255,34,.08);
-  border:1px solid rgba(193,255,34,.15);
-  border-radius:999px;padding:4px 10px;
-}
-/* Share nudge strip */
-.share-nudge{
-  display:flex;align-items:center;gap:10px;
-  background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);
-  border-radius:2px;padding:12px 14px;margin-bottom:12px;
-}
-.share-nudge-icon{font-size:22px;flex-shrink:0;}
-.share-nudge-text{font-size:12px;color:#9eacc0;line-height:1.4;}
-.share-nudge-text strong{color:#d9e7fc;display:block;font-size:13px;margin-bottom:1px;}
-/* Logged in share card */
-.share-card{
-  background:linear-gradient(135deg,rgba(193,255,34,.06) 0%,rgba(193,255,34,.02) 100%);
-  border:1px solid rgba(193,255,34,.12);
-  border-radius:2px;padding:16px;margin-bottom:8px;
-  display:flex;align-items:center;gap:14px;
-}
-.share-card-icon{
-  width:44px;height:44px;border-radius:50%;flex-shrink:0;
-  background:rgba(193,255,34,.1);border:1px solid rgba(193,255,34,.2);
-  display:flex;align-items:center;justify-content:center;
-}
-.share-card-icon svg{width:20px;height:20px;fill:none;stroke:#C1FF22;stroke-width:1.8;stroke-linecap:round;}
-.share-card-text{flex:1;}
-.share-card-title{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#fff;margin-bottom:2px;}
-.share-card-sub{font-size:11px;color:#9eacc0;}
-.share-card-btn{
-  background:#C1FF22;color:#0d1a00;
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:11px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;
-  border:none;border-radius:2px;padding:9px 16px;cursor:pointer;
-  white-space:nowrap;flex-shrink:0;
-  transition:background .15s,transform .15s;
-}
-.share-card-btn:hover{background:#d0ff55;transform:translateY(-1px);}
 
 /* ── MOBILE ── */
 @media(max-width:540px){
@@ -820,14 +710,17 @@ a{text-decoration:none;}
             <button class="conf-btn" id="conf1" onclick="selectConf(1)">
               <span class="conf-emoji">&#129300;</span>
               <span class="conf-name">Not Sure</span>
+              <span class="conf-pts">+1 / 0</span>
             </button>
             <button class="conf-btn" id="conf2" onclick="selectConf(2)">
               <span class="conf-emoji">&#128578;</span>
               <span class="conf-name">Pretty Sure</span>
+              <span class="conf-pts">+2 / &minus;1</span>
             </button>
             <button class="conf-btn" id="conf3" onclick="selectConf(3)">
               <span class="conf-emoji">&#128170;</span>
               <span class="conf-name">Certain</span>
+              <span class="conf-pts">+3 / &minus;2</span>
             </button>
           </div>
           <div class="conf-note">Guessing confidently costs points. Only mark Certain when you know it.</div>
@@ -849,87 +742,9 @@ a{text-decoration:none;}
         <div class="grade-head">
           <div class="grade-head-glow"></div>
           <div class="grade-eyebrow">Gridiron IQ &mdash; Result</div>
-          <div class="grade-shield-wrap">
-            <svg class="grade-shield-svg" id="gradeShieldSvg" viewBox="0 0 220 240" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <linearGradient id="shieldBodyGrad" x1="110" y1="0" x2="110" y2="240" gradientUnits="userSpaceOnUse">
-                  <stop offset="0%" stop-color="#1a1a1a"/>
-                  <stop offset="100%" stop-color="#0a0a0a"/>
-                </linearGradient>
-                <linearGradient id="shieldShineGrad" x1="0" y1="0" x2="220" y2="240" gradientUnits="userSpaceOnUse">
-                  <stop offset="0%" stop-color="rgba(255,255,255,0.12)"/>
-                  <stop offset="50%" stop-color="rgba(255,255,255,0)"/>
-                  <stop offset="100%" stop-color="rgba(255,255,255,0.04)"/>
-                </linearGradient>
-                <linearGradient id="shieldEdgeGrad" x1="110" y1="0" x2="110" y2="240" gradientUnits="userSpaceOnUse">
-                  <stop offset="0%" stop-color="#444"/>
-                  <stop offset="100%" stop-color="#111"/>
-                </linearGradient>
-                <filter id="shieldShadow" x="-20%" y="-10%" width="140%" height="130%">
-                  <feDropShadow dx="0" dy="8" stdDeviation="16" flood-color="rgba(0,0,0,0.7)" flood-opacity="1"/>
-                  <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="rgba(0,0,0,0.5)" flood-opacity="1"/>
-                </filter>
-                <filter id="tierGlow" x="-30%" y="-20%" width="160%" height="160%">
-                  <feGaussianBlur stdDeviation="12" result="blur"/>
-                  <feComposite in="SourceGraphic" in2="blur" operator="over"/>
-                </filter>
-                <clipPath id="shieldClip">
-                  <path d="M110 4 L206 36 L206 120 Q206 180 110 234 Q14 180 14 120 L14 36 Z"/>
-                </clipPath>
-              </defs>
-
-              <!-- Outer glow layer (tier color, set by JS) -->
-              <path id="shieldGlowPath"
-                d="M110 4 L206 36 L206 120 Q206 180 110 234 Q14 180 14 120 L14 36 Z"
-                fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="24"
-                filter="url(#tierGlow)" opacity="0.6"/>
-
-              <!-- Main shield body -->
-              <path id="shieldBody"
-                d="M110 4 L206 36 L206 120 Q206 180 110 234 Q14 180 14 120 L14 36 Z"
-                fill="url(#shieldBodyGrad)"
-                filter="url(#shieldShadow)"/>
-
-              <!-- Inner bevel — dark inset -->
-              <path
-                d="M110 18 L194 46 L194 120 Q194 172 110 220 Q26 172 26 120 L26 46 Z"
-                fill="none" stroke="rgba(0,0,0,0.6)" stroke-width="1"/>
-
-              <!-- Tier color rim (set by JS) -->
-              <path id="shieldRim"
-                d="M110 4 L206 36 L206 120 Q206 180 110 234 Q14 180 14 120 L14 36 Z"
-                fill="none" stroke="#444" stroke-width="2.5"/>
-
-              <!-- Top highlight shine -->
-              <path
-                d="M110 18 L194 46 L194 120 Q194 172 110 220 Q26 172 26 120 L26 46 Z"
-                fill="url(#shieldShineGrad)" clip-path="url(#shieldClip)"/>
-
-              <!-- Center vertical divider line (classic shield detail) -->
-              <line x1="110" y1="30" x2="110" y2="210" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
-
-              <!-- Horizontal accent band -->
-              <path
-                d="M28 100 Q110 106 192 100 L192 114 Q110 120 28 114 Z"
-                fill="rgba(255,255,255,0.025)"/>
-
-              <!-- Corner rivets -->
-              <circle cx="44" cy="52" r="3" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.04)" stroke-width="0.5"/>
-              <circle cx="176" cy="52" r="3" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.04)" stroke-width="0.5"/>
-
-              <!-- Tier medal ring at bottom point -->
-              <circle id="shieldMedal" cx="110" cy="224" r="10" fill="#111" stroke="#333" stroke-width="1.5"/>
-              <circle cx="110" cy="224" r="6" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
-
-            </svg>
-            <div class="grade-display" id="gradeDisplay">F</div>
-          </div>
+          <div class="grade-display" id="gradeDisplay">B+</div>
           <div class="grade-tier" id="gradeTier">Advanced</div>
           <div class="grade-tier-sub" id="gradeTierSub">Strong football knowledge</div>
-          <button class="grade-share-btn" id="gradeShareBtn" onclick="shareScore()" style="display:none;">
-            <svg viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
-            Share My Score
-          </button>
         </div>
         <div class="grade-body">
           <div class="grade-stats">
@@ -1100,42 +915,15 @@ var QB = [
   {q:"When trailing with under 2 minutes and no timeouts, what is the most important thing for the offense?",opts:["Running the ball to gain yards","Getting out of bounds and completing quick passes to stop the clock","Punting quickly","Taking a knee"],ans:1,pillar:"Situational Awareness",diff:"hard"},
   {q:"Why is situational awareness considered the highest level of football IQ?",opts:["It focuses only on rules","It only applies to formations","It combines rules, roles, formations, and concepts all in real time under pressure","It is a standalone skill unrelated to other pillars"],ans:2,pillar:"Situational Awareness",diff:"hard"},
   {q:"A team consistently gives up field position on kickoffs. What is the likely result over a full game?",opts:["No measurable impact","Opponents start drives closer to your end zone — leading to more scoring opportunities","The defense works harder but evens out","It only matters in the 4th quarter"],ans:1,pillar:"Situational Awareness",diff:"hard"}
-
-  // ── ADDITIONAL HARD QUESTIONS ──
-  {q:"A quarterback throws a screen pass to the running back. The running back fumbles and the defense recovers. Is the fumble reviewable?",opts:["Yes, all fumbles are reviewable","No, fumbles on screen passes cannot be reviewed","Yes, but only in the first half","No, only turnovers in the red zone are reviewed"],ans:0,pillar:"Rules & Objectives",diff:"hard"},
-  {q:"A receiver catches a pass, takes two steps, then reaches out to break the plane of the end zone before being hit and fumbling. Is it a touchdown?",opts:["No — he must be down before it counts","Yes — breaking the plane counts if he had possession first","No — the fumble cancels the score","Yes — only if the referee confirms possession"],ans:1,pillar:"Rules & Objectives",diff:"hard"},
-  {q:"An offense is in victory formation. The center snaps the ball early and the defense recovers the fumble. What happens?",opts:["Defense keeps the ball — legal fumble recovery","Replay the down — illegal snap procedure","Offense retains possession — defense jumped early","Automatic first down for the offense"],ans:0,pillar:"Rules & Objectives",diff:"hard"},
-  {q:"A team trailing by 3 with no timeouts and 45 seconds left is at the opponent's 28. What is the optimal call?",opts:["Spike the ball to stop the clock, then run a play","Throw to the sideline or end zone immediately — no time for a spike","Kick a field goal immediately","Take a knee to set up a better angle"],ans:1,pillar:"Rules & Objectives",diff:"hard"},
-  {q:"Why can accepting a defensive penalty sometimes be worse than declining it?",opts:["Penalties always benefit the offense","Accepting moves the ball back and restarts the down, sometimes costing a scoring play","Declined penalties cost the defense a timeout","Accepted penalties end the drive"],ans:1,pillar:"Rules & Objectives",diff:"hard"},
-  {q:"What is a leverage route and why is it effective?",opts:["A route that takes advantage of how a defender is aligned to get open","A blocking route at the line","A deep bomb route","A route run by the tight end only"],ans:0,pillar:"Positions & Responsibilities",diff:"hard"},
-  {q:"A linebacker reads pass and drops into coverage but the QB scrambles. What is the linebacker's responsibility?",opts:["Contain the QB from outside — never give up the scramble lane","Stay in coverage zone at all costs","Collapse toward the QB immediately","Wait for the safety to commit first"],ans:0,pillar:"Positions & Responsibilities",diff:"hard"},
-  {q:"What does a safety provide that a cornerback cannot in single high coverage?",opts:["Centerfield help over the top and run support from depth","Press coverage on the line","Zone underneath the linebackers","A spy on the quarterback"],ans:0,pillar:"Positions & Responsibilities",diff:"hard"},
-  {q:"Why do teams sometimes use a fullback even in modern spread offenses?",opts:["The fullback is required by rules","To provide lead blocking on power runs and be a reliable checkdown option","To confuse the defensive line","To replace the tight end in red zone sets"],ans:1,pillar:"Positions & Responsibilities",diff:"hard"},
-  {q:"What is the role of the X receiver versus the Z receiver in a two-receiver set?",opts:["X lines up on the line of scrimmage and cannot go in motion; Z is off the line and can","They are interchangeable with no difference","X always runs deep routes; Z always runs short ones","X blocks; Z runs routes only"],ans:0,pillar:"Positions & Responsibilities",diff:"hard"},
-  {q:"A defense aligns in a 4-3 base but shifts to a 3-4 look pre-snap. What is the likely purpose?",opts:["To confuse the offensive line's blocking assignments","To gain a penalty on the offense","To signal a blitz is coming","To rest a defensive lineman"],ans:0,pillar:"Formations & Alignments",diff:"hard"},
-  {q:"What does it mean when a safety rotates down toward the line of scrimmage pre-snap?",opts:["He is disguising a potential blitz or run support","He is indicating a zone coverage shell","He signals the corner to play press","He is calling for a timeout"],ans:0,pillar:"Formations & Alignments",diff:"hard"},
-  {q:"Why would an offense substitute a tight end for a wide receiver before a play?",opts:["To signal a run-heavy formation and add a blocker","To confuse the QB","To reduce the number of eligible receivers","To change the QB's depth"],ans:0,pillar:"Formations & Alignments",diff:"hard"},
-  {q:"What is a trips formation and what problem does it create for a defense?",opts:["Three receivers on one side — forces the defense to declare coverage and leaves one side exposed","Three tight ends — used only for goal line","Three backs in the backfield — power run formation","Three linemen on one side — creates overload blocking"],ans:0,pillar:"Formations & Alignments",diff:"hard"},
-  {q:"What is a Cover 6 defense and what does it protect against?",opts:["Quarter-quarter-half — protects the strong side deep with a safety and uses Cover 2 to the weak side","Six defensive backs on the field","Six zones split evenly across the field","A 6-man blitz with single man coverage"],ans:0,pillar:"Formations & Alignments",diff:"hard"},
-  {q:"What is an RPO and why does it stress a defense?",opts:["Run-pass option — the QB reads a defender post-snap and decides to hand off or throw based on that defender's reaction","A run play disguised as a pass","A pass play with a run fake only","A play requiring pre-snap confirmation from the coach"],ans:0,pillar:"Plays & Concepts",diff:"hard"},
-  {q:"What is a mesh concept and why is it hard to defend?",opts:["Two crossing routes at the same depth — creates natural picks and gives the QB easy reads against any coverage","A deep crossing pattern only","A run/pass option","A blocking scheme for the line"],ans:0,pillar:"Plays & Concepts",diff:"hard"},
-  {q:"Why would a team call a draw play on 3rd and long?",opts:["To gain the first down with a run","To set up the punt — the QB fakes the pass, drawing defenders up, letting the back gain chunk yards","To run out the clock","Draw plays are never called on 3rd and long"],ans:1,pillar:"Plays & Concepts",diff:"hard"},
-  {q:"What makes a seam route so dangerous against Cover 2?",opts:["It attacks the void between the two safeties down the middle","It runs directly at a corner","It is run only by tight ends","It is a short route the safety can't cover"],ans:0,pillar:"Plays & Concepts",diff:"hard"},
-  {q:"Why is a play-action pass most effective when preceded by a strong run game?",opts:["It forces defenders to commit to stopping the run, leaving coverage defenders frozen and receivers open","Play-action works regardless of the run game","It only works in the red zone","Defenders never bite on play-action without a run game"],ans:0,pillar:"Plays & Concepts",diff:"hard"},
-  {q:"A team is up by 8 with 3 minutes left. The opponent scores a TD. Why should they go for 2?",opts:["Kicking gives you a 1-point lead — opponent needs a TD and 2 to win; going for 2 creates a simpler endgame","Going for 2 is always right","You should always kick in the 4th quarter","The defense needs rest"],ans:0,pillar:"Situational Awareness",diff:"hard"},
-  {q:"Why do teams ice the kicker on game-winning field goal attempts even though data shows it rarely works?",opts:["It statistically helps","It is psychological — forces the kicker to prepare twice and may disrupt rhythm even if data is inconclusive","Icing is required by rule","It always works in overtime"],ans:1,pillar:"Situational Awareness",diff:"hard"},
-  {q:"A team with 3 timeouts is losing by 6 with 1:50 left and just scored. They choose to kick deep instead of an onside kick. What does this assume?",opts:["They trust their defense to get a stop and get the ball back with enough time","They are giving up","They are protecting field position","They have no kicker"],ans:0,pillar:"Situational Awareness",diff:"hard"},
-  {q:"Why would a leading team intentionally take a safety late in a game?",opts:["To give up 2 points but retain possession after the free kick and pin the opponent deep","Safeties are never intentional","To stop the clock legally","To ice the opponent's offense"],ans:0,pillar:"Situational Awareness",diff:"hard"},
-  {q:"What is the two-minute warning and what strategic advantage does it give the trailing team?",opts:["A mandatory timeout that stops the clock — giving the trailing team a free clock stoppage to regroup and plan","A rule requiring the offense to spike the ball","A penalty for delay of game","A rule only applying in overtime"],ans:0,pillar:"Situational Awareness",diff:"hard"},
 ];
 
 // ── ADAPTIVE ENGINE ────────────────────────────────────────────────────────
 
 // Band definitions: which score range each difficulty band maps to
 var BANDS = {
-  easy:   { min: 0,  max: 44  },
-  medium: { min: 35, max: 69  },
-  hard:   { min: 60, max: 100 }
+  easy:   { min: 0,  max: 59  },
+  medium: { min: 40, max: 79  },
+  hard:   { min: 70, max: 100 }
 };
 
 // Points awarded per confidence level
@@ -1205,16 +993,16 @@ function showScreen(id) {
 }
 
 function startQuiz() {
-  // Block 1 starts on medium — easy gives too many free points
-  var block1 = buildBlock('medium', [], BLOCK_SIZE);
+  // Build block 1 (always easy)
+  var block1 = buildBlock('easy', [], BLOCK_SIZE);
   state.questions = block1;
-  state.block1Diff = 'medium';
+  state.block1Diff = 'easy';
   state.currentQ = 0;
   state.answers  = [];
   state.selected = null;
   state.confidence = null;
   state.dropped = false;
-  state.peakBand = 'medium';
+  state.peakBand = 'easy';
 
   showScreen('screenQuiz');
   renderQuestion();
@@ -1225,14 +1013,12 @@ function determineBlock2() {
   var block1Answers = state.answers.slice(0, BLOCK_SIZE);
   var correct = block1Answers.filter(function(a) { return a.correct; }).length;
   var nextDiff;
-  // Block 1 was medium — need 5/5 to advance to hard, 3+ stays medium, <3 drops to easy
-  if (correct >= 5)      nextDiff = 'hard';
-  else if (correct >= 3) nextDiff = 'medium';
+  if (correct >= 4)      nextDiff = 'hard';
+  else if (correct >= 2) nextDiff = 'medium';
   else                   nextDiff = 'easy';
   state.block2Diff = nextDiff;
   if (nextDiff === 'hard')   state.peakBand = 'hard';
-  if (nextDiff === 'medium') state.peakBand = 'medium';
-  if (nextDiff === 'easy')   state.peakBand = 'easy';
+  if (nextDiff === 'medium' && state.peakBand === 'easy') state.peakBand = 'medium';
   var block2 = buildBlock(nextDiff, state.questions, BLOCK_SIZE);
   state.questions = state.questions.concat(block2);
 }
@@ -1244,19 +1030,17 @@ function determineBlock3() {
   var prevDiff = state.block2Diff;
   var nextDiff;
   if (correct >= 4) {
-    // Stay or advance — no skipping levels
-    if (prevDiff === 'hard')   nextDiff = 'hard';
-    else if (prevDiff === 'medium') nextDiff = 'hard';
-    else nextDiff = 'medium';
-  } else if (correct >= 3) {
-    nextDiff = prevDiff; // hold current level
+    nextDiff = prevDiff === 'hard' ? 'hard' : 'hard';
+    if (prevDiff === 'easy') nextDiff = 'medium'; // can't jump two levels
+  } else if (correct >= 2) {
+    nextDiff = prevDiff;
   } else {
     // Dropped back
     nextDiff = prevDiff === 'hard' ? 'medium' : 'easy';
     if (nextDiff !== prevDiff) state.dropped = true;
   }
   state.block3Diff = nextDiff;
-  if (nextDiff === 'hard') state.peakBand = 'hard';
+  if (nextDiff === 'hard' && state.peakBand !== 'hard') { /* already set */ }
   var block3 = buildBlock(nextDiff, state.questions, BLOCK_SIZE);
   state.questions = state.questions.concat(block3);
 }
@@ -1470,13 +1254,8 @@ function showResults(preResult) {
   document.getElementById('gradeTier').textContent    = result.tier;
   document.getElementById('gradeTier').style.color    = result.tierColor;
   document.getElementById('gradeTierSub').textContent = result.tierSub;
-  // Set CSS var for glow/accent
-  document.querySelector('.grade-head').style.setProperty('--tier-color', result.tierColor);
-  document.querySelector('.grade-head-glow').style.background = 'radial-gradient(ellipse,' + result.tierColor + '18,transparent 70%)';
-  // Color the shield by score tier
-  applyShieldTier(result.score);
   document.getElementById('statCorrect').textContent  = result.correct + '/15';
-  var wrongEl = document.getElementById('statWrong'); if (wrongEl) wrongEl.textContent = (15 - result.correct);
+  document.getElementById('statPeak').textContent     = result.peakBand.charAt(0).toUpperCase() + result.peakBand.slice(1);
   document.getElementById('statAcc').textContent      = result.accuracy + '%';
 
   // Pillar section
@@ -1507,64 +1286,51 @@ function buildPillarSection(result) {
       return d ? d.pct : 0;
     });
 
-    // Build radar pentagon chart
-    var CX = 120, CY = 120, R = 100;
-    // 5 axes — top vertex first, then clockwise
-    // Pentagon angles: -90, -90+72, -90+144, -90+216, -90+288
-    function radarPt(i, pct, radius) {
-      var angle = (Math.PI / 180) * (-90 + i * 72);
-      var r = (radius || R) * (pct / 100);
-      return { x: CX + r * Math.cos(angle), y: CY + r * Math.sin(angle) };
-    }
-    function pentPt(i, r) {
-      var angle = (Math.PI / 180) * (-90 + i * 72);
-      return { x: CX + r * Math.cos(angle), y: CY + r * Math.sin(angle) };
-    }
+    // Build SVG line chart
+    var W = 480, H = 160, PAD = 40;
+    var chartW = W - PAD * 2;
+    var chartH = H - 30;
+    var step = chartW / (PILLARS.length - 1);
 
-    // Grid rings at 25, 50, 75, 100
-    var rings = '';
-    [25, 50, 75, 100].forEach(function(v) {
-      var pts = [0,1,2,3,4].map(function(i) { return pentPt(i, R * v / 100); });
-      var d = 'M ' + pts[0].x + ' ' + pts[0].y;
-      pts.slice(1).forEach(function(p) { d += ' L ' + p.x + ' ' + p.y; });
-      d += ' Z';
-      var opacity = v === 100 ? '.12' : '.06';
-      rings += '<path d="' + d + '" fill="none" stroke="rgba(255,255,255,' + opacity + ')" stroke-width="1"/>';
+    // Points
+    var points = scores.map(function(s, i) {
+      return { x: PAD + i * step, y: 16 + ((100 - s) / 100) * chartH };
     });
 
-    // Axis lines
-    var axes = '';
-    [0,1,2,3,4].forEach(function(i) {
-      var pt = pentPt(i, R);
-      axes += '<line x1="' + CX + '" y1="' + CY + '" x2="' + pt.x + '" y2="' + pt.y + '" stroke="rgba(255,255,255,.06)" stroke-width="1"/>';
+    // Grid lines
+    var gridLines = '';
+    [0, 25, 50, 75, 100].forEach(function(v) {
+      var y = 16 + ((100 - v) / 100) * chartH;
+      gridLines += '<line x1="' + PAD + '" y1="' + y + '" x2="' + (W - PAD) + '" y2="' + y + '" stroke="rgba(255,255,255,.06)" stroke-width="1"/>';
+      gridLines += '<text x="' + (PAD - 6) + '" y="' + (y + 4) + '" text-anchor="end" font-size="9" fill="rgba(255,255,255,.25)" font-family="sans-serif">' + v + '</text>';
     });
 
-    // Data polygon
-    var dataPts = scores.map(function(s, i) { return radarPt(i, Math.max(s, 4), R); });
-    var dataPath = 'M ' + dataPts[0].x + ' ' + dataPts[0].y;
-    dataPts.slice(1).forEach(function(p) { dataPath += ' L ' + p.x + ' ' + p.y; });
-    dataPath += ' Z';
+    // Filled area under line
+    var areaPath = 'M ' + points[0].x + ' ' + points[0].y;
+    points.slice(1).forEach(function(p) { areaPath += ' L ' + p.x + ' ' + p.y; });
+    areaPath += ' L ' + points[points.length-1].x + ' ' + (H - 14) + ' L ' + points[0].x + ' ' + (H - 14) + ' Z';
 
-    // Dot nodes + labels
-    var nodes = '';
-    dataPts.forEach(function(p, i) {
-      var labelPt = pentPt(i, R + 18);
-      nodes += '<circle cx="' + p.x + '" cy="' + p.y + '" r="4" fill="' + COLORS[i] + '" stroke="#020f1e" stroke-width="1.5"/>';
-      nodes += '<text x="' + labelPt.x + '" y="' + (labelPt.y + 4) + '" text-anchor="middle" font-size="9" font-family="sans-serif" fill="rgba(255,255,255,.5)">' + SHORT[i] + '</text>';
+    // Line path
+    var linePath = 'M ' + points[0].x + ' ' + points[0].y;
+    points.slice(1).forEach(function(p) { linePath += ' L ' + p.x + ' ' + p.y; });
+
+    // Dots and labels
+    var dots = '';
+    points.forEach(function(p, i) {
+      var score = scores[i];
+      dots += '<circle cx="' + p.x + '" cy="' + p.y + '" r="5" fill="' + COLORS[i] + '" stroke="white" stroke-width="1.5"/>';
+      dots += '<text x="' + p.x + '" y="' + (H - 2) + '" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.4)" font-family="sans-serif">' + SHORT[i] + '</text>';
+      // Score tooltip above dot
+      dots += '<text x="' + p.x + '" y="' + (p.y - 10) + '" text-anchor="middle" font-size="10" fill="white" font-family="sans-serif" font-weight="bold">' + score + '%</text>';
     });
 
-    var tierColor = result.tierColor || '#C1FF22';
     var svgChart =
-      '<svg class="radar-svg" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">' +
-        '<defs>' +
-          '<radialGradient id="radarGrad" cx="50%" cy="50%" r="50%">' +
-            '<stop offset="0%" stop-color="' + tierColor + '" stop-opacity="0.35"/>' +
-            '<stop offset="100%" stop-color="' + tierColor + '" stop-opacity="0.05"/>' +
-          '</radialGradient>' +
-        '</defs>' +
-        rings + axes +
-        '<path d="' + dataPath + '" fill="url(#radarGrad)" stroke="' + tierColor + '" stroke-width="2" stroke-linejoin="round"/>' +
-        nodes +
+      '<svg viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">' +
+        gridLines +
+        '<path d="' + areaPath + '" fill="url(#areaGrad)" opacity="0.4"/>' +
+        '<defs><linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#E8630A" stop-opacity="0.6"/><stop offset="100%" stop-color="#E8630A" stop-opacity="0"/></linearGradient></defs>' +
+        '<path d="' + linePath + '" fill="none" stroke="#E8630A" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>' +
+        dots +
       '</svg>';
 
     // Pillar bars below chart
@@ -1609,11 +1375,10 @@ function buildPillarSection(result) {
         '</div>';
     });
     html += '</div>' +
-      '<div class="locked-overlay" onclick="storeGradeForAuth(state.lastResult);window.location.href=\'signup.html?next=giq-exam.html\'">' +
-        '<div class="locked-overlay-icon" style="font-size:24px;">&#128274;</div>' +
-        '<div class="locked-overlay-title" style="font-size:16px;">Sign Up to Unlock</div>' +
-        '<div class="locked-overlay-sub" style="font-size:12px;margin-bottom:10px;">See your pillar-by-pillar breakdown and share your score.</div>' +
-        '<div style="background:#C1FF22;color:#0d1a00;font-family:Barlow Condensed,sans-serif;font-size:12px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;padding:8px 20px;border-radius:2px;cursor:pointer;">Create Free Account →</div>' +
+      '<div class="locked-overlay">' +
+        '<div class="locked-overlay-icon">&#128274;</div>' +
+        '<div class="locked-overlay-title">Unlock Your Full Results</div>' +
+        '<div class="locked-overlay-sub">Create a free account to see your exact score, pillar chart, and personalized recommendation.</div>' +
       '</div>' +
       '</div></div>';
     el.innerHTML = html;
@@ -1657,44 +1422,14 @@ function storeGradeForAuth(result) {
 function buildActions(result) {
   var el = document.getElementById('resultsActions');
   if (state.loggedIn) {
-    // Show share button in grade head
-    var shareBtn = document.getElementById('gradeShareBtn');
-    if (shareBtn) shareBtn.style.display = 'inline-flex';
-    // Actions with prominent share card
     el.innerHTML =
-      '<div class="share-card">' +
-        '<div class="share-card-icon">' +
-          '<svg viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>' +
-        '</div>' +
-        '<div class="share-card-text">' +
-          '<div class="share-card-title">Share Your Score</div>' +
-          '<div class="share-card-sub">Send as an image via iMessage, Instagram & more</div>' +
-        '</div>' +
-        '<button class="share-card-btn" onclick="shareScore()">Share →</button>' +
-      '</div>' +
-      '<a href="dashboard.html" class="action-btn-primary">View Full Dashboard &rarr;</a>' +
+      '<a href="dashboard.html" class="action-btn-primary">Go to Dashboard &rarr;</a>' +
       '<a href="program.html" class="action-btn-secondary">Start the Rookie Course</a>' +
       '<button class="action-btn-secondary" onclick="retakeQuiz()" style="border:none;cursor:pointer;">Retake Quiz</button>';
   } else {
-    // Guest — compelling CTA with perks list
     el.innerHTML =
-      '<div class="guest-cta-card">' +
-        '<div class="guest-cta-eyebrow">&#127944; Free Account</div>' +
-        '<div class="guest-cta-title">See Your Full Score & Share It</div>' +
-        '<div class="guest-cta-body">You just finished the Gridiron IQ Exam. Create a free account to unlock your pillar breakdown, save your score, and send your grade card to friends.</div>' +
-        '<div class="guest-cta-perks">' +
-          '<span class="guest-cta-perk">&#10003; Pillar Breakdown</span>' +
-          '<span class="guest-cta-perk">&#10003; Score Saved</span>' +
-          '<span class="guest-cta-perk">&#10003; Share to iMessage</span>' +
-          '<span class="guest-cta-perk">&#10003; Free Training</span>' +
-        '</div>' +
-        '<button class="action-btn-primary" style="margin-bottom:8px;" onclick="storeGradeForAuth(state.lastResult);window.location.href=\u0027signup.html?next=giq-exam.html\u0027">Create Free Account &rarr;</button>' +
-        '<button class="action-btn-secondary" onclick="storeGradeForAuth(state.lastResult);window.location.href=\u0027auth.html?next=giq-exam.html\u0027" style="border:none;cursor:pointer;margin-bottom:0;">Already have an account? Log In</button>' +
-      '</div>' +
-      '<div class="share-nudge">' +
-        '<div class="share-nudge-icon">&#128172;</div>' +
-        '<div class="share-nudge-text"><strong>Challenge your teammates</strong>Share your Gridiron IQ grade card directly to iMessage — free accounts get a custom score image.</div>' +
-      '</div>' +
+      '<button class="action-btn-primary" onclick="storeGradeForAuth(state.lastResult);window.location.href=\u0027auth.html?next=giq-exam.html\u0027">Unlock Full Results — Free &rarr;</button>' +
+      '<button class="action-btn-secondary" onclick="storeGradeForAuth(state.lastResult);window.location.href=\u0027auth.html?tab=login&next=giq-exam.html\u0027">Already have an account? Sign In</button>' +
       '<button class="action-btn-secondary" onclick="retakeQuiz()" style="border:none;cursor:pointer;">Retake Without Saving</button>';
   }
 }
@@ -1714,13 +1449,7 @@ function retakeQuiz() {
 // ── UTILS ──────────────────────────────────────────────────────────────────
 async function saveScore(result) {
   try {
-    // Wait briefly for sessionReady if needed
-    if (typeof db === 'undefined') return;
-    if (!currentUser) {
-      // Give session up to 2s to resolve before giving up
-      await new Promise(function(resolve) { setTimeout(resolve, 2000); });
-      if (!currentUser) return;
-    }
+    if (typeof db === 'undefined' || !currentUser) return;
     var grade = getLetterGrade(result.score);
     var payload = {
       user_id:    currentUser.id,
@@ -1746,8 +1475,8 @@ async function saveScore(result) {
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="curriculum.js?v=3"></script>
-<script src="app.js?v=3"></script>
+<script src="curriculum.js?v=4"></script>
+<script src="app.js?v=4"></script>
 <script>
 // Page stubs — prevent app.js from crashing
 function showPage(n) {
@@ -1755,7 +1484,9 @@ function showPage(n) {
   if (m[n]) window.location.href = m[n];
 }
 function buildModuleList() {}
-function loadDashboard()   {}
+function buildDashModuleList() {}
+function loadDashboard() {}
+function loadGIQScore() {}
 function updateNavForLoggedIn() {}
 
 document.addEventListener('sessionReady', function() {
@@ -1768,7 +1499,7 @@ document.addEventListener('sessionReady', function() {
       buildPillarSection(result);
       buildRecommendation(result);
       buildActions(result);
-      saveScore(result); // re-attempt save now that user is confirmed
+      // Clean up stored session data
       sessionStorage.removeItem('pendingGrade');
       sessionStorage.removeItem('pendingTier');
       sessionStorage.removeItem('pendingScore');
@@ -1790,452 +1521,6 @@ document.addEventListener('sessionReady', function() {
     }
   }
 });
-
-// ── SHARE SCORE ──────────────────────────────────────────────────────────
-function shareScore() {
-  var result = state.lastResult;
-  if (!result) return;
-
-  // Get player name
-  var playerName = (currentProfile && currentProfile.full_name)
-    ? currentProfile.full_name.split(' ')[0]
-    : (currentUser && currentUser.user_metadata && currentUser.user_metadata.full_name
-        ? currentUser.user_metadata.full_name.split(' ')[0]
-        : 'Player');
-
-  var grade     = getLetterGrade(result.score);
-  var tierInfo  = getTierInfo(result.score);
-  var score     = result.score;
-  var correct   = result.correct;
-
-  // Build canvas share image — 1080x1350 (portrait, ideal for iMessage/IG Stories)
-  var canvas = document.createElement('canvas');
-  canvas.width  = 1080;
-  canvas.height = 1350;
-  var ctx = canvas.getContext('2d');
-  var tc = tierInfo.color;
-
-  // Background gradient
-  var bgGrad = ctx.createLinearGradient(0, 0, 1080, 1350);
-  bgGrad.addColorStop(0, '#020f1e');
-  bgGrad.addColorStop(1, '#081b2c');
-  ctx.fillStyle = bgGrad;
-  ctx.fillRect(0, 0, 1080, 1350);
-
-  // Field grid
-  ctx.strokeStyle = 'rgba(255,255,255,0.025)';
-  ctx.lineWidth = 1;
-  for (var gx = 0; gx < 1080; gx += 108) {
-    ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, 1350); ctx.stroke();
-  }
-  for (var gy = 0; gy < 1350; gy += 108) {
-    ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(1080, gy); ctx.stroke();
-  }
-
-  // Top accent bar
-  var accentGrad = ctx.createLinearGradient(0, 0, 1080, 0);
-  accentGrad.addColorStop(0, 'rgba(0,0,0,0)');
-  accentGrad.addColorStop(0.5, tc);
-  accentGrad.addColorStop(1, 'rgba(0,0,0,0)');
-  ctx.fillStyle = accentGrad;
-  ctx.fillRect(0, 0, 1080, 5);
-
-  // Central glow
-  var glowGrad = ctx.createRadialGradient(540, 500, 0, 540, 500, 500);
-  glowGrad.addColorStop(0, tc.replace(')', ',0.12)').replace('rgb','rgba') || 'rgba(193,255,34,0.1)');
-  glowGrad.addColorStop(1, 'rgba(0,0,0,0)');
-  ctx.fillStyle = glowGrad;
-  ctx.fillRect(0, 0, 1080, 1350);
-
-  // FDA eyebrow
-  ctx.fillStyle = tc;
-  ctx.globalAlpha = 0.8;
-  ctx.font = '700 24px sans-serif';
-  ctx.textAlign = 'center';
-  ctx.fillText('GRIDIRON IQ  ·  FIRST DOWN ACADEMY', 540, 90);
-  ctx.globalAlpha = 1;
-
-  // Player name
-  ctx.fillStyle = 'rgba(255,255,255,0.45)';
-  ctx.font = '300 34px sans-serif';
-  ctx.fillText(playerName.toUpperCase() + "'S RESULT", 540, 148);
-
-  // ── SHIELD ──
-  function drawShieldCanvas(ctx, cx, cy, w, h, score) {
-    var tc2;
-    if (score >= 90)      tc2 = { body1:'#2a1f00', body2:'#0d0900', rim:'#b8860b', rimHi:'#ffd700', glow:'rgba(218,165,32,0.6)' };
-    else if (score >= 80) tc2 = { body1:'#1e2125', body2:'#0c0e10', rim:'#8a9ba8', rimHi:'#c8d6e0', glow:'rgba(160,180,195,0.5)' };
-    else if (score >= 70) tc2 = { body1:'#1f1208', body2:'#0a0702', rim:'#8b5a2b', rimHi:'#cd853f', glow:'rgba(160,100,40,0.5)' };
-    else                  tc2 = { body1:'#151515', body2:'#080808', rim:'#3a3a3a', rimHi:'#555',    glow:'rgba(60,60,60,0.3)' };
-
-    var sx = cx - w/2, sy = cy - h/2;
-    // Shield path helper
-    function shieldPath() {
-      ctx.beginPath();
-      ctx.moveTo(cx, sy + 8);
-      ctx.lineTo(sx + w - 8, sy + h*0.22);
-      ctx.lineTo(sx + w - 8, sy + h*0.56);
-      ctx.quadraticCurveTo(sx + w - 8, sy + h*0.82, cx, sy + h - 4);
-      ctx.quadraticCurveTo(sx + 8, sy + h*0.82, sx + 8, sy + h*0.56);
-      ctx.lineTo(sx + 8, sy + h*0.22);
-      ctx.closePath();
-    }
-
-    // Outer glow
-    ctx.save();
-    ctx.shadowColor = tc2.glow;
-    ctx.shadowBlur = 60;
-    shieldPath();
-    ctx.strokeStyle = tc2.glow;
-    ctx.lineWidth = 3;
-    ctx.stroke();
-    ctx.restore();
-
-    // Body gradient fill
-    var bodyG = ctx.createLinearGradient(cx, sy, cx, sy + h);
-    bodyG.addColorStop(0, tc2.body1);
-    bodyG.addColorStop(1, tc2.body2);
-    ctx.save();
-    ctx.shadowColor = 'rgba(0,0,0,0.8)';
-    ctx.shadowBlur = 40;
-    ctx.shadowOffsetY = 12;
-    shieldPath();
-    ctx.fillStyle = bodyG;
-    ctx.fill();
-    ctx.restore();
-
-    // Rim
-    shieldPath();
-    ctx.strokeStyle = tc2.rim;
-    ctx.lineWidth = score >= 70 ? 5 : 3;
-    ctx.stroke();
-
-    // Inner rim highlight
-    ctx.save();
-    ctx.globalAlpha = 0.3;
-    var innerSx = sx + 16, innerSy = sy + 16, innerW = w - 32, innerH = h - 20;
-    ctx.beginPath();
-    ctx.moveTo(cx, innerSy + 8);
-    ctx.lineTo(innerSx + innerW - 8, innerSy + innerH*0.22);
-    ctx.lineTo(innerSx + innerW - 8, innerSy + innerH*0.56);
-    ctx.quadraticCurveTo(innerSx + innerW - 8, innerSy + innerH*0.82, cx, innerSy + innerH - 4);
-    ctx.quadraticCurveTo(innerSx + 8, innerSy + innerH*0.82, innerSx + 8, innerSy + innerH*0.56);
-    ctx.lineTo(innerSx + 8, innerSy + innerH*0.22);
-    ctx.closePath();
-    ctx.strokeStyle = tc2.rimHi;
-    ctx.lineWidth = 1;
-    ctx.stroke();
-    ctx.restore();
-
-    // Shine overlay top-left
-    shieldPath();
-    ctx.save();
-    ctx.clip();
-    var shineG = ctx.createLinearGradient(sx, sy, sx + w*0.6, sy + h*0.5);
-    shineG.addColorStop(0, 'rgba(255,255,255,0.10)');
-    shineG.addColorStop(0.5, 'rgba(255,255,255,0.02)');
-    shineG.addColorStop(1, 'rgba(255,255,255,0)');
-    ctx.fillStyle = shineG;
-    ctx.fillRect(sx, sy, w, h);
-    ctx.restore();
-
-    // Medal at bottom tip
-    var medalY = sy + h - 4;
-    ctx.beginPath(); ctx.arc(cx, medalY, 18, 0, Math.PI*2);
-    ctx.fillStyle = tc2.body2; ctx.fill();
-    ctx.strokeStyle = tc2.rimHi; ctx.lineWidth = 2; ctx.stroke();
-    ctx.beginPath(); ctx.arc(cx, medalY, 10, 0, Math.PI*2);
-    ctx.strokeStyle = tc2.rim; ctx.lineWidth = 1; ctx.stroke();
-  }
-
-  drawShieldCanvas(ctx, 540, 370, 380, 420, score);
-
-  // ── GRADE LETTER ──
-  ctx.save();
-  ctx.shadowColor = tc;
-  ctx.shadowBlur = 80;
-  ctx.fillStyle = '#ffffff';
-  ctx.font = '900 230px sans-serif';
-  ctx.textAlign = 'center';
-  ctx.fillText(grade, 540, 450);
-  ctx.restore();
-
-  // Tier badge pill
-  var pillW = 280, pillH = 52, pillX = 540 - pillW/2, pillY = 510;
-  ctx.save();
-  ctx.globalAlpha = 0.15;
-  ctx.fillStyle = tc;
-  roundRect(ctx, pillX, pillY, pillW, pillH, 26); ctx.fill();
-  ctx.globalAlpha = 0.4;
-  ctx.strokeStyle = tc; ctx.lineWidth = 1.5;
-  roundRect(ctx, pillX, pillY, pillW, pillH, 26); ctx.stroke();
-  ctx.restore();
-  ctx.fillStyle = tc;
-  ctx.font = '800 22px sans-serif';
-  ctx.fillText(tierInfo.name.toUpperCase(), 540, 545);
-
-  // ── RADAR PENTAGON ──
-  var PILLARS_SHARE = ['Rules & Objectives','Positions & Responsibilities','Formations & Alignments','Plays & Concepts','Situational Awareness'];
-  var SHORT_SHARE   = ['Rules','Positions','Formations','Plays','Situational'];
-  var COLORS_SHARE  = ['#E8630A','#3B82F6','#8B5CF6','#F59E0B','#22C55E'];
-  var rcx = 540, rcy = 820, rR = 180;
-
-  function radarAngle(i) { return (Math.PI / 180) * (-90 + i * 72); }
-  function radarPtC(i, pct, radius) {
-    var a = radarAngle(i);
-    var r = (radius || rR) * (pct / 100);
-    return [rcx + r * Math.cos(a), rcy + r * Math.sin(a)];
-  }
-  function pentPtC(i, r) {
-    var a = radarAngle(i);
-    return [rcx + r * Math.cos(a), rcy + r * Math.sin(a)];
-  }
-
-  // Grid rings
-  [25, 50, 75, 100].forEach(function(v) {
-    ctx.beginPath();
-    for (var i = 0; i < 5; i++) {
-      var pt = pentPtC(i, rR * v / 100);
-      if (i === 0) ctx.moveTo(pt[0], pt[1]); else ctx.lineTo(pt[0], pt[1]);
-    }
-    ctx.closePath();
-    ctx.strokeStyle = v === 100 ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.05)';
-    ctx.lineWidth = 1;
-    ctx.stroke();
-  });
-
-  // Axis lines
-  for (var ai = 0; ai < 5; ai++) {
-    var apt = pentPtC(ai, rR);
-    ctx.beginPath(); ctx.moveTo(rcx, rcy); ctx.lineTo(apt[0], apt[1]);
-    ctx.strokeStyle = 'rgba(255,255,255,0.06)'; ctx.lineWidth = 1; ctx.stroke();
-  }
-
-  // Data polygon
-  var scoresPillars = PILLARS_SHARE.map(function(p) {
-    var d = result.pillarData ? result.pillarData[p] : null;
-    return d ? Math.max(d.pct, 4) : 4;
-  });
-
-  ctx.beginPath();
-  scoresPillars.forEach(function(s, i) {
-    var pt = radarPtC(i, s, rR);
-    if (i === 0) ctx.moveTo(pt[0], pt[1]); else ctx.lineTo(pt[0], pt[1]);
-  });
-  ctx.closePath();
-  var radarFill = ctx.createRadialGradient(rcx, rcy, 0, rcx, rcy, rR);
-  radarFill.addColorStop(0, tc.replace('#', 'rgba(') + ',0.35)') || 'rgba(193,255,34,0.35)';
-  radarFill.addColorStop(1, 'rgba(0,0,0,0)');
-  // Simple fill with alpha
-  ctx.save();
-  ctx.globalAlpha = 0.3;
-  ctx.fillStyle = tc;
-  ctx.fill();
-  ctx.restore();
-  ctx.strokeStyle = tc;
-  ctx.lineWidth = 3;
-  ctx.lineJoin = 'round';
-  ctx.stroke();
-
-  // Dots + labels
-  scoresPillars.forEach(function(s, i) {
-    var pt = radarPtC(i, s, rR);
-    var lpt = pentPtC(i, rR + 28);
-    ctx.beginPath();
-    ctx.arc(pt[0], pt[1], 7, 0, Math.PI * 2);
-    ctx.fillStyle = COLORS_SHARE[i];
-    ctx.fill();
-    ctx.strokeStyle = '#020f1e';
-    ctx.lineWidth = 2;
-    ctx.stroke();
-    ctx.fillStyle = 'rgba(255,255,255,0.55)';
-    ctx.font = '500 20px sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillText(SHORT_SHARE[i], lpt[0], lpt[1] + 7);
-  });
-
-  // ── STATS ROW ──
-  var statsData = [
-    { label: 'SCORE',    value: score + '/100' },
-    { label: 'CORRECT',  value: correct + '/15' },
-    { label: 'ACCURACY', value: result.accuracy + '%' }
-  ];
-  var statY = 1095, colW = 1080 / 3;
-  // Divider line
-  ctx.fillStyle = 'rgba(255,255,255,0.05)';
-  ctx.fillRect(0, statY - 50, 1080, 1);
-  statsData.forEach(function(s, i) {
-    var cx = colW * i + colW / 2;
-    if (i > 0) {
-      ctx.fillStyle = 'rgba(255,255,255,0.06)';
-      ctx.fillRect(colW * i, statY - 40, 1, 80);
-    }
-    ctx.fillStyle = '#ffffff';
-    ctx.font = '900 52px sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillText(s.value, cx, statY + 12);
-    ctx.fillStyle = 'rgba(255,255,255,0.3)';
-    ctx.font = '700 18px sans-serif';
-    ctx.fillText(s.label, cx, statY + 44);
-  });
-
-  // Bottom CTA
-  ctx.fillStyle = 'rgba(255,255,255,0.2)';
-  ctx.font = '400 24px sans-serif';
-  ctx.textAlign = 'center';
-  ctx.fillText('Test your Gridiron IQ at firstdownacademy.com', 540, 1300);
-
-  // Bottom accent
-  ctx.fillStyle = accentGrad;
-  ctx.fillRect(0, 1345, 1080, 5);
-
-  // Convert to blob and share
-  canvas.toBlob(function(blob) {
-    var file = new File([blob], 'gridiron-iq-' + grade + '.png', { type: 'image/png' });
-    if (navigator.canShare && navigator.canShare({ files: [file] })) {
-      navigator.share({
-        files: [file],
-        title: playerName + ' got ' + grade + ' on the Gridiron IQ Exam!',
-        text: playerName + ' scored ' + score + '/100 (' + tierInfo.name + ') on the Gridiron IQ Exam by First Down Academy. Can you beat it? firstdownacademy.com'
-      }).catch(function(e) { if (e.name !== 'AbortError') fallbackShare(canvas, grade); });
-    } else {
-      fallbackShare(canvas, grade);
-    }
-  }, 'image/png');
-}
-
-function fallbackShare(canvas, grade) {
-  // Download the image as fallback
-  var link = document.createElement('a');
-  link.download = 'gridiron-iq-' + grade + '.png';
-  link.href = canvas.toDataURL('image/png');
-  link.click();
-}
-
-function roundRect(ctx, x, y, w, h, r) {
-  ctx.beginPath();
-  ctx.moveTo(x + r, y);
-  ctx.lineTo(x + w - r, y);
-  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
-  ctx.lineTo(x + w, y + h - r);
-  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
-  ctx.lineTo(x + r, y + h);
-  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
-  ctx.lineTo(x, y + r);
-  ctx.quadraticCurveTo(x, y, x + r, y);
-  ctx.closePath();
-}
-
-function applyShieldTier(score) {
-  // Tier palette definitions
-  var tier;
-  if (score >= 90) {
-    tier = {
-      // Gold
-      bodyGrad:  [['0%','#2a1f00'],['50%','#1a1300'],['100%','#0d0900']],
-      rim:       '#b8860b',
-      rimHi:     '#ffd700',
-      glow:      'rgba(218,165,32,0.5)',
-      medal:     '#b8860b',
-      medalInner:'#ffd700',
-      shine:     'rgba(255,215,0,0.08)'
-    };
-  } else if (score >= 80) {
-    tier = {
-      // Silver
-      bodyGrad:  [['0%','#1e2125'],['50%','#14181c'],['100%','#0c0e10']],
-      rim:       '#8a9ba8',
-      rimHi:     '#c8d6e0',
-      glow:      'rgba(160,180,195,0.45)',
-      medal:     '#6a7d8a',
-      medalInner:'#b0c4cc',
-      shine:     'rgba(180,200,215,0.09)'
-    };
-  } else if (score >= 70) {
-    tier = {
-      // Bronze
-      bodyGrad:  [['0%','#1f1208'],['50%','#130c04'],['100%','#0a0702']],
-      rim:       '#8b5a2b',
-      rimHi:     '#cd853f',
-      glow:      'rgba(160,100,40,0.45)',
-      medal:     '#7a4f22',
-      medalInner:'#b8732a',
-      shine:     'rgba(180,120,60,0.07)'
-    };
-  } else {
-    tier = {
-      // Iron / default
-      bodyGrad:  [['0%','#151515'],['50%','#0d0d0d'],['100%','#080808']],
-      rim:       '#3a3a3a',
-      rimHi:     '#555',
-      glow:      'rgba(80,80,80,0.3)',
-      medal:     '#2a2a2a',
-      medalInner:'#444',
-      shine:     'rgba(255,255,255,0.04)'
-    };
-  }
-
-  var svg = document.getElementById('gradeShieldSvg');
-  if (!svg) return;
-
-  // Update body gradient stops
-  var bodyGrad = document.getElementById('shieldBodyGrad');
-  if (bodyGrad) {
-    var stops = bodyGrad.querySelectorAll('stop');
-    tier.bodyGrad.forEach(function(s, i) {
-      if (stops[i]) { stops[i].setAttribute('offset', s[0]); stops[i].setAttribute('stop-color', s[1]); }
-    });
-  }
-
-  // Rim color
-  var rim = document.getElementById('shieldRim');
-  if (rim) {
-    rim.setAttribute('stroke', tier.rim);
-  }
-
-  // Glow path stroke
-  var glowPath = document.getElementById('shieldGlowPath');
-  if (glowPath) glowPath.setAttribute('stroke', tier.glow);
-
-  // Medal
-  var medal = document.getElementById('shieldMedal');
-  if (medal) {
-    medal.setAttribute('fill', tier.medal);
-    medal.setAttribute('stroke', tier.rimHi);
-  }
-
-  // Add shimmer lines for gold/silver/bronze
-  var existingShimmer = svg.getElementById ? null : null;
-  var oldShimmer = svg.querySelector('#shieldShimmer');
-  if (oldShimmer) oldShimmer.remove();
-
-  if (score >= 70) {
-    var shimmer = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    shimmer.setAttribute('id', 'shieldShimmer');
-    shimmer.setAttribute('d', 'M60 40 L80 220 M140 40 L120 220');
-    shimmer.setAttribute('stroke', tier.rimHi);
-    shimmer.setAttribute('stroke-width', '0.5');
-    shimmer.setAttribute('opacity', '0.08');
-    shimmer.setAttribute('clip-path', 'url(#shieldClip)');
-    svg.appendChild(shimmer);
-
-    // Top edge highlight
-    var edgeHi = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    edgeHi.setAttribute('id', 'shieldEdgeHi');
-    edgeHi.setAttribute('d', 'M110 6 L200 37');
-    edgeHi.setAttribute('stroke', tier.rimHi);
-    edgeHi.setAttribute('stroke-width', '1');
-    edgeHi.setAttribute('opacity', '0.4');
-    edgeHi.setAttribute('stroke-linecap', 'round');
-    svg.appendChild(edgeHi);
-  }
-
-  // CSS glow on the wrap
-  var wrap = document.querySelector('.grade-shield-wrap');
-  if (wrap) {
-    wrap.style.filter = 'drop-shadow(0 0 24px ' + tier.glow + ')';
-  }
-}
 
 function toggleScoring() {
   var panel = document.getElementById('scoringPanel');

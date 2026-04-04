@@ -9,8 +9,13 @@
 const SUPABASE_URL = 'https://wzylgwvifdfnkmuleoxn.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_FaPj5NQeqzsRE8kOme2lKQ_uXrHArbt';
 
-const { createClient } = supabase;
-const db = createClient(SUPABASE_URL, SUPABASE_KEY);
+var db = null;
+try {
+  const { createClient } = supabase;
+  db = createClient(SUPABASE_URL, SUPABASE_KEY);
+} catch(e) {
+  console.warn('Supabase init skipped — keys not configured.');
+}
 var currentUser = null;
 var currentProfile = null;
 
