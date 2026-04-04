@@ -360,78 +360,43 @@ a{text-decoration:none;}
   font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
   color:#9eacc0;margin-bottom:10px;
 }
-.conf-btns{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
-}
-
-/* Signal bar button */
+.conf-btns{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
 .conf-btn{
-  display:flex;flex-direction:column;align-items:center;gap:10px;
-  padding:16px 8px 14px;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  padding:18px 8px 16px;
   border-radius:2px;
   border:1.5px solid rgba(255,255,255,.07);
   background:#0d2134;
   cursor:pointer;
   transition:all .18s;
-  position:relative;overflow:hidden;
 }
 .conf-btn:hover{
   border-color:rgba(255,255,255,.2);
-  background:#102840;
+  background:#122840;
   transform:translateY(-2px);
 }
 .conf-btn.active{ transform:translateY(-2px); }
-#conf1.active{ border-color:rgba(59,130,246,.6);background:rgba(59,130,246,.08); }
-#conf2.active{ border-color:rgba(245,158,11,.6);background:rgba(245,158,11,.08); }
-#conf3.active{ border-color:#C1FF22;background:rgba(193,255,34,.08); }
+#conf1.active{ border-color:rgba(59,130,246,.6); background:rgba(59,130,246,.08); }
+#conf2.active{ border-color:rgba(245,158,11,.6); background:rgba(245,158,11,.08); }
+#conf3.active{ border-color:#C1FF22;             background:rgba(193,255,34,.08); }
 
-/* Signal bars container */
-.conf-signal{
-  display:flex;align-items:flex-end;gap:3px;
-  height:28px;
+.conf-emoji{
+  font-size:28px;line-height:1;
+  transition:transform .18s;
 }
-
-/* Individual bars */
-.conf-bar{
-  border-radius:2px;
-  transition:all .2s;
-}
-.cb1{ width:8px;height:12px; }
-.cb2{ width:8px;height:20px; }
-.cb3{ width:8px;height:28px; }
-
-/* Colors */
-.cb-empty{ background:rgba(255,255,255,.1); }
-
-/* Unsure — blue, 1 bar */
-.cb-low{ background:#3b82f6; }
-#conf1:hover .cb-empty,
-#conf1.active .cb-empty{ background:rgba(59,130,246,.25); }
-
-/* Pretty Sure — amber, 2 bars */
-.cb-mid{ background:#f59e0b; }
-#conf2:hover .cb-empty,
-#conf2.active .cb-empty{ background:rgba(245,158,11,.25); }
-
-/* Locked In — lime, 3 bars */
-.cb-high{ background:#C1FF22; }
-
-/* Glow on active */
-#conf1.active .cb-low { box-shadow:0 0 8px rgba(59,130,246,.6); }
-#conf2.active .cb-mid { box-shadow:0 0 8px rgba(245,158,11,.5); }
-#conf3.active .cb-high { box-shadow:0 0 8px rgba(193,255,34,.5); }
+.conf-btn:hover .conf-emoji{ transform:scale(1.15); }
+.conf-btn.active .conf-emoji{ transform:scale(1.2); }
 
 .conf-name{
   font-family:'Barlow Condensed',sans-serif;
-  font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
-  color:rgba(255,255,255,.55);line-height:1;transition:color .18s;
+  font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(255,255,255,.5);line-height:1;transition:color .18s;
 }
 .conf-btn:hover .conf-name{ color:#fff; }
 #conf1.active .conf-name{ color:#93c5fd; }
 #conf2.active .conf-name{ color:#fcd34d; }
 #conf3.active .conf-name{ color:#C1FF22; }
 
-/* Remove next button CSS since button is gone */
 /* ══════════════════════════
    RESULTS SCREEN
 ══════════════════════════ */
@@ -743,55 +708,26 @@ a{text-decoration:none;}
         <div class="conf-section" id="confSection">
           <div class="conf-label">How confident are you?</div>
           <div class="conf-btns">
-
-            <!-- NOT SURE -->
             <button class="conf-btn" id="conf1" onclick="selectConf(1)">
-              <div class="conf-icon-wrap conf-icon-low">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-                  <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/>
-                  <path d="M8.5 15c.5-1 1.8-2 3.5-2s3 1 3.5 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                  <circle cx="9" cy="10" r="1" fill="currentColor"/>
-                  <circle cx="15" cy="10" r="1" fill="currentColor"/>
-                  <path d="M9 8.5c.5-.8 1.5-1 2-.5M15 8.5c-.5-.8-1.5-1-2-.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity=".5"/>
-                </svg>
-              </div>
+              <span class="conf-emoji">🤔</span>
               <span class="conf-name">Not Sure</span>
             </button>
-
-            <!-- PRETTY SURE -->
             <button class="conf-btn" id="conf2" onclick="selectConf(2)">
-              <div class="conf-icon-wrap conf-icon-mid">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-                  <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/>
-                  <path d="M8.5 15.5c.8-.8 2-1.5 3.5-1.5s2.7.7 3.5 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                  <circle cx="9" cy="10" r="1" fill="currentColor"/>
-                  <circle cx="15" cy="10" r="1" fill="currentColor"/>
-                </svg>
-              </div>
+              <span class="conf-emoji">🙂</span>
               <span class="conf-name">Pretty Sure</span>
             </button>
-
-            <!-- CERTAIN -->
             <button class="conf-btn" id="conf3" onclick="selectConf(3)">
-              <div class="conf-icon-wrap conf-icon-high">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-                  <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/>
-                  <path d="M8 14.5c1-1.5 2.2-2 4-2s3 .5 4 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                  <circle cx="9" cy="10" r="1" fill="currentColor"/>
-                  <circle cx="15" cy="10" r="1" fill="currentColor"/>
-                  <path d="M7 8l1.5 1.5M17 8l-1.5 1.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity=".6"/>
-                </svg>
-              </div>
-              <span class="conf-name">Certain</span>
+              <span class="conf-emoji">💪</span>
+              <span class="conf-name">Locked In</span>
             </button>
-
           </div>
-          <div class="conf-note">Your confidence level affects your score. Only pick Certain when you truly know it.</div>
+        </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
 
 <!-- ═══════ RESULTS ═══════ -->
 <div class="screen" id="screenResults">
@@ -823,7 +759,9 @@ a{text-decoration:none;}
   </section>
 </div>
 
+
 <script>
+
 // ── QUESTION BANK ──────────────────────────────────────────────────────────
 // All 150 questions tagged with pillar and difficulty
 var QB = [
@@ -1530,47 +1468,41 @@ async function saveScore(result) {
     await db.from('giq_scores').insert(payload);
   } catch(e) { console.log('Score save skipped:', e.message); }
 }
+
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="curriculum.js?v=4"></script>
 <script src="app.js?v=4"></script>
 <script>
-// Page stubs — prevent app.js from crashing
 function showPage(n) {
   var m = {'home':'index.html','course':'program.html','giq':'giq.html','signup':'auth.html','dashboard':'dashboard.html'};
   if (m[n]) window.location.href = m[n];
 }
 function buildModuleList() {}
 function buildDashModuleList() {}
-function loadDashboard() {}
+function loadDashboard()   {}
 function loadGIQScore() {}
 function updateNavForLoggedIn() {}
 
 document.addEventListener('sessionReady', function() {
   if (currentUser) {
     state.loggedIn = true;
-
-    // If results are already showing, rebuild sections
     if (document.getElementById('screenResults').classList.contains('active') && state.lastResult) {
       var result = state.lastResult;
       buildPillarSection(result);
       buildRecommendation(result);
       buildActions(result);
-      // Clean up stored session data
       sessionStorage.removeItem('pendingGrade');
       sessionStorage.removeItem('pendingTier');
       sessionStorage.removeItem('pendingScore');
       return;
     }
-
-    // Returning from auth page with a stored score — restore and show results
     var stored = sessionStorage.getItem('pendingScore');
     if (stored) {
       try {
         var result = JSON.parse(stored);
         state.lastResult = result;
-        // Show results with pre-computed result (skip calcScore)
         showResults(result);
         sessionStorage.removeItem('pendingGrade');
         sessionStorage.removeItem('pendingTier');
