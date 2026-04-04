@@ -419,36 +419,66 @@ a{text-decoration:none;}
   border-radius:2px;overflow:hidden;margin-bottom:12px;
 }
 .grade-head{
-  background:#0d2134;padding:36px 28px 32px;
+  background:linear-gradient(160deg,#081b2c 0%,#0d2134 60%,#091622 100%);
+  padding:40px 28px 36px;
   text-align:center;position:relative;overflow:hidden;
 }
+.grade-head::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,transparent,var(--tier-color,#C1FF22),transparent);
+}
 .grade-head-glow{
-  position:absolute;bottom:-40px;left:50%;transform:translateX(-50%);
-  width:300px;height:200px;
-  background:radial-gradient(ellipse,rgba(193,255,34,.1),transparent 70%);
+  position:absolute;top:20px;left:50%;transform:translateX(-50%);
+  width:340px;height:340px;
+  background:radial-gradient(ellipse,rgba(193,255,34,.12),transparent 70%);
   pointer-events:none;
 }
 .grade-eyebrow{
   font-family:'Barlow Condensed',sans-serif;
   font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
-  color:#C1FF22;margin-bottom:14px;position:relative;z-index:1;
+  color:#C1FF22;margin-bottom:18px;position:relative;z-index:1;
 }
 .grade-display{
   font-family:'Barlow Condensed',sans-serif;
-  font-size:96px;font-weight:900;line-height:.85;
-  letter-spacing:-.02em;color:#fff;
-  position:relative;z-index:1;margin-bottom:6px;
+  font-size:140px;font-weight:900;line-height:.82;
+  letter-spacing:-.04em;color:#fff;
+  position:relative;z-index:1;margin-bottom:10px;
+  text-shadow:0 0 80px var(--tier-color,rgba(193,255,34,.4));
+  filter:drop-shadow(0 0 30px var(--tier-color,rgba(193,255,34,.3)));
 }
 .grade-tier{
   font-family:'Barlow Condensed',sans-serif;
-  font-size:22px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
-  position:relative;z-index:1;margin-bottom:4px;
+  font-size:14px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;
+  position:relative;z-index:1;margin-bottom:16px;
+  display:inline-block;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:999px;padding:5px 18px;
 }
 .grade-tier-sub{
   font-family:'Barlow Condensed',sans-serif;
   font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
-  color:rgba(255,255,255,.3);position:relative;z-index:1;
+  color:rgba(255,255,255,.25);position:relative;z-index:1;margin-bottom:20px;
+  display:block;
 }
+/* Share button inline in grade head */
+.grade-share-btn{
+  display:inline-flex;align-items:center;gap:7px;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:999px;padding:9px 20px;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(255,255,255,.6);cursor:pointer;
+  transition:background .2s,border-color .2s,color .2s;
+  position:relative;z-index:1;
+}
+.grade-share-btn:hover{
+  background:rgba(255,255,255,.12);
+  border-color:rgba(255,255,255,.25);
+  color:#fff;
+}
+.grade-share-btn svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;}
 .grade-body{padding:24px 28px;}
 /* Stats row */
 .grade-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-bottom:16px;}
@@ -469,11 +499,12 @@ a{text-decoration:none;}
   font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
   color:#9eacc0;margin-bottom:12px;
 }
-/* Line chart */
+/* Radar chart */
 .pillar-chart-wrap{
-  background:#0d2134;border:1px solid rgba(255,255,255,.06);
-  border-radius:2px;padding:16px 12px 8px;margin-bottom:14px;
+  display:flex;justify-content:center;align-items:center;
+  padding:16px 0 8px;margin-bottom:14px;
 }
+.radar-svg{width:240px;height:240px;flex-shrink:0;}
 /* Pillar bars */
 .pillar-unlocked-body{display:flex;flex-direction:column;gap:8px;}
 .pillar-row-full{display:flex;align-items:center;gap:10px;}
@@ -742,6 +773,10 @@ a{text-decoration:none;}
           <div class="grade-display" id="gradeDisplay">B+</div>
           <div class="grade-tier" id="gradeTier">Advanced</div>
           <div class="grade-tier-sub" id="gradeTierSub">Strong football knowledge</div>
+          <button class="grade-share-btn" id="gradeShareBtn" onclick="shareScore()" style="display:none;">
+            <svg viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+            Share My Score
+          </button>
         </div>
         <div class="grade-body">
           <div class="grade-stats">
@@ -1251,6 +1286,9 @@ function showResults(preResult) {
   document.getElementById('gradeTier').textContent    = result.tier;
   document.getElementById('gradeTier').style.color    = result.tierColor;
   document.getElementById('gradeTierSub').textContent = result.tierSub;
+  // Set CSS var for glow/accent
+  document.querySelector('.grade-head').style.setProperty('--tier-color', result.tierColor);
+  document.querySelector('.grade-head-glow').style.background = 'radial-gradient(ellipse,' + result.tierColor + '18,transparent 70%)';
   document.getElementById('statCorrect').textContent  = result.correct + '/15';
   var wrongEl = document.getElementById('statWrong'); if (wrongEl) wrongEl.textContent = (15 - result.correct);
   document.getElementById('statAcc').textContent      = result.accuracy + '%';
@@ -1283,51 +1321,64 @@ function buildPillarSection(result) {
       return d ? d.pct : 0;
     });
 
-    // Build SVG line chart
-    var W = 480, H = 160, PAD = 40;
-    var chartW = W - PAD * 2;
-    var chartH = H - 30;
-    var step = chartW / (PILLARS.length - 1);
+    // Build radar pentagon chart
+    var CX = 120, CY = 120, R = 100;
+    // 5 axes — top vertex first, then clockwise
+    // Pentagon angles: -90, -90+72, -90+144, -90+216, -90+288
+    function radarPt(i, pct, radius) {
+      var angle = (Math.PI / 180) * (-90 + i * 72);
+      var r = (radius || R) * (pct / 100);
+      return { x: CX + r * Math.cos(angle), y: CY + r * Math.sin(angle) };
+    }
+    function pentPt(i, r) {
+      var angle = (Math.PI / 180) * (-90 + i * 72);
+      return { x: CX + r * Math.cos(angle), y: CY + r * Math.sin(angle) };
+    }
 
-    // Points
-    var points = scores.map(function(s, i) {
-      return { x: PAD + i * step, y: 16 + ((100 - s) / 100) * chartH };
+    // Grid rings at 25, 50, 75, 100
+    var rings = '';
+    [25, 50, 75, 100].forEach(function(v) {
+      var pts = [0,1,2,3,4].map(function(i) { return pentPt(i, R * v / 100); });
+      var d = 'M ' + pts[0].x + ' ' + pts[0].y;
+      pts.slice(1).forEach(function(p) { d += ' L ' + p.x + ' ' + p.y; });
+      d += ' Z';
+      var opacity = v === 100 ? '.12' : '.06';
+      rings += '<path d="' + d + '" fill="none" stroke="rgba(255,255,255,' + opacity + ')" stroke-width="1"/>';
     });
 
-    // Grid lines
-    var gridLines = '';
-    [0, 25, 50, 75, 100].forEach(function(v) {
-      var y = 16 + ((100 - v) / 100) * chartH;
-      gridLines += '<line x1="' + PAD + '" y1="' + y + '" x2="' + (W - PAD) + '" y2="' + y + '" stroke="rgba(255,255,255,.06)" stroke-width="1"/>';
-      gridLines += '<text x="' + (PAD - 6) + '" y="' + (y + 4) + '" text-anchor="end" font-size="9" fill="rgba(255,255,255,.25)" font-family="sans-serif">' + v + '</text>';
+    // Axis lines
+    var axes = '';
+    [0,1,2,3,4].forEach(function(i) {
+      var pt = pentPt(i, R);
+      axes += '<line x1="' + CX + '" y1="' + CY + '" x2="' + pt.x + '" y2="' + pt.y + '" stroke="rgba(255,255,255,.06)" stroke-width="1"/>';
     });
 
-    // Filled area under line
-    var areaPath = 'M ' + points[0].x + ' ' + points[0].y;
-    points.slice(1).forEach(function(p) { areaPath += ' L ' + p.x + ' ' + p.y; });
-    areaPath += ' L ' + points[points.length-1].x + ' ' + (H - 14) + ' L ' + points[0].x + ' ' + (H - 14) + ' Z';
+    // Data polygon
+    var dataPts = scores.map(function(s, i) { return radarPt(i, Math.max(s, 4), R); });
+    var dataPath = 'M ' + dataPts[0].x + ' ' + dataPts[0].y;
+    dataPts.slice(1).forEach(function(p) { dataPath += ' L ' + p.x + ' ' + p.y; });
+    dataPath += ' Z';
 
-    // Line path
-    var linePath = 'M ' + points[0].x + ' ' + points[0].y;
-    points.slice(1).forEach(function(p) { linePath += ' L ' + p.x + ' ' + p.y; });
-
-    // Dots and labels
-    var dots = '';
-    points.forEach(function(p, i) {
-      var score = scores[i];
-      dots += '<circle cx="' + p.x + '" cy="' + p.y + '" r="5" fill="' + COLORS[i] + '" stroke="white" stroke-width="1.5"/>';
-      dots += '<text x="' + p.x + '" y="' + (H - 2) + '" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.4)" font-family="sans-serif">' + SHORT[i] + '</text>';
-      // Score tooltip above dot
-      dots += '<text x="' + p.x + '" y="' + (p.y - 10) + '" text-anchor="middle" font-size="10" fill="white" font-family="sans-serif" font-weight="bold">' + score + '%</text>';
+    // Dot nodes + labels
+    var nodes = '';
+    dataPts.forEach(function(p, i) {
+      var labelPt = pentPt(i, R + 18);
+      nodes += '<circle cx="' + p.x + '" cy="' + p.y + '" r="4" fill="' + COLORS[i] + '" stroke="#020f1e" stroke-width="1.5"/>';
+      nodes += '<text x="' + labelPt.x + '" y="' + (labelPt.y + 4) + '" text-anchor="middle" font-size="9" font-family="sans-serif" fill="rgba(255,255,255,.5)">' + SHORT[i] + '</text>';
     });
 
+    var tierColor = result.tierColor || '#C1FF22';
     var svgChart =
-      '<svg viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">' +
-        gridLines +
-        '<path d="' + areaPath + '" fill="url(#areaGrad)" opacity="0.4"/>' +
-        '<defs><linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#E8630A" stop-opacity="0.6"/><stop offset="100%" stop-color="#E8630A" stop-opacity="0"/></linearGradient></defs>' +
-        '<path d="' + linePath + '" fill="none" stroke="#E8630A" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>' +
-        dots +
+      '<svg class="radar-svg" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">' +
+        '<defs>' +
+          '<radialGradient id="radarGrad" cx="50%" cy="50%" r="50%">' +
+            '<stop offset="0%" stop-color="' + tierColor + '" stop-opacity="0.35"/>' +
+            '<stop offset="100%" stop-color="' + tierColor + '" stop-opacity="0.05"/>' +
+          '</radialGradient>' +
+        '</defs>' +
+        rings + axes +
+        '<path d="' + dataPath + '" fill="url(#radarGrad)" stroke="' + tierColor + '" stroke-width="2" stroke-linejoin="round"/>' +
+        nodes +
       '</svg>';
 
     // Pillar bars below chart
@@ -1419,12 +1470,11 @@ function storeGradeForAuth(result) {
 function buildActions(result) {
   var el = document.getElementById('resultsActions');
   if (state.loggedIn) {
+    // Show the share button inside the grade head
+    var shareBtn = document.getElementById('gradeShareBtn');
+    if (shareBtn) shareBtn.style.display = 'inline-flex';
     el.innerHTML =
       '<a href="dashboard.html" class="action-btn-primary">Go to Dashboard &rarr;</a>' +
-      '<button class="action-btn-secondary share-imessage-btn" onclick="shareScore()" style="border:none;cursor:pointer;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;gap:8px;">' +
-        '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>' +
-        'Share My Score' +
-      '</button>' +
       '<a href="program.html" class="action-btn-secondary">Start the Rookie Course</a>' +
       '<button class="action-btn-secondary" onclick="retakeQuiz()" style="border:none;cursor:pointer;">Retake Quiz</button>';
   } else {
@@ -1544,110 +1594,196 @@ function shareScore() {
   var score     = result.score;
   var correct   = result.correct;
 
-  // Build canvas share image
+  // Build canvas share image — 1080x1350 (portrait, ideal for iMessage/IG Stories)
   var canvas = document.createElement('canvas');
   canvas.width  = 1080;
-  canvas.height = 1080;
+  canvas.height = 1350;
   var ctx = canvas.getContext('2d');
+  var tc = tierInfo.color;
 
-  // Background
-  var bgGrad = ctx.createLinearGradient(0, 0, 1080, 1080);
+  // Background gradient
+  var bgGrad = ctx.createLinearGradient(0, 0, 1080, 1350);
   bgGrad.addColorStop(0, '#020f1e');
-  bgGrad.addColorStop(1, '#0d2134');
+  bgGrad.addColorStop(1, '#081b2c');
   ctx.fillStyle = bgGrad;
-  ctx.fillRect(0, 0, 1080, 1080);
+  ctx.fillRect(0, 0, 1080, 1350);
 
-  // Field grid lines
-  ctx.strokeStyle = 'rgba(255,255,255,0.03)';
+  // Field grid
+  ctx.strokeStyle = 'rgba(255,255,255,0.025)';
   ctx.lineWidth = 1;
-  for (var x = 0; x < 1080; x += 108) {
-    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, 1080); ctx.stroke();
+  for (var gx = 0; gx < 1080; gx += 108) {
+    ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, 1350); ctx.stroke();
   }
-  for (var y = 0; y < 1080; y += 108) {
-    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(1080, y); ctx.stroke();
+  for (var gy = 0; gy < 1350; gy += 108) {
+    ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(1080, gy); ctx.stroke();
   }
 
-  // Lime glow behind grade
-  var glowGrad = ctx.createRadialGradient(540, 420, 0, 540, 420, 400);
-  glowGrad.addColorStop(0, 'rgba(193,255,34,0.18)');
-  glowGrad.addColorStop(1, 'rgba(193,255,34,0)');
-  ctx.fillStyle = glowGrad;
-  ctx.fillRect(0, 0, 1080, 1080);
-
-  // Top accent line
+  // Top accent bar
   var accentGrad = ctx.createLinearGradient(0, 0, 1080, 0);
-  accentGrad.addColorStop(0, 'rgba(193,255,34,0)');
-  accentGrad.addColorStop(0.5, '#C1FF22');
-  accentGrad.addColorStop(1, 'rgba(193,255,34,0)');
+  accentGrad.addColorStop(0, 'rgba(0,0,0,0)');
+  accentGrad.addColorStop(0.5, tc);
+  accentGrad.addColorStop(1, 'rgba(0,0,0,0)');
   ctx.fillStyle = accentGrad;
-  ctx.fillRect(0, 0, 1080, 4);
+  ctx.fillRect(0, 0, 1080, 5);
 
-  // FDA label
-  ctx.fillStyle = 'rgba(193,255,34,0.7)';
-  ctx.font = 'bold 28px sans-serif';
-  ctx.letterSpacing = '8px';
+  // Central glow
+  var glowGrad = ctx.createRadialGradient(540, 500, 0, 540, 500, 500);
+  glowGrad.addColorStop(0, tc.replace(')', ',0.12)').replace('rgb','rgba') || 'rgba(193,255,34,0.1)');
+  glowGrad.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = glowGrad;
+  ctx.fillRect(0, 0, 1080, 1350);
+
+  // FDA eyebrow
+  ctx.fillStyle = tc;
+  ctx.globalAlpha = 0.8;
+  ctx.font = '700 24px sans-serif';
   ctx.textAlign = 'center';
-  ctx.fillText('GRIDIRON IQ  ·  FIRST DOWN ACADEMY', 540, 100);
+  ctx.fillText('GRIDIRON IQ  ·  FIRST DOWN ACADEMY', 540, 90);
+  ctx.globalAlpha = 1;
 
   // Player name
-  ctx.fillStyle = 'rgba(255,255,255,0.5)';
-  ctx.font = '300 36px sans-serif';
-  ctx.fillText(playerName.toUpperCase() + "'S RESULT", 540, 168);
+  ctx.fillStyle = 'rgba(255,255,255,0.45)';
+  ctx.font = '300 34px sans-serif';
+  ctx.fillText(playerName.toUpperCase() + "'S RESULT", 540, 148);
 
-  // Grade letter — huge
-  ctx.fillStyle = tierInfo.color;
-  ctx.font = 'bold 380px sans-serif';
-  ctx.shadowColor = tierInfo.color;
-  ctx.shadowBlur = 80;
+  // ── GRADE LETTER ──
+  ctx.save();
+  ctx.shadowColor = tc;
+  ctx.shadowBlur = 120;
+  ctx.fillStyle = tc;
+  ctx.font = '900 320px sans-serif';
   ctx.textAlign = 'center';
-  ctx.fillText(grade, 540, 570);
-  ctx.shadowBlur = 0;
+  ctx.fillText(grade, 540, 480);
+  ctx.restore();
 
   // Tier badge pill
-  var pillW = 320, pillH = 58, pillX = 540 - pillW/2, pillY = 600;
-  ctx.fillStyle = tierInfo.color + '22';
-  ctx.strokeStyle = tierInfo.color + '55';
-  ctx.lineWidth = 2;
-  roundRect(ctx, pillX, pillY, pillW, pillH, 29);
-  ctx.fill(); ctx.stroke();
-  ctx.fillStyle = tierInfo.color;
-  ctx.font = 'bold 26px sans-serif';
-  ctx.fillText(tierInfo.name.toUpperCase(), 540, 638);
+  var pillW = 280, pillH = 52, pillX = 540 - pillW/2, pillY = 510;
+  ctx.save();
+  ctx.globalAlpha = 0.15;
+  ctx.fillStyle = tc;
+  roundRect(ctx, pillX, pillY, pillW, pillH, 26); ctx.fill();
+  ctx.globalAlpha = 0.4;
+  ctx.strokeStyle = tc; ctx.lineWidth = 1.5;
+  roundRect(ctx, pillX, pillY, pillW, pillH, 26); ctx.stroke();
+  ctx.restore();
+  ctx.fillStyle = tc;
+  ctx.font = '800 22px sans-serif';
+  ctx.fillText(tierInfo.name.toUpperCase(), 540, 545);
 
-  // Stats row
-  var stats = [
-    { label: 'SCORE',   value: score + '/100' },
-    { label: 'CORRECT', value: correct + '/15'  },
-    { label: 'ACCURACY',value: result.accuracy + '%' }
+  // ── RADAR PENTAGON ──
+  var PILLARS_SHARE = ['Rules & Objectives','Positions & Responsibilities','Formations & Alignments','Plays & Concepts','Situational Awareness'];
+  var SHORT_SHARE   = ['Rules','Positions','Formations','Plays','Situational'];
+  var COLORS_SHARE  = ['#E8630A','#3B82F6','#8B5CF6','#F59E0B','#22C55E'];
+  var rcx = 540, rcy = 820, rR = 180;
+
+  function radarAngle(i) { return (Math.PI / 180) * (-90 + i * 72); }
+  function radarPtC(i, pct, radius) {
+    var a = radarAngle(i);
+    var r = (radius || rR) * (pct / 100);
+    return [rcx + r * Math.cos(a), rcy + r * Math.sin(a)];
+  }
+  function pentPtC(i, r) {
+    var a = radarAngle(i);
+    return [rcx + r * Math.cos(a), rcy + r * Math.sin(a)];
+  }
+
+  // Grid rings
+  [25, 50, 75, 100].forEach(function(v) {
+    ctx.beginPath();
+    for (var i = 0; i < 5; i++) {
+      var pt = pentPtC(i, rR * v / 100);
+      if (i === 0) ctx.moveTo(pt[0], pt[1]); else ctx.lineTo(pt[0], pt[1]);
+    }
+    ctx.closePath();
+    ctx.strokeStyle = v === 100 ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.05)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  });
+
+  // Axis lines
+  for (var ai = 0; ai < 5; ai++) {
+    var apt = pentPtC(ai, rR);
+    ctx.beginPath(); ctx.moveTo(rcx, rcy); ctx.lineTo(apt[0], apt[1]);
+    ctx.strokeStyle = 'rgba(255,255,255,0.06)'; ctx.lineWidth = 1; ctx.stroke();
+  }
+
+  // Data polygon
+  var scoresPillars = PILLARS_SHARE.map(function(p) {
+    var d = result.pillarData ? result.pillarData[p] : null;
+    return d ? Math.max(d.pct, 4) : 4;
+  });
+
+  ctx.beginPath();
+  scoresPillars.forEach(function(s, i) {
+    var pt = radarPtC(i, s, rR);
+    if (i === 0) ctx.moveTo(pt[0], pt[1]); else ctx.lineTo(pt[0], pt[1]);
+  });
+  ctx.closePath();
+  var radarFill = ctx.createRadialGradient(rcx, rcy, 0, rcx, rcy, rR);
+  radarFill.addColorStop(0, tc.replace('#', 'rgba(') + ',0.35)') || 'rgba(193,255,34,0.35)';
+  radarFill.addColorStop(1, 'rgba(0,0,0,0)');
+  // Simple fill with alpha
+  ctx.save();
+  ctx.globalAlpha = 0.3;
+  ctx.fillStyle = tc;
+  ctx.fill();
+  ctx.restore();
+  ctx.strokeStyle = tc;
+  ctx.lineWidth = 3;
+  ctx.lineJoin = 'round';
+  ctx.stroke();
+
+  // Dots + labels
+  scoresPillars.forEach(function(s, i) {
+    var pt = radarPtC(i, s, rR);
+    var lpt = pentPtC(i, rR + 28);
+    ctx.beginPath();
+    ctx.arc(pt[0], pt[1], 7, 0, Math.PI * 2);
+    ctx.fillStyle = COLORS_SHARE[i];
+    ctx.fill();
+    ctx.strokeStyle = '#020f1e';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    ctx.fillStyle = 'rgba(255,255,255,0.55)';
+    ctx.font = '500 20px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(SHORT_SHARE[i], lpt[0], lpt[1] + 7);
+  });
+
+  // ── STATS ROW ──
+  var statsData = [
+    { label: 'SCORE',    value: score + '/100' },
+    { label: 'CORRECT',  value: correct + '/15' },
+    { label: 'ACCURACY', value: result.accuracy + '%' }
   ];
-  var statY = 740;
-  var colW  = 1080 / 3;
-  stats.forEach(function(s, i) {
+  var statY = 1095, colW = 1080 / 3;
+  // Divider line
+  ctx.fillStyle = 'rgba(255,255,255,0.05)';
+  ctx.fillRect(0, statY - 50, 1080, 1);
+  statsData.forEach(function(s, i) {
     var cx = colW * i + colW / 2;
-    // divider
     if (i > 0) {
-      ctx.strokeStyle = 'rgba(255,255,255,0.08)';
-      ctx.lineWidth = 1;
-      ctx.beginPath(); ctx.moveTo(colW * i, statY - 40); ctx.lineTo(colW * i, statY + 80); ctx.stroke();
+      ctx.fillStyle = 'rgba(255,255,255,0.06)';
+      ctx.fillRect(colW * i, statY - 40, 1, 80);
     }
     ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 56px sans-serif';
+    ctx.font = '900 52px sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText(s.value, cx, statY + 10);
-    ctx.fillStyle = 'rgba(255,255,255,0.35)';
-    ctx.font = '500 22px sans-serif';
-    ctx.fillText(s.label, cx, statY + 52);
+    ctx.fillText(s.value, cx, statY + 12);
+    ctx.fillStyle = 'rgba(255,255,255,0.3)';
+    ctx.font = '700 18px sans-serif';
+    ctx.fillText(s.label, cx, statY + 44);
   });
 
   // Bottom CTA
-  ctx.fillStyle = 'rgba(255,255,255,0.18)';
-  ctx.font = '400 26px sans-serif';
+  ctx.fillStyle = 'rgba(255,255,255,0.2)';
+  ctx.font = '400 24px sans-serif';
   ctx.textAlign = 'center';
-  ctx.fillText('Test your Gridiron IQ at firstdownacademy.com', 540, 960);
+  ctx.fillText('Test your Gridiron IQ at firstdownacademy.com', 540, 1300);
 
-  // Bottom lime line
+  // Bottom accent
   ctx.fillStyle = accentGrad;
-  ctx.fillRect(0, 1076, 1080, 4);
+  ctx.fillRect(0, 1345, 1080, 5);
 
   // Convert to blob and share
   canvas.toBlob(function(blob) {
