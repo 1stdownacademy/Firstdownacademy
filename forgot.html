@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forgot Password — First Down Academy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;0,900;1,800;1,900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #080c14; --surface: #0f1520; --s1: #141c2a; --s2: #1a2336;
+  --border: rgba(255,255,255,0.07); --border2: rgba(255,255,255,0.12);
+  --text: #e8edf5; --muted: #5a6580; --muted2: #8a96b0;
+  --lime: #a3e635; --lime-dim: rgba(163,230,53,0.1); --lime-glow: rgba(163,230,53,0.22);
+}
+html, body { height: 100%; }
+body {
+  background: var(--bg); color: var(--text);
+  font-family: 'Barlow', sans-serif;
+  min-height: 100vh; display: flex; flex-direction: column;
+}
+body::before {
+  content: ''; position: fixed; inset: 0;
+  background-image: repeating-linear-gradient(90deg, transparent, transparent calc(12.5% - 1px), rgba(255,255,255,0.012) calc(12.5% - 1px), rgba(255,255,255,0.012) 12.5%);
+  pointer-events: none; z-index: 0;
+}
+.glow {
+  position: fixed; border-radius: 50%; pointer-events: none; z-index: 0; filter: blur(100px);
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(163,230,53,0.05) 0%, transparent 70%);
+  top: -180px; left: 50%; transform: translateX(-50%);
+}
+.page {
+  position: relative; z-index: 1; flex: 1;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; padding: 32px 20px;
+}
+.logo-wrap {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 32px; text-decoration: none;
+}
+.logo-wrap img { height: 44px; width: auto; }
+.logo-text {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 15px; font-weight: 900; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--text);
+  line-height: 1; white-space: nowrap;
+}
+.logo-text span { color: var(--lime); }
+.card {
+  width: 100%; max-width: 400px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 20px; overflow: hidden;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.4);
+}
+.card-top {
+  background: linear-gradient(135deg, var(--s1) 0%, var(--s2) 100%);
+  padding: 28px 28px 24px; position: relative; overflow: hidden;
+}
+.card-top::after {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--lime), transparent);
+}
+.card-icon {
+  width: 48px; height: 48px; border-radius: 50%;
+  background: var(--lime-dim); border: 1px solid rgba(163,230,53,0.2);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 16px;
+}
+.card-icon svg { width: 22px; height: 22px; stroke: var(--lime); fill: none; stroke-width: 1.8; stroke-linecap: round; }
+.card-eyebrow {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase; color: var(--lime); margin-bottom: 6px;
+}
+.card-title {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 30px; font-weight: 900;
+  font-style: italic; text-transform: uppercase; color: white;
+  letter-spacing: -0.01em; line-height: 1; margin-bottom: 6px;
+}
+.card-sub { font-size: 13px; color: var(--muted2); line-height: 1.6; }
+.card-body { padding: 24px 28px 28px; }
+.field { margin-bottom: 16px; }
+label {
+  display: block; font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--muted2); margin-bottom: 7px;
+}
+input {
+  width: 100%; background: var(--s1); border: 1px solid var(--border);
+  border-radius: 10px; padding: 13px 16px; color: var(--text);
+  font-family: 'Barlow', sans-serif; font-size: 15px; outline: none;
+  transition: border-color .2s, box-shadow .2s; -webkit-appearance: none;
+}
+input::placeholder { color: var(--muted); }
+input:focus { border-color: rgba(163,230,53,0.4); box-shadow: 0 0 0 3px rgba(163,230,53,0.07); }
+.btn-submit {
+  width: 100%; background: var(--lime); color: #080c14;
+  font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 900;
+  letter-spacing: 0.1em; text-transform: uppercase; border: none;
+  border-radius: 10px; padding: 15px; cursor: pointer;
+  transition: transform .15s, box-shadow .15s, background .15s;
+}
+.btn-submit:hover { transform: translateY(-1px); box-shadow: 0 8px 24px var(--lime-glow); background: #b6f03f; }
+.btn-submit:disabled { opacity: .5; cursor: not-allowed; transform: none; box-shadow: none; }
+.btn-outline {
+  width: 100%; background: transparent; border: 1px solid var(--border2);
+  color: var(--muted2); font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  border-radius: 10px; padding: 13px; cursor: pointer; text-decoration: none;
+  text-align: center; display: block; margin-top: 10px;
+  transition: color .2s, border-color .2s, background .2s;
+}
+.btn-outline:hover { color: var(--text); border-color: rgba(255,255,255,0.2); background: var(--s1); }
+
+/* Status message */
+.msg {
+  border-radius: 10px; padding: 14px 16px;
+  font-size: 13px; font-weight: 500; margin-bottom: 16px;
+  display: none; line-height: 1.5;
+}
+.msg.error   { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.25); color: #f87171; display: block; }
+.msg.success { background: rgba(163,230,53,0.08); border: 1px solid rgba(163,230,53,0.15); color: var(--lime); display: block; }
+.msg.loading { background: rgba(163,230,53,0.05); border: 1px solid rgba(163,230,53,0.1); color: var(--muted2); display: block; }
+
+/* Success state */
+.success-state { display: none; text-align: center; padding: 8px 0 4px; }
+.success-circle {
+  width: 64px; height: 64px; border-radius: 50%;
+  background: rgba(163,230,53,0.1); border: 1px solid rgba(163,230,53,0.2);
+  display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;
+}
+.success-circle svg { width: 28px; height: 28px; stroke: var(--lime); fill: none; stroke-width: 2.5; stroke-linecap: round; }
+.success-title {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 900;
+  text-transform: uppercase; color: var(--text); margin-bottom: 8px;
+}
+.success-body { font-size: 13px; color: var(--muted2); line-height: 1.6; margin-bottom: 20px; }
+
+.page-footer {
+  position: relative; z-index: 1; text-align: center;
+  padding: 20px; font-size: 12px; color: var(--muted);
+}
+.page-footer a { color: var(--muted2); text-decoration: none; }
+.page-footer a:hover { color: var(--lime); }
+</style>
+</head>
+<body>
+<div class="glow"></div>
+<div class="page">
+
+  <a class="logo-wrap" href="index.html">
+    <img src="logo.png" alt="First Down Academy" onerror="this.style.display='none'">
+    <div class="logo-text">First Down <span>Academy</span></div>
+  </a>
+
+  <div class="card">
+    <div class="card-top">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+      </div>
+      <div class="card-eyebrow">Account Recovery</div>
+      <div class="card-title">Forgot Password?</div>
+      <div class="card-sub">Enter your email and we'll send you a link to reset your password.</div>
+    </div>
+
+    <div class="card-body">
+      <!-- Form state -->
+      <div id="formState">
+        <div class="msg" id="statusMsg"></div>
+        <div class="field">
+          <label for="resetEmail">Email Address</label>
+          <input type="email" id="resetEmail" placeholder="you@email.com" autocomplete="email">
+        </div>
+        <button class="btn-submit" id="sendBtn" onclick="sendReset()">Send Reset Link →</button>
+        <a class="btn-outline" href="auth.html">← Back to Log In</a>
+      </div>
+
+      <!-- Success state -->
+      <div class="success-state" id="successState">
+        <div class="success-circle">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="success-title">Check Your Email</div>
+        <div class="success-body" id="successBody">
+          We sent a reset link to <strong id="sentTo" style="color:var(--text);"></strong>.<br>
+          Check your inbox — it expires in 1 hour.
+        </div>
+        <a class="btn-outline" href="auth.html">← Back to Log In</a>
+        <button class="btn-outline" style="margin-top:8px;border:none;color:var(--muted);font-size:12px;background:none;cursor:pointer;" onclick="resendReset()">
+          Didn't get it? Resend
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>
+<footer class="page-footer">
+  <a href="legal.html">Privacy</a> &middot; <a href="legal.html">Terms</a> &middot; <a href="index.html">firstdownacademy.com</a>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="app.js?v=2"></script>
+<script>
+// Stubs
+function showPage(n) {}
+function buildModuleList() {}
+function buildDashModuleList() {}
+function updateNavForLoggedIn() {}
+
+var lastEmail = '';
+
+function showMsg(type, text) {
+  var el = document.getElementById('statusMsg');
+  el.className = 'msg ' + type;
+  el.textContent = text;
+}
+
+async function sendReset() {
+  var email = document.getElementById('resetEmail').value.trim();
+  if (!email || !email.includes('@')) {
+    showMsg('error', 'Please enter a valid email address.');
+    return;
+  }
+
+  lastEmail = email;
+  var btn = document.getElementById('sendBtn');
+  btn.disabled = true;
+  btn.textContent = 'Sending…';
+  showMsg('loading', 'Sending reset link…');
+
+  try {
+    var result = await db.auth.resetPasswordForEmail(email, {
+      redirectTo: window.location.origin + '/reset.html'
+    });
+
+    if (result.error) {
+      showMsg('error', result.error.message || 'Something went wrong. Please try again.');
+      btn.disabled = false;
+      btn.textContent = 'Send Reset Link →';
+      return;
+    }
+
+    // Show success state regardless of whether email exists
+    // (Supabase does this intentionally to prevent user enumeration)
+    document.getElementById('formState').style.display = 'none';
+    document.getElementById('successState').style.display = 'block';
+    document.getElementById('sentTo').textContent = email;
+
+  } catch(err) {
+    console.error(err);
+    showMsg('error', 'Something went wrong. Please try again.');
+    btn.disabled = false;
+    btn.textContent = 'Send Reset Link →';
+  }
+}
+
+async function resendReset() {
+  if (!lastEmail) return;
+  await db.auth.resetPasswordForEmail(lastEmail, {
+    redirectTo: window.location.origin + '/reset.html'
+  });
+  var btn = event.currentTarget;
+  btn.textContent = '✓ Sent again!';
+  setTimeout(function() { btn.textContent = "Didn't get it? Resend"; }, 3000);
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && document.getElementById('formState').style.display !== 'none') {
+    sendReset();
+  }
+});
+</script>
+</body>
+</html>
