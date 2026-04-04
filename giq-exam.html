@@ -375,7 +375,7 @@ a{text-decoration:none;}
   font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
   color:#d9e7fc;
 }
-.conf-pts{font-size:10px;color:#9eacc0;text-align:center;line-height:1.3;}
+.conf-pts{display:none;}
 .conf-note{
   font-size:11px;color:#9eacc0;text-align:center;
   padding:8px 12px;background:#0d2134;border-radius:2px;
@@ -710,17 +710,14 @@ a{text-decoration:none;}
             <button class="conf-btn" id="conf1" onclick="selectConf(1)">
               <span class="conf-emoji">&#129300;</span>
               <span class="conf-name">Not Sure</span>
-              <span class="conf-pts">+1 / 0</span>
             </button>
             <button class="conf-btn" id="conf2" onclick="selectConf(2)">
               <span class="conf-emoji">&#128578;</span>
               <span class="conf-name">Pretty Sure</span>
-              <span class="conf-pts">+2 / &minus;1</span>
             </button>
             <button class="conf-btn" id="conf3" onclick="selectConf(3)">
               <span class="conf-emoji">&#128170;</span>
               <span class="conf-name">Certain</span>
-              <span class="conf-pts">+3 / &minus;2</span>
             </button>
           </div>
           <div class="conf-note">Guessing confidently costs points. Only mark Certain when you know it.</div>
@@ -1255,7 +1252,7 @@ function showResults(preResult) {
   document.getElementById('gradeTier').style.color    = result.tierColor;
   document.getElementById('gradeTierSub').textContent = result.tierSub;
   document.getElementById('statCorrect').textContent  = result.correct + '/15';
-  document.getElementById('statPeak').textContent     = result.peakBand.charAt(0).toUpperCase() + result.peakBand.slice(1);
+  var wrongEl = document.getElementById('statWrong'); if (wrongEl) wrongEl.textContent = (15 - result.correct);
   document.getElementById('statAcc').textContent      = result.accuracy + '%';
 
   // Pillar section
