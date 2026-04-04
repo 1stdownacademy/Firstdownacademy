@@ -229,21 +229,7 @@ async function doSignup() {
       showAuthMsg('success', 'Account created! Logging you in...');
       setTimeout(function() { window.location.href = nextPage; }, 1500);
     } else {
-      var msgEl = document.getElementById('authMsg');
-      if (msgEl) {
-        msgEl.innerHTML =
-          '<div style="text-align:center;padding:8px 0;">' +
-          '<div style="font-size:28px;margin-bottom:10px;">&#x1F4EC;</div>' +
-          '<div style="font-weight:700;font-size:16px;margin-bottom:6px;color:#fff;">Check your inbox</div>' +
-          '<div style="font-size:13px;color:rgba(255,255,255,.6);line-height:1.6;max-width:320px;margin:0 auto;">' +
-            'We sent a confirmation link to <strong style="color:#fff;">' + email + '</strong>. ' +
-            'Click it to activate your account, then come back to sign in.' +
-          '</div>' +
-          '<div style="margin-top:16px;font-size:11px;color:rgba(255,255,255,.3);">Can&#39;t find it? Check your spam folder.</div>' +
-          '</div>';
-        msgEl.className = 'auth-msg auth-msg-success';
-        msgEl.style.display = 'block';
-      }
+      showInboxConfirmation(email);
     }
   } catch(err) { showAuthMsg('error', 'Something went wrong. Please try again.'); console.error(err); }
 }
@@ -291,21 +277,9 @@ async function doCoachSignup() {
     } else {
       // Email confirmation required — show inbox message
       showAuthMsg('success', '');
-      var msgEl = document.getElementById('authMsg');
-      if (msgEl) {
-        msgEl.innerHTML =
-          '<div style="text-align:center;padding:8px 0;">' +
-          '<div style="font-size:28px;margin-bottom:10px;">📬</div>' +
-          '<div style="font-weight:700;font-size:16px;margin-bottom:6px;color:#fff;">Check your inbox</div>' +
-          '<div style="font-size:13px;color:rgba(255,255,255,.6);line-height:1.6;max-width:320px;margin:0 auto;">' +
-            'We sent a confirmation link to <strong style="color:#fff;">' + email + '</strong>. ' +
-            'Click it to activate your account, then come back to sign in.' +
-          '</div>' +
-          '<div style="margin-top:16px;font-size:11px;color:rgba(255,255,255,.3);">Can&#39;t find it? Check your spam folder.</div>' +
-          '</div>';
-        msgEl.className = 'auth-msg auth-msg-success';
-        msgEl.style.display = 'block';
-      }
+      // Hide the form entirely, show inbox message full panel
+      // Hide the form, show full-panel inbox confirmation
+      showInboxConfirmation(email);
     }
   } catch(err) { showAuthMsg('error', 'Something went wrong. Please try again.'); console.error(err); }
 }
@@ -330,6 +304,28 @@ async function doLogout() {
   await db.auth.signOut();
   currentUser = null; currentProfile = null;
   window.location.href = 'index.html';
+}
+
+function showInboxConfirmation(email) {
+  var form = document.getElementById("formSignup");
+  if (form) form.style.display = "none";
+  var container = document.querySelector(".auth-right-inner");
+  if (!container) return;
+  container.innerHTML = [
+    "<div style='display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;text-align:center;padding:0 20px'>",
+      "<div style='font-size:52px;margin-bottom:20px'>&#x1F4EC;</div>",
+      "<div style='font-family:Barlow Condensed,sans-serif;font-size:32px;font-weight:900;letter-spacing:-.01em;text-transform:uppercase;color:#fff;margin-bottom:14px'>CHECK YOUR INBOX</div>",
+      "<div style='font-size:15px;color:rgba(255,255,255,.5);line-height:1.8;max-width:340px;margin-bottom:28px'>",
+        "We sent a confirmation link to<br>",
+        "<strong style='color:#C1FF22'>" + email + "</strong><br>",
+        "Click it to activate your account, then sign in.",
+      "</div>",
+      "<div style='background:#081b2c;border:1px solid rgba(193,255,34,.15);border-radius:8px;padding:12px 24px;margin-bottom:28px'>",
+        "<span style='font-size:11px;color:rgba(255,255,255,.25)'>Check your spam folder if you don’t see it</span>",
+      "</div>",
+      "<a href='auth.html?tab=login' style='font-family:Barlow Condensed,sans-serif;font-size:13px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(193,255,34,.7);text-decoration:none;border-bottom:1px solid rgba(193,255,34,.25);padding-bottom:2px'>Sign In Once Confirmed &#x2192;</a>",
+    "</div>"
+  ].join("");
 }
 
 function showAuthMsg(type, msg) {
