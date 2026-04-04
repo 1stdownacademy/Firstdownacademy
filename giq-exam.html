@@ -350,7 +350,7 @@ a{text-decoration:none;}
 .q-opt-text{font-size:14px;color:#d9e7fc;line-height:1.4;}
 /* Confidence */
 .conf-section{
-  display:none;padding:16px 24px 20px;
+  display:none;padding:14px 24px 18px;
   border-top:1px solid rgba(255,255,255,.06);
   animation:cardIn .25s ease;
 }
@@ -360,96 +360,78 @@ a{text-decoration:none;}
   font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
   color:#9eacc0;margin-bottom:10px;
 }
-.conf-btns{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px;}
+.conf-btns{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
+}
+
+/* Signal bar button */
 .conf-btn{
-  display:flex;flex-direction:column;align-items:center;gap:8px;
-  padding:16px 8px;border-radius:2px;
-  border:1.5px solid rgba(255,255,255,.06);
-  background:rgba(255,255,255,.02);cursor:pointer;transition:all .18s;
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  padding:16px 8px 14px;
+  border-radius:2px;
+  border:1.5px solid rgba(255,255,255,.07);
+  background:#0d2134;
+  cursor:pointer;
+  transition:all .18s;
   position:relative;overflow:hidden;
 }
-.conf-btn::after{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(180deg,rgba(255,255,255,.03) 0%,transparent 100%);
-  pointer-events:none;
+.conf-btn:hover{
+  border-color:rgba(255,255,255,.2);
+  background:#102840;
+  transform:translateY(-2px);
 }
-.conf-btn:hover{ transform:translateY(-2px); }
 .conf-btn.active{ transform:translateY(-2px); }
+#conf1.active{ border-color:rgba(59,130,246,.6);background:rgba(59,130,246,.08); }
+#conf2.active{ border-color:rgba(245,158,11,.6);background:rgba(245,158,11,.08); }
+#conf3.active{ border-color:#C1FF22;background:rgba(193,255,34,.08); }
 
-/* Icon containers — each confidence level gets its own color */
-.conf-icon-wrap{
-  width:40px;height:40px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  transition:all .18s;flex-shrink:0;
-}
-/* Not Sure — blue/muted */
-.conf-icon-low{
-  background:rgba(59,130,246,.12);
-  color:#93c5fd;
-  border:1px solid rgba(59,130,246,.2);
-}
-.conf-btn:hover .conf-icon-low,
-.conf-btn.active .conf-icon-low{
-  background:rgba(59,130,246,.22);
-  border-color:rgba(59,130,246,.45);
-  box-shadow:0 0 16px rgba(59,130,246,.2);
-}
-/* Pretty Sure — amber */
-.conf-icon-mid{
-  background:rgba(245,158,11,.1);
-  color:#fcd34d;
-  border:1px solid rgba(245,158,11,.2);
-}
-.conf-btn:hover .conf-icon-mid,
-.conf-btn.active .conf-icon-mid{
-  background:rgba(245,158,11,.2);
-  border-color:rgba(245,158,11,.45);
-  box-shadow:0 0 16px rgba(245,158,11,.2);
-}
-/* Certain — lime */
-.conf-icon-high{
-  background:rgba(193,255,34,.1);
-  color:#C1FF22;
-  border:1px solid rgba(193,255,34,.2);
-}
-.conf-btn:hover .conf-icon-high,
-.conf-btn.active .conf-icon-high{
-  background:rgba(193,255,34,.18);
-  border-color:#C1FF22;
-  box-shadow:0 0 16px rgba(193,255,34,.25);
+/* Signal bars container */
+.conf-signal{
+  display:flex;align-items:flex-end;gap:3px;
+  height:28px;
 }
 
-/* Active border colors per level */
-#conf1.active{ border-color:rgba(59,130,246,.5);background:rgba(59,130,246,.06); }
-#conf2.active{ border-color:rgba(245,158,11,.5);background:rgba(245,158,11,.06); }
-#conf3.active{ border-color:#C1FF22;background:rgba(193,255,34,.06); }
+/* Individual bars */
+.conf-bar{
+  border-radius:2px;
+  transition:all .2s;
+}
+.cb1{ width:8px;height:12px; }
+.cb2{ width:8px;height:20px; }
+.cb3{ width:8px;height:28px; }
+
+/* Colors */
+.cb-empty{ background:rgba(255,255,255,.1); }
+
+/* Unsure — blue, 1 bar */
+.cb-low{ background:#3b82f6; }
+#conf1:hover .cb-empty,
+#conf1.active .cb-empty{ background:rgba(59,130,246,.25); }
+
+/* Pretty Sure — amber, 2 bars */
+.cb-mid{ background:#f59e0b; }
+#conf2:hover .cb-empty,
+#conf2.active .cb-empty{ background:rgba(245,158,11,.25); }
+
+/* Locked In — lime, 3 bars */
+.cb-high{ background:#C1FF22; }
+
+/* Glow on active */
+#conf1.active .cb-low { box-shadow:0 0 8px rgba(59,130,246,.6); }
+#conf2.active .cb-mid { box-shadow:0 0 8px rgba(245,158,11,.5); }
+#conf3.active .cb-high { box-shadow:0 0 8px rgba(193,255,34,.5); }
 
 .conf-name{
   font-family:'Barlow Condensed',sans-serif;
-  font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
-  color:#d9e7fc;line-height:1;
+  font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(255,255,255,.55);line-height:1;transition:color .18s;
 }
-.conf-btn.active .conf-name{ color:#fff; }
-.conf-note{
-  font-size:11px;color:#9eacc0;text-align:center;
-  padding:8px 12px;background:#0d2134;border-radius:2px;
-  border:1px solid rgba(255,255,255,.06);line-height:1.5;
-}
-/* Next button */
-.next-btn{
-  width:100%;padding:14px;
-  background:#12273c;color:rgba(255,255,255,.25);
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:13px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
-  border:1px solid rgba(255,255,255,.08);border-radius:2px;cursor:not-allowed;
-  transition:all .2s;margin:0 24px 24px;width:calc(100% - 48px);
-}
-.next-btn.ready{
-  background:#C1FF22;color:#0d1a00;border-color:#C1FF22;cursor:pointer;
-  box-shadow:0 4px 20px rgba(193,255,34,.3);
-}
-.next-btn.ready:hover{background:#d0ff55;transform:translateY(-1px);box-shadow:0 8px 28px rgba(193,255,34,.4);}
+.conf-btn:hover .conf-name{ color:#fff; }
+#conf1.active .conf-name{ color:#93c5fd; }
+#conf2.active .conf-name{ color:#fcd34d; }
+#conf3.active .conf-name{ color:#C1FF22; }
 
+/* Remove next button CSS since button is gone */
 /* ══════════════════════════
    RESULTS SCREEN
 ══════════════════════════ */
@@ -600,7 +582,7 @@ a{text-decoration:none;}
   .q-opts-wrap{padding:16px 16px;}
   .conf-section{padding:12px 16px 16px;}
   .conf-btns{gap:6px;}
-  .next-btn{margin:0 16px 20px;width:calc(100% - 32px);}
+  
   .results-screen{padding:20px 12px 80px;}
   .grade-head{padding:28px 20px 24px;}
   .grade-display{font-size:72px;}
@@ -806,8 +788,6 @@ a{text-decoration:none;}
           </div>
           <div class="conf-note">Your confidence level affects your score. Only pick Certain when you truly know it.</div>
         </div>
-
-        <button class="next-btn" id="nextBtn" onclick="nextQuestion()">Next Question &rarr;</button>
       </div>
     </div>
   </div>
@@ -1166,9 +1146,7 @@ function renderQuestion() {
   // Reset confidence
   document.getElementById('confSection').classList.remove('show');
   [1,2,3].forEach(function(n) { document.getElementById('conf'+n).classList.remove('active'); });
-  var nb = document.getElementById('nextBtn');
-  nb.className = 'next-btn';
-  nb.textContent = num === total ? 'See My Grade \u2192' : 'Next Question \u2192';
+  // next button removed — auto-advance on confidence
 
   // Animate card
   var card = document.getElementById('qCard');
@@ -1184,7 +1162,7 @@ function selectOpt(idx, btn) {
   state.confidence = null;
   document.getElementById('confSection').classList.add('show');
   [1,2,3].forEach(function(n) { document.getElementById('conf'+n).classList.remove('active'); });
-  document.getElementById('nextBtn').className = 'next-btn'; // locked until confidence
+  // next button removed // locked until confidence
 }
 
 function selectConf(level) {
@@ -1192,9 +1170,8 @@ function selectConf(level) {
   [1,2,3].forEach(function(n) {
     document.getElementById('conf'+n).classList.toggle('active', n === level);
   });
-  document.getElementById('nextBtn').className = 'next-btn ready';
-  // Auto-advance after brief delay
-  setTimeout(function() { nextQuestion(); }, 400);
+  // Auto-advance after brief pause so user sees their selection
+  setTimeout(function() { nextQuestion(); }, 520);
 }
 
 function nextQuestion() {
