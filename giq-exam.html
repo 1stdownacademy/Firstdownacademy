@@ -362,20 +362,74 @@ a{text-decoration:none;}
 }
 .conf-btns{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px;}
 .conf-btn{
-  display:flex;flex-direction:column;align-items:center;gap:5px;
-  padding:12px 8px;border-radius:2px;
-  border:1.5px solid rgba(255,255,255,.08);
-  background:rgba(255,255,255,.02);cursor:pointer;transition:all .15s;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  padding:16px 8px;border-radius:2px;
+  border:1.5px solid rgba(255,255,255,.06);
+  background:rgba(255,255,255,.02);cursor:pointer;transition:all .18s;
+  position:relative;overflow:hidden;
 }
-.conf-btn:hover{border-color:rgba(193,255,34,.4);background:rgba(193,255,34,.04);}
-.conf-btn.active{border-color:#C1FF22;background:rgba(193,255,34,.08);}
-.conf-emoji{font-size:20px;line-height:1;}
+.conf-btn::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(255,255,255,.03) 0%,transparent 100%);
+  pointer-events:none;
+}
+.conf-btn:hover{ transform:translateY(-2px); }
+.conf-btn.active{ transform:translateY(-2px); }
+
+/* Icon containers — each confidence level gets its own color */
+.conf-icon-wrap{
+  width:40px;height:40px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .18s;flex-shrink:0;
+}
+/* Not Sure — blue/muted */
+.conf-icon-low{
+  background:rgba(59,130,246,.12);
+  color:#93c5fd;
+  border:1px solid rgba(59,130,246,.2);
+}
+.conf-btn:hover .conf-icon-low,
+.conf-btn.active .conf-icon-low{
+  background:rgba(59,130,246,.22);
+  border-color:rgba(59,130,246,.45);
+  box-shadow:0 0 16px rgba(59,130,246,.2);
+}
+/* Pretty Sure — amber */
+.conf-icon-mid{
+  background:rgba(245,158,11,.1);
+  color:#fcd34d;
+  border:1px solid rgba(245,158,11,.2);
+}
+.conf-btn:hover .conf-icon-mid,
+.conf-btn.active .conf-icon-mid{
+  background:rgba(245,158,11,.2);
+  border-color:rgba(245,158,11,.45);
+  box-shadow:0 0 16px rgba(245,158,11,.2);
+}
+/* Certain — lime */
+.conf-icon-high{
+  background:rgba(193,255,34,.1);
+  color:#C1FF22;
+  border:1px solid rgba(193,255,34,.2);
+}
+.conf-btn:hover .conf-icon-high,
+.conf-btn.active .conf-icon-high{
+  background:rgba(193,255,34,.18);
+  border-color:#C1FF22;
+  box-shadow:0 0 16px rgba(193,255,34,.25);
+}
+
+/* Active border colors per level */
+#conf1.active{ border-color:rgba(59,130,246,.5);background:rgba(59,130,246,.06); }
+#conf2.active{ border-color:rgba(245,158,11,.5);background:rgba(245,158,11,.06); }
+#conf3.active{ border-color:#C1FF22;background:rgba(193,255,34,.06); }
+
 .conf-name{
   font-family:'Barlow Condensed',sans-serif;
-  font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
-  color:#d9e7fc;
+  font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+  color:#d9e7fc;line-height:1;
 }
-.conf-pts{font-size:10px;color:#9eacc0;text-align:center;line-height:1.3;}
+.conf-btn.active .conf-name{ color:#fff; }
 .conf-note{
   font-size:11px;color:#9eacc0;text-align:center;
   padding:8px 12px;background:#0d2134;border-radius:2px;
@@ -707,23 +761,50 @@ a{text-decoration:none;}
         <div class="conf-section" id="confSection">
           <div class="conf-label">How confident are you?</div>
           <div class="conf-btns">
+
+            <!-- NOT SURE -->
             <button class="conf-btn" id="conf1" onclick="selectConf(1)">
-              <span class="conf-emoji">&#129300;</span>
+              <div class="conf-icon-wrap conf-icon-low">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                  <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/>
+                  <path d="M8.5 15c.5-1 1.8-2 3.5-2s3 1 3.5 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  <circle cx="9" cy="10" r="1" fill="currentColor"/>
+                  <circle cx="15" cy="10" r="1" fill="currentColor"/>
+                  <path d="M9 8.5c.5-.8 1.5-1 2-.5M15 8.5c-.5-.8-1.5-1-2-.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity=".5"/>
+                </svg>
+              </div>
               <span class="conf-name">Not Sure</span>
-              <span class="conf-pts">+1 / 0</span>
             </button>
+
+            <!-- PRETTY SURE -->
             <button class="conf-btn" id="conf2" onclick="selectConf(2)">
-              <span class="conf-emoji">&#128578;</span>
+              <div class="conf-icon-wrap conf-icon-mid">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                  <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/>
+                  <path d="M8.5 15.5c.8-.8 2-1.5 3.5-1.5s2.7.7 3.5 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  <circle cx="9" cy="10" r="1" fill="currentColor"/>
+                  <circle cx="15" cy="10" r="1" fill="currentColor"/>
+                </svg>
+              </div>
               <span class="conf-name">Pretty Sure</span>
-              <span class="conf-pts">+2 / &minus;1</span>
             </button>
+
+            <!-- CERTAIN -->
             <button class="conf-btn" id="conf3" onclick="selectConf(3)">
-              <span class="conf-emoji">&#128170;</span>
+              <div class="conf-icon-wrap conf-icon-high">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                  <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/>
+                  <path d="M8 14.5c1-1.5 2.2-2 4-2s3 .5 4 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  <circle cx="9" cy="10" r="1" fill="currentColor"/>
+                  <circle cx="15" cy="10" r="1" fill="currentColor"/>
+                  <path d="M7 8l1.5 1.5M17 8l-1.5 1.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity=".6"/>
+                </svg>
+              </div>
               <span class="conf-name">Certain</span>
-              <span class="conf-pts">+3 / &minus;2</span>
             </button>
+
           </div>
-          <div class="conf-note">Guessing confidently costs points. Only mark Certain when you know it.</div>
+          <div class="conf-note">Your confidence level affects your score. Only pick Certain when you truly know it.</div>
         </div>
 
         <button class="next-btn" id="nextBtn" onclick="nextQuestion()">Next Question &rarr;</button>
