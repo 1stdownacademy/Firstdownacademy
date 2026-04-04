@@ -107,8 +107,8 @@ function switchRole(role) {
 }
 
 function generateSlug(mascot) {
-  var clean = mascot.toLowerCase().replace(/[^a-z0-9]/g, '');
-  return clean + Math.floor(1000 + Math.random() * 9000);
+  var clean = mascot.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 10);
+  return clean + Math.floor(100 + Math.random() * 900);
 }
 
 function updateCoachPreview() {
@@ -220,10 +220,31 @@ async function doSignup() {
       currentUser = signupResult.data.user;
       currentProfile = { full_name: name, coach_id: coachId, referral_code: refCode };
     }
-    showAuthMsg('success', 'Account created! Logging you in...');
-    setTimeout(function() {
-      window.location.href = 'dashboard.html';
-    }, 1500);
+    // Check if email confirmation is required
+    var sessionCheck = await db.auth.getSession();
+    var hasSession = sessionCheck.data && sessionCheck.data.session;
+    var nextPage = new URLSearchParams(window.location.search).get('next') || 'dashboard.html';
+
+    if (hasSession) {
+      showAuthMsg('success', 'Account created! Logging you in...');
+      setTimeout(function() { window.location.href = nextPage; }, 1500);
+    } else {
+      var msgEl = document.getElementById('authMsg');
+      if (msgEl) {
+        msgEl.innerHTML =
+          '<div style="text-align:center;padding:8px 0;">' +
+          '<div style="font-size:28px;margin-bottom:10px;">&#x1F4EC;</div>' +
+          '<div style="font-weight:700;font-size:16px;margin-bottom:6px;color:#fff;">Check your inbox</div>' +
+          '<div style="font-size:13px;color:rgba(255,255,255,.6);line-height:1.6;max-width:320px;margin:0 auto;">' +
+            'We sent a confirmation link to <strong style="color:#fff;">' + email + '</strong>. ' +
+            'Click it to activate your account, then come back to sign in.' +
+          '</div>' +
+          '<div style="margin-top:16px;font-size:11px;color:rgba(255,255,255,.3);">Can&#39;t find it? Check your spam folder.</div>' +
+          '</div>';
+        msgEl.className = 'auth-msg auth-msg-success';
+        msgEl.style.display = 'block';
+      }
+    }
   } catch(err) { showAuthMsg('error', 'Something went wrong. Please try again.'); console.error(err); }
 }
 
@@ -233,11 +254,15 @@ async function doCoachSignup() {
   var password = document.getElementById('coachPassword') ? document.getElementById('coachPassword').value.trim() : '';
   var teamName = document.getElementById('coachTeamName') ? document.getElementById('coachTeamName').value.trim() : '';
 
-  // Auto-generate slug from team name
-  var slug = generateSlug(teamName || name || 'coach');
+  var mascot   = document.getElementById('coachMascot') ? document.getElementById('coachMascot').value.trim() : '';
+
+  // Build code from mascot if provided, otherwise fall back to team name
+  var codeBase = mascot || teamName || name || 'team';
+  var slug = generateSlug(codeBase);
 
   if (!name || !email || !password) { showAuthMsg('error', 'Please fill in all required fields.'); return; }
   if (!teamName) { showAuthMsg('error', 'Please enter your team name.'); return; }
+  if (!mascot) { showAuthMsg('error', 'Please enter your team mascot (e.g. Bears, Eagles).'); return; }
   if (password.length < 6) { showAuthMsg('error', 'Password must be at least 6 characters.'); return; }
   showAuthMsg('loading', 'Creating your coach account...');
 
@@ -256,10 +281,32 @@ async function doCoachSignup() {
       currentUser = signupResult.data.user;
       currentProfile = { full_name: name, referral_code: slug, team_name: teamName, role: 'coach' };
     }
-    showAuthMsg('success', 'Coach account created! Your referral link is ready in your dashboard.');
-    setTimeout(function() {
-      window.location.href = 'dashboard.html';
-    }, 1500);
+    // Supabase may require email confirmation before session is active
+    var sessionCheck = await db.auth.getSession();
+    var hasSession = sessionCheck.data && sessionCheck.data.session;
+
+    if (hasSession) {
+      showAuthMsg('success', 'Account created! Taking you to your dashboard...');
+      setTimeout(function() { window.location.href = 'dashboard.html'; }, 1500);
+    } else {
+      // Email confirmation required — show inbox message
+      showAuthMsg('success', '');
+      var msgEl = document.getElementById('authMsg');
+      if (msgEl) {
+        msgEl.innerHTML =
+          '<div style="text-align:center;padding:8px 0;">' +
+          '<div style="font-size:28px;margin-bottom:10px;">📬</div>' +
+          '<div style="font-weight:700;font-size:16px;margin-bottom:6px;color:#fff;">Check your inbox</div>' +
+          '<div style="font-size:13px;color:rgba(255,255,255,.6);line-height:1.6;max-width:320px;margin:0 auto;">' +
+            'We sent a confirmation link to <strong style="color:#fff;">' + email + '</strong>. ' +
+            'Click it to activate your account, then come back to sign in.' +
+          '</div>' +
+          '<div style="margin-top:16px;font-size:11px;color:rgba(255,255,255,.3);">Can&#39;t find it? Check your spam folder.</div>' +
+          '</div>';
+        msgEl.className = 'auth-msg auth-msg-success';
+        msgEl.style.display = 'block';
+      }
+    }
   } catch(err) { showAuthMsg('error', 'Something went wrong. Please try again.'); console.error(err); }
 }
 
@@ -273,12 +320,9 @@ async function doLogin() {
     if (result.error) { showAuthMsg('error', 'Incorrect email or password.'); return; }
     currentUser = result.data.user;
     await loadProfile();
-    // Navigate to dashboard — use direct navigation, not SPA showPage
-    if (typeof window !== 'undefined') {
-      window.location.href = 'dashboard.html';
-    } else {
-      showPage('dashboard');
-    }
+    // Navigate to next page or dashboard
+    var nextPage = new URLSearchParams(window.location.search).get('next');
+    window.location.href = nextPage || 'dashboard.html';
   } catch(err) { showAuthMsg('error', 'Something went wrong. Please try again.'); console.error(err); }
 }
 
@@ -445,7 +489,7 @@ async function loadCoachDashboard() {
   var teamEl = document.getElementById('dashCoachTeam');
   if (teamEl) teamEl.textContent = currentProfile.team_name || '';
   var refCode = currentProfile.referral_code || '';
-  var fullLink = 'https://firstdownacademy.com/signup.html?ref=' + refCode;
+  var fullLink = 'https://firstdownacademy.com/auth.html?ref=' + refCode;
   var refLinkEl = document.getElementById('coachRefLink');
   if (refLinkEl) refLinkEl.textContent = fullLink;
   var codeEl = document.getElementById('coachStatCode');
@@ -486,7 +530,7 @@ async function loadCoachDashboard() {
 
 function copyCoachLink() {
   var refCode = currentProfile ? currentProfile.referral_code : '';
-  var link = 'https://firstdownacademy.com/signup.html?ref=' + refCode;
+  var link = 'https://firstdownacademy.com/auth.html?ref=' + refCode;
   // Try clipboard API first, fall back to selecting the text
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(link).then(function() {
