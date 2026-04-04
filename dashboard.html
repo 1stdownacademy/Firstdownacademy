@@ -10,1402 +10,585 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700;1,800;1,900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
-
 <style>
-/* ══════════════════════════════════════════
-   RESET + TOKENS
-══════════════════════════════════════════ */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-
-:root {
-  --bg:        #080c14;
-  --surface:   #0f1520;
-  --s1:        #141c2a;
-  --s2:        #1a2336;
-  --s3:        #202c42;
-  --border:    rgba(255,255,255,0.06);
-  --border2:   rgba(255,255,255,0.1);
-  --text:      #e8edf5;
-  --muted:     #5a6580;
-  --muted2:    #8a96b0;
-
-  --lime:      #a3e635;
-  --lime-dim:  rgba(163,230,53,0.1);
-  --lime-glow: rgba(163,230,53,0.25);
-
-  --orange:    #e8630a;
-  --orange-dim:rgba(232,99,10,0.1);
-
-  --blue:      #3b82f6;
-  --purple:    #8b5cf6;
-  --amber:     #f59e0b;
-  --green:     #22c55e;
-  --red:       #ef4444;
-
-  --p0: #e8630a; --p1: #3b82f6; --p2: #8b5cf6;
-  --p3: #f59e0b; --p4: #22c55e;
-
-  --font-d: 'Barlow Condensed', sans-serif;
-  --font-b: 'Barlow', sans-serif;
-
-  --nav-h: 64px;
-  --side-w: 220px;
-  --r: 12px;
-  --r-lg: 18px;
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+:root{
+  --bg:#080c14;--surface:#0f1520;--s1:#141c2a;--s2:#1a2336;--s3:#202c42;
+  --border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.1);
+  --text:#e8edf5;--muted:#5a6580;--muted2:#8a96b0;
+  --lime:#a3e635;--lime-dim:rgba(163,230,53,0.1);--lime-glow:rgba(163,230,53,0.25);
+  --orange:#e8630a;--orange-dim:rgba(232,99,10,0.1);
+  --blue:#3b82f6;--purple:#8b5cf6;--amber:#f59e0b;--green:#22c55e;--red:#ef4444;
+  --p0:#e8630a;--p1:#3b82f6;--p2:#8b5cf6;--p3:#f59e0b;--p4:#22c55e;
+  --font-d:'Barlow Condensed',sans-serif;--font-b:'Barlow',sans-serif;
+  --nav-h:64px;--side-w:220px;--r:12px;--r-lg:18px;
 }
+body{background:var(--bg);color:var(--text);font-family:var(--font-b);min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background-image:repeating-linear-gradient(90deg,transparent,transparent calc(12.5% - 1px),rgba(255,255,255,0.013) calc(12.5% - 1px),rgba(255,255,255,0.013) 12.5%);pointer-events:none;z-index:0;}
 
-body {
-  background: var(--bg);
+/* NAV */
+.top-nav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);background:rgba(8,12,20,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 24px;z-index:200;}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0;}
+.nav-logo img{height:36px;width:auto;}
+.nav-brand{font-family:var(--font-d);font-size:15px;font-weight:900;letter-spacing:0.06em;text-transform:uppercase;color:var(--text);line-height:1.1;}
+.nav-brand span{color:var(--lime);}
+.nav-links{display:none;gap:6px;}
+@media(min-width:900px){.nav-links{display:flex;}}
+.nav-link{font-family:var(--font-d);font-size:12px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted2);text-decoration:none;padding:6px 14px;border-radius:8px;transition:color .2s,background .2s;}
+.nav-link:hover{color:var(--text);background:var(--s1);}
+.nav-link.active{color:var(--lime);}
+.nav-right{display:flex;align-items:center;gap:12px;}
+.nav-iq-badge{display:flex;align-items:center;gap:6px;background:var(--s2);border:1px solid var(--border2);border-radius:999px;padding:5px 14px 5px 8px;font-family:var(--font-d);font-size:13px;font-weight:800;letter-spacing:0.06em;color:var(--lime);}
+.nav-iq-badge .dot{width:8px;height:8px;border-radius:50%;background:var(--lime);box-shadow:0 0 6px var(--lime);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.nav-signout{font-family:var(--font-d);font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);background:none;border:1px solid var(--border2);border-radius:8px;padding:6px 14px;cursor:pointer;transition:color .2s,border-color .2s;}
+.nav-signout:hover{color:var(--text);border-color:rgba(255,255,255,0.2);}
+
+/* SIDEBAR */
+.sidebar{position:fixed;top:var(--nav-h);left:0;bottom:0;width:var(--side-w);background:rgba(8,12,20,0.95);border-right:1px solid var(--border);display:none;flex-direction:column;justify-content:space-between;padding:28px 0 24px;z-index:100;}
+@media(min-width:1024px){.sidebar{display:flex;}}
+.sidebar-nav{display:flex;flex-direction:column;gap:2px;padding:0 12px;}
+.sidebar-link{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:10px;font-family:var(--font-d);font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s,background .2s;}
+.sidebar-link:hover{color:var(--text);background:var(--s1);}
+.sidebar-link.active{color:var(--lime);background:var(--lime-dim);}
+.sidebar-link svg{width:16px;height:16px;fill:currentColor;flex-shrink:0;}
+.sidebar-bottom{padding:0 12px;display:flex;flex-direction:column;gap:8px;}
+.sidebar-section-label{font-family:var(--font-d);font-size:9px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);padding:0 14px;margin-bottom:6px;margin-top:20px;}
+
+/* MAIN */
+.main{position:relative;z-index:1;padding-top:calc(var(--nav-h) + 28px);padding-bottom:100px;padding-left:20px;padding-right:20px;max-width:1200px;margin:0 auto;}
+@media(min-width:1024px){.main{margin-left:var(--side-w);padding-left:32px;padding-right:32px;}}
+
+/* LOADING */
+#dashLoading{min-height:80vh;display:flex;align-items:center;justify-content:center;}
+.loading-inner{text-align:center;}
+.loading-icon{font-size:48px;margin-bottom:16px;animation:bounce .8s ease infinite alternate;}
+@keyframes bounce{from{transform:translateY(0)}to{transform:translateY(-8px)}}
+.loading-text{font-family:var(--font-d);font-size:24px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted2);}
+
+/* GRID */
+.dash-grid{display:grid;gap:14px;grid-template-columns:1fr;}
+@media(min-width:640px){.dash-grid{grid-template-columns:1fr 1fr;}}
+@media(min-width:1024px){.dash-grid{grid-template-columns:1fr 1fr 1fr;}}
+.col-span-2{grid-column:span 1;}
+@media(min-width:640px){.col-span-2{grid-column:span 2;}}
+
+/* CARDS */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;position:relative;}
+.card-body{padding:22px;}
+.card-eyebrow{font-family:var(--font-d);font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.card-eyebrow::after{content:'';flex:1;height:1px;background:var(--border);}
+
+/* HERO CARD */
+.hero-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;position:relative;display:flex;flex-direction:column;}
+@media(min-width:640px){.hero-card{flex-direction:row;min-height:220px;}}
+.hero-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--lime),var(--lime-dim),transparent);}
+.hero-bg-glow{position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(163,230,53,0.06) 0%,transparent 70%);top:-150px;right:-100px;pointer-events:none;}
+.hero-body{flex:1;padding:28px 28px 24px;position:relative;z-index:1;display:flex;flex-direction:column;justify-content:space-between;}
+.hero-tags{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
+.tag{font-family:var(--font-d);font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;border-radius:6px;padding:4px 10px;}
+.tag-lime{background:var(--lime-dim);color:var(--lime);border:1px solid rgba(163,230,53,0.15);}
+.tag-orange{background:var(--orange-dim);color:var(--orange);border:1px solid rgba(232,99,10,0.15);}
+.hero-streak{display:flex;align-items:center;gap:5px;font-family:var(--font-d);font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--amber);}
+.hero-streak svg{width:14px;height:14px;fill:var(--amber);}
+.hero-title{font-family:var(--font-d);font-size:clamp(36px,5vw,52px);font-weight:900;font-style:italic;letter-spacing:-0.01em;text-transform:uppercase;color:white;line-height:0.95;margin-bottom:18px;}
+.hero-progress-wrap{margin-bottom:24px;}
+.hero-progress-labels{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;}
+.hero-progress-label{font-family:var(--font-d);font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted2);}
+.hero-progress-pct{font-family:var(--font-d);font-size:22px;font-weight:900;font-style:italic;color:var(--lime);}
+.hero-track{height:8px;background:var(--s3);border-radius:999px;overflow:hidden;}
+.hero-fill{height:100%;background:linear-gradient(90deg,var(--lime),rgba(163,230,53,0.7));border-radius:999px;width:0%;transition:width 1.2s cubic-bezier(0.22,1,0.36,1) .3s;box-shadow:0 0 12px var(--lime-glow);}
+.hero-btn{display:inline-flex;align-items:center;gap:8px;background:var(--lime);color:#080c14;font-family:var(--font-d);font-size:14px;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;border:none;border-radius:999px;padding:13px 28px;cursor:pointer;transition:transform .15s,box-shadow .15s;align-self:flex-start;}
+.hero-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px var(--lime-glow);}
+.hero-btn svg{width:16px;height:16px;fill:currentColor;}
+.hero-visual{width:100%;height:140px;background:linear-gradient(135deg,#0d1829 0%,#091220 100%);position:relative;overflow:hidden;flex-shrink:0;}
+@media(min-width:640px){.hero-visual{width:220px;height:auto;}}
+.hero-visual::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,transparent,transparent 19px,rgba(163,230,53,0.07) 19px,rgba(163,230,53,0.07) 20px);}
+.hero-visual-inner{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;}
+.hero-visual-inner svg{width:100%;height:100%;opacity:0.7;}
+
+/* IQ CARD */
+.iq-card{display:flex;flex-direction:column;}
+.iq-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;}
+.iq-grade-wrap{display:flex;align-items:baseline;gap:10px;}
+.iq-grade{font-family:var(--font-d);font-size:72px;font-weight:900;line-height:1;color:var(--lime);text-shadow:0 0 40px rgba(163,230,53,0.3);transition:color .4s;}
+.iq-grade-meta{display:flex;flex-direction:column;gap:2px;padding-top:8px;}
+.iq-tier{font-family:var(--font-d);font-size:13px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;color:var(--lime);}
+.iq-score-num{font-family:var(--font-d);font-size:11px;font-weight:600;color:var(--muted2);letter-spacing:0.04em;}
+.iq-badge-wrap{display:flex;flex-direction:column;align-items:center;gap:3px;}
+.iq-trophy{width:40px;height:40px;background:rgba(163,230,53,0.1);border:1px solid rgba(163,230,53,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.iq-trophy svg{width:20px;height:20px;fill:var(--lime);}
+.iq-trophy-label{font-family:var(--font-d);font-size:9px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:var(--lime);}
+.iq-empty{text-align:center;padding:16px 0 8px;}
+.iq-empty-q{font-family:var(--font-d);font-size:64px;font-weight:900;color:var(--s3);line-height:1;margin-bottom:8px;}
+.iq-empty-text{font-size:13px;color:var(--muted2);}
+.db-iq-pillars{display:flex;flex-direction:column;gap:8px;margin:14px 0 16px;}
+.db-iq-pillar-row{display:flex;align-items:center;gap:10px;}
+.db-iq-pillar-name{font-family:var(--font-d);font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--muted2);width:72px;flex-shrink:0;}
+.db-iq-pillar-track{flex:1;height:6px;background:var(--s3);border-radius:999px;overflow:hidden;}
+.db-iq-pillar-fill{height:100%;border-radius:999px;width:0%;transition:width 1s cubic-bezier(0.22,1,0.36,1) .5s;}
+.db-iq-pillar-pct{font-family:var(--font-d);font-size:11px;font-weight:700;color:var(--muted2);width:32px;text-align:right;flex-shrink:0;}
+.iq-actions{margin-top:auto;display:flex;align-items:center;gap:10px;}
+#giqDashBtn,.db-iq-btn{display:inline-block;background:var(--s2);border:1px solid var(--border2);color:var(--text);font-family:var(--font-d);font-size:12px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;border-radius:8px;padding:10px 18px;cursor:pointer;transition:background .2s,color .2s,border-color .2s;}
+#giqDashBtn:hover,.db-iq-btn:hover{background:var(--s3);color:var(--lime);border-color:rgba(163,230,53,0.2);}
+.db-iq-quiz-count{font-size:11px;color:var(--muted);font-weight:500;}
+#giqScoreState{display:none;}
+
+/* RECOMMENDATION */
+.rec-card{background:linear-gradient(135deg,var(--surface) 0%,var(--s1) 100%);border:1px solid var(--border);border-left:3px solid var(--lime);border-radius:var(--r-lg);padding:22px;display:flex;flex-direction:column;gap:10px;}
+.db-rec-eyebrow{font-family:var(--font-d);font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--lime);}
+.db-rec-title{font-family:var(--font-d);font-size:18px;font-weight:900;letter-spacing:0.04em;text-transform:uppercase;color:var(--text);line-height:1.1;}
+.db-rec-body{font-size:13px;color:var(--muted2);line-height:1.6;flex:1;}
+.db-rec-btn{display:inline-block;background:var(--lime);color:#080c14;font-family:var(--font-d);font-size:12px;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;border-radius:8px;padding:11px 20px;border:none;cursor:pointer;transition:transform .15s,box-shadow .15s;align-self:flex-start;}
+.db-rec-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px var(--lime-glow);}
+
+/* THIS WEEK */
+.week-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:22px;}
+.pdb-week-days{display:flex;gap:6px;margin-top:12px;}
+.pdb-day{flex:1;aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:8px;font-family:var(--font-d);font-size:13px;font-weight:800;letter-spacing:0.04em;text-transform:uppercase;}
+.pdb-day.today{background:var(--lime);color:#080c14;box-shadow:0 0 12px var(--lime-glow);}
+.pdb-day.off{background:var(--s2);color:var(--muted);border:1px solid var(--border);}
+
+/* PROGRESS */
+.progress-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:22px;}
+.progress-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.pdb-prog-fraction{font-family:var(--font-d);font-size:20px;font-weight:900;font-style:italic;color:var(--lime);}
+.pdb-prog-track{height:8px;background:var(--s3);border-radius:999px;overflow:hidden;margin-bottom:12px;}
+.pdb-prog-fill{height:100%;background:linear-gradient(90deg,var(--lime),rgba(163,230,53,0.6));border-radius:999px;width:0%;transition:width 1s cubic-bezier(0.22,1,0.36,1) .4s;box-shadow:0 0 8px var(--lime-glow);}
+.pdb-prog-pillars{display:flex;gap:6px;margin-bottom:12px;}
+.pdb-pillar-dot{flex:1;height:6px;border-radius:999px;background:var(--s3);border:1px solid var(--border);transition:background .3s,box-shadow .3s;}
+.pdb-pillar-dot.done{background:var(--lime);border-color:var(--lime);box-shadow:0 0 6px var(--lime-glow);}
+.pdb-pillar-dot.active{background:var(--orange);border-color:var(--orange);box-shadow:0 0 6px rgba(232,99,10,0.3);animation:dotPulse 1.5s ease infinite;}
+@keyframes dotPulse{0%,100%{opacity:1}50%{opacity:0.5}}
+.pdb-prog-note{font-size:12px;color:var(--muted2);font-weight:500;}
+
+/* NEXT UP */
+.pdb-next-card{background:linear-gradient(135deg,var(--s1) 0%,var(--surface) 100%);border:1px solid var(--border);border-radius:var(--r-lg);padding:22px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:border-color .2s,background .2s;text-decoration:none;}
+.pdb-next-card:hover{border-color:rgba(163,230,53,0.3);background:linear-gradient(135deg,var(--s2) 0%,var(--s1) 100%);}
+.pdb-next-left{display:flex;align-items:center;gap:14px;}
+.pdb-next-icon{width:42px;height:42px;border-radius:50%;background:var(--lime);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 0 16px var(--lime-glow);transition:transform .2s;}
+.pdb-next-card:hover .pdb-next-icon{transform:scale(1.08);}
+.pdb-next-icon svg{width:16px;height:16px;}
+.pdb-next-eyebrow{font-family:var(--font-d);font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:2px;}
+.pdb-next-title{font-family:var(--font-d);font-size:16px;font-weight:800;letter-spacing:0.04em;text-transform:uppercase;color:var(--text);}
+.pdb-next-arrow{opacity:0.3;flex-shrink:0;}
+.pdb-next-card:hover .pdb-next-arrow{opacity:0.7;}
+.pdb-section-label{font-family:var(--font-d);font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);}
+
+/* QUIZ HISTORY */
+.history-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;}
+.history-header{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid var(--border);}
+.history-title{font-family:var(--font-d);font-size:13px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);}
+.db-history-cta{font-family:var(--font-d);font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--lime);text-decoration:none;transition:opacity .2s;}
+.db-history-cta:hover{opacity:0.7;}
+.db-history-list{padding:8px 0;}
+/* FIX 2: Support both db-history-row (app.js) and db-history-item */
+.db-history-row,.db-history-item{display:flex;align-items:center;justify-content:space-between;padding:12px 22px;border-bottom:1px solid var(--border);transition:background .2s;}
+.db-history-row:last-child,.db-history-item:last-child{border-bottom:none;}
+.db-history-row:hover,.db-history-item:hover{background:var(--s1);}
+.db-history-grade{font-family:var(--font-d);font-size:28px;font-weight:900;line-height:1;width:40px;flex-shrink:0;}
+.db-history-info,.db-history-meta{font-size:12px;color:var(--muted2);flex:1;padding:0 12px;}
+.db-history-tier{font-family:var(--font-d);font-size:12px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text);margin-bottom:2px;}
+.db-history-score{font-family:var(--font-d);font-size:14px;font-weight:800;color:var(--text);}
+
+/* MODULE LIST */
+.modules-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;}
+.modules-header{display:flex;align-items:baseline;justify-content:space-between;padding:18px 22px;border-bottom:1px solid var(--border);}
+.modules-title{font-family:var(--font-d);font-size:13px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);}
+.modules-sub{font-family:var(--font-d);font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);}
+.pdb-module-list{padding:0;}
+.pdb-mod-row{display:flex;align-items:center;gap:16px;padding:16px 22px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .2s;}
+.pdb-mod-row:last-child{border-bottom:none;}
+.pdb-mod-row:hover{background:var(--s1);}
+.pdb-mod-num{width:34px;height:34px;border-radius:50%;background:var(--s3);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:13px;font-weight:800;color:var(--muted);flex-shrink:0;transition:background .3s,border-color .3s;}
+.pdb-mod-num.done{background:rgba(163,230,53,0.12);border-color:rgba(163,230,53,0.3);color:var(--lime);}
+.pdb-mod-num.next{background:var(--orange-dim);border-color:rgba(232,99,10,0.3);color:var(--orange);box-shadow:0 0 10px rgba(232,99,10,0.2);}
+.pdb-mod-info{flex:1;min-width:0;}
+.pdb-mod-name{font-family:var(--font-d);font-size:14px;font-weight:800;letter-spacing:0.04em;text-transform:uppercase;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pdb-mod-desc{font-size:12px;color:var(--muted2);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pdb-mod-right{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.pdb-mod-bar-wrap{width:60px;height:4px;background:var(--s3);border-radius:999px;overflow:hidden;}
+.pdb-mod-bar{height:100%;border-radius:999px;background:var(--lime);width:0%;transition:width 1s cubic-bezier(0.22,1,0.36,1) .6s;}
+.pdb-mod-pct{font-family:var(--font-d);font-size:12px;font-weight:700;color:var(--muted2);width:36px;text-align:right;}
+.pdb-mod-pct.done{color:var(--lime);}
+
+/* COACH DASHBOARD */
+.coach-hero{background:linear-gradient(135deg,var(--s1) 0%,var(--surface) 100%);border:1px solid var(--border);border-radius:var(--r-lg);padding:32px;position:relative;overflow:hidden;margin-bottom:14px;}
+.coach-hero::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--orange),transparent);}
+.coach-hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 90% 50%,rgba(232,99,10,0.08),transparent);pointer-events:none;}
+.coach-hero-inner{position:relative;z-index:1;}
+.coach-hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:28px;}
+.coach-hero-label{font-family:var(--font-d);font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--orange);margin-bottom:6px;}
+.coach-link-display{font-family:var(--font-d);font-size:clamp(14px,2vw,20px);font-weight:800;color:white;letter-spacing:0.02em;margin-bottom:8px;word-break:break-all;}
+.coach-link-note{font-size:13px;color:var(--muted2);line-height:1.6;max-width:400px;}
+#coachCopyConfirm{display:none;margin-top:8px;font-size:13px;color:var(--green);font-family:var(--font-d);font-weight:700;letter-spacing:0.06em;}
+.coach-copy-btn{background:var(--orange);color:white;font-family:var(--font-d);font-size:13px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;border:none;border-radius:10px;padding:13px 28px;cursor:pointer;white-space:nowrap;transition:transform .15s,box-shadow .15s;flex-shrink:0;}
+.coach-copy-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(232,99,10,0.3);}
+.coach-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding-top:24px;border-top:1px solid var(--border);}
+.coach-step{text-align:center;}
+.coach-step-num{font-family:var(--font-d);font-size:32px;font-weight:900;color:var(--border2);margin-bottom:4px;}
+.coach-step-label{font-family:var(--font-d);font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);}
+.coach-stats{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:22px;}
+.stat-label{font-family:var(--font-d);font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.stat-value{font-family:var(--font-d);font-size:52px;font-weight:900;font-style:italic;color:var(--orange);line-height:1;}
+.stat-value-sm{font-family:var(--font-d);font-size:36px;font-weight:900;letter-spacing:0.06em;color:var(--lime);line-height:1;}
+.stat-note{font-size:13px;color:var(--muted2);margin-top:6px;}
+.coach-players-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;}
+.coach-players-header{padding:18px 22px;border-bottom:1px solid var(--border);font-family:var(--font-d);font-size:13px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);}
+#coachPlayersList{padding:0;}
+
+/* WELCOME */
+.dash-welcome-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px;}
+.dash-welcome-name{font-family:var(--font-d);font-size:clamp(22px,4vw,32px);font-weight:900;font-style:italic;text-transform:uppercase;color:var(--text);line-height:1;}
+.dash-welcome-name span{color:var(--lime);}
+.dash-welcome-sub{font-size:13px;color:var(--muted2);margin-top:2px;}
+
+/* BOTTOM NAV */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;height:70px;background:rgba(8,12,20,0.97);backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-around;padding:0 8px;z-index:200;border-radius:20px 20px 0 0;}
+@media(min-width:1024px){.bottom-nav{display:none;}}
+.bnav-item{display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 14px;border-radius:12px;text-decoration:none;color:var(--muted);font-family:var(--font-d);font-size:9px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;transition:color .2s;border:none;background:none;cursor:pointer;}
+.bnav-item:hover{color:var(--muted2);}
+.bnav-item.active{color:var(--lime);}
+.bnav-item svg{width:20px;height:20px;fill:currentColor;}
+.bnav-item.cta-item{background:var(--lime);color:#080c14;border-radius:14px;padding:8px 20px;box-shadow:0 0 16px var(--lime-glow);}
+.bnav-item.cta-item:hover{color:#080c14;}
+.bnav-item.cta-item svg{fill:#080c14;}
+
+/* ANIMATIONS */
+.fade-up{opacity:0;transform:translateY(12px);animation:fadeUp .5s ease forwards;}
+.fade-up:nth-child(1){animation-delay:.05s;}.fade-up:nth-child(2){animation-delay:.12s;}.fade-up:nth-child(3){animation-delay:.18s;}.fade-up:nth-child(4){animation-delay:.24s;}.fade-up:nth-child(5){animation-delay:.30s;}.fade-up:nth-child(6){animation-delay:.36s;}
+@keyframes fadeUp{to{opacity:1;transform:translateY(0);}}
+.gap-section{display:flex;flex-direction:column;gap:14px;}
+
+/* ══════════════════════════════════════════
+   COACH DASHBOARD — NEW STYLES
+══════════════════════════════════════════ */
+
+/* Invite section */
+.coach-invite-section {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+}
+.coach-invite-label {
+  font-family: var(--font-d);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+.coach-invite-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.coach-invite-input {
+  flex: 1;
+  min-width: 200px;
+  background: var(--s3);
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  padding: 10px 14px;
   color: var(--text);
   font-family: var(--font-b);
-  min-height: 100vh;
-  overflow-x: hidden;
+  font-size: 14px;
+  outline: none;
+  transition: border-color .2s;
 }
-
-/* Field lines */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image: repeating-linear-gradient(
-    90deg, transparent,
-    transparent calc(12.5% - 1px),
-    rgba(255,255,255,0.013) calc(12.5% - 1px),
-    rgba(255,255,255,0.013) 12.5%
-  );
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* ══════════════════════════════════════════
-   TOP NAV
-══════════════════════════════════════════ */
-.top-nav {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  height: var(--nav-h);
-  background: rgba(8,12,20,0.85);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border);
+.coach-invite-input:focus { border-color: rgba(163,230,53,.4); }
+.coach-invite-input::placeholder { color: var(--muted); }
+.coach-invite-role-wrap {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 24px;
-  z-index: 200;
-}
-
-.nav-logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  text-decoration: none;
+  gap: 2px;
+  background: var(--s3);
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  padding: 3px;
   flex-shrink: 0;
 }
-.nav-logo img { height: 36px; width: auto; }
-.nav-brand {
+.coach-role-btn {
   font-family: var(--font-d);
-  font-size: 15px;
-  font-weight: 900;
-  letter-spacing: 0.06em;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .1em;
   text-transform: uppercase;
-  color: var(--text);
-  line-height: 1.1;
+  background: none;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  color: var(--muted);
+  cursor: pointer;
+  transition: background .15s, color .15s;
 }
-.nav-brand span { color: var(--lime); }
-
-.nav-links {
-  display: none;
-  gap: 6px;
+.coach-role-btn.active {
+  background: var(--orange);
+  color: white;
 }
-@media (min-width: 900px) { .nav-links { display: flex; } }
-
-.nav-link {
-  font-family: var(--font-d);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--muted2);
-  text-decoration: none;
-  padding: 6px 14px;
-  border-radius: 8px;
-  transition: color .2s, background .2s;
-}
-.nav-link:hover { color: var(--text); background: var(--s1); }
-.nav-link.active { color: var(--lime); }
-
-.nav-right {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.nav-iq-badge {
+.coach-invite-btn {
   display: flex;
   align-items: center;
   gap: 6px;
   background: var(--s2);
   border: 1px solid var(--border2);
-  border-radius: 999px;
-  padding: 5px 14px 5px 8px;
-  font-family: var(--font-d);
-  font-size: 13px;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-  color: var(--lime);
-}
-.nav-iq-badge .dot {
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  background: var(--lime);
-  box-shadow: 0 0 6px var(--lime);
-  animation: pulse 2s infinite;
-}
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
-}
-
-.nav-signout {
+  border-radius: 8px;
+  padding: 10px 18px;
+  color: var(--text);
   font-family: var(--font-d);
   font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
+  font-weight: 800;
+  letter-spacing: .1em;
   text-transform: uppercase;
-  color: var(--muted);
-  background: none;
-  border: 1px solid var(--border2);
-  border-radius: 8px;
-  padding: 6px 14px;
   cursor: pointer;
-  transition: color .2s, border-color .2s;
+  transition: background .2s, border-color .2s, color .2s;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
-.nav-signout:hover { color: var(--text); border-color: rgba(255,255,255,0.2); }
-
-/* ══════════════════════════════════════════
-   SIDEBAR
-══════════════════════════════════════════ */
-.sidebar {
-  position: fixed;
-  top: var(--nav-h);
-  left: 0;
-  bottom: 0;
-  width: var(--side-w);
-  background: rgba(8,12,20,0.95);
-  border-right: 1px solid var(--border);
-  display: none;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 28px 0 24px;
-  z-index: 100;
+.coach-invite-btn:hover {
+  background: var(--orange);
+  border-color: var(--orange);
+  color: white;
 }
-@media (min-width: 1024px) { .sidebar { display: flex; } }
-
-.sidebar-nav { display: flex; flex-direction: column; gap: 2px; padding: 0 12px; }
-
-.sidebar-link {
+.coach-invite-divider {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 11px 14px;
-  border-radius: 10px;
-  font-family: var(--font-d);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--muted);
-  text-decoration: none;
-  transition: color .2s, background .2s;
+  margin: 16px 0 12px;
 }
-.sidebar-link:hover { color: var(--text); background: var(--s1); }
-.sidebar-link.active {
-  color: var(--lime);
-  background: var(--lime-dim);
-}
-.sidebar-link svg { width: 16px; height: 16px; fill: currentColor; flex-shrink: 0; }
-
-.sidebar-bottom {
-  padding: 0 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.sidebar-section-label {
-  font-family: var(--font-d);
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--muted);
-  padding: 0 14px;
-  margin-bottom: 6px;
-  margin-top: 20px;
-}
-
-/* ══════════════════════════════════════════
-   MAIN CONTENT
-══════════════════════════════════════════ */
-.main {
-  position: relative;
-  z-index: 1;
-  padding-top: calc(var(--nav-h) + 28px);
-  padding-bottom: 100px;
-  padding-left: 20px;
-  padding-right: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-@media (min-width: 1024px) {
-  .main {
-    margin-left: var(--side-w);
-    padding-left: 32px;
-    padding-right: 32px;
-  }
-}
-
-/* ══════════════════════════════════════════
-   LOADING
-══════════════════════════════════════════ */
-#dashLoading {
-  min-height: 80vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.loading-inner {
-  text-align: center;
-}
-.loading-icon { font-size: 48px; margin-bottom: 16px; animation: bounce .8s ease infinite alternate; }
-@keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-8px); } }
-.loading-text {
-  font-family: var(--font-d);
-  font-size: 24px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--muted2);
-}
-
-/* ══════════════════════════════════════════
-   DASHBOARD GRID
-══════════════════════════════════════════ */
-.dash-grid {
-  display: grid;
-  gap: 14px;
-  grid-template-columns: 1fr;
-}
-@media (min-width: 640px) { .dash-grid { grid-template-columns: 1fr 1fr; } }
-@media (min-width: 1024px) { .dash-grid { grid-template-columns: 1fr 1fr 1fr; } }
-
-/* Span helpers */
-.col-span-2 { grid-column: span 1; }
-@media (min-width: 640px) { .col-span-2 { grid-column: span 2; } }
-
-/* ══════════════════════════════════════════
-   CARDS
-══════════════════════════════════════════ */
-.card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--r-lg);
-  overflow: hidden;
-  position: relative;
-}
-
-.card-body { padding: 22px; }
-
-.card-eyebrow {
-  font-family: var(--font-d);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 10px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.card-eyebrow::after {
+.coach-invite-divider::before,
+.coach-invite-divider::after {
   content: '';
   flex: 1;
   height: 1px;
   background: var(--border);
 }
-
-/* ══════════════════════════════════════════
-   HERO CARD — RESUME JOURNEY
-══════════════════════════════════════════ */
-.hero-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--r-lg);
-  overflow: hidden;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-}
-@media (min-width: 640px) {
-  .hero-card { flex-direction: row; min-height: 220px; }
-}
-
-.hero-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, transparent, var(--lime), var(--lime-dim), transparent);
-}
-
-.hero-bg-glow {
-  position: absolute;
-  width: 400px; height: 400px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(163,230,53,0.06) 0%, transparent 70%);
-  top: -150px; right: -100px;
-  pointer-events: none;
-}
-
-.hero-body {
-  flex: 1;
-  padding: 28px 28px 24px;
-  position: relative;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.hero-tags {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 14px;
-  flex-wrap: wrap;
-}
-
-.tag {
+.coach-invite-divider span {
   font-family: var(--font-d);
   font-size: 10px;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: .12em;
   text-transform: uppercase;
-  border-radius: 6px;
-  padding: 4px 10px;
+  color: var(--muted);
+  white-space: nowrap;
 }
-.tag-lime { background: var(--lime-dim); color: var(--lime); border: 1px solid rgba(163,230,53,0.15); }
-.tag-orange { background: var(--orange-dim); color: var(--orange); border: 1px solid rgba(232,99,10,0.15); }
-
-.hero-streak {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-family: var(--font-d);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--amber);
-}
-.hero-streak svg { width: 14px; height: 14px; fill: var(--amber); }
-
-.hero-title {
-  font-family: var(--font-d);
-  font-size: clamp(36px, 5vw, 52px);
-  font-weight: 900;
-  font-style: italic;
-  letter-spacing: -0.01em;
-  text-transform: uppercase;
-  color: white;
-  line-height: 0.95;
-  margin-bottom: 18px;
-}
-
-.hero-progress-wrap { margin-bottom: 24px; }
-
-.hero-progress-labels {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  margin-bottom: 8px;
-}
-.hero-progress-label {
-  font-family: var(--font-d);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--muted2);
-}
-.hero-progress-pct {
-  font-family: var(--font-d);
-  font-size: 22px;
-  font-weight: 900;
-  font-style: italic;
-  color: var(--lime);
-}
-
-.hero-track {
-  height: 8px;
-  background: var(--s3);
-  border-radius: 999px;
-  overflow: hidden;
-}
-.hero-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--lime), rgba(163,230,53,0.7));
-  border-radius: 999px;
-  width: 0%;
-  transition: width 1.2s cubic-bezier(0.22,1,0.36,1) .3s;
-  box-shadow: 0 0 12px var(--lime-glow);
-}
-
-.hero-btn {
+.coach-link-copy-btn {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: var(--lime);
-  color: #080c14;
+  background: transparent;
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  padding: 9px 18px;
+  color: var(--muted2);
   font-family: var(--font-d);
-  font-size: 14px;
-  font-weight: 900;
-  letter-spacing: 0.1em;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .1em;
   text-transform: uppercase;
-  text-decoration: none;
-  border: none;
-  border-radius: 999px;
-  padding: 13px 28px;
   cursor: pointer;
-  transition: transform .15s, box-shadow .15s;
-  align-self: flex-start;
+  transition: border-color .2s, color .2s;
 }
-.hero-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 28px var(--lime-glow);
-}
-.hero-btn svg { width: 16px; height: 16px; fill: currentColor; }
+.coach-link-copy-btn:hover { border-color: rgba(163,230,53,.4); color: var(--lime); }
 
-.hero-visual {
-  width: 100%; height: 140px;
-  background: linear-gradient(135deg, #0d1829 0%, #091220 100%);
-  position: relative;
-  overflow: hidden;
-  flex-shrink: 0;
+/* Roster filter pills */
+.coach-roster-filter {
+  font-family: var(--font-d);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--muted);
+  background: var(--s2);
+  border: 1px solid transparent;
+  transition: all .15s;
 }
-@media (min-width: 640px) { .hero-visual { width: 220px; height: auto; } }
+.coach-roster-filter.active {
+  color: var(--text);
+  border-color: var(--border2);
+}
+.coach-roster-filter:hover { color: var(--text); }
 
-/* Animated field lines in hero */
-.hero-visual::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image:
-    repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 19px,
-      rgba(163,230,53,0.07) 19px,
-      rgba(163,230,53,0.07) 20px
-    );
+/* Roster table header */
+.coach-roster-head {
+  display: grid;
+  grid-template-columns: 1fr 80px 110px 80px 90px;
+  gap: 8px;
+  padding: 10px 22px;
+  border-bottom: 1px solid var(--border);
+  background: var(--s1);
 }
-.hero-visual-inner {
-  position: absolute;
-  inset: 0;
+.coach-roster-head > div {
+  font-family: var(--font-d);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Roster rows — built by JS */
+.coach-roster-row {
+  display: grid;
+  grid-template-columns: 1fr 80px 110px 80px 90px;
+  gap: 8px;
+  align-items: center;
+  padding: 14px 22px;
+  border-bottom: 1px solid var(--border);
+  transition: background .15s;
+}
+.coach-roster-row:last-child { border-bottom: none; }
+.coach-roster-row:hover { background: var(--s1); }
+
+.cr-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--s3);
+  border: 1px solid var(--border2);
   display: flex;
   align-items: center;
   justify-content: center;
-}
-.hero-visual-inner svg { width: 100%; height: 100%; opacity: 0.7; }
-
-/* ══════════════════════════════════════════
-   GRIDIRON IQ CARD
-══════════════════════════════════════════ */
-.iq-card { display: flex; flex-direction: column; }
-
-.iq-top {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  margin-bottom: 16px;
-}
-
-.iq-grade-wrap { display: flex; align-items: baseline; gap: 10px; }
-
-.iq-grade {
   font-family: var(--font-d);
-  font-size: 72px;
+  font-size: 14px;
   font-weight: 900;
-  line-height: 1;
-  color: var(--lime);
-  text-shadow: 0 0 40px rgba(163,230,53,0.3);
-  transition: color .4s;
-}
-
-.iq-grade-meta { display: flex; flex-direction: column; gap: 2px; padding-top: 8px; }
-.iq-tier {
-  font-family: var(--font-d);
-  font-size: 13px;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--lime);
-}
-.iq-score-num {
-  font-family: var(--font-d);
-  font-size: 11px;
-  font-weight: 600;
   color: var(--muted2);
-  letter-spacing: 0.04em;
-}
-
-.iq-badge-wrap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-}
-.iq-trophy {
-  width: 40px; height: 40px;
-  background: rgba(163,230,53,0.1);
-  border: 1px solid rgba(163,230,53,0.2);
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-}
-.iq-trophy svg { width: 20px; height: 20px; fill: var(--lime); }
-.iq-trophy-label {
-  font-family: var(--font-d);
-  font-size: 9px;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--lime);
-}
-
-/* Empty state */
-.iq-empty {
-  text-align: center;
-  padding: 16px 0 8px;
-}
-.iq-empty-q {
-  font-family: var(--font-d);
-  font-size: 64px;
-  font-weight: 900;
-  color: var(--s3);
-  line-height: 1;
-  margin-bottom: 8px;
-}
-.iq-empty-text {
-  font-size: 13px;
-  color: var(--muted2);
-}
-
-/* Pillar bars */
-.db-iq-pillars {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin: 14px 0 16px;
-}
-
-.db-iq-pillar-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.db-iq-pillar-name {
-  font-family: var(--font-d);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--muted2);
-  width: 72px;
   flex-shrink: 0;
 }
-.db-iq-pillar-track {
+.cr-name-wrap { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.cr-name {
+  font-family: var(--font-d);
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cr-role-tag {
+  font-family: var(--font-d);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+.cr-role-coach { background: var(--orange-dim); color: var(--orange); border: 1px solid rgba(232,99,10,.2); }
+.cr-role-player { background: var(--lime-dim); color: var(--lime); border: 1px solid rgba(163,230,53,.2); }
+
+.cr-iq {
+  font-family: var(--font-d);
+  font-size: 22px;
+  font-weight: 900;
+  line-height: 1;
+}
+.cr-iq.no-score { font-size: 13px; color: var(--muted); font-weight: 600; }
+
+.cr-progress-wrap { display: flex; align-items: center; gap: 8px; }
+.cr-progress-track {
   flex: 1;
-  height: 6px;
+  height: 5px;
   background: var(--s3);
   border-radius: 999px;
   overflow: hidden;
 }
-.db-iq-pillar-fill {
+.cr-progress-fill {
   height: 100%;
+  background: var(--lime);
   border-radius: 999px;
-  width: 0%;
-  transition: width 1s cubic-bezier(0.22,1,0.36,1) .5s;
+  transition: width .6s ease;
 }
-.db-iq-pillar-pct {
+.cr-progress-pct {
   font-family: var(--font-d);
   font-size: 11px;
   font-weight: 700;
   color: var(--muted2);
-  width: 32px;
+  width: 30px;
   text-align: right;
   flex-shrink: 0;
 }
 
-.iq-actions {
-  margin-top: auto;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-#giqDashBtn, .db-iq-btn {
-  display: inline-block;
-  background: var(--s2);
-  border: 1px solid var(--border2);
-  color: var(--text);
-  font-family: var(--font-d);
+.cr-joined {
   font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  text-decoration: none;
-  border-radius: 8px;
-  padding: 10px 18px;
-  cursor: pointer;
-  transition: background .2s, color .2s, border-color .2s;
-}
-#giqDashBtn:hover, .db-iq-btn:hover {
-  background: var(--s3);
-  color: var(--lime);
-  border-color: rgba(163,230,53,0.2);
-}
-
-.db-iq-quiz-count {
-  font-size: 11px;
   color: var(--muted);
-  font-weight: 500;
 }
 
-/* IQ score state */
-#giqScoreState { display: none; }
-
-/* ══════════════════════════════════════════
-   RECOMMENDATION CARD
-══════════════════════════════════════════ */
-.rec-card {
-  background: linear-gradient(135deg, var(--surface) 0%, var(--s1) 100%);
-  border: 1px solid var(--border);
-  border-left: 3px solid var(--lime);
-  border-radius: var(--r-lg);
-  padding: 22px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.db-rec-eyebrow {
+.cr-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
   font-family: var(--font-d);
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 700;
-  letter-spacing: 0.18em;
+  letter-spacing: .12em;
   text-transform: uppercase;
-  color: var(--lime);
+  padding: 4px 8px;
+  border-radius: 6px;
 }
+.cr-status-active { background: rgba(163,230,53,.1); color: var(--lime); border: 1px solid rgba(163,230,53,.2); }
+.cr-status-pending { background: rgba(245,158,11,.08); color: var(--amber); border: 1px solid rgba(245,158,11,.2); }
+.cr-status-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
 
-.db-rec-title {
+/* Empty roster */
+.coach-empty-roster {
+  padding: 48px 24px;
+  text-align: center;
+}
+.coach-empty-icon { font-size: 40px; margin-bottom: 14px; opacity: .5; }
+.coach-empty-title {
   font-family: var(--font-d);
   font-size: 18px;
-  font-weight: 900;
-  letter-spacing: 0.04em;
+  font-weight: 800;
+  letter-spacing: .04em;
   text-transform: uppercase;
   color: var(--text);
-  line-height: 1.1;
-}
-
-.db-rec-body {
-  font-size: 13px;
-  color: var(--muted2);
-  line-height: 1.6;
-  flex: 1;
-}
-
-.db-rec-btn {
-  display: inline-block;
-  background: var(--lime);
-  color: #080c14;
-  font-family: var(--font-d);
-  font-size: 12px;
-  font-weight: 900;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  text-decoration: none;
-  border-radius: 8px;
-  padding: 11px 20px;
-  border: none;
-  cursor: pointer;
-  transition: transform .15s, box-shadow .15s;
-  align-self: flex-start;
-}
-.db-rec-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px var(--lime-glow);
-}
-
-/* ══════════════════════════════════════════
-   THIS WEEK CARD
-══════════════════════════════════════════ */
-.week-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--r-lg);
-  padding: 22px;
-}
-
-.pdb-week-days {
-  display: flex;
-  gap: 6px;
-  margin-top: 12px;
-}
-
-.pdb-day {
-  flex: 1;
-  aspect-ratio: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 8px;
-  font-family: var(--font-d);
-  font-size: 13px;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-.pdb-day.today {
-  background: var(--lime);
-  color: #080c14;
-  box-shadow: 0 0 12px var(--lime-glow);
-}
-.pdb-day.off {
-  background: var(--s2);
-  color: var(--muted);
-  border: 1px solid var(--border);
-}
-
-/* ══════════════════════════════════════════
-   COURSE PROGRESS CARD
-══════════════════════════════════════════ */
-.progress-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--r-lg);
-  padding: 22px;
-}
-
-.progress-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 14px;
-}
-
-.pdb-prog-fraction {
-  font-family: var(--font-d);
-  font-size: 20px;
-  font-weight: 900;
-  font-style: italic;
-  color: var(--lime);
-}
-
-.pdb-prog-track {
-  height: 8px;
-  background: var(--s3);
-  border-radius: 999px;
-  overflow: hidden;
-  margin-bottom: 12px;
-}
-.pdb-prog-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--lime), rgba(163,230,53,0.6));
-  border-radius: 999px;
-  width: 0%;
-  transition: width 1s cubic-bezier(0.22,1,0.36,1) .4s;
-  box-shadow: 0 0 8px var(--lime-glow);
-}
-
-.pdb-prog-pillars {
-  display: flex;
-  gap: 6px;
-  margin-bottom: 12px;
-}
-.pdb-pillar-dot {
-  flex: 1;
-  height: 6px;
-  border-radius: 999px;
-  background: var(--s3);
-  border: 1px solid var(--border);
-  transition: background .3s, box-shadow .3s;
-}
-.pdb-pillar-dot.done {
-  background: var(--lime);
-  border-color: var(--lime);
-  box-shadow: 0 0 6px var(--lime-glow);
-}
-.pdb-pillar-dot.active {
-  background: var(--orange);
-  border-color: var(--orange);
-  box-shadow: 0 0 6px rgba(232,99,10,0.3);
-  animation: dotPulse 1.5s ease infinite;
-}
-@keyframes dotPulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
-}
-
-.pdb-prog-note {
-  font-size: 12px;
-  color: var(--muted2);
-  font-weight: 500;
-}
-
-/* ══════════════════════════════════════════
-   NEXT UP CARD
-══════════════════════════════════════════ */
-.pdb-next-card {
-  background: linear-gradient(135deg, var(--s1) 0%, var(--surface) 100%);
-  border: 1px solid var(--border);
-  border-radius: var(--r-lg);
-  padding: 22px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  cursor: pointer;
-  transition: border-color .2s, background .2s;
-  text-decoration: none;
-}
-.pdb-next-card:hover {
-  border-color: rgba(163,230,53,0.3);
-  background: linear-gradient(135deg, var(--s2) 0%, var(--s1) 100%);
-}
-
-.pdb-next-left { display: flex; align-items: center; gap: 14px; }
-
-.pdb-next-icon {
-  width: 42px; height: 42px;
-  border-radius: 50%;
-  background: var(--lime);
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-  box-shadow: 0 0 16px var(--lime-glow);
-  transition: transform .2s;
-}
-.pdb-next-card:hover .pdb-next-icon { transform: scale(1.08); }
-.pdb-next-icon svg { width: 16px; height: 16px; }
-
-.pdb-next-eyebrow {
-  font-family: var(--font-d);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 2px;
-}
-.pdb-next-title {
-  font-family: var(--font-d);
-  font-size: 16px;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--text);
-}
-
-.pdb-next-arrow { opacity: 0.3; flex-shrink: 0; }
-.pdb-next-card:hover .pdb-next-arrow { opacity: 0.7; }
-
-/* ══════════════════════════════════════════
-   QUIZ HISTORY
-══════════════════════════════════════════ */
-.history-section {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--r-lg);
-  overflow: hidden;
-}
-
-.history-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 18px 22px;
-  border-bottom: 1px solid var(--border);
-}
-
-.history-title {
-  font-family: var(--font-d);
-  font-size: 13px;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text);
-}
-
-.db-history-cta {
-  font-family: var(--font-d);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--lime);
-  text-decoration: none;
-  transition: opacity .2s;
-}
-.db-history-cta:hover { opacity: 0.7; }
-
-.db-history-list { padding: 8px 0; }
-
-.db-history-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 22px;
-  border-bottom: 1px solid var(--border);
-  transition: background .2s;
-}
-.db-history-item:last-child { border-bottom: none; }
-.db-history-item:hover { background: var(--s1); }
-
-.db-history-grade {
-  font-family: var(--font-d);
-  font-size: 28px;
-  font-weight: 900;
-  line-height: 1;
-  width: 40px;
-  flex-shrink: 0;
-}
-.db-history-meta {
-  font-size: 12px;
-  color: var(--muted2);
-  flex: 1;
-  padding: 0 12px;
-}
-.db-history-score {
-  font-family: var(--font-d);
-  font-size: 14px;
-  font-weight: 800;
-  color: var(--text);
-}
-
-/* ══════════════════════════════════════════
-   MODULE LIST
-══════════════════════════════════════════ */
-.modules-section {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--r-lg);
-  overflow: hidden;
-}
-
-.modules-header {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  padding: 18px 22px;
-  border-bottom: 1px solid var(--border);
-}
-
-.modules-title {
-  font-family: var(--font-d);
-  font-size: 13px;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text);
-}
-
-.modules-sub {
-  font-family: var(--font-d);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-.pdb-module-list { padding: 0; }
-
-.pdb-mod-row {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 16px 22px;
-  border-bottom: 1px solid var(--border);
-  cursor: pointer;
-  transition: background .2s;
-}
-.pdb-mod-row:last-child { border-bottom: none; }
-.pdb-mod-row:hover { background: var(--s1); }
-
-.pdb-mod-num {
-  width: 34px; height: 34px;
-  border-radius: 50%;
-  background: var(--s3);
-  border: 1px solid var(--border2);
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-d);
-  font-size: 13px;
-  font-weight: 800;
-  color: var(--muted);
-  flex-shrink: 0;
-  transition: background .3s, border-color .3s;
-}
-.pdb-mod-num.done {
-  background: rgba(163,230,53,0.12);
-  border-color: rgba(163,230,53,0.3);
-  color: var(--lime);
-}
-.pdb-mod-num.next {
-  background: var(--orange-dim);
-  border-color: rgba(232,99,10,0.3);
-  color: var(--orange);
-  box-shadow: 0 0 10px rgba(232,99,10,0.2);
-}
-
-.pdb-mod-info { flex: 1; min-width: 0; }
-.pdb-mod-name {
-  font-family: var(--font-d);
-  font-size: 14px;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--text);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.pdb-mod-desc {
-  font-size: 12px;
-  color: var(--muted2);
-  margin-top: 2px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.pdb-mod-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
-
-.pdb-mod-bar-wrap {
-  width: 60px;
-  height: 4px;
-  background: var(--s3);
-  border-radius: 999px;
-  overflow: hidden;
-}
-.pdb-mod-bar {
-  height: 100%;
-  border-radius: 999px;
-  background: var(--lime);
-  width: 0%;
-  transition: width 1s cubic-bezier(0.22,1,0.36,1) .6s;
-}
-
-.pdb-mod-pct {
-  font-family: var(--font-d);
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--muted2);
-  width: 36px;
-  text-align: right;
-}
-.pdb-mod-pct.done { color: var(--lime); }
-
-.pdb-section-label {
-  font-family: var(--font-d);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-/* ══════════════════════════════════════════
-   COACH DASHBOARD
-══════════════════════════════════════════ */
-.coach-hero {
-  background: linear-gradient(135deg, var(--s1) 0%, var(--surface) 100%);
-  border: 1px solid var(--border);
-  border-radius: var(--r-lg);
-  padding: 32px;
-  position: relative;
-  overflow: hidden;
-  margin-bottom: 14px;
-}
-.coach-hero::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, transparent, var(--orange), transparent);
-}
-.coach-hero-bg {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse 60% 80% at 90% 50%, rgba(232,99,10,0.08), transparent);
-  pointer-events: none;
-}
-
-.coach-hero-inner { position: relative; z-index: 1; }
-.coach-hero-top {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 20px;
-  flex-wrap: wrap;
-  margin-bottom: 28px;
-}
-.coach-hero-label {
-  font-family: var(--font-d);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--orange);
   margin-bottom: 6px;
 }
-.coach-link-display {
-  font-family: var(--font-d);
-  font-size: clamp(14px, 2vw, 20px);
-  font-weight: 800;
-  color: white;
-  letter-spacing: 0.02em;
-  margin-bottom: 8px;
-  word-break: break-all;
-}
-.coach-link-note {
-  font-size: 13px;
-  color: var(--muted2);
-  line-height: 1.6;
-  max-width: 400px;
-}
-#coachCopyConfirm {
-  display: none;
-  margin-top: 8px;
-  font-size: 13px;
-  color: var(--green);
-  font-family: var(--font-d);
-  font-weight: 700;
-  letter-spacing: 0.06em;
-}
-.coach-copy-btn {
-  background: var(--orange);
-  color: white;
-  font-family: var(--font-d);
-  font-size: 13px;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  border: none;
-  border-radius: 10px;
-  padding: 13px 28px;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: transform .15s, box-shadow .15s;
-  flex-shrink: 0;
-}
-.coach-copy-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(232,99,10,0.3); }
+.coach-empty-sub { font-size: 13px; color: var(--muted2); line-height: 1.6; }
 
-.coach-steps {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  padding-top: 24px;
-  border-top: 1px solid var(--border);
+/* Mobile roster */
+@media (max-width: 640px) {
+  .coach-roster-head { display: none; }
+  .coach-roster-row {
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    gap: 6px 8px;
+    padding: 14px 16px;
+  }
+  .cr-name-wrap { grid-column: 1; }
+  .cr-status { grid-column: 2; grid-row: 1; }
+  .cr-progress-wrap { grid-column: 1; }
+  .cr-iq { grid-column: 2; grid-row: 2; font-size: 18px; }
+  .cr-joined { display: none; }
+  .coach-invite-row { flex-direction: column; }
+  .coach-invite-input { width: 100%; min-width: unset; }
+  .coach-invite-btn { width: 100%; justify-content: center; }
 }
-.coach-step { text-align: center; }
-.coach-step-num {
-  font-family: var(--font-d);
-  font-size: 32px;
-  font-weight: 900;
-  color: var(--border2);
-  margin-bottom: 4px;
-}
-.coach-step-label {
-  font-family: var(--font-d);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-.coach-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
-
-.stat-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--r-lg);
-  padding: 22px;
-}
-.stat-label {
-  font-family: var(--font-d);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 8px;
-}
-.stat-value {
-  font-family: var(--font-d);
-  font-size: 52px;
-  font-weight: 900;
-  font-style: italic;
-  color: var(--orange);
-  line-height: 1;
-}
-.stat-value-sm {
-  font-family: var(--font-d);
-  font-size: 36px;
-  font-weight: 900;
-  letter-spacing: 0.06em;
-  color: var(--lime);
-  line-height: 1;
-}
-.stat-note { font-size: 13px; color: var(--muted2); margin-top: 6px; }
-
-.coach-players-section {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--r-lg);
-  overflow: hidden;
-}
-.coach-players-header {
-  padding: 18px 22px;
-  border-bottom: 1px solid var(--border);
-  font-family: var(--font-d);
-  font-size: 13px;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text);
-}
-
-#coachPlayersList { padding: 0; }
-
-/* ══════════════════════════════════════════
-   WELCOME HEADER
-══════════════════════════════════════════ */
-.dash-welcome-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-.dash-welcome-name {
-  font-family: var(--font-d);
-  font-size: clamp(22px, 4vw, 32px);
-  font-weight: 900;
-  font-style: italic;
-  text-transform: uppercase;
-  color: var(--text);
-  line-height: 1;
-}
-.dash-welcome-name span { color: var(--lime); }
-.dash-welcome-sub {
-  font-size: 13px;
-  color: var(--muted2);
-  margin-top: 2px;
-}
-
-/* ══════════════════════════════════════════
-   BOTTOM NAV (MOBILE)
-══════════════════════════════════════════ */
-.bottom-nav {
-  position: fixed;
-  bottom: 0; left: 0; right: 0;
-  height: 70px;
-  background: rgba(8,12,20,0.97);
-  backdrop-filter: blur(20px);
-  border-top: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  padding: 0 8px;
-  z-index: 200;
-  border-radius: 20px 20px 0 0;
-}
-@media (min-width: 1024px) { .bottom-nav { display: none; } }
-
-.bnav-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-  padding: 8px 14px;
-  border-radius: 12px;
-  text-decoration: none;
-  color: var(--muted);
-  font-family: var(--font-d);
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  transition: color .2s;
-  border: none; background: none; cursor: pointer;
-}
-.bnav-item:hover { color: var(--muted2); }
-.bnav-item.active { color: var(--lime); }
-.bnav-item svg { width: 20px; height: 20px; fill: currentColor; }
-
-.bnav-item.cta-item {
-  background: var(--lime);
-  color: #080c14;
-  border-radius: 14px;
-  padding: 8px 20px;
-  box-shadow: 0 0 16px var(--lime-glow);
-}
-.bnav-item.cta-item:hover { color: #080c14; }
-.bnav-item.cta-item svg { fill: #080c14; }
-
-/* ══════════════════════════════════════════
-   STAGGER ANIMATIONS
-══════════════════════════════════════════ */
-.fade-up {
-  opacity: 0;
-  transform: translateY(12px);
-  animation: fadeUp .5s ease forwards;
-}
-.fade-up:nth-child(1) { animation-delay: .05s; }
-.fade-up:nth-child(2) { animation-delay: .12s; }
-.fade-up:nth-child(3) { animation-delay: .18s; }
-.fade-up:nth-child(4) { animation-delay: .24s; }
-.fade-up:nth-child(5) { animation-delay: .30s; }
-.fade-up:nth-child(6) { animation-delay: .36s; }
-
-@keyframes fadeUp {
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* Spacing */
-.gap-section { display: flex; flex-direction: column; gap: 14px; }
 </style>
 </head>
 <body>
 
-<!-- ═══════════════════════════════════
-     TOP NAV
-═══════════════════════════════════ -->
 <header class="top-nav">
   <a class="nav-logo" href="index.html">
     <img src="logo.png" alt="First Down Academy" onerror="this.style.display='none'">
     <div class="nav-brand">First Down<br><span>Academy</span></div>
   </a>
-
   <nav class="nav-links">
     <a class="nav-link" href="index.html">Home</a>
     <a class="nav-link" href="program.html">Program</a>
     <a class="nav-link active" href="dashboard.html">Dashboard</a>
     <a class="nav-link" href="giq-exam.html">IQ Exam</a>
   </nav>
-
   <div class="nav-right">
     <div class="nav-iq-badge" id="navIQBadge" style="display:none;">
       <div class="dot"></div>
@@ -1415,46 +598,36 @@ body::before {
   </div>
 </header>
 
-<!-- ═══════════════════════════════════
-     SIDEBAR (desktop)
-═══════════════════════════════════ -->
 <aside class="sidebar">
   <nav class="sidebar-nav">
     <a class="sidebar-link" href="program.html">
-      <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
       Playbook
     </a>
     <a class="sidebar-link active" href="dashboard.html">
-      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect></svg>
       Dashboard
     </a>
     <a class="sidebar-link" href="giq-exam.html">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4l3 3"></path></svg>
       IQ Exam
     </a>
     <a class="sidebar-link" href="lesson.html">
-      <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
       Lessons
     </a>
-
     <div class="sidebar-section-label" style="margin-top:20px;">Account</div>
-    <a class="sidebar-link" href="auth.html" onclick="doLogout();return false;">
-      <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    <a class="sidebar-link" href="dashboard.html">
+      <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
       Profile
     </a>
   </nav>
-
   <div class="sidebar-bottom">
     <button class="nav-signout" style="width:100%;" onclick="doLogout()">Sign Out</button>
   </div>
 </aside>
 
-<!-- ═══════════════════════════════════
-     MAIN
-═══════════════════════════════════ -->
 <main class="main">
-
-  <!-- Loading -->
   <div id="dashLoading">
     <div class="loading-inner">
       <div class="loading-icon">🏈</div>
@@ -1462,12 +635,8 @@ body::before {
     </div>
   </div>
 
-  <!-- ════════════════════════════
-       PLAYER DASHBOARD
-  ════════════════════════════ -->
+  <!-- PLAYER DASHBOARD -->
   <div id="dashPlayer" style="display:none;">
-
-    <!-- Welcome bar -->
     <div class="dash-welcome-bar fade-up">
       <div>
         <div class="dash-welcome-name">Hey, <span id="dashPlayerName">Player</span> 👋</div>
@@ -1475,10 +644,7 @@ body::before {
       </div>
     </div>
 
-    <!-- ROW 1: Hero + IQ Card -->
     <div class="dash-grid" style="margin-bottom:14px;">
-
-      <!-- Hero: Resume Journey -->
       <div class="hero-card col-span-2 fade-up">
         <div class="hero-bg-glow"></div>
         <div class="hero-body">
@@ -1486,7 +652,7 @@ body::before {
             <div class="hero-tags">
               <span class="tag tag-lime">Active Program</span>
               <span class="hero-streak">
-                <svg viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path></svg>
                 Active Streak
               </span>
             </div>
@@ -1503,45 +669,36 @@ body::before {
           </div>
           <a href="lesson.html" class="hero-btn">
             Continue Training
-            <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
           </a>
         </div>
-
         <div class="hero-visual">
           <div class="hero-visual-inner">
-            <!-- Animated helmet SVG -->
             <svg viewBox="0 0 200 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <ellipse cx="100" cy="90" rx="78" ry="72" fill="rgba(163,230,53,0.04)"/>
-              <path d="M28 104 Q18 66 46 42 Q74 16 108 16 Q152 16 175 52 Q194 80 190 112 L176 117 Q172 84 153 63 Q132 40 106 40 Q76 40 57 60 Q40 78 40 108 Z" fill="rgba(163,230,53,0.07)"/>
-              <path d="M38 112 Q35 133 44 150 Q53 167 70 173" stroke="rgba(163,230,53,0.18)" stroke-width="7" stroke-linecap="round" fill="none"/>
-              <path d="M48 106 Q44 128 54 148 Q64 166 85 172" stroke="rgba(163,230,53,0.12)" stroke-width="5" stroke-linecap="round" fill="none"/>
-              <path d="M33 123 L78 167" stroke="rgba(163,230,53,0.1)" stroke-width="4" stroke-linecap="round"/>
-              <path d="M108 16 Q113 50 111 94" stroke="rgba(163,230,53,0.1)" stroke-width="12" stroke-linecap="round" fill="none"/>
-              <circle cx="176" cy="108" r="13" fill="rgba(163,230,53,0.06)" stroke="rgba(163,230,53,0.12)" stroke-width="2"/>
-              <!-- Lime accent lines -->
-              <line x1="20" y1="60" x2="180" y2="60" stroke="rgba(163,230,53,0.05)" stroke-width="1"/>
-              <line x1="20" y1="100" x2="180" y2="100" stroke="rgba(163,230,53,0.05)" stroke-width="1"/>
-              <line x1="20" y1="140" x2="180" y2="140" stroke="rgba(163,230,53,0.05)" stroke-width="1"/>
+              <ellipse cx="100" cy="90" rx="78" ry="72" fill="rgba(163,230,53,0.04)"></ellipse>
+              <path d="M28 104 Q18 66 46 42 Q74 16 108 16 Q152 16 175 52 Q194 80 190 112 L176 117 Q172 84 153 63 Q132 40 106 40 Q76 40 57 60 Q40 78 40 108 Z" fill="rgba(163,230,53,0.07)"></path>
+              <path d="M38 112 Q35 133 44 150 Q53 167 70 173" stroke="rgba(163,230,53,0.18)" stroke-width="7" stroke-linecap="round" fill="none"></path>
+              <path d="M48 106 Q44 128 54 148 Q64 166 85 172" stroke="rgba(163,230,53,0.12)" stroke-width="5" stroke-linecap="round" fill="none"></path>
+              <path d="M108 16 Q113 50 111 94" stroke="rgba(163,230,53,0.1)" stroke-width="12" stroke-linecap="round" fill="none"></path>
+              <circle cx="176" cy="108" r="13" fill="rgba(163,230,53,0.06)" stroke="rgba(163,230,53,0.12)" stroke-width="2"></circle>
+              <line x1="20" y1="60" x2="180" y2="60" stroke="rgba(163,230,53,0.05)" stroke-width="1"></line>
+              <line x1="20" y1="100" x2="180" y2="100" stroke="rgba(163,230,53,0.05)" stroke-width="1"></line>
+              <line x1="20" y1="140" x2="180" y2="140" stroke="rgba(163,230,53,0.05)" stroke-width="1"></line>
             </svg>
           </div>
         </div>
       </div>
 
-      <!-- Gridiron IQ Card -->
       <div class="card fade-up">
         <div class="card-body" style="display:flex;flex-direction:column;height:100%;">
           <div class="card-eyebrow">Gridiron IQ Score</div>
-
-          <!-- Empty state -->
-          <div class="db-iq-empty" id="giqEmpty">
+          <div id="giqEmpty">
             <div class="iq-empty">
               <div class="iq-empty-q">?</div>
               <div class="iq-empty-text">No score yet</div>
             </div>
           </div>
-
-          <!-- Score state -->
-          <div class="db-iq-score-state" id="giqScoreState">
+          <div id="giqScoreState">
             <div class="iq-top">
               <div class="iq-grade-wrap">
                 <div class="iq-grade" id="giqGrade">—</div>
@@ -1552,43 +709,32 @@ body::before {
               </div>
               <div class="iq-badge-wrap" id="iqBadgeWrap" style="display:none;">
                 <div class="iq-trophy">
-                  <svg viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/></svg>
+                  <svg viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"></path></svg>
                 </div>
                 <span class="iq-trophy-label">Elite</span>
               </div>
             </div>
           </div>
-
-          <!-- Pillars (always in DOM, hidden until score loads) -->
           <div class="db-iq-pillars" id="giqDashPillars" style="display:none;flex:1;"></div>
-
           <div class="iq-actions" style="margin-top:16px;">
             <a href="giq-exam.html" class="db-iq-btn" id="giqDashBtn">Take the Quiz →</a>
             <span class="db-iq-quiz-count" id="giqQuizCount"></span>
           </div>
         </div>
       </div>
+    </div>
 
-    </div><!-- /ROW 1 -->
-
-    <!-- ROW 2: Recommendation + This Week -->
     <div class="dash-grid" style="margin-bottom:14px;">
-
-      <!-- Recommendation -->
       <div class="rec-card fade-up">
         <div class="db-rec-eyebrow" id="dbRecEyebrow">Next Step</div>
         <div class="db-rec-title" id="dbRecTitle">Take the Gridiron IQ Quiz</div>
-        <div class="db-rec-body" id="dbRecBody">Find out where your football knowledge stands. 15 adaptive questions. Instant grade. Free.</div>
+        <div class="db-rec-body" id="dbRecBody">Find out where your football knowledge stands. 15 adaptive questions. Instant grade.</div>
         <a href="giq-exam.html" class="db-rec-btn" id="dbRecBtn">Start Quiz →</a>
       </div>
-
-      <!-- This Week -->
       <div class="week-card fade-up">
         <div class="card-eyebrow">This Week</div>
         <div id="dashStreakDays" class="pdb-week-days"></div>
       </div>
-
-      <!-- Course Progress -->
       <div class="progress-card fade-up">
         <div class="progress-header">
           <div class="card-eyebrow" style="margin:0;">Course Progress</div>
@@ -1609,15 +755,13 @@ body::before {
         </div>
         <div class="pdb-prog-note" id="dashProgressNote">Start your first module below</div>
       </div>
+    </div>
 
-    </div><!-- /ROW 2 -->
-
-    <!-- Next Up -->
     <div style="margin-bottom:14px;" class="fade-up">
-      <div class="pdb-next-card" onclick="window.location.href='lesson.html'" style="text-decoration:none;">
+      <div class="pdb-next-card" onclick="window.location.href='lesson.html'">
         <div class="pdb-next-left">
           <div class="pdb-next-icon">
-            <svg viewBox="0 0 24 24" fill="#080c14"><polygon points="5 3 19 12 5 21"/></svg>
+            <svg viewBox="0 0 24 24" fill="#080c14"><polygon points="5 3 19 12 5 21"></polygon></svg>
           </div>
           <div>
             <div class="pdb-next-eyebrow">Up Next</div>
@@ -1625,13 +769,12 @@ body::before {
           </div>
         </div>
         <svg class="pdb-next-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none">
-          <path d="M5 12h14M13 6l6 6-6 6" stroke="rgba(255,255,255,.4)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M5 12h14M13 6l6 6-6 6" stroke="rgba(255,255,255,.4)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
         </svg>
       </div>
     </div>
 
-    <!-- Quiz History -->
-    <div class="db-history-section" id="dbHistorySection" style="display:none;margin-bottom:14px;">
+    <div id="dbHistorySection" style="display:none;margin-bottom:14px;">
       <div class="history-section fade-up">
         <div class="history-header">
           <div class="history-title">Quiz History</div>
@@ -1641,7 +784,6 @@ body::before {
       </div>
     </div>
 
-    <!-- Module List -->
     <div class="fade-up">
       <div class="modules-section">
         <div class="modules-header">
@@ -1651,230 +793,489 @@ body::before {
         <div class="pdb-module-list" id="dashModuleList"></div>
       </div>
     </div>
+  </div>
 
-  </div><!-- /dashPlayer -->
-
-
-  <!-- ════════════════════════════
-       COACH DASHBOARD
-  ════════════════════════════ -->
+  <!-- COACH DASHBOARD -->
   <div id="dashCoach" style="display:none;">
 
-    <!-- Welcome -->
+    <!-- WELCOME -->
     <div class="dash-welcome-bar fade-up">
       <div>
         <div class="dash-welcome-name" style="color:var(--orange);">Coach <span id="dashCoachName">Coach</span></div>
         <div class="dash-welcome-sub" id="dashCoachTeam"></div>
       </div>
+      <div id="coachCodeBadge" style="display:none;">
+        <div style="font-family:var(--font-d);font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;">Team Code</div>
+        <div style="font-family:var(--font-d);font-size:22px;font-weight:900;letter-spacing:.08em;color:var(--orange);line-height:1;" id="coachCodeDisplay">—</div>
+      </div>
     </div>
 
-    <!-- Referral hero -->
+    <!-- REFERRAL LINK CARD -->
     <div class="coach-hero fade-up">
       <div class="coach-hero-bg"></div>
       <div class="coach-hero-inner">
+
         <div class="coach-hero-top">
           <div style="flex:1;min-width:200px;">
             <div class="coach-hero-label">Your Team Referral Link</div>
-            <div class="coach-link-display" id="coachRefLink">Loading your link…</div>
-            <div class="coach-link-note">Share this link with your players. When they sign up, their account connects to your team automatically.</div>
-            <div id="coachCopyConfirm">✓ Link copied to clipboard!</div>
+            <div class="coach-link-display" id="coachRefLink">Loading…</div>
+            <div class="coach-link-note">Anyone who signs up using this link is automatically added to your roster.</div>
+            <div id="coachCopyConfirm" style="display:none;margin-top:8px;font-size:13px;color:var(--green);font-family:var(--font-d);font-weight:700;letter-spacing:.06em;">✓ Copied to clipboard!</div>
           </div>
-          <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-start;">
+          <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-start;flex-shrink:0;">
             <button id="coachCopyBtn" class="coach-copy-btn" onclick="copyCoachLink()">Copy Link</button>
             <div style="font-family:var(--font-d);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);">
               Code: <span id="coachStatCode" style="color:var(--muted2);">—</span>
             </div>
           </div>
         </div>
-        <div class="coach-steps">
-          <div class="coach-step">
-            <div class="coach-step-num">1</div>
-            <div class="coach-step-label">Copy your link</div>
+
+        <!-- INVITE SECTION -->
+        <div class="coach-invite-section">
+          <div class="coach-invite-label">Invite via Email</div>
+          <div class="coach-invite-row">
+            <input
+              type="email"
+              id="coachInviteEmail"
+              class="coach-invite-input"
+              placeholder="player@email.com or coach@email.com"
+              onkeydown="if(event.key==='Enter') sendCoachInvite()"
+            >
+            <div class="coach-invite-role-wrap">
+              <button class="coach-role-btn active" id="rolePlayer" onclick="setInviteRole('player')">Player</button>
+              <button class="coach-role-btn" id="roleCoach" onclick="setInviteRole('coach')">Coach</button>
+            </div>
+            <button class="coach-invite-btn" onclick="sendCoachInvite()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Send Invite
+            </button>
           </div>
-          <div class="coach-step">
-            <div class="coach-step-num">2</div>
-            <div class="coach-step-label">Share with your team</div>
-          </div>
-          <div class="coach-step">
-            <div class="coach-step-num">3</div>
-            <div class="coach-step-label">Players appear here</div>
-          </div>
+          <div id="coachInviteMsg" style="display:none;margin-top:8px;font-size:12px;font-family:var(--font-d);font-weight:700;letter-spacing:.08em;"></div>
+          <div class="coach-invite-divider"><span>or share the link directly</span></div>
+          <button class="coach-link-copy-btn" onclick="copyCoachLink(); this.textContent='✓ Link Copied'">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="9" y="9" width="13" height="13" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="1.5"/></svg>
+            Copy Invite Link
+          </button>
+        </div>
+
+        <!-- 3-STEP -->
+        <div class="coach-steps" style="margin-top:20px;">
+          <div class="coach-step"><div class="coach-step-num">1</div><div class="coach-step-label">Send your link or invite</div></div>
+          <div class="coach-step"><div class="coach-step-num">2</div><div class="coach-step-label">Player signs up</div></div>
+          <div class="coach-step"><div class="coach-step-num">3</div><div class="coach-step-label">They appear on your roster</div></div>
         </div>
       </div>
     </div>
 
-    <!-- Stats -->
+    <!-- ROSTER STATS -->
     <div class="coach-stats fade-up">
       <div class="stat-card">
-        <div class="stat-label">Total Players</div>
+        <div class="stat-label">Roster Size</div>
         <div class="stat-value" id="coachStatPlayers">0</div>
-        <div class="stat-note" id="coachPlayerCount">players signed up with your link</div>
+        <div class="stat-note" id="coachPlayerCount">players on your team</div>
       </div>
       <div class="stat-card">
         <div class="stat-label">Referral Code</div>
         <div class="stat-value-sm" id="coachStatCodeDisplay">—</div>
-        <div class="stat-note">auto-generated from team name</div>
+        <div class="stat-note">auto-generated · unique to your team</div>
       </div>
     </div>
 
-    <!-- Players list -->
+    <!-- ROSTER TABLE -->
     <div class="coach-players-section fade-up">
-      <div class="coach-players-header">Your Players</div>
+      <div class="coach-players-header" style="display:flex;align-items:center;justify-content:space-between;">
+        <div>Roster</div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div class="coach-roster-filter active" onclick="filterRoster('all')" id="filterAll">All</div>
+          <div class="coach-roster-filter" onclick="filterRoster('active')" id="filterActive">Active</div>
+          <div class="coach-roster-filter" onclick="filterRoster('pending')" id="filterPending">Pending</div>
+        </div>
+      </div>
+      <!-- Table header -->
+      <div class="coach-roster-head">
+        <div class="crh-name">Player</div>
+        <div class="crh-iq">IQ Grade</div>
+        <div class="crh-progress">Modules</div>
+        <div class="crh-joined">Joined</div>
+        <div class="crh-status">Status</div>
+      </div>
       <div id="coachPlayersList"></div>
     </div>
 
-  </div><!-- /dashCoach -->
-
+  </div>
 </main>
 
-<!-- ═══════════════════════════════════
-     BOTTOM NAV (mobile)
-═══════════════════════════════════ -->
 <nav class="bottom-nav">
   <a class="bnav-item" href="index.html">
-    <svg viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    <svg viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
     Home
   </a>
   <a class="bnav-item" href="program.html">
-    <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+    <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
     Program
   </a>
   <a class="bnav-item cta-item active" href="dashboard.html">
-    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect></svg>
     Dashboard
   </a>
   <a class="bnav-item" href="giq-exam.html">
-    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4l3 3"></path></svg>
     IQ Exam
   </a>
   <a class="bnav-item" href="lesson.html">
-    <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+    <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
     Learn
   </a>
 </nav>
 
+<!-- FIX 1: v=4 (was v=2) -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="curriculum.js?v=2"></script>
-<script src="app.js?v=2"></script>
+<script src="curriculum.js?v=4"></script>
+<script src="app.js?v=4"></script>
 <script>
+function buildModuleList(){}
 
-// ── Override buildModuleList stub (this page uses buildDashModuleList) ──
-function buildModuleList() {}
+function showPage(name){
+  var map={'home':'index.html','course':'program.html','giq':'giq.html','levels':'levels.html','coaches':'coaches.html','signup':'auth.html','dashboard':'dashboard.html','lesson':'lesson.html','legal':'legal.html'};
+  if(map[name]) window.location.href=map[name];
+}
+function openModule(idx){
+  sessionStorage.setItem('openModule',idx);
+  window.location.href='lesson.html';
+}
+function updateNavForLoggedIn(){}
 
-// ── Page nav map ──
-function showPage(name) {
-  var map = {
-    'home':'index.html','course':'program.html','giq':'giq.html',
-    'levels':'levels.html','coaches':'coaches.html','signup':'signup.html',
-    'dashboard':'dashboard.html','lesson':'lesson.html','legal':'legal.html'
-  };
-  if (map[name]) window.location.href = map[name];
+function syncNavIQBadge(displayValue){
+  var badge=document.getElementById('navIQBadge');
+  var num=document.getElementById('navIQNum');
+  if(!badge||!num||!displayValue) return;
+  num.textContent=displayValue;
+  badge.style.display='flex';
 }
 
-function openModule(idx) {
-  sessionStorage.setItem('openModule', idx);
-  window.location.href = 'lesson.html';
+function syncHeroProgress(pct){
+  var fill=document.getElementById('heroProgressFill');
+  var label=document.getElementById('heroProgressPct');
+  if(fill) setTimeout(function(){fill.style.width=pct+'%';},200);
+  if(label) label.textContent=pct+'%';
 }
 
-function updateNavForLoggedIn() {
-  // Already on dashboard
+function styleHistoryItems(){
+  var list=document.getElementById('dbHistoryList');
+  if(!list) return;
+  var observer=new MutationObserver(function(){
+    /* FIX 2: target db-history-row (app.js class) not db-history-item */
+    list.querySelectorAll('.db-history-row,.db-history-item').forEach(function(item){
+      if(item.dataset.styled) return;
+      item.dataset.styled='1';
+      var gradeEl=item.querySelector('.db-history-grade');
+      if(gradeEl){
+        var g=gradeEl.textContent.trim();
+        if(g.startsWith('A')) gradeEl.style.color='var(--lime)';
+        else if(g.startsWith('B')) gradeEl.style.color='var(--green)';
+        else if(g.startsWith('C')) gradeEl.style.color='var(--amber)';
+        else gradeEl.style.color='var(--red)';
+      }
+    });
+  });
+  observer.observe(list,{childList:true,subtree:true});
 }
 
-// ── Sync nav IQ badge ──
-function syncNavIQBadge(score, grade) {
-  var badge = document.getElementById('navIQBadge');
-  var num   = document.getElementById('navIQNum');
-  if (badge && num && score) {
-    num.textContent = grade || score;
-    badge.style.display = 'flex';
+/* ══════════════════════════════════════════
+   COACH — CODE GENERATION + INVITE + ROSTER
+══════════════════════════════════════════ */
+
+var MASCOTS = [
+  'EAGLES','HAWKS','LIONS','BEARS','TIGERS','WOLVES','BULLS','RAMS',
+  'KNIGHTS','FALCONS','RAVENS','CHIEFS','GIANTS','PATRIOTS','THUNDER',
+  'BLITZ','RAIDERS','CHARGERS','BRONCOS','JAGUARS','VIPERS','COBRAS'
+];
+
+function generateReferralCode(teamName) {
+  // Try to use mascot from team name, otherwise pick random
+  var name = (teamName || '').toUpperCase();
+  var mascot = '';
+  for (var i = 0; i < MASCOTS.length; i++) {
+    if (name.indexOf(MASCOTS[i]) >= 0) { mascot = MASCOTS[i]; break; }
   }
+  if (!mascot) {
+    // Use first word of team name if meaningful, else random mascot
+    var words = name.split(' ').filter(function(w){ return w.length > 3; });
+    mascot = words.length > 0 ? words[words.length - 1].slice(0,8) : MASCOTS[Math.floor(Math.random() * MASCOTS.length)];
+  }
+  var nums = Math.floor(100 + Math.random() * 900); // 3 digit
+  return mascot + nums;
 }
 
-// ── Hero progress bar wiring ──
-function syncHeroProgress(pct) {
-  var fill  = document.getElementById('heroProgressFill');
-  var label = document.getElementById('heroProgressPct');
-  if (fill)  setTimeout(function() { fill.style.width  = pct + '%'; }, 200);
-  if (label) label.textContent = pct + '%';
+async function ensureReferralCode() {
+  if (!currentProfile || !currentUser) return;
+  if (currentProfile.referral_code) return; // already has one
+
+  var code = generateReferralCode(currentProfile.team_name || '');
+  // Make sure code is unique
+  try {
+    var check = await db.from('profiles').select('id').eq('referral_code', code).maybeSingle();
+    if (check.data) {
+      // Collision — regenerate with different numbers
+      code = generateReferralCode(currentProfile.team_name || '') + Math.floor(Math.random()*9);
+    }
+    await db.from('profiles').update({ referral_code: code }).eq('id', currentUser.id);
+    currentProfile.referral_code = code;
+  } catch(e) { console.error('Code gen error:', e); }
 }
 
-// ── Override loadGIQScore to also sync nav badge + hero score display ──
-// (runs after app.js loadGIQScore, which populates giqGrade/giqTier/giqScoreNum)
-var _origLoadGIQ = null;
-document.addEventListener('sessionReady', async function() {
+// Invite role state
+var _inviteRole = 'player';
+function setInviteRole(role) {
+  _inviteRole = role;
+  var pb = document.getElementById('rolePlayer');
+  var cb = document.getElementById('roleCoach');
+  if (pb) pb.classList.toggle('active', role === 'player');
+  if (cb) cb.classList.toggle('active', role === 'coach');
+}
 
-  var loading   = document.getElementById('dashLoading');
-  var playerDash = document.getElementById('dashPlayer');
-  var coachDash  = document.getElementById('dashCoach');
+function sendCoachInvite() {
+  var emailEl = document.getElementById('coachInviteEmail');
+  var msgEl   = document.getElementById('coachInviteMsg');
+  if (!emailEl) return;
 
-  if (!currentUser) {
-    window.location.href = 'auth.html';
+  var email = emailEl.value.trim();
+  if (!email || !email.includes('@')) {
+    showInviteMsg('error', 'Please enter a valid email address.');
     return;
   }
 
-  if (loading) loading.style.display = 'none';
+  var refCode  = currentProfile ? currentProfile.referral_code : '';
+  var teamName = currentProfile ? (currentProfile.team_name || 'our team') : 'our team';
+  var coachName = currentProfile ? (currentProfile.full_name || 'Your coach') : 'Your coach';
+  var signupUrl = 'https://firstdownacademy.com/auth.html?ref=' + refCode;
+  var role = _inviteRole;
 
-  var role = 'player';
-  if (currentUser.user_metadata && currentUser.user_metadata.role) {
-    role = currentUser.user_metadata.role;
-  } else if (currentProfile && currentProfile.team_name && !currentProfile.coach_id) {
-    role = 'coach';
+  var subject = role === 'coach'
+    ? 'Join me on First Down Academy — ' + teamName
+    : 'Your coach invited you to First Down Academy';
+
+  var playerBody = coachName + ' invited you to build your football IQ on First Down Academy. Sign up using this link: ' + signupUrl + ' (adds you to the ' + teamName + ' roster automatically). Free for players.';
+  var coachBody = coachName + ' is inviting you to co-coach ' + teamName + ' on First Down Academy. Create your coach account: ' + signupUrl;
+  var body = role === 'player' ? playerBody : coachBody;
+
+  var mailtoLink = 'mailto:' + encodeURIComponent(email)
+    + '?subject=' + encodeURIComponent(subject)
+    + '&body=' + body;
+
+  window.location.href = mailtoLink;
+  emailEl.value = '';
+  showInviteMsg('success', 'Email client opened for ' + email);
+}
+
+function showInviteMsg(type, text) {
+  var el = document.getElementById('coachInviteMsg');
+  if (!el) return;
+  el.style.display = 'block';
+  el.style.color = type === 'success' ? 'var(--lime)' : 'var(--red)';
+  el.textContent = (type === 'success' ? '✓ ' : '✕ ') + text;
+  setTimeout(function(){ el.style.display = 'none'; }, 4000);
+}
+
+// Roster filter state
+var _rosterFilter = 'all';
+var _rosterData   = [];
+
+function filterRoster(filter) {
+  _rosterFilter = filter;
+  ['all','active','pending'].forEach(function(f) {
+    var el = document.getElementById('filter' + f.charAt(0).toUpperCase() + f.slice(1));
+    if (el) el.classList.toggle('active', f === filter);
+  });
+  renderRoster();
+}
+
+function renderRoster() {
+  var listEl = document.getElementById('coachPlayersList');
+  if (!listEl) return;
+
+  var data = _rosterData.filter(function(p) {
+    if (_rosterFilter === 'active')  return p.status === 'active';
+    if (_rosterFilter === 'pending') return p.status === 'pending';
+    return true;
+  });
+
+  if (data.length === 0) {
+    listEl.innerHTML = '<div class="coach-empty-roster">'
+      + '<div class="coach-empty-icon">🏈</div>'
+      + '<div class="coach-empty-title">'
+        + (_rosterFilter === 'pending' ? 'No pending invites' : _rosterFilter === 'active' ? 'No active players yet' : 'Your roster is empty')
+      + '</div>'
+      + '<div class="coach-empty-sub">Share your referral link or send an email invite to add players.</div>'
+      + '</div>';
+    return;
   }
 
-  if (role === 'coach') {
-    if (playerDash) playerDash.style.display = 'none';
-    if (coachDash)  coachDash.style.display  = 'block';
+  listEl.innerHTML = data.map(function(p) {
+    var initial   = p.name ? p.name[0].toUpperCase() : '?';
+    var initColor = p.role === 'coach' ? 'color:var(--orange)' : 'color:var(--lime)';
+    var joined    = p.joined ? new Date(p.joined).toLocaleDateString('en-US',{month:'short',day:'numeric'}) : '—';
+    var iqHtml    = p.status === 'pending'
+      ? '<div class="cr-iq no-score">—</div>'
+      : p.iqGrade
+        ? '<div class="cr-iq" style="color:' + gradeColor(p.iqGrade) + '">' + p.iqGrade + '</div>'
+        : '<div class="cr-iq no-score">No test</div>';
+    var progressHtml = p.status === 'pending'
+      ? '<div style="font-size:11px;color:var(--muted);">Invite sent</div>'
+      : '<div class="cr-progress-wrap"><div class="cr-progress-track"><div class="cr-progress-fill" style="width:' + (p.progress||0) + '%"></div></div><div class="cr-progress-pct">' + (p.progress||0) + '%</div></div>';
+    var statusHtml = p.status === 'pending'
+      ? '<div class="cr-status cr-status-pending"><div class="cr-status-dot"></div>Pending</div>'
+      : '<div class="cr-status cr-status-active"><div class="cr-status-dot"></div>Active</div>';
+    var roleTag = p.role === 'coach'
+      ? '<span class="cr-role-tag cr-role-coach">Coach</span>'
+      : '';
+
+    return '<div class="coach-roster-row" data-status="' + p.status + '">'
+      + '<div class="cr-name-wrap">'
+        + '<div class="cr-avatar" style="' + initColor + '">' + initial + '</div>'
+        + '<div>'
+          + '<div class="cr-name">' + (p.name || 'Player') + ' ' + roleTag + '</div>'
+          + (p.email ? '<div style="font-size:11px;color:var(--muted);margin-top:1px;">' + p.email + '</div>' : '')
+        + '</div>'
+      + '</div>'
+      + iqHtml
+      + progressHtml
+      + '<div class="cr-joined">' + joined + '</div>'
+      + statusHtml
+      + '</div>';
+  }).join('');
+}
+
+function gradeColor(grade) {
+  if (!grade) return 'var(--muted2)';
+  var g = grade.charAt(0);
+  if (g === 'A') return 'var(--lime)';
+  if (g === 'B') return 'var(--green)';
+  if (g === 'C') return 'var(--amber)';
+  return 'var(--red)';
+}
+
+async function loadCoachRoster() {
+  if (!currentUser) return;
+  try {
+    // Fetch players linked to this coach
+    var result = await db
+      .from('profiles')
+      .select('id, full_name, created_at, referral_code')
+      .eq('coach_id', currentUser.id);
+
+    var players = result.data || [];
+
+    // Fetch IQ scores for these players
+    var playerIds = players.map(function(p){ return p.id; });
+    var iqMap = {};
+    var progressMap = {};
+
+    if (playerIds.length > 0) {
+      // Latest IQ score per player
+      var iqResult = await db
+        .from('giq_scores')
+        .select('user_id, grade, score')
+        .in('user_id', playerIds)
+        .order('taken_at', { ascending: false });
+
+      (iqResult.data || []).forEach(function(row) {
+        if (!iqMap[row.user_id]) iqMap[row.user_id] = row.grade || '—';
+      });
+
+      // Module progress per player
+      var progResult = await db
+        .from('progress')
+        .select('user_id, module_id, completed')
+        .in('user_id', playerIds)
+        .eq('completed', true);
+
+      (progResult.data || []).forEach(function(row) {
+        progressMap[row.user_id] = (progressMap[row.user_id] || 0) + 1;
+      });
+    }
+
+    _rosterData = players.map(function(p) {
+      var mods = progressMap[p.id] || 0;
+      return {
+        name:     p.full_name || 'Player',
+        joined:   p.created_at,
+        status:   'active',
+        role:     'player',
+        iqGrade:  iqMap[p.id] || null,
+        progress: Math.round((mods / 8) * 100)
+      };
+    });
+
+    // Update counts
+    var total = _rosterData.length;
+    var statEl = document.getElementById('coachStatPlayers');
+    if (statEl) statEl.textContent = total;
+    var countEl = document.getElementById('coachPlayerCount');
+    if (countEl) countEl.textContent = total + (total === 1 ? ' player' : ' players') + ' on your team';
+
+    renderRoster();
+  } catch(e) {
+    console.error('Roster load error:', e);
+  }
+}
+
+document.addEventListener('sessionReady',async function(){
+  var loading=document.getElementById('dashLoading');
+  var playerDash=document.getElementById('dashPlayer');
+  var coachDash=document.getElementById('dashCoach');
+
+  if(!currentUser){
+    window.location.href='auth.html';
+    return;
+  }
+
+  if(loading) loading.style.display='none';
+
+  var role='player';
+  if(currentUser.user_metadata&&currentUser.user_metadata.role){
+    role=currentUser.user_metadata.role;
+  } else if(currentProfile&&currentProfile.team_name&&!currentProfile.coach_id){
+    role='coach';
+  }
+
+  if(role==='coach'){
+    if(playerDash) playerDash.style.display='none';
+    if(coachDash) coachDash.style.display='block';
+    await ensureReferralCode();
     loadCoachDashboard();
+    await loadCoachRoster();
+
+    // Show code badge in welcome bar
+    var codeBadge = document.getElementById('coachCodeBadge');
+    var codeDisp  = document.getElementById('coachCodeDisplay');
+    if (currentProfile && currentProfile.referral_code) {
+      if (codeBadge) codeBadge.style.display = 'block';
+      if (codeDisp)  codeDisp.textContent = currentProfile.referral_code;
+    }
   } else {
-    if (coachDash)  coachDash.style.display  = 'none';
-    if (playerDash) playerDash.style.display = 'block';
+    if(coachDash) coachDash.style.display='none';
+    if(playerDash) playerDash.style.display='block';
     await loadPlayerDashboard();
     buildDashModuleList();
     await loadGIQScore();
 
-    // After GIQ loads, sync nav badge and hero
-    var gradeEl = document.getElementById('giqGrade');
-    var scoreEl = document.getElementById('giqScoreNum');
-    if (gradeEl && gradeEl.textContent && gradeEl.textContent !== '—') {
-      syncNavIQBadge(true, gradeEl.textContent);
+    var gradeEl=document.getElementById('giqGrade');
+    if(gradeEl&&gradeEl.textContent&&gradeEl.textContent!=='—'){
+      syncNavIQBadge(gradeEl.textContent);
     }
 
-    // Sync hero progress with dashProgressBar width
-    var bar = document.getElementById('dashProgressBar');
-    if (bar) {
-      setTimeout(function() {
-        var w = parseFloat(bar.style.width) || 0;
+    var bar=document.getElementById('dashProgressBar');
+    if(bar){
+      setTimeout(function(){
+        var w=parseFloat(bar.style.width)||0;
         syncHeroProgress(Math.round(w));
-      }, 600);
+      },600);
     }
 
-    // Wire up history items to use new card style
     styleHistoryItems();
   }
 });
-
-// ── Style history items to match new design ──
-function styleHistoryItems() {
-  var list = document.getElementById('dbHistoryList');
-  if (!list) return;
-  var observer = new MutationObserver(function() {
-    list.querySelectorAll('.db-history-item').forEach(function(item) {
-      // Already styled
-      if (item.dataset.styled) return;
-      item.dataset.styled = '1';
-      var gradeEl = item.querySelector('.db-history-grade');
-      if (gradeEl) {
-        var g = gradeEl.textContent.trim();
-        if (g.startsWith('A'))      gradeEl.style.color = 'var(--lime)';
-        else if (g.startsWith('B')) gradeEl.style.color = 'var(--green)';
-        else if (g.startsWith('C')) gradeEl.style.color = 'var(--amber)';
-        else                        gradeEl.style.color = 'var(--red)';
-      }
-    });
-  });
-  observer.observe(list, { childList: true, subtree: true });
-}
-
 </script>
 </body>
 </html>
