@@ -6,8 +6,8 @@
 
 // ── SUPABASE CONFIG ──
 // Replace these with your real keys
-const SUPABASE_URL = 'PASTE_YOUR_SUPABASE_URL_HERE';
-const SUPABASE_KEY = 'PASTE_YOUR_PUBLISHABLE_KEY_HERE';
+const SUPABASE_URL = 'https://wzylgwvifdfnkmuleoxn.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_FaPj5NQeqzsRE8kOme2lKQ_uXrHArbt';
 
 var db = null;
 try {
@@ -710,7 +710,29 @@ async function loadGIQScore() {
     }
 
     if (quizCount === 0) {
-      // No score yet — show empty state + quiz CTA recommendation
+      // Check localStorage for a score that was just saved from the quiz
+      // (handles the case where saveScore ran but DB hasn't synced yet)
+      var cachedGrade = null;
+      var cachedTier  = null;
+      try {
+        cachedGrade = localStorage.getItem('fda_lastGrade');
+        cachedTier  = localStorage.getItem('fda_lastTier');
+      } catch(e) {}
+
+      if (cachedGrade) {
+        var emptyEl = document.getElementById('giqEmpty');
+        var scoreEl = document.getElementById('giqScoreState');
+        if (emptyEl) emptyEl.style.display = 'none';
+        if (scoreEl) scoreEl.style.display = 'block';
+        var gradeEl = document.getElementById('giqGrade');
+        if (gradeEl) gradeEl.textContent = cachedGrade;
+        var tierEl = document.getElementById('giqTier');
+        if (tierEl) tierEl.textContent = cachedTier || '';
+        var btn = document.getElementById('giqDashBtn');
+        if (btn) btn.textContent = 'Retake Quiz →';
+        return;
+      }
+
       updateRecommendation('quiz', null, null);
       return;
     }

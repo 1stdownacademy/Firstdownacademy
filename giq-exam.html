@@ -1241,7 +1241,7 @@ function calcScore() {
 }
 
 // ── RESULTS ────────────────────────────────────────────────────────────────
-function showResults(preResult) {
+async function showResults(preResult) {
   var result = preResult || calcScore();
   state.pillarData = result.pillarData;
 
@@ -1267,7 +1267,7 @@ function showResults(preResult) {
   buildActions(result);
 
   // Save score
-  saveScore(result);
+  await saveScore(result);
 
   window.scrollTo(0,0);
 }
@@ -1457,8 +1457,15 @@ function retakeQuiz() {
 // ── UTILS ──────────────────────────────────────────────────────────────────
 async function saveScore(result) {
   try {
-    if (typeof db === 'undefined' || !currentUser) return;
+    // Always cache grade to localStorage for dashboard fallback
     var grade = getLetterGrade(result.score);
+    var tierInfo = getTierInfo(result.score);
+    try {
+      localStorage.setItem('fda_lastGrade', grade);
+      localStorage.setItem('fda_lastTier', tierInfo ? tierInfo.name : '');
+    } catch(e) {}
+
+    if (typeof db === 'undefined' || !currentUser) return;
     var payload = {
       user_id:    currentUser.id,
       level:      result.peakBand || 'adaptive',
@@ -1497,7 +1504,7 @@ function loadDashboard()   {}
 function loadGIQScore() {}
 function updateNavForLoggedIn() {}
 
-document.addEventListener('sessionReady', function() {
+document.addEventListener('sessionReady', async function() {
   if (currentUser) {
     state.loggedIn = true;
 
@@ -1525,7 +1532,7 @@ document.addEventListener('sessionReady', function() {
         if (age < 7 * 24 * 60 * 60 * 1000) {
           state.lastResult = result;
           state.loggedIn   = true;
-          showResults(result);
+          await showResults(result);
         }
         clearPendingScore();
       } catch(e) { console.log('Score restore failed:', e); }
