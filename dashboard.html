@@ -7,298 +7,1761 @@
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard — First Down Academy</title>
-<link rel="stylesheet" href="style.css?v=2">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700;1,800;1,900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ══════════════════════════════════════════
+   RESET + TOKENS
+══════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+:root {
+  --bg:        #080c14;
+  --surface:   #0f1520;
+  --s1:        #141c2a;
+  --s2:        #1a2336;
+  --s3:        #202c42;
+  --border:    rgba(255,255,255,0.06);
+  --border2:   rgba(255,255,255,0.1);
+  --text:      #e8edf5;
+  --muted:     #5a6580;
+  --muted2:    #8a96b0;
+
+  --lime:      #a3e635;
+  --lime-dim:  rgba(163,230,53,0.1);
+  --lime-glow: rgba(163,230,53,0.25);
+
+  --orange:    #e8630a;
+  --orange-dim:rgba(232,99,10,0.1);
+
+  --blue:      #3b82f6;
+  --purple:    #8b5cf6;
+  --amber:     #f59e0b;
+  --green:     #22c55e;
+  --red:       #ef4444;
+
+  --p0: #e8630a; --p1: #3b82f6; --p2: #8b5cf6;
+  --p3: #f59e0b; --p4: #22c55e;
+
+  --font-d: 'Barlow Condensed', sans-serif;
+  --font-b: 'Barlow', sans-serif;
+
+  --nav-h: 64px;
+  --side-w: 220px;
+  --r: 12px;
+  --r-lg: 18px;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-b);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Field lines */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    90deg, transparent,
+    transparent calc(12.5% - 1px),
+    rgba(255,255,255,0.013) calc(12.5% - 1px),
+    rgba(255,255,255,0.013) 12.5%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ══════════════════════════════════════════
+   TOP NAV
+══════════════════════════════════════════ */
+.top-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--nav-h);
+  background: rgba(8,12,20,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  z-index: 200;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+.nav-logo img { height: 36px; width: auto; }
+.nav-brand {
+  font-family: var(--font-d);
+  font-size: 15px;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text);
+  line-height: 1.1;
+}
+.nav-brand span { color: var(--lime); }
+
+.nav-links {
+  display: none;
+  gap: 6px;
+}
+@media (min-width: 900px) { .nav-links { display: flex; } }
+
+.nav-link {
+  font-family: var(--font-d);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted2);
+  text-decoration: none;
+  padding: 6px 14px;
+  border-radius: 8px;
+  transition: color .2s, background .2s;
+}
+.nav-link:hover { color: var(--text); background: var(--s1); }
+.nav-link.active { color: var(--lime); }
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nav-iq-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--s2);
+  border: 1px solid var(--border2);
+  border-radius: 999px;
+  padding: 5px 14px 5px 8px;
+  font-family: var(--font-d);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--lime);
+}
+.nav-iq-badge .dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--lime);
+  box-shadow: 0 0 6px var(--lime);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.nav-signout {
+  font-family: var(--font-d);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: none;
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  padding: 6px 14px;
+  cursor: pointer;
+  transition: color .2s, border-color .2s;
+}
+.nav-signout:hover { color: var(--text); border-color: rgba(255,255,255,0.2); }
+
+/* ══════════════════════════════════════════
+   SIDEBAR
+══════════════════════════════════════════ */
+.sidebar {
+  position: fixed;
+  top: var(--nav-h);
+  left: 0;
+  bottom: 0;
+  width: var(--side-w);
+  background: rgba(8,12,20,0.95);
+  border-right: 1px solid var(--border);
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 28px 0 24px;
+  z-index: 100;
+}
+@media (min-width: 1024px) { .sidebar { display: flex; } }
+
+.sidebar-nav { display: flex; flex-direction: column; gap: 2px; padding: 0 12px; }
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 14px;
+  border-radius: 10px;
+  font-family: var(--font-d);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color .2s, background .2s;
+}
+.sidebar-link:hover { color: var(--text); background: var(--s1); }
+.sidebar-link.active {
+  color: var(--lime);
+  background: var(--lime-dim);
+}
+.sidebar-link svg { width: 16px; height: 16px; fill: currentColor; flex-shrink: 0; }
+
+.sidebar-bottom {
+  padding: 0 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sidebar-section-label {
+  font-family: var(--font-d);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 0 14px;
+  margin-bottom: 6px;
+  margin-top: 20px;
+}
+
+/* ══════════════════════════════════════════
+   MAIN CONTENT
+══════════════════════════════════════════ */
+.main {
+  position: relative;
+  z-index: 1;
+  padding-top: calc(var(--nav-h) + 28px);
+  padding-bottom: 100px;
+  padding-left: 20px;
+  padding-right: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+@media (min-width: 1024px) {
+  .main {
+    margin-left: var(--side-w);
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+}
+
+/* ══════════════════════════════════════════
+   LOADING
+══════════════════════════════════════════ */
+#dashLoading {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.loading-inner {
+  text-align: center;
+}
+.loading-icon { font-size: 48px; margin-bottom: 16px; animation: bounce .8s ease infinite alternate; }
+@keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-8px); } }
+.loading-text {
+  font-family: var(--font-d);
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted2);
+}
+
+/* ══════════════════════════════════════════
+   DASHBOARD GRID
+══════════════════════════════════════════ */
+.dash-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 640px) { .dash-grid { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 1024px) { .dash-grid { grid-template-columns: 1fr 1fr 1fr; } }
+
+/* Span helpers */
+.col-span-2 { grid-column: span 1; }
+@media (min-width: 640px) { .col-span-2 { grid-column: span 2; } }
+
+/* ══════════════════════════════════════════
+   CARDS
+══════════════════════════════════════════ */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  position: relative;
+}
+
+.card-body { padding: 22px; }
+
+.card-eyebrow {
+  font-family: var(--font-d);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.card-eyebrow::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ══════════════════════════════════════════
+   HERO CARD — RESUME JOURNEY
+══════════════════════════════════════════ */
+.hero-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+@media (min-width: 640px) {
+  .hero-card { flex-direction: row; min-height: 220px; }
+}
+
+.hero-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--lime), var(--lime-dim), transparent);
+}
+
+.hero-bg-glow {
+  position: absolute;
+  width: 400px; height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(163,230,53,0.06) 0%, transparent 70%);
+  top: -150px; right: -100px;
+  pointer-events: none;
+}
+
+.hero-body {
+  flex: 1;
+  padding: 28px 28px 24px;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.hero-tags {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.tag {
+  font-family: var(--font-d);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-radius: 6px;
+  padding: 4px 10px;
+}
+.tag-lime { background: var(--lime-dim); color: var(--lime); border: 1px solid rgba(163,230,53,0.15); }
+.tag-orange { background: var(--orange-dim); color: var(--orange); border: 1px solid rgba(232,99,10,0.15); }
+
+.hero-streak {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-d);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--amber);
+}
+.hero-streak svg { width: 14px; height: 14px; fill: var(--amber); }
+
+.hero-title {
+  font-family: var(--font-d);
+  font-size: clamp(36px, 5vw, 52px);
+  font-weight: 900;
+  font-style: italic;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: white;
+  line-height: 0.95;
+  margin-bottom: 18px;
+}
+
+.hero-progress-wrap { margin-bottom: 24px; }
+
+.hero-progress-labels {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 8px;
+}
+.hero-progress-label {
+  font-family: var(--font-d);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted2);
+}
+.hero-progress-pct {
+  font-family: var(--font-d);
+  font-size: 22px;
+  font-weight: 900;
+  font-style: italic;
+  color: var(--lime);
+}
+
+.hero-track {
+  height: 8px;
+  background: var(--s3);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.hero-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--lime), rgba(163,230,53,0.7));
+  border-radius: 999px;
+  width: 0%;
+  transition: width 1.2s cubic-bezier(0.22,1,0.36,1) .3s;
+  box-shadow: 0 0 12px var(--lime-glow);
+}
+
+.hero-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--lime);
+  color: #080c14;
+  font-family: var(--font-d);
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: none;
+  border-radius: 999px;
+  padding: 13px 28px;
+  cursor: pointer;
+  transition: transform .15s, box-shadow .15s;
+  align-self: flex-start;
+}
+.hero-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px var(--lime-glow);
+}
+.hero-btn svg { width: 16px; height: 16px; fill: currentColor; }
+
+.hero-visual {
+  width: 100%; height: 140px;
+  background: linear-gradient(135deg, #0d1829 0%, #091220 100%);
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+@media (min-width: 640px) { .hero-visual { width: 220px; height: auto; } }
+
+/* Animated field lines in hero */
+.hero-visual::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 19px,
+      rgba(163,230,53,0.07) 19px,
+      rgba(163,230,53,0.07) 20px
+    );
+}
+.hero-visual-inner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hero-visual-inner svg { width: 100%; height: 100%; opacity: 0.7; }
+
+/* ══════════════════════════════════════════
+   GRIDIRON IQ CARD
+══════════════════════════════════════════ */
+.iq-card { display: flex; flex-direction: column; }
+
+.iq-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.iq-grade-wrap { display: flex; align-items: baseline; gap: 10px; }
+
+.iq-grade {
+  font-family: var(--font-d);
+  font-size: 72px;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--lime);
+  text-shadow: 0 0 40px rgba(163,230,53,0.3);
+  transition: color .4s;
+}
+
+.iq-grade-meta { display: flex; flex-direction: column; gap: 2px; padding-top: 8px; }
+.iq-tier {
+  font-family: var(--font-d);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--lime);
+}
+.iq-score-num {
+  font-family: var(--font-d);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted2);
+  letter-spacing: 0.04em;
+}
+
+.iq-badge-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+.iq-trophy {
+  width: 40px; height: 40px;
+  background: rgba(163,230,53,0.1);
+  border: 1px solid rgba(163,230,53,0.2);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+.iq-trophy svg { width: 20px; height: 20px; fill: var(--lime); }
+.iq-trophy-label {
+  font-family: var(--font-d);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--lime);
+}
+
+/* Empty state */
+.iq-empty {
+  text-align: center;
+  padding: 16px 0 8px;
+}
+.iq-empty-q {
+  font-family: var(--font-d);
+  font-size: 64px;
+  font-weight: 900;
+  color: var(--s3);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.iq-empty-text {
+  font-size: 13px;
+  color: var(--muted2);
+}
+
+/* Pillar bars */
+.db-iq-pillars {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 14px 0 16px;
+}
+
+.db-iq-pillar-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.db-iq-pillar-name {
+  font-family: var(--font-d);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted2);
+  width: 72px;
+  flex-shrink: 0;
+}
+.db-iq-pillar-track {
+  flex: 1;
+  height: 6px;
+  background: var(--s3);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.db-iq-pillar-fill {
+  height: 100%;
+  border-radius: 999px;
+  width: 0%;
+  transition: width 1s cubic-bezier(0.22,1,0.36,1) .5s;
+}
+.db-iq-pillar-pct {
+  font-family: var(--font-d);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted2);
+  width: 32px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.iq-actions {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#giqDashBtn, .db-iq-btn {
+  display: inline-block;
+  background: var(--s2);
+  border: 1px solid var(--border2);
+  color: var(--text);
+  font-family: var(--font-d);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 8px;
+  padding: 10px 18px;
+  cursor: pointer;
+  transition: background .2s, color .2s, border-color .2s;
+}
+#giqDashBtn:hover, .db-iq-btn:hover {
+  background: var(--s3);
+  color: var(--lime);
+  border-color: rgba(163,230,53,0.2);
+}
+
+.db-iq-quiz-count {
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+/* IQ score state */
+#giqScoreState { display: none; }
+
+/* ══════════════════════════════════════════
+   RECOMMENDATION CARD
+══════════════════════════════════════════ */
+.rec-card {
+  background: linear-gradient(135deg, var(--surface) 0%, var(--s1) 100%);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--lime);
+  border-radius: var(--r-lg);
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.db-rec-eyebrow {
+  font-family: var(--font-d);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--lime);
+}
+
+.db-rec-title {
+  font-family: var(--font-d);
+  font-size: 18px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text);
+  line-height: 1.1;
+}
+
+.db-rec-body {
+  font-size: 13px;
+  color: var(--muted2);
+  line-height: 1.6;
+  flex: 1;
+}
+
+.db-rec-btn {
+  display: inline-block;
+  background: var(--lime);
+  color: #080c14;
+  font-family: var(--font-d);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 8px;
+  padding: 11px 20px;
+  border: none;
+  cursor: pointer;
+  transition: transform .15s, box-shadow .15s;
+  align-self: flex-start;
+}
+.db-rec-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px var(--lime-glow);
+}
+
+/* ══════════════════════════════════════════
+   THIS WEEK CARD
+══════════════════════════════════════════ */
+.week-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 22px;
+}
+
+.pdb-week-days {
+  display: flex;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.pdb-day {
+  flex: 1;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  font-family: var(--font-d);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.pdb-day.today {
+  background: var(--lime);
+  color: #080c14;
+  box-shadow: 0 0 12px var(--lime-glow);
+}
+.pdb-day.off {
+  background: var(--s2);
+  color: var(--muted);
+  border: 1px solid var(--border);
+}
+
+/* ══════════════════════════════════════════
+   COURSE PROGRESS CARD
+══════════════════════════════════════════ */
+.progress-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 22px;
+}
+
+.progress-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.pdb-prog-fraction {
+  font-family: var(--font-d);
+  font-size: 20px;
+  font-weight: 900;
+  font-style: italic;
+  color: var(--lime);
+}
+
+.pdb-prog-track {
+  height: 8px;
+  background: var(--s3);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+.pdb-prog-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--lime), rgba(163,230,53,0.6));
+  border-radius: 999px;
+  width: 0%;
+  transition: width 1s cubic-bezier(0.22,1,0.36,1) .4s;
+  box-shadow: 0 0 8px var(--lime-glow);
+}
+
+.pdb-prog-pillars {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+.pdb-pillar-dot {
+  flex: 1;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--s3);
+  border: 1px solid var(--border);
+  transition: background .3s, box-shadow .3s;
+}
+.pdb-pillar-dot.done {
+  background: var(--lime);
+  border-color: var(--lime);
+  box-shadow: 0 0 6px var(--lime-glow);
+}
+.pdb-pillar-dot.active {
+  background: var(--orange);
+  border-color: var(--orange);
+  box-shadow: 0 0 6px rgba(232,99,10,0.3);
+  animation: dotPulse 1.5s ease infinite;
+}
+@keyframes dotPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.pdb-prog-note {
+  font-size: 12px;
+  color: var(--muted2);
+  font-weight: 500;
+}
+
+/* ══════════════════════════════════════════
+   NEXT UP CARD
+══════════════════════════════════════════ */
+.pdb-next-card {
+  background: linear-gradient(135deg, var(--s1) 0%, var(--surface) 100%);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: border-color .2s, background .2s;
+  text-decoration: none;
+}
+.pdb-next-card:hover {
+  border-color: rgba(163,230,53,0.3);
+  background: linear-gradient(135deg, var(--s2) 0%, var(--s1) 100%);
+}
+
+.pdb-next-left { display: flex; align-items: center; gap: 14px; }
+
+.pdb-next-icon {
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  background: var(--lime);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 0 16px var(--lime-glow);
+  transition: transform .2s;
+}
+.pdb-next-card:hover .pdb-next-icon { transform: scale(1.08); }
+.pdb-next-icon svg { width: 16px; height: 16px; }
+
+.pdb-next-eyebrow {
+  font-family: var(--font-d);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 2px;
+}
+.pdb-next-title {
+  font-family: var(--font-d);
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.pdb-next-arrow { opacity: 0.3; flex-shrink: 0; }
+.pdb-next-card:hover .pdb-next-arrow { opacity: 0.7; }
+
+/* ══════════════════════════════════════════
+   QUIZ HISTORY
+══════════════════════════════════════════ */
+.history-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+
+.history-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--border);
+}
+
+.history-title {
+  font-family: var(--font-d);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.db-history-cta {
+  font-family: var(--font-d);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--lime);
+  text-decoration: none;
+  transition: opacity .2s;
+}
+.db-history-cta:hover { opacity: 0.7; }
+
+.db-history-list { padding: 8px 0; }
+
+.db-history-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 22px;
+  border-bottom: 1px solid var(--border);
+  transition: background .2s;
+}
+.db-history-item:last-child { border-bottom: none; }
+.db-history-item:hover { background: var(--s1); }
+
+.db-history-grade {
+  font-family: var(--font-d);
+  font-size: 28px;
+  font-weight: 900;
+  line-height: 1;
+  width: 40px;
+  flex-shrink: 0;
+}
+.db-history-meta {
+  font-size: 12px;
+  color: var(--muted2);
+  flex: 1;
+  padding: 0 12px;
+}
+.db-history-score {
+  font-family: var(--font-d);
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+/* ══════════════════════════════════════════
+   MODULE LIST
+══════════════════════════════════════════ */
+.modules-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+
+.modules-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--border);
+}
+
+.modules-title {
+  font-family: var(--font-d);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.modules-sub {
+  font-family: var(--font-d);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.pdb-module-list { padding: 0; }
+
+.pdb-mod-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 22px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background .2s;
+}
+.pdb-mod-row:last-child { border-bottom: none; }
+.pdb-mod-row:hover { background: var(--s1); }
+
+.pdb-mod-num {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: var(--s3);
+  border: 1px solid var(--border2);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-d);
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--muted);
+  flex-shrink: 0;
+  transition: background .3s, border-color .3s;
+}
+.pdb-mod-num.done {
+  background: rgba(163,230,53,0.12);
+  border-color: rgba(163,230,53,0.3);
+  color: var(--lime);
+}
+.pdb-mod-num.next {
+  background: var(--orange-dim);
+  border-color: rgba(232,99,10,0.3);
+  color: var(--orange);
+  box-shadow: 0 0 10px rgba(232,99,10,0.2);
+}
+
+.pdb-mod-info { flex: 1; min-width: 0; }
+.pdb-mod-name {
+  font-family: var(--font-d);
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.pdb-mod-desc {
+  font-size: 12px;
+  color: var(--muted2);
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pdb-mod-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+
+.pdb-mod-bar-wrap {
+  width: 60px;
+  height: 4px;
+  background: var(--s3);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.pdb-mod-bar {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--lime);
+  width: 0%;
+  transition: width 1s cubic-bezier(0.22,1,0.36,1) .6s;
+}
+
+.pdb-mod-pct {
+  font-family: var(--font-d);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted2);
+  width: 36px;
+  text-align: right;
+}
+.pdb-mod-pct.done { color: var(--lime); }
+
+.pdb-section-label {
+  font-family: var(--font-d);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ══════════════════════════════════════════
+   COACH DASHBOARD
+══════════════════════════════════════════ */
+.coach-hero {
+  background: linear-gradient(135deg, var(--s1) 0%, var(--surface) 100%);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 32px;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+.coach-hero::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--orange), transparent);
+}
+.coach-hero-bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 80% at 90% 50%, rgba(232,99,10,0.08), transparent);
+  pointer-events: none;
+}
+
+.coach-hero-inner { position: relative; z-index: 1; }
+.coach-hero-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 28px;
+}
+.coach-hero-label {
+  font-family: var(--font-d);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 6px;
+}
+.coach-link-display {
+  font-family: var(--font-d);
+  font-size: clamp(14px, 2vw, 20px);
+  font-weight: 800;
+  color: white;
+  letter-spacing: 0.02em;
+  margin-bottom: 8px;
+  word-break: break-all;
+}
+.coach-link-note {
+  font-size: 13px;
+  color: var(--muted2);
+  line-height: 1.6;
+  max-width: 400px;
+}
+#coachCopyConfirm {
+  display: none;
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--green);
+  font-family: var(--font-d);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+.coach-copy-btn {
+  background: var(--orange);
+  color: white;
+  font-family: var(--font-d);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 10px;
+  padding: 13px 28px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: transform .15s, box-shadow .15s;
+  flex-shrink: 0;
+}
+.coach-copy-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(232,99,10,0.3); }
+
+.coach-steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+}
+.coach-step { text-align: center; }
+.coach-step-num {
+  font-family: var(--font-d);
+  font-size: 32px;
+  font-weight: 900;
+  color: var(--border2);
+  margin-bottom: 4px;
+}
+.coach-step-label {
+  font-family: var(--font-d);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.coach-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 22px;
+}
+.stat-label {
+  font-family: var(--font-d);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.stat-value {
+  font-family: var(--font-d);
+  font-size: 52px;
+  font-weight: 900;
+  font-style: italic;
+  color: var(--orange);
+  line-height: 1;
+}
+.stat-value-sm {
+  font-family: var(--font-d);
+  font-size: 36px;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  color: var(--lime);
+  line-height: 1;
+}
+.stat-note { font-size: 13px; color: var(--muted2); margin-top: 6px; }
+
+.coach-players-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+.coach-players-header {
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--border);
+  font-family: var(--font-d);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+#coachPlayersList { padding: 0; }
+
+/* ══════════════════════════════════════════
+   WELCOME HEADER
+══════════════════════════════════════════ */
+.dash-welcome-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.dash-welcome-name {
+  font-family: var(--font-d);
+  font-size: clamp(22px, 4vw, 32px);
+  font-weight: 900;
+  font-style: italic;
+  text-transform: uppercase;
+  color: var(--text);
+  line-height: 1;
+}
+.dash-welcome-name span { color: var(--lime); }
+.dash-welcome-sub {
+  font-size: 13px;
+  color: var(--muted2);
+  margin-top: 2px;
+}
+
+/* ══════════════════════════════════════════
+   BOTTOM NAV (MOBILE)
+══════════════════════════════════════════ */
+.bottom-nav {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: 70px;
+  background: rgba(8,12,20,0.97);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0 8px;
+  z-index: 200;
+  border-radius: 20px 20px 0 0;
+}
+@media (min-width: 1024px) { .bottom-nav { display: none; } }
+
+.bnav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 8px 14px;
+  border-radius: 12px;
+  text-decoration: none;
+  color: var(--muted);
+  font-family: var(--font-d);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: color .2s;
+  border: none; background: none; cursor: pointer;
+}
+.bnav-item:hover { color: var(--muted2); }
+.bnav-item.active { color: var(--lime); }
+.bnav-item svg { width: 20px; height: 20px; fill: currentColor; }
+
+.bnav-item.cta-item {
+  background: var(--lime);
+  color: #080c14;
+  border-radius: 14px;
+  padding: 8px 20px;
+  box-shadow: 0 0 16px var(--lime-glow);
+}
+.bnav-item.cta-item:hover { color: #080c14; }
+.bnav-item.cta-item svg { fill: #080c14; }
+
+/* ══════════════════════════════════════════
+   STAGGER ANIMATIONS
+══════════════════════════════════════════ */
+.fade-up {
+  opacity: 0;
+  transform: translateY(12px);
+  animation: fadeUp .5s ease forwards;
+}
+.fade-up:nth-child(1) { animation-delay: .05s; }
+.fade-up:nth-child(2) { animation-delay: .12s; }
+.fade-up:nth-child(3) { animation-delay: .18s; }
+.fade-up:nth-child(4) { animation-delay: .24s; }
+.fade-up:nth-child(5) { animation-delay: .30s; }
+.fade-up:nth-child(6) { animation-delay: .36s; }
+
+@keyframes fadeUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Spacing */
+.gap-section { display: flex; flex-direction: column; gap: 14px; }
+</style>
 </head>
 <body>
 
-<nav>
-  <div class="nav-inner">
-    <a class="logo" href="index.html">
-      <img src="logo.png" alt="First Down Academy" style="height:52px;width:auto;object-fit:contain;" onerror="this.style.display='none'">
+<!-- ═══════════════════════════════════
+     TOP NAV
+═══════════════════════════════════ -->
+<header class="top-nav">
+  <a class="nav-logo" href="index.html">
+    <img src="logo.png" alt="First Down Academy" onerror="this.style.display='none'">
+    <div class="nav-brand">First Down<br><span>Academy</span></div>
+  </a>
+
+  <nav class="nav-links">
+    <a class="nav-link" href="index.html">Home</a>
+    <a class="nav-link" href="program.html">Program</a>
+    <a class="nav-link active" href="dashboard.html">Dashboard</a>
+    <a class="nav-link" href="giq-exam.html">IQ Exam</a>
+  </nav>
+
+  <div class="nav-right">
+    <div class="nav-iq-badge" id="navIQBadge" style="display:none;">
+      <div class="dot"></div>
+      <span id="navIQNum">—</span> IQ
+    </div>
+    <button class="nav-signout" onclick="doLogout()">Sign Out</button>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════
+     SIDEBAR (desktop)
+═══════════════════════════════════ -->
+<aside class="sidebar">
+  <nav class="sidebar-nav">
+    <a class="sidebar-link" href="program.html">
+      <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      Playbook
     </a>
-    <div class="nav-links">
-      <a class="nav-link" href="program.html">The Program</a>
-      <a class="nav-link" href="coaches.html">Coaches</a>
-      <a class="nav-link active" href="dashboard.html">Dashboard</a>
-    </div>
-    <a class="btn btn-primary nav-cta" id="navDashBtn" href="dashboard.html">Dashboard</a>
+    <a class="sidebar-link active" href="dashboard.html">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      Dashboard
+    </a>
+    <a class="sidebar-link" href="giq-exam.html">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+      IQ Exam
+    </a>
+    <a class="sidebar-link" href="lesson.html">
+      <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      Lessons
+    </a>
+
+    <div class="sidebar-section-label" style="margin-top:20px;">Account</div>
+    <a class="sidebar-link" href="auth.html">
+      <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Profile
+    </a>
+  </nav>
+
+  <div class="sidebar-bottom">
+    <button class="nav-signout" style="width:100%;" onclick="doLogout()">Sign Out</button>
   </div>
-</nav>
+</aside>
 
-<div class="dashboard">
+<!-- ═══════════════════════════════════
+     MAIN
+═══════════════════════════════════ -->
+<main class="main">
 
-  <!-- Loading state — shown until session resolves -->
-  <div id="dashLoading" style="min-height:80vh;display:flex;align-items:center;justify-content:center;">
-    <div style="text-align:center;">
-      <div style="font-size:48px;margin-bottom:20px;">&#127944;</div>
-      <div style="font-family:var(--font-d);font-size:28px;color:var(--navy);letter-spacing:.04em;">Loading...</div>
+  <!-- Loading -->
+  <div id="dashLoading">
+    <div class="loading-inner">
+      <div class="loading-icon">🏈</div>
+      <div class="loading-text">Loading...</div>
     </div>
   </div>
 
-  <!-- PLAYER DASHBOARD -->
+  <!-- ════════════════════════════
+       PLAYER DASHBOARD
+  ════════════════════════════ -->
   <div id="dashPlayer" style="display:none;">
-    <div class="dash-header">
-      <!-- Helmet SVG decoration -->
-      <div class="dash-header-helmet" aria-hidden="true">
-        <svg viewBox="0 0 220 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- Helmet shell -->
-          <ellipse cx="105" cy="95" rx="85" ry="80" fill="rgba(255,255,255,.06)"/>
-          <path d="M30 110 Q20 70 50 45 Q80 18 115 18 Q160 18 185 55 Q205 85 200 120 L185 125 Q180 90 160 68 Q138 44 110 44 Q78 44 58 65 Q40 84 40 115 Z" fill="rgba(255,255,255,.09)"/>
-          <!-- Face mask bars -->
-          <path d="M38 118 Q35 140 45 158 Q55 175 75 180" stroke="rgba(255,255,255,.15)" stroke-width="7" stroke-linecap="round" fill="none"/>
-          <path d="M48 112 Q44 135 55 155 Q66 173 88 178" stroke="rgba(255,255,255,.1)" stroke-width="5" stroke-linecap="round" fill="none"/>
-          <path d="M32 130 L82 175" stroke="rgba(255,255,255,.08)" stroke-width="4" stroke-linecap="round"/>
-          <!-- Chin strap hint -->
-          <path d="M38 118 Q30 145 42 165" stroke="rgba(255,255,255,.07)" stroke-width="6" stroke-linecap="round" fill="none"/>
-          <!-- Highlight stripe -->
-          <path d="M115 18 Q120 55 118 100" stroke="rgba(255,255,255,.08)" stroke-width="12" stroke-linecap="round" fill="none"/>
-          <!-- Ear hole -->
-          <circle cx="185" cy="115" r="14" fill="rgba(255,255,255,.06)" stroke="rgba(255,255,255,.1)" stroke-width="2"/>
+
+    <!-- Welcome bar -->
+    <div class="dash-welcome-bar fade-up">
+      <div>
+        <div class="dash-welcome-name">Hey, <span id="dashPlayerName">Player</span> 👋</div>
+        <div class="dash-welcome-sub">Level 1 — Foundations · Keep building your Gridiron IQ</div>
+      </div>
+    </div>
+
+    <!-- ROW 1: Hero + IQ Card -->
+    <div class="dash-grid" style="margin-bottom:14px;">
+
+      <!-- Hero: Resume Journey -->
+      <div class="hero-card col-span-2 fade-up">
+        <div class="hero-bg-glow"></div>
+        <div class="hero-body">
+          <div>
+            <div class="hero-tags">
+              <span class="tag tag-lime">Active Program</span>
+              <span class="hero-streak">
+                <svg viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
+                Active Streak
+              </span>
+            </div>
+            <div class="hero-title">Resume<br>Journey</div>
+            <div class="hero-progress-wrap">
+              <div class="hero-progress-labels">
+                <span class="hero-progress-label">Level 1 — Foundations</span>
+                <span class="hero-progress-pct" id="heroProgressPct">0%</span>
+              </div>
+              <div class="hero-track">
+                <div class="hero-fill" id="heroProgressFill"></div>
+              </div>
+            </div>
+          </div>
+          <a href="lesson.html" class="hero-btn">
+            Continue Training
+            <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          </a>
+        </div>
+
+        <div class="hero-visual">
+          <div class="hero-visual-inner">
+            <!-- Animated helmet SVG -->
+            <svg viewBox="0 0 200 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <ellipse cx="100" cy="90" rx="78" ry="72" fill="rgba(163,230,53,0.04)"/>
+              <path d="M28 104 Q18 66 46 42 Q74 16 108 16 Q152 16 175 52 Q194 80 190 112 L176 117 Q172 84 153 63 Q132 40 106 40 Q76 40 57 60 Q40 78 40 108 Z" fill="rgba(163,230,53,0.07)"/>
+              <path d="M38 112 Q35 133 44 150 Q53 167 70 173" stroke="rgba(163,230,53,0.18)" stroke-width="7" stroke-linecap="round" fill="none"/>
+              <path d="M48 106 Q44 128 54 148 Q64 166 85 172" stroke="rgba(163,230,53,0.12)" stroke-width="5" stroke-linecap="round" fill="none"/>
+              <path d="M33 123 L78 167" stroke="rgba(163,230,53,0.1)" stroke-width="4" stroke-linecap="round"/>
+              <path d="M108 16 Q113 50 111 94" stroke="rgba(163,230,53,0.1)" stroke-width="12" stroke-linecap="round" fill="none"/>
+              <circle cx="176" cy="108" r="13" fill="rgba(163,230,53,0.06)" stroke="rgba(163,230,53,0.12)" stroke-width="2"/>
+              <!-- Lime accent lines -->
+              <line x1="20" y1="60" x2="180" y2="60" stroke="rgba(163,230,53,0.05)" stroke-width="1"/>
+              <line x1="20" y1="100" x2="180" y2="100" stroke="rgba(163,230,53,0.05)" stroke-width="1"/>
+              <line x1="20" y1="140" x2="180" y2="140" stroke="rgba(163,230,53,0.05)" stroke-width="1"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gridiron IQ Card -->
+      <div class="card fade-up">
+        <div class="card-body" style="display:flex;flex-direction:column;height:100%;">
+          <div class="card-eyebrow">Gridiron IQ Score</div>
+
+          <!-- Empty state -->
+          <div class="db-iq-empty" id="giqEmpty">
+            <div class="iq-empty">
+              <div class="iq-empty-q">?</div>
+              <div class="iq-empty-text">No score yet</div>
+            </div>
+          </div>
+
+          <!-- Score state -->
+          <div class="db-iq-score-state" id="giqScoreState">
+            <div class="iq-top">
+              <div class="iq-grade-wrap">
+                <div class="iq-grade" id="giqGrade">—</div>
+                <div class="iq-grade-meta">
+                  <div class="iq-tier" id="giqTier"></div>
+                  <div class="iq-score-num" id="giqScoreNum"></div>
+                </div>
+              </div>
+              <div class="iq-badge-wrap" id="iqBadgeWrap" style="display:none;">
+                <div class="iq-trophy">
+                  <svg viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/></svg>
+                </div>
+                <span class="iq-trophy-label">Elite</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pillars (always in DOM, hidden until score loads) -->
+          <div class="db-iq-pillars" id="giqDashPillars" style="display:none;flex:1;"></div>
+
+          <div class="iq-actions" style="margin-top:16px;">
+            <a href="giq-exam.html" class="db-iq-btn" id="giqDashBtn">Take the Quiz →</a>
+            <span class="db-iq-quiz-count" id="giqQuizCount"></span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /ROW 1 -->
+
+    <!-- ROW 2: Recommendation + This Week -->
+    <div class="dash-grid" style="margin-bottom:14px;">
+
+      <!-- Recommendation -->
+      <div class="rec-card fade-up">
+        <div class="db-rec-eyebrow" id="dbRecEyebrow">Next Step</div>
+        <div class="db-rec-title" id="dbRecTitle">Take the Gridiron IQ Quiz</div>
+        <div class="db-rec-body" id="dbRecBody">Find out where your football knowledge stands. 15 adaptive questions. Instant grade. Free.</div>
+        <a href="giq-exam.html" class="db-rec-btn" id="dbRecBtn">Start Quiz →</a>
+      </div>
+
+      <!-- This Week -->
+      <div class="week-card fade-up">
+        <div class="card-eyebrow">This Week</div>
+        <div id="dashStreakDays" class="pdb-week-days"></div>
+      </div>
+
+      <!-- Course Progress -->
+      <div class="progress-card fade-up">
+        <div class="progress-header">
+          <div class="card-eyebrow" style="margin:0;">Course Progress</div>
+          <div class="pdb-prog-fraction" id="dashProgressLabel">0 / 8</div>
+        </div>
+        <div class="pdb-prog-track">
+          <div class="pdb-prog-fill" id="dashProgressBar"></div>
+        </div>
+        <div class="pdb-prog-pillars">
+          <div class="pdb-pillar-dot" id="pdot0"></div>
+          <div class="pdb-pillar-dot" id="pdot1"></div>
+          <div class="pdb-pillar-dot" id="pdot2"></div>
+          <div class="pdb-pillar-dot" id="pdot3"></div>
+          <div class="pdb-pillar-dot" id="pdot4"></div>
+          <div class="pdb-pillar-dot" id="pdot5"></div>
+          <div class="pdb-pillar-dot" id="pdot6"></div>
+          <div class="pdb-pillar-dot" id="pdot7"></div>
+        </div>
+        <div class="pdb-prog-note" id="dashProgressNote">Start your first module below</div>
+      </div>
+
+    </div><!-- /ROW 2 -->
+
+    <!-- Next Up -->
+    <div style="margin-bottom:14px;" class="fade-up">
+      <div class="pdb-next-card" onclick="window.location.href='lesson.html'" style="text-decoration:none;">
+        <div class="pdb-next-left">
+          <div class="pdb-next-icon">
+            <svg viewBox="0 0 24 24" fill="#080c14"><polygon points="5 3 19 12 5 21"/></svg>
+          </div>
+          <div>
+            <div class="pdb-next-eyebrow">Up Next</div>
+            <div class="pdb-next-title" id="nextLessonTitle">The Field</div>
+          </div>
+        </div>
+        <svg class="pdb-next-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path d="M5 12h14M13 6l6 6-6 6" stroke="rgba(255,255,255,.4)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </div>
-
-      <div class="container">
-        <div class="dash-header-inner">
-          <div class="dash-header-left">
-            <div class="dash-welcome-label">Welcome back</div>
-            <div class="dash-welcome">Hey, <span id="dashPlayerName">Player</span></div>
-            <div class="dash-header-badge">
-              <div class="dash-badge-dot"></div>
-              <span>Level 1 &mdash; Foundations</span>
-            </div>
-          </div>
-          <button class="btn btn-ghost dash-signout-btn" onclick="doLogout()">Sign Out</button>
-        </div>
-      </div>
     </div>
 
-    <div class="container dash-body">
-
-      <!-- ── ROW 1: IQ Score + Quiz CTA ── -->
-      <div class="db-iq-row">
-
-        <!-- IQ Score Card -->
-        <div class="db-iq-card" id="giqDashCard">
-          <div class="db-iq-top">
-            <div class="db-iq-eyebrow">Gridiron IQ Score</div>
-            <span class="db-iq-live-dot"></span>
-          </div>
-          <div class="db-iq-main" id="giqDashMain">
-            <!-- No score state -->
-            <div class="db-iq-empty" id="giqEmpty">
-              <div class="db-iq-empty-grade">?</div>
-              <div class="db-iq-empty-text">You haven&rsquo;t taken the quiz yet</div>
-            </div>
-            <!-- Score state (hidden until loaded) -->
-            <div class="db-iq-score-state" id="giqScoreState" style="display:none;">
-              <div class="db-iq-grade" id="giqGrade">B+</div>
-              <div class="db-iq-tier" id="giqTier">Advanced</div>
-              <div class="db-iq-score-num" id="giqScoreNum"></div>
-            </div>
-          </div>
-          <div class="db-iq-pillars" id="giqDashPillars" style="display:none;"></div>
-          <div class="db-iq-actions">
-            <a href="giq-exam.html" class="db-iq-btn" id="giqDashBtn">Take the Quiz &rarr;</a>
-            <div class="db-iq-quiz-count" id="giqQuizCount"></div>
-          </div>
-        </div>
-
-        <!-- Right: Recommendation + Week -->
-        <div class="db-iq-right">
-
-          <!-- Recommendation card -->
-          <div class="db-rec-card" id="dbRecCard">
-            <div class="db-rec-eyebrow" id="dbRecEyebrow">Next Step</div>
-            <div class="db-rec-title" id="dbRecTitle">TAKE THE GRIDIRON IQ QUIZ</div>
-            <div class="db-rec-body" id="dbRecBody">Find out where your football knowledge stands. 15 adaptive questions. Instant grade. Free.</div>
-            <a href="giq-exam.html" class="db-rec-btn" id="dbRecBtn">Start Quiz &rarr;</a>
-          </div>
-
-          <!-- This Week -->
-          <div class="pdb-week-card">
-            <div class="pdb-section-label" style="margin-bottom:10px;">This Week</div>
-            <div id="dashStreakDays" class="pdb-week-days"></div>
-          </div>
-
-        </div>
-      </div>
-
-      <!-- ── ROW 2: Course Progress + Next Up ── -->
-      <div class="db-progress-row">
-
-        <!-- Course progress -->
-        <div class="pdb-progress-card">
-          <div class="pdb-progress-header">
-            <div class="pdb-section-label">Course Progress</div>
-            <div class="pdb-prog-fraction" id="dashProgressLabel">0 / 8</div>
-          </div>
-          <div class="pdb-prog-track">
-            <div class="pdb-prog-fill" id="dashProgressBar" style="width:0%"></div>
-          </div>
-          <div class="pdb-prog-pillars">
-            <div class="pdb-pillar-dot" id="pdot0"></div>
-            <div class="pdb-pillar-dot" id="pdot1"></div>
-            <div class="pdb-pillar-dot" id="pdot2"></div>
-            <div class="pdb-pillar-dot" id="pdot3"></div>
-            <div class="pdb-pillar-dot" id="pdot4"></div>
-            <div class="pdb-pillar-dot" id="pdot5"></div>
-            <div class="pdb-pillar-dot" id="pdot6"></div>
-            <div class="pdb-pillar-dot" id="pdot7"></div>
-          </div>
-          <div class="pdb-prog-note" id="dashProgressNote">Start your first module below</div>
-        </div>
-
-        <!-- Next Up -->
-        <div class="pdb-next-card" onclick="window.location.href='lesson.html'">
-          <div class="pdb-next-left">
-            <div class="pdb-next-icon">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                <polygon points="5,3 19,12 5,21" fill="white"/>
-              </svg>
-            </div>
-            <div>
-              <div class="pdb-section-label" style="color:rgba(255,255,255,.45);">Up Next</div>
-              <div class="pdb-next-title" id="nextLessonTitle">The Field</div>
-            </div>
-          </div>
-          <svg class="pdb-next-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none">
-            <path d="M5 12h14M13 6l6 6-6 6" stroke="rgba(255,255,255,.4)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-
-      </div>
-
-      <!-- ── ROW 3: Quiz History ── -->
-      <div class="db-history-section" id="dbHistorySection" style="display:none;">
-        <div class="db-history-header">
-          <div class="db-history-title">Quiz History</div>
-          <a href="giq-exam.html" class="db-history-cta">Retake Quiz &rarr;</a>
+    <!-- Quiz History -->
+    <div class="db-history-section" id="dbHistorySection" style="display:none;margin-bottom:14px;">
+      <div class="history-section fade-up">
+        <div class="history-header">
+          <div class="history-title">Quiz History</div>
+          <a href="giq-exam.html" class="db-history-cta">Retake Quiz →</a>
         </div>
         <div class="db-history-list" id="dbHistoryList"></div>
       </div>
+    </div>
 
-      <!-- ── ROW 4: Module List ── -->
-      <div class="pdb-modules-section">
-        <div class="pdb-modules-header">
-          <div class="pdb-modules-title">Module Progress</div>
-          <div class="pdb-modules-sub">Level 1 &mdash; Foundations</div>
+    <!-- Module List -->
+    <div class="fade-up">
+      <div class="modules-section">
+        <div class="modules-header">
+          <div class="modules-title">Module Progress</div>
+          <div class="modules-sub">Level 1 — Foundations</div>
         </div>
         <div class="pdb-module-list" id="dashModuleList"></div>
       </div>
-
     </div>
-  </div>
 
-  <!-- COACH DASHBOARD -->
+  </div><!-- /dashPlayer -->
+
+
+  <!-- ════════════════════════════
+       COACH DASHBOARD
+  ════════════════════════════ -->
   <div id="dashCoach" style="display:none;">
-    <div class="dash-header dash-header-coach">
-      <!-- Field lines decoration -->
-      <div class="dash-header-field" aria-hidden="true">
-        <svg viewBox="0 0 300 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- Field lines -->
-          <line x1="0" y1="60" x2="300" y2="60" stroke="rgba(255,255,255,.06)" stroke-width="1.5"/>
-          <line x1="60" y1="0" x2="60" y2="120" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
-          <line x1="120" y1="0" x2="120" y2="120" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
-          <line x1="180" y1="0" x2="180" y2="120" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
-          <line x1="240" y1="0" x2="240" y2="120" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
-          <!-- Hash marks -->
-          <line x1="55" y1="48" x2="65" y2="48" stroke="rgba(255,255,255,.08)" stroke-width="1.5"/>
-          <line x1="55" y1="72" x2="65" y2="72" stroke="rgba(255,255,255,.08)" stroke-width="1.5"/>
-          <line x1="115" y1="48" x2="125" y2="48" stroke="rgba(255,255,255,.08)" stroke-width="1.5"/>
-          <line x1="115" y1="72" x2="125" y2="72" stroke="rgba(255,255,255,.08)" stroke-width="1.5"/>
-          <line x1="175" y1="48" x2="185" y2="48" stroke="rgba(255,255,255,.08)" stroke-width="1.5"/>
-          <line x1="175" y1="72" x2="185" y2="72" stroke="rgba(255,255,255,.08)" stroke-width="1.5"/>
-          <!-- Play diagram dot + route -->
-          <circle cx="150" cy="60" r="5" fill="rgba(232,99,10,.4)"/>
-          <path d="M150 60 Q170 40 200 45" stroke="rgba(232,99,10,.3)" stroke-width="2" stroke-dasharray="4 3" fill="none"/>
-          <path d="M195 40 L205 45 L195 50" fill="none" stroke="rgba(232,99,10,.3)" stroke-width="1.5"/>
-        </svg>
-      </div>
 
-      <div class="container">
-        <div class="dash-header-inner">
-          <div class="dash-header-left">
-            <div class="dash-welcome-label">Coach Dashboard</div>
-            <div class="dash-welcome">Coach <span id="dashCoachName">Coach</span></div>
-            <div id="dashCoachTeam" class="dash-header-badge">
-              <div class="dash-badge-dot" style="background:var(--orange-400);"></div>
-              <span></span>
-            </div>
-          </div>
-          <button class="btn btn-ghost dash-signout-btn" onclick="doLogout()">Sign Out</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="container dash-body">
-
-      <!-- REFERRAL LINK — hero card -->
-      <div style="background:var(--navy);border-radius:var(--r-xl);padding:36px 40px;margin-bottom:28px;position:relative;overflow:hidden;">
-        <div style="position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 90% 50%,rgba(232,99,10,.12),transparent);pointer-events:none;"></div>
-        <div style="position:relative;z-index:1;">
-          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;">
-            <div style="flex:1;min-width:200px;">
-              <div style="font-family:var(--font-m);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:8px;">Your Team Referral Link</div>
-              <div style="font-family:var(--font-d);font-size:clamp(18px,2vw,24px);color:white;letter-spacing:.04em;margin-bottom:6px;" id="coachRefLink">Loading your link...</div>
-              <div style="font-size:13px;color:rgba(255,255,255,.4);line-height:1.6;">Share this link with your players. When they sign up using your link their account connects to your team automatically.</div>
-              <div id="coachCopyConfirm" style="display:none;margin-top:10px;font-size:13px;color:#22C55E;font-family:var(--font-m);letter-spacing:.04em;">&#10003; Link copied to clipboard!</div>
-            </div>
-            <div style="display:flex;flex-direction:column;gap:10px;flex-shrink:0;">
-              <button id="coachCopyBtn" class="btn btn-primary" onclick="copyCoachLink()" style="font-size:13px;padding:12px 24px;white-space:nowrap;transition:background .2s;">Copy Link</button>
-              <div style="text-align:center;font-family:var(--font-m);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.25);">Code: <span id="coachStatCode" style="color:rgba(255,255,255,.5);">—</span></div>
-            </div>
-          </div>
-          <!-- How to share steps -->
-          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:28px;padding-top:24px;border-top:1px solid rgba(255,255,255,.08);">
-            <div style="text-align:center;">
-              <div style="font-family:var(--font-d);font-size:28px;color:rgba(255,255,255,.15);margin-bottom:4px;">1</div>
-              <div style="font-family:var(--font-m);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.5);">Copy your link</div>
-            </div>
-            <div style="text-align:center;">
-              <div style="font-family:var(--font-d);font-size:28px;color:rgba(255,255,255,.15);margin-bottom:4px;">2</div>
-              <div style="font-family:var(--font-m);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.5);">Share with your team</div>
-            </div>
-            <div style="text-align:center;">
-              <div style="font-family:var(--font-d);font-size:28px;color:rgba(255,255,255,.15);margin-bottom:4px;">3</div>
-              <div style="font-family:var(--font-m);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.5);">Players appear here</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Stats row -->
-      <div class="dash-grid" style="margin-bottom:28px;">
-        <div class="dash-card">
-          <div class="dash-card-label">Total Players</div>
-          <div style="font-family:var(--font-d);font-size:52px;color:var(--orange);letter-spacing:.04em;line-height:1;margin-top:4px;" id="coachStatPlayers">0</div>
-          <div id="coachPlayerCount" style="font-size:13px;color:var(--muted);margin-top:6px;">players signed up with your link</div>
-        </div>
-        <div class="dash-card">
-          <div class="dash-card-label">Your Referral Code</div>
-          <div style="font-family:var(--font-d);font-size:36px;color:var(--navy);letter-spacing:.06em;line-height:1;margin-top:4px;" id="coachStatCodeDisplay">—</div>
-          <div style="font-size:13px;color:var(--muted);margin-top:6px;">auto-generated from your team name</div>
-        </div>
-      </div>
-
-      <!-- Players list -->
+    <!-- Welcome -->
+    <div class="dash-welcome-bar fade-up">
       <div>
-        <div style="font-family:var(--font-d);font-size:22px;color:var(--navy);letter-spacing:.04em;margin-bottom:16px;">YOUR PLAYERS</div>
-        <div id="coachPlayersList" class="dash-card"></div>
+        <div class="dash-welcome-name" style="color:var(--orange);">Coach <span id="dashCoachName">Coach</span></div>
+        <div class="dash-welcome-sub" id="dashCoachTeam"></div>
       </div>
-
     </div>
-  </div>
 
-</div>
+    <!-- Referral hero -->
+    <div class="coach-hero fade-up">
+      <div class="coach-hero-bg"></div>
+      <div class="coach-hero-inner">
+        <div class="coach-hero-top">
+          <div style="flex:1;min-width:200px;">
+            <div class="coach-hero-label">Your Team Referral Link</div>
+            <div class="coach-link-display" id="coachRefLink">Loading your link…</div>
+            <div class="coach-link-note">Share this link with your players. When they sign up, their account connects to your team automatically.</div>
+            <div id="coachCopyConfirm">✓ Link copied to clipboard!</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-start;">
+            <button id="coachCopyBtn" class="coach-copy-btn" onclick="copyCoachLink()">Copy Link</button>
+            <div style="font-family:var(--font-d);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);">
+              Code: <span id="coachStatCode" style="color:var(--muted2);">—</span>
+            </div>
+          </div>
+        </div>
+        <div class="coach-steps">
+          <div class="coach-step">
+            <div class="coach-step-num">1</div>
+            <div class="coach-step-label">Copy your link</div>
+          </div>
+          <div class="coach-step">
+            <div class="coach-step-num">2</div>
+            <div class="coach-step-label">Share with your team</div>
+          </div>
+          <div class="coach-step">
+            <div class="coach-step-num">3</div>
+            <div class="coach-step-label">Players appear here</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="coach-stats fade-up">
+      <div class="stat-card">
+        <div class="stat-label">Total Players</div>
+        <div class="stat-value" id="coachStatPlayers">0</div>
+        <div class="stat-note" id="coachPlayerCount">players signed up with your link</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Referral Code</div>
+        <div class="stat-value-sm" id="coachStatCodeDisplay">—</div>
+        <div class="stat-note">auto-generated from team name</div>
+      </div>
+    </div>
+
+    <!-- Players list -->
+    <div class="coach-players-section fade-up">
+      <div class="coach-players-header">Your Players</div>
+      <div id="coachPlayersList"></div>
+    </div>
+
+  </div><!-- /dashCoach -->
+
+</main>
+
+<!-- ═══════════════════════════════════
+     BOTTOM NAV (mobile)
+═══════════════════════════════════ -->
+<nav class="bottom-nav">
+  <a class="bnav-item" href="index.html">
+    <svg viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    Home
+  </a>
+  <a class="bnav-item" href="program.html">
+    <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+    Program
+  </a>
+  <a class="bnav-item cta-item active" href="dashboard.html">
+    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+    Dashboard
+  </a>
+  <a class="bnav-item" href="giq-exam.html">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+    IQ Exam
+  </a>
+  <a class="bnav-item" href="lesson.html">
+    <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+    Learn
+  </a>
+</nav>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="curriculum.js?v=2"></script>
 <script src="app.js?v=2"></script>
 <script>
-// Stubs to prevent app.js init from crashing on this page
+
+// ── Override buildModuleList stub (this page uses buildDashModuleList) ──
 function buildModuleList() {}
 
-// Page-specific navigation
+// ── Page nav map ──
 function showPage(name) {
   var map = {
     'home':'index.html','course':'program.html','giq':'giq.html',
@@ -314,23 +1777,43 @@ function openModule(idx) {
 }
 
 function updateNavForLoggedIn() {
-  // Already on dashboard — nav is already correct
+  // Already on dashboard
 }
 
-// Wait for checkSession to fire the sessionReady event, then init
+// ── Sync nav IQ badge ──
+function syncNavIQBadge(score, grade) {
+  var badge = document.getElementById('navIQBadge');
+  var num   = document.getElementById('navIQNum');
+  if (badge && num && score) {
+    num.textContent = grade || score;
+    badge.style.display = 'flex';
+  }
+}
+
+// ── Hero progress bar wiring ──
+function syncHeroProgress(pct) {
+  var fill  = document.getElementById('heroProgressFill');
+  var label = document.getElementById('heroProgressPct');
+  if (fill)  setTimeout(function() { fill.style.width  = pct + '%'; }, 200);
+  if (label) label.textContent = pct + '%';
+}
+
+// ── Override loadGIQScore to also sync nav badge + hero score display ──
+// (runs after app.js loadGIQScore, which populates giqGrade/giqTier/giqScoreNum)
+var _origLoadGIQ = null;
 document.addEventListener('sessionReady', async function() {
-  var loading = document.getElementById('dashLoading');
+
+  var loading   = document.getElementById('dashLoading');
+  var playerDash = document.getElementById('dashPlayer');
+  var coachDash  = document.getElementById('dashCoach');
 
   if (!currentUser) {
-    // Not logged in — redirect to login
     window.location.href = 'auth.html?tab=login';
     return;
   }
 
-  // Hide loading, show dashboard
   if (loading) loading.style.display = 'none';
 
-  // Load the right dashboard based on role
   var role = 'player';
   if (currentUser.user_metadata && currentUser.user_metadata.role) {
     role = currentUser.user_metadata.role;
@@ -338,21 +1821,60 @@ document.addEventListener('sessionReady', async function() {
     role = 'coach';
   }
 
-  var playerDash = document.getElementById('dashPlayer');
-  var coachDash  = document.getElementById('dashCoach');
-
   if (role === 'coach') {
     if (playerDash) playerDash.style.display = 'none';
-    if (coachDash)  coachDash.style.display = 'block';
+    if (coachDash)  coachDash.style.display  = 'block';
     loadCoachDashboard();
   } else {
-    if (coachDash)  coachDash.style.display = 'none';
+    if (coachDash)  coachDash.style.display  = 'none';
     if (playerDash) playerDash.style.display = 'block';
-    loadPlayerDashboard();
+    await loadPlayerDashboard();
     buildDashModuleList();
-    loadGIQScore();
+    await loadGIQScore();
+
+    // After GIQ loads, sync nav badge and hero
+    var gradeEl = document.getElementById('giqGrade');
+    var scoreEl = document.getElementById('giqScoreNum');
+    if (gradeEl && gradeEl.textContent && gradeEl.textContent !== '—') {
+      syncNavIQBadge(true, gradeEl.textContent);
+    }
+
+    // Sync hero progress with dashProgressBar width
+    var bar = document.getElementById('dashProgressBar');
+    if (bar) {
+      setTimeout(function() {
+        var w = parseFloat(bar.style.width) || 0;
+        syncHeroProgress(Math.round(w));
+      }, 600);
+    }
+
+    // Wire up history items to use new card style
+    styleHistoryItems();
   }
 });
+
+// ── Style history items to match new design ──
+function styleHistoryItems() {
+  var list = document.getElementById('dbHistoryList');
+  if (!list) return;
+  var observer = new MutationObserver(function() {
+    list.querySelectorAll('.db-history-item').forEach(function(item) {
+      // Already styled
+      if (item.dataset.styled) return;
+      item.dataset.styled = '1';
+      var gradeEl = item.querySelector('.db-history-grade');
+      if (gradeEl) {
+        var g = gradeEl.textContent.trim();
+        if (g.startsWith('A'))      gradeEl.style.color = 'var(--lime)';
+        else if (g.startsWith('B')) gradeEl.style.color = 'var(--green)';
+        else if (g.startsWith('C')) gradeEl.style.color = 'var(--amber)';
+        else                        gradeEl.style.color = 'var(--red)';
+      }
+    });
+  });
+  observer.observe(list, { childList: true, subtree: true });
+}
+
 </script>
 </body>
 </html>
