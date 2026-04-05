@@ -535,6 +535,36 @@ a{text-decoration:none;}
 /* Results actions wrapper */
 #resultsActions{padding:0;}
 
+/* ── SHARE BUTTON ── */
+.share-btn-wrap {
+  margin-top: 8px;
+}
+.action-btn-share {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  width: 100%; padding: 14px; margin-bottom: 8px;
+  background: transparent; color: #C1FF22;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px; font-weight: 900; letter-spacing: .12em; text-transform: uppercase;
+  border: 1.5px solid rgba(193,255,34,.3); border-radius: 2px; cursor: pointer;
+  text-decoration: none; transition: all .18s; box-sizing: border-box; text-align: center;
+}
+.action-btn-share:hover {
+  background: rgba(193,255,34,.06);
+  border-color: rgba(193,255,34,.7);
+}
+.share-icon { flex-shrink: 0; }
+
+/* Share toast */
+.share-toast {
+  position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(20px);
+  background: #C1FF22; color: #0d1a00;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px; font-weight: 900; letter-spacing: .1em; text-transform: uppercase;
+  padding: 10px 22px; border-radius: 2px;
+  opacity: 0; transition: all .3s; pointer-events: none; white-space: nowrap; z-index: 999;
+}
+.share-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
 /* ── MOBILE ── */
 @media(max-width:540px){
   .intro-screen{padding:72px 16px 32px;}
@@ -1243,7 +1273,8 @@ function calcScore() {
 // ── RESULTS ────────────────────────────────────────────────────────────────
 async function showResults(preResult) {
   var result = preResult || calcScore();
-  state.pillarData = result.pillarData;
+  state.pillarData  = result.pillarData;
+  state.lastResult  = result;   // always keep a reference for share/rebuild
 
   showScreen('screenResults');
 
@@ -1432,6 +1463,10 @@ function buildActions(result) {
   if (state.loggedIn) {
     el.innerHTML =
       '<a href="dashboard.html" class="action-btn-primary">Go to Dashboard &rarr;</a>' +
+      '<button class="action-btn-share" onclick="shareScore()" id="shareBtn">' +
+        '<svg class="share-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1v9M5 4l3-3 3 3M3 10v4h10v-4" stroke="#C1FF22" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+        'Share Your Score' +
+      '</button>' +
       '<a href="program.html" class="action-btn-secondary">Start the Rookie Course</a>' +
       '<button class="action-btn-secondary" onclick="retakeQuiz()" style="border:none;cursor:pointer;">Retake Quiz</button>';
   } else {
@@ -1440,6 +1475,96 @@ function buildActions(result) {
       '<button class="action-btn-secondary" onclick="storeGradeForAuth(state.lastResult);window.location.href=\u0027auth.html?tab=login&next=giq-exam.html\u0027">Already have an account? Sign In</button>' +
       '<button class="action-btn-secondary" onclick="retakeQuiz()" style="border:none;cursor:pointer;">Retake Without Saving</button>';
   }
+}
+
+// ── SHARE SCORE ────────────────────────────────────────────────────────────
+async function shareScore() {
+  var result = state.lastResult;
+  if (!result) return;
+
+  var shareId = state.shareId;
+
+  // Generate a share ID if we don't have one yet
+  if (!shareId) {
+    shareId = generateShareId();
+    state.shareId = shareId;
+
+    // Save share record to Supabase
+    try {
+      if (typeof db !== 'undefined' && currentUser) {
+        var grade = getLetterGrade(result.score);
+        var PILLARS = ['Rules & Objectives','Positions & Responsibilities','Formations & Alignments','Plays & Concepts','Situational Awareness'];
+        var pillarPayload = {};
+        PILLARS.forEach(function(p) {
+          var key = 'pillar_' + p.replace(/[^a-zA-Z]/g,'').toLowerCase();
+          var d = result.pillarData[p];
+          pillarPayload[key] = d ? d.pct : 0;
+        });
+
+        await db.from('giq_shared_scores').insert({
+          id:         shareId,
+          user_id:    currentUser.id,
+          score:      result.score,
+          grade:      grade,
+          tier:       result.tier,
+          tier_color: result.tierColor,
+          correct:    result.correct,
+          accuracy:   result.accuracy,
+          peak_band:  result.peakBand,
+          raw_score:  result.rawScore,
+          pillar_data: pillarPayload,
+          created_at: new Date().toISOString()
+        });
+      }
+    } catch(e) {
+      console.log('Share save error:', e.message);
+    }
+  }
+
+  var shareUrl = window.location.origin + '/score-share.html?id=' + shareId;
+  var grade = getLetterGrade(result.score);
+  var shareText = 'I scored ' + grade + ' (' + result.score + '/100) on the Gridiron IQ Test. Think you can beat it?';
+
+  // Use native share sheet on mobile (triggers iMessage, etc.)
+  if (navigator.share) {
+    try {
+      await navigator.share({ title: shareText, url: shareUrl });
+      return;
+    } catch(e) {
+      if (e.name === 'AbortError') return; // User cancelled — don't fall through
+    }
+  }
+
+  // Desktop fallback — copy to clipboard
+  try {
+    await navigator.clipboard.writeText(shareUrl);
+  } catch(e) {
+    // Last resort fallback
+    var ta = document.createElement('textarea');
+    ta.value = shareUrl;
+    ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+  }
+  showShareToast('Link copied!');
+}
+
+function generateShareId() {
+  var chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  var id = '';
+  for (var i = 0; i < 10; i++) {
+    id += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return id;
+}
+
+function showShareToast(msg) {
+  var toast = document.getElementById('shareToast');
+  if (!toast) return;
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(function() { toast.classList.remove('show'); }, 2500);
 }
 
 function retakeQuiz() {
@@ -1489,6 +1614,8 @@ async function saveScore(result) {
 }
 
 </script>
+
+<div class="share-toast" id="shareToast">Link copied!</div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="curriculum.js?v=4"></script>

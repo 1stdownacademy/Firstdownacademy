@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gridiron IQ Score — First Down Academy</title>
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+
+<!-- OG / iMessage preview tags — populated by JS once score loads -->
+<meta property="og:type"        content="website">
+<meta property="og:site_name"   content="First Down Academy">
+<meta property="og:image"       content="https://firstdownacademy.com/og-default.png" id="ogImage">
+<meta property="og:title"       content="Gridiron IQ Test — First Down Academy"       id="ogTitle">
+<meta property="og:description" content="Think you know football? Take the Gridiron IQ Test and find out." id="ogDesc">
+<meta property="og:url"         content="https://firstdownacademy.com/giq-exam.html"   id="ogUrl">
+<meta name="twitter:card"       content="summary_large_image">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;0,900;1,800&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:#020f1e;color:#d9e7fc;font-family:'Barlow',sans-serif;overflow-x:hidden;min-height:100vh;}
+a{text-decoration:none;}
+
+:root{
+  --bg:#020f1e; --bg2:#081b2c; --bg3:#0d2134; --bg4:#12273c;
+  --lime:#C1FF22; --lime2:#a8e01e;
+  --muted:#9eacc0; --border:#3c495a;
+  --fd:'Barlow Condensed',sans-serif;
+  --fb:'Barlow',sans-serif;
+}
+
+/* ── PAGE LAYOUT ── */
+.page-wrap {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: flex-start;
+  padding: 36px 20px 80px;
+  position: relative; overflow: hidden;
+}
+.page-glow {
+  position: absolute; top: -10%; left: 50%; transform: translateX(-50%);
+  width: 600px; height: 400px;
+  background: radial-gradient(ellipse,rgba(193,255,34,.06),transparent 70%);
+  pointer-events: none;
+}
+.page-grid {
+  position: absolute; inset: 0;
+  background-image:
+    repeating-linear-gradient(90deg,rgba(255,255,255,.015) 0,rgba(255,255,255,.015) 1px,transparent 1px,transparent 80px),
+    repeating-linear-gradient(0deg,rgba(255,255,255,.01) 0,rgba(255,255,255,.01) 1px,transparent 1px,transparent 80px);
+  pointer-events: none;
+}
+.inner {
+  position: relative; z-index: 1;
+  width: 100%; max-width: 520px;
+}
+
+/* ── LOGO BAR ── */
+.logo-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 28px;
+}
+.logo-bar img { height: 36px; width: auto; }
+.logo-bar-badge {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
+  color: rgba(255,255,255,.3);
+}
+
+/* ── LOADING STATE ── */
+.loading-state {
+  text-align: center; padding: 80px 20px;
+}
+.loading-spinner {
+  width: 36px; height: 36px;
+  border: 2px solid rgba(193,255,34,.15);
+  border-top-color: #C1FF22;
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+  margin: 0 auto 16px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-text {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+  color: rgba(255,255,255,.3);
+}
+
+/* ── ERROR STATE ── */
+.error-state {
+  text-align: center; padding: 60px 20px; display: none;
+}
+.error-icon { font-size: 36px; margin-bottom: 16px; }
+.error-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 22px; font-weight: 900; letter-spacing: .04em; text-transform: uppercase;
+  color: #fff; margin-bottom: 8px;
+}
+.error-sub { font-size: 14px; color: #9eacc0; line-height: 1.6; margin-bottom: 24px; }
+
+/* ── SCORE CARD ── */
+.score-card {
+  background: #081b2c; border: 1px solid rgba(255,255,255,.08);
+  border-radius: 2px; overflow: hidden; margin-bottom: 12px;
+  display: none;
+}
+
+/* Card header */
+.score-head {
+  background: #0d2134; padding: 32px 28px 28px;
+  text-align: center; position: relative; overflow: hidden;
+}
+.score-head-glow {
+  position: absolute; bottom: -40px; left: 50%; transform: translateX(-50%);
+  width: 300px; height: 200px;
+  background: radial-gradient(ellipse,rgba(193,255,34,.1),transparent 70%);
+  pointer-events: none;
+}
+.score-eyebrow {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase;
+  color: #C1FF22; margin-bottom: 12px; position: relative; z-index: 1;
+}
+.score-display {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 92px; font-weight: 900; line-height: .85;
+  letter-spacing: -.02em; color: #fff;
+  position: relative; z-index: 1; margin-bottom: 6px;
+}
+.score-tier {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 20px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase;
+  position: relative; z-index: 1; margin-bottom: 4px;
+}
+.score-tier-sub {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+  color: rgba(255,255,255,.3); position: relative; z-index: 1;
+}
+
+/* Stats row */
+.score-body { padding: 20px 24px; }
+.score-stats {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-bottom: 16px;
+}
+.score-stat { background: #0d2134; padding: 14px 8px; text-align: center; }
+.score-stat-n {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 26px; font-weight: 900; color: #fff; line-height: 1; margin-bottom: 3px;
+}
+.score-stat-l {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+  color: #9eacc0;
+}
+
+/* ── PILLAR SECTION (LOCKED) ── */
+.locked-section {
+  background: #0d2134; border: 1px solid rgba(255,255,255,.06);
+  border-radius: 2px; overflow: hidden; margin-bottom: 12px;
+}
+.locked-head {
+  padding: 14px 18px 13px; border-bottom: 1px solid rgba(255,255,255,.06);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.locked-head-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase;
+  color: #fff;
+}
+.lock-badge {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+  color: #C1FF22; background: rgba(193,255,34,.1); border: 1px solid rgba(193,255,34,.2);
+  padding: 3px 8px; border-radius: 2px;
+}
+.locked-body { position: relative; }
+.pillar-rows-preview {
+  padding: 14px 18px; display: flex; flex-direction: column; gap: 8px;
+}
+.pillar-row-prev {
+  display: flex; align-items: center; gap: 10px;
+}
+.pillar-name-prev {
+  font-size: 11px; color: #9eacc0; width: 84px; flex-shrink: 0;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.pillar-track-prev {
+  flex: 1; height: 4px; background: rgba(255,255,255,.08);
+  border-radius: 2px; overflow: hidden;
+}
+.pillar-fill-prev {
+  height: 100%; background: #C1FF22; border-radius: 2px; opacity: .45;
+}
+.pillar-pct-prev {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; color: #9eacc0; width: 32px; text-align: right; flex-shrink: 0;
+}
+.locked-overlay {
+  position: absolute; inset: 0;
+  backdrop-filter: blur(7px); -webkit-backdrop-filter: blur(7px);
+  background: rgba(8,27,44,.82);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 6px; padding: 24px; text-align: center;
+}
+.locked-overlay-icon { font-size: 26px; }
+.locked-overlay-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 18px; font-weight: 900; letter-spacing: .04em; text-transform: uppercase;
+  color: #fff;
+}
+.locked-overlay-sub {
+  font-size: 13px; color: #9eacc0; line-height: 1.55; max-width: 270px;
+}
+
+/* ── CTA SECTION ── */
+.cta-section { margin-top: 4px; }
+.cta-context {
+  background: rgba(193,255,34,.05);
+  border: 1px solid rgba(193,255,34,.12);
+  border-radius: 2px; padding: 14px 18px; margin-bottom: 12px;
+}
+.cta-context-text {
+  font-size: 14px; color: #d9e7fc; line-height: 1.6;
+}
+.cta-context-text strong { color: #C1FF22; font-weight: 600; }
+
+.btn-primary {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%; padding: 15px;
+  background: #C1FF22; color: #0d1a00;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px; font-weight: 900; letter-spacing: .12em; text-transform: uppercase;
+  border: none; border-radius: 2px; cursor: pointer;
+  text-decoration: none; transition: all .18s; box-sizing: border-box;
+  text-align: center; margin-bottom: 8px; position: relative; overflow: hidden;
+}
+.btn-primary::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.18), transparent);
+  transform: translateX(-100%); transition: transform .4s;
+}
+.btn-primary:hover::after { transform: translateX(100%); }
+.btn-primary:hover { background: #d0ff55; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(193,255,34,.3); }
+
+.btn-secondary {
+  display: flex; align-items: center; justify-content: center;
+  width: 100%; padding: 13px;
+  background: transparent; color: #d9e7fc;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+  border: 1.5px solid rgba(255,255,255,.12); border-radius: 2px; cursor: pointer;
+  text-decoration: none; transition: all .18s; box-sizing: border-box; text-align: center;
+  margin-bottom: 8px;
+}
+.btn-secondary:hover { border-color: rgba(255,255,255,.35); background: rgba(255,255,255,.04); }
+
+.cta-note {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+  color: rgba(255,255,255,.2); text-align: center; margin-top: 6px;
+}
+
+/* ── FOOTER ── */
+.share-footer {
+  margin-top: 20px; text-align: center;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+  color: rgba(255,255,255,.2);
+}
+
+/* ── MOBILE ── */
+@media(max-width: 540px) {
+  .page-wrap { padding: 24px 14px 80px; }
+  .score-head { padding: 24px 20px 20px; }
+  .score-display { font-size: 72px; }
+  .score-body { padding: 16px 16px; }
+}
+</style>
+</head>
+<body>
+
+<div class="page-wrap">
+  <div class="page-grid"></div>
+  <div class="page-glow"></div>
+
+  <div class="inner">
+
+    <!-- Logo bar -->
+    <div class="logo-bar">
+      <a href="index.html">
+        <img src="logo.png" alt="First Down Academy" onerror="this.style.display='none'">
+      </a>
+      <div class="logo-bar-badge">Gridiron IQ</div>
+    </div>
+
+    <!-- Loading -->
+    <div class="loading-state" id="loadingState">
+      <div class="loading-spinner"></div>
+      <div class="loading-text">Loading score...</div>
+    </div>
+
+    <!-- Error -->
+    <div class="error-state" id="errorState">
+      <div class="error-icon">🏈</div>
+      <div class="error-title">Score Not Found</div>
+      <div class="error-sub">This link may have expired or the score wasn't saved properly.</div>
+      <a href="giq-exam.html" class="btn-primary">Take the Gridiron IQ Test &rarr;</a>
+    </div>
+
+    <!-- Score card (populated by JS) -->
+    <div class="score-card" id="scoreCard">
+
+      <div class="score-head">
+        <div class="score-head-glow"></div>
+        <div class="score-eyebrow" id="cardEyebrow">Gridiron IQ — Result</div>
+        <div class="score-display" id="cardGrade">B+</div>
+        <div class="score-tier" id="cardTier">Advanced</div>
+        <div class="score-tier-sub" id="cardTierSub">Strong football knowledge</div>
+      </div>
+
+      <div class="score-body">
+        <div class="score-stats">
+          <div class="score-stat">
+            <div class="score-stat-n" id="statScore">—</div>
+            <div class="score-stat-l">IQ Score</div>
+          </div>
+          <div class="score-stat">
+            <div class="score-stat-n" id="statCorrect">—</div>
+            <div class="score-stat-l">Correct</div>
+          </div>
+          <div class="score-stat">
+            <div class="score-stat-n" id="statAcc">—</div>
+            <div class="score-stat-l">Accuracy</div>
+          </div>
+        </div>
+
+        <!-- Pillar breakdown — always locked on share page -->
+        <div class="locked-section">
+          <div class="locked-head">
+            <div class="locked-head-title">Pillar Breakdown</div>
+            <div class="lock-badge">&#128274; Free to unlock</div>
+          </div>
+          <div class="locked-body">
+            <div class="pillar-rows-preview" id="pillarPreview">
+              <!-- populated by JS with fake bars -->
+            </div>
+            <div class="locked-overlay">
+              <div class="locked-overlay-icon">&#128274;</div>
+              <div class="locked-overlay-title">See the Full Breakdown</div>
+              <div class="locked-overlay-sub">Create a free account to see exactly where you stand across all 5 pillars — then take the test yourself.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="cta-section">
+          <div class="cta-context">
+            <div class="cta-context-text">
+              <strong id="ctaPlayerRef">This player</strong> scored <strong id="ctaScore">—</strong> on the Gridiron IQ Test.
+              Think you can match it? Create your free account and find out where you stand.
+            </div>
+          </div>
+          <a href="auth.html?next=giq-exam.html&ref=share" class="btn-primary" id="signupBtn">
+            Create Free Account &amp; Take the Test &rarr;
+          </a>
+          <a href="auth.html?tab=login&next=giq-exam.html&ref=share" class="btn-secondary">
+            Already have an account? Sign In
+          </a>
+          <div class="cta-note">Free &nbsp;&middot;&nbsp; No credit card &nbsp;&middot;&nbsp; Ages 8&ndash;18</div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="share-footer">firstdownacademy.com</div>
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+
+// ── SUPABASE INIT ──────────────────────────────────────────────────────────
+// Uses the same keys as the rest of your FDA site
+var SUPABASE_URL = '';
+var SUPABASE_KEY = '';
+
+// Try to pull from app.js globals if available, otherwise read from meta or env
+// This file expects window.FDA_SUPABASE_URL and window.FDA_SUPABASE_KEY
+// to be set by app.js before this script runs — or hard-code them here.
+// If app.js sets up `db` globally, we'll use that directly below.
+
+// ── PILLAR CONFIG ──────────────────────────────────────────────────────────
+var PILLARS     = ['Rules & Objectives','Positions & Responsibilities','Formations & Alignments','Plays & Concepts','Situational Awareness'];
+var PILLAR_KEYS = ['pillarrulesobjectives','pillarpositionsresponsibilities','pillarformationsalignments','pillarplaysconcepts','pillarsituationalawareness'];
+var SHORT       = ['Rules','Positions','Formations','Plays','Situational'];
+
+// ── MAIN ──────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', async function() {
+  var params = new URLSearchParams(window.location.search);
+  var shareId = params.get('id');
+
+  if (!shareId) {
+    showError();
+    return;
+  }
+
+  await loadScore(shareId);
+});
+
+async function loadScore(shareId) {
+  try {
+    // Use the global `db` client from app.js if available
+    var client = (typeof db !== 'undefined') ? db : null;
+
+    if (!client) {
+      // Fallback: initialise our own client
+      // Replace these with your actual keys (same as app.js)
+      var _url = window.FDA_SUPABASE_URL || '';
+      var _key = window.FDA_SUPABASE_KEY || '';
+      if (!_url || !_key) { showError(); return; }
+      client = supabase.createClient(_url, _key);
+    }
+
+    var res = await client
+      .from('giq_shared_scores')
+      .select('*')
+      .eq('id', shareId)
+      .single();
+
+    if (res.error || !res.data) {
+      showError();
+      return;
+    }
+
+    renderScore(res.data);
+  } catch(e) {
+    console.error('Share load error:', e);
+    showError();
+  }
+}
+
+function renderScore(data) {
+  // Hide loader
+  document.getElementById('loadingState').style.display = 'none';
+  document.getElementById('scoreCard').style.display = 'block';
+
+  // Grade / tier
+  var grade = data.grade || '—';
+  var tier  = data.tier  || '';
+  var color = data.tier_color || '#C1FF22';
+
+  document.getElementById('cardGrade').textContent   = grade;
+  document.getElementById('cardGrade').style.color   = color;
+  document.getElementById('cardTier').textContent    = tier;
+  document.getElementById('cardTier').style.color    = color;
+  document.getElementById('cardTierSub').textContent = data.tier_sub || '';
+
+  // Stats
+  document.getElementById('statScore').textContent   = data.score || '—';
+  document.getElementById('statCorrect').textContent = (data.correct != null) ? data.correct + '/15' : '—';
+  document.getElementById('statAcc').textContent     = (data.accuracy != null) ? data.accuracy + '%' : '—';
+
+  // CTA copy
+  document.getElementById('ctaScore').textContent = grade + ' (' + (data.score || '—') + '/100)';
+
+  // Update OG tags dynamically (helps if page is re-shared from browser)
+  document.title = 'Gridiron IQ ' + grade + ' — First Down Academy';
+  setMeta('ogTitle', 'Someone scored ' + grade + ' on the Gridiron IQ Test');
+  setMeta('ogDesc',  'Think you know football? Take the test and see if you can beat it.');
+
+  // Pillar preview — show randomised-looking bars (real values stay hidden)
+  buildPillarPreview();
+}
+
+function buildPillarPreview() {
+  var el = document.getElementById('pillarPreview');
+  var html = '';
+  // Use randomised percentages so it looks like real data but reveals nothing
+  PILLARS.forEach(function(p, i) {
+    var fakePct = Math.floor(Math.random() * 45) + 40; // 40–84
+    html += '<div class="pillar-row-prev">' +
+      '<div class="pillar-name-prev">' + SHORT[i] + '</div>' +
+      '<div class="pillar-track-prev"><div class="pillar-fill-prev" style="width:' + fakePct + '%"></div></div>' +
+      '<div class="pillar-pct-prev">' + fakePct + '%</div>' +
+    '</div>';
+  });
+  el.innerHTML = html;
+}
+
+function setMeta(id, content) {
+  var el = document.getElementById(id);
+  if (el) el.setAttribute('content', content);
+}
+
+function showError() {
+  document.getElementById('loadingState').style.display = 'none';
+  document.getElementById('errorState').style.display  = 'block';
+}
+
+</script>
+
+<!-- app.js must come AFTER supabase — it initialises `db` and `currentUser` -->
+<script src="curriculum.js?v=4"></script>
+<script src="app.js?v=4"></script>
+<script>
+// Override stubs app.js expects on every page
+function showPage(n) {
+  var m = {'home':'index.html','course':'program.html','giq':'giq-exam.html','signup':'auth.html','dashboard':'dashboard.html'};
+  if (m[n]) window.location.href = m[n];
+}
+function buildModuleList() {}
+function buildDashModuleList() {}
+function loadDashboard() {}
+function loadGIQScore() {}
+function updateNavForLoggedIn() {}
+</script>
+</body>
+</html>
