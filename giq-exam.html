@@ -434,11 +434,35 @@ font-family:‘Barlow Condensed’,sans-serif;
 font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
 color:#C1FF22;margin-bottom:14px;position:relative;z-index:1;
 }
+/* Score + Letter side-by-side row */
+.grade-score-row{
+display:flex;align-items:flex-end;justify-content:center;gap:18px;
+position:relative;z-index:1;margin-bottom:8px;
+}
 .grade-display{
 font-family:‘Barlow Condensed’,sans-serif;
 font-size:96px;font-weight:900;line-height:.85;
 letter-spacing:-.02em;color:#fff;
-position:relative;z-index:1;margin-bottom:6px;
+}
+.grade-score-divider{
+width:1px;height:64px;background:rgba(255,255,255,.14);
+margin-bottom:8px;align-self:flex-end;flex-shrink:0;
+}
+.grade-letter-badge{
+display:flex;flex-direction:column;align-items:center;gap:4px;
+padding-bottom:6px;
+}
+.grade-letter{
+font-family:‘Barlow Condensed’,sans-serif;
+font-size:48px;font-weight:900;line-height:1;
+background:#C1FF22;color:#0d1a00;
+padding:4px 14px 2px;border-radius:2px;
+display:block;
+}
+.grade-letter-label{
+font-family:‘Barlow Condensed’,sans-serif;
+font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+color:rgba(255,255,255,.3);
 }
 .grade-tier{
 font-family:‘Barlow Condensed’,sans-serif;
@@ -581,6 +605,7 @@ opacity: 0; transition: all .3s; pointer-events: none; white-space: nowrap; z-in
 .results-screen{padding:20px 12px 80px;}
 .grade-head{padding:28px 20px 24px;}
 .grade-display{font-size:72px;}
+.grade-letter{font-size:36px;padding:3px 10px 2px;}
 .grade-body{padding:20px 16px;}
 }
 </style>
@@ -779,7 +804,14 @@ How scoring works &darr;
 <div class="grade-head">
 <div class="grade-head-glow"></div>
 <div class="grade-eyebrow">Gridiron IQ &mdash; Result</div>
-<div class="grade-display" id="gradeDisplay">B+</div>
+<div class="grade-score-row">
+<div class="grade-display" id="gradeDisplay">72</div>
+<div class="grade-score-divider"></div>
+<div class="grade-letter-badge">
+<span class="grade-letter" id="gradeLetter">B+</span>
+<span class="grade-letter-label">Letter Grade</span>
+</div>
+</div>
 <div class="grade-tier" id="gradeTier">Advanced</div>
 <div class="grade-tier-sub" id="gradeTierSub">Strong football knowledge</div>
 </div>
@@ -1290,8 +1322,10 @@ state.lastResult = result; // always keep a reference for share/rebuild
 showScreen('screenResults');
 
 // Grade card
-document.getElementById('gradeDisplay').textContent = result.grade;
+document.getElementById('gradeDisplay').textContent = result.score;
 document.getElementById('gradeDisplay').style.color = result.tierColor;
+var letterEl = document.getElementById('gradeLetter');
+if (letterEl) { letterEl.textContent = result.grade; letterEl.style.background = result.tierColor; letterEl.style.color = (result.score >= 60) ? '#0d1a00' : '#fff'; }
 document.getElementById('gradeTier').textContent = result.tier;
 document.getElementById('gradeTier').style.color = result.tierColor;
 document.getElementById('gradeTierSub').textContent = result.tierSub;
@@ -1310,6 +1344,8 @@ buildActions(result);
 
 // Save score
 await saveScore(result);
+// Also save anonymously so score persists through sign-up flow
+if (!state.loggedIn) { saveAnonymousScore(result); }
 
 window.scrollTo(0,0);
 }
@@ -1499,13 +1535,21 @@ el.innerHTML =
 '<a href="dashboard.html" class="action-btn-primary">Go to Dashboard &rarr;</a>' +
 '<button class="action-btn-share" onclick="shareScore()" id="shareBtn">' +
 '<svg class="share-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1v9M5 4l3-3 3 3M3 10v4h10v-4" stroke="#C1FF22" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
-'Share Your Score' +
+'Share via Text / Link' +
+'</button>' +
+'<button class="action-btn-share" onclick="shareToFacebook()" style="background:rgba(24,119,242,.08);border-color:rgba(24,119,242,.4);color:#60a5fa;">' +
+'<svg class="share-icon" width="16" height="16" viewBox="0 0 24 24" fill="#60a5fa"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>' +
+'Share to Facebook' +
 '</button>' +
 '<a href="program.html" class="action-btn-secondary">Start the Rookie Course</a>' +
 '<button class="action-btn-secondary" onclick="retakeQuiz()" style="border:none;cursor:pointer;">Retake Quiz</button>';
 } else {
 el.innerHTML =
-'<button class="action-btn-primary" onclick="goToSignup()">Unlock Full Results — Free &rarr;</button>' +
+'<div style="background:rgba(193,255,34,.06);border:1px solid rgba(193,255,34,.2);border-radius:2px;padding:20px 20px 16px;margin-bottom:8px;text-align:center;">' +
+'<div style="font-family:\'Barlow Condensed\',sans-serif;font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#C1FF22;margin-bottom:8px;">Your score is saved — don\'t lose it</div>' +
+'<div style="font-size:13px;color:#9eacc0;line-height:1.5;margin-bottom:16px;">Create a free account to unlock your full pillar breakdown, score history, and personalized recommendations.</div>' +
+'<button class="action-btn-primary" onclick="goToSignup()" style="margin-bottom:0;">Create Free Account — Save My Results &rarr;</button>' +
+'</div>' +
 '<button class="action-btn-secondary" onclick="goToLogin()">Already have an account? Sign In</button>' +
 '<button class="action-btn-secondary" onclick="retakeQuiz()" style="border:none;cursor:pointer;">Retake Without Saving</button>';
 }
@@ -1601,6 +1645,50 @@ for (var i = 0; i < 10; i++) {
 id += chars.charAt(Math.floor(Math.random() * chars.length));
 }
 return id;
+}
+
+// ── FACEBOOK SHARE ──────────────────────────────────────────────────────────
+function shareToFacebook() {
+var result = state.lastResult;
+if (!result) return;
+var shareId = state.shareId || generateShareId();
+state.shareId = shareId;
+var shareUrl = window.location.origin + '/score-share.html?id=' + shareId;
+var fbUrl = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(shareUrl);
+window.open(fbUrl, '_blank', 'width=600,height=400,noopener,noreferrer');
+}
+
+// ── ANONYMOUS SCORE SAVE (before sign-up) ───────────────────────────────────
+// Saves to Supabase quiz_results with guest_token so we can claim it post-auth
+async function saveAnonymousScore(result) {
+try {
+// Generate or reuse guest token — stored in localStorage so it survives email confirm
+var guestToken = null;
+try { guestToken = localStorage.getItem('fda_guestToken'); } catch(e) {}
+if (!guestToken) {
+guestToken = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+var r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+return v.toString(16);
+});
+try { localStorage.setItem('fda_guestToken', guestToken); } catch(e) {}
+}
+if (typeof db === 'undefined') return;
+var grade = getLetterGrade(result.score);
+var PILLARS = ['Rules & Objectives','Positions & Responsibilities','Formations & Alignments','Plays & Concepts','Situational Awareness'];
+var pillarPayload = {};
+PILLARS.forEach(function(p) {
+var key = 'pillar_' + p.replace(/[^a-zA-Z]/g,'').toLowerCase();
+var d = result.pillarData[p];
+pillarPayload[key] = d ? d.pct : 0;
+});
+await db.from('quiz_results').insert({
+guest_token: guestToken,
+score: result.score,
+grade: grade,
+pillar_scores: pillarPayload,
+total_questions: 15
+});
+} catch(e) { console.log('Anonymous save skipped:', e.message); }
 }
 
 function showShareToast(msg) {
@@ -1709,6 +1797,14 @@ state.loggedIn = true;
 await showResults(result);
 }
 clearPendingScore();
+// Claim anonymous Supabase row
+try {
+var gt = null; try { gt = localStorage.getItem('fda_guestToken'); } catch(ex) {}
+if (gt && typeof db !== 'undefined') {
+await db.from('quiz_results').update({ user_id: currentUser.id, guest_token: null }).eq('guest_token', gt).is('user_id', null);
+try { localStorage.removeItem('fda_guestToken'); } catch(ex) {}
+}
+} catch(claimErr) { console.log('Claim guest row skipped:', claimErr.message); }
 } catch(e) { console.log('Score restore failed:', e); }
 }
 }
