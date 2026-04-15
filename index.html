@@ -173,12 +173,7 @@ img { display:block; max-width:100%; }
 .home-marquee-item::after{content:"◆";font-size:6px;opacity:.5;}
 
 /* ── MODULES ── */
-.home-modules { padding:56px 28px;background:rgba(13,33,52,.5); }
 .home-modules-header { margin-bottom:28px; }
-.home-section-label {
-  font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;
-  letter-spacing:.22em;text-transform:uppercase;color:#9eacc0;margin-bottom:10px;
-}
 .home-section-title {
   font-family:'Barlow Condensed',sans-serif;font-size:clamp(36px,6vw,52px);font-weight:900;
   letter-spacing:-.01em;text-transform:uppercase;line-height:.9;color:#fff;
@@ -307,7 +302,6 @@ img { display:block; max-width:100%; }
 .home-btn-coach .home-path-btn-arrow { background:rgba(0,30,60,.1); }
 
 /* ── OFFERINGS / WHY IQ ── */
-.home-offerings { padding:56px 28px;background:#081b2c; }
 .home-offerings-header { margin-bottom:32px; }
 .home-offerings-grid { display:grid;grid-template-columns:1fr;gap:2px; }
 .home-offering {
@@ -333,11 +327,6 @@ img { display:block; max-width:100%; }
 }
 
 /* ── FINAL CTA ── */
-.home-cta {
-  margin:0 28px 56px;background:#081b2c;border-radius:2px;
-  padding:36px 28px;position:relative;overflow:hidden;
-  border-left:3px solid #C1FF22;
-}
 .home-cta::before {
   content:'';position:absolute;inset:0;
   background:linear-gradient(135deg,rgba(193,255,34,.04),transparent 60%);
@@ -401,6 +390,81 @@ img { display:block; max-width:100%; }
 .hm-reveal2.on{opacity:1;transform:translateY(0);}
 .hm-reveal3{opacity:0;transform:translateY(24px);transition:opacity .6s .24s ease,transform .6s .24s ease;}
 .hm-reveal3.on{opacity:1;transform:translateY(0);}
+
+/* ── STAT BAR ── */
+.home-statbar {
+  background:#081b2c;border-bottom:1px solid rgba(255,255,255,.06);
+  padding:0 28px;display:flex;align-items:stretch;justify-content:center;
+  gap:0;overflow:hidden;
+}
+.home-stat {
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:20px 36px;position:relative;flex:1;max-width:200px;
+  text-align:center;
+}
+.home-stat+.home-stat::before {
+  content:'';position:absolute;left:0;top:25%;bottom:25%;
+  width:1px;background:rgba(255,255,255,.08);
+}
+.home-stat-num {
+  font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:900;
+  letter-spacing:-.01em;line-height:1;color:#C1FF22;
+}
+.home-stat-label {
+  font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;
+  letter-spacing:.18em;text-transform:uppercase;color:#9eacc0;margin-top:4px;
+}
+
+/* ── SECTION LABEL UPGRADE ── */
+.home-section-label {
+  font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;
+  letter-spacing:.22em;text-transform:uppercase;color:#9eacc0;margin-bottom:10px;
+  display:flex;align-items:center;gap:10px;
+}
+.home-section-label::before {
+  content:'';display:block;width:20px;height:1.5px;
+  background:rgba(193,255,34,.5);flex-shrink:0;
+}
+
+/* ── SECTION TRANSITIONS ── */
+.home-modules {
+  padding:56px 28px;
+  background:linear-gradient(to bottom,#020f1e 0%,rgba(13,33,52,.6) 30%,rgba(13,33,52,.6) 100%);
+}
+.home-paths { display:grid;grid-template-columns:1fr; }
+.home-offerings {
+  padding:56px 28px;
+  background:linear-gradient(to bottom,#081b2c,#0a1f30);
+}
+.home-cta {
+  margin:0 28px 56px;background:#081b2c;border-radius:2px;
+  padding:36px 28px;position:relative;overflow:hidden;
+  border-left:3px solid #C1FF22;
+}
+
+/* ── COMING SOON CARD UPGRADE ── */
+.home-module-card-locked {
+  opacity:.7;
+}
+.home-module-card-locked .home-module-title { color:#9eacc0; }
+.home-module-card-locked .home-module-level { color:#9eacc0;opacity:.6; }
+.home-module-notify {
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:#9eacc0;border:1px solid #3c495a;
+  padding:6px 12px;border-radius:2px;cursor:pointer;
+  background:transparent;transition:all .18s;text-decoration:none;
+}
+.home-module-notify:hover { border-color:#C1FF22;color:#C1FF22; }
+.home-module-lock { font-size:11px;opacity:.5; }
+
+@media (max-width:700px) {
+  .home-statbar { gap:0;padding:0 12px; }
+  .home-stat { padding:16px 12px;max-width:none; }
+  .home-stat-num { font-size:24px; }
+  .home-stat-label { font-size:9px;letter-spacing:.12em; }
+}
 
 @media (max-width:700px) {
   /* Hero — remove blank gap, photo fills from nav down */
@@ -484,7 +548,8 @@ img { display:block; max-width:100%; }
   <div class="home-hero-img"></div>
   <div class="home-hero-grid"></div>
   <div class="home-hero-photo">
-    <img src="football_qb_action.png" alt="Football quarterback throwing">
+    <img src="football_qb_action.png" alt="Football quarterback throwing"
+      style="filter:grayscale(60%) brightness(0.75) contrast(1.15);">
   </div>
   <div class="home-hero-content">
     <span class="home-hero-badge hm-a1">Gridiron Intelligence Platform</span>
@@ -525,6 +590,26 @@ img { display:block; max-width:100%; }
   </div>
 </div>
 
+<!-- STAT BAR -->
+<div class="home-statbar hm-reveal">
+  <div class="home-stat">
+    <div class="home-stat-num">15</div>
+    <div class="home-stat-label">Adaptive Questions</div>
+  </div>
+  <div class="home-stat">
+    <div class="home-stat-num">84</div>
+    <div class="home-stat-label">Training Slides</div>
+  </div>
+  <div class="home-stat">
+    <div class="home-stat-num">5</div>
+    <div class="home-stat-label">Knowledge Pillars</div>
+  </div>
+  <div class="home-stat">
+    <div class="home-stat-num">Free</div>
+    <div class="home-stat-label">No Card Required</div>
+  </div>
+</div>
+
 <!-- MODULES -->
 <div class="home-modules">
   <div class="home-modules-header hm-reveal">
@@ -543,26 +628,28 @@ img { display:block; max-width:100%; }
         <a href="program.html" class="home-module-arrow">&#x2192;</a>
       </div>
     </div>
-    <div class="home-module-card hm-reveal2">
+    <div class="home-module-card home-module-card-locked hm-reveal2">
       <div class="home-module-accent"></div>
       <div class="home-module-bg">02</div>
       <div class="home-module-level">Level 02</div>
       <div class="home-module-title">Starter</div>
       <div class="home-module-desc">Defensive scheme recognition, gap analysis, coverages, and situational decision-making.</div>
       <div class="home-module-footer">
-        <span class="home-module-count">Coming Soon</span>
-        <span class="home-module-arrow" style="opacity:.3">&#x2192;</span>
+        <a href="auth.html" class="home-module-notify">
+          <span class="home-module-lock">🔒</span> Notify Me
+        </a>
       </div>
     </div>
-    <div class="home-module-card hm-reveal3">
+    <div class="home-module-card home-module-card-locked hm-reveal3">
       <div class="home-module-accent"></div>
       <div class="home-module-bg">03</div>
       <div class="home-module-level">Level 03</div>
       <div class="home-module-title">Elite</div>
       <div class="home-module-desc">Advanced game management, complex RPO logic, and pro-grade film study concepts.</div>
       <div class="home-module-footer">
-        <span class="home-module-count">Coming Soon</span>
-        <span class="home-module-arrow" style="opacity:.3">&#x2192;</span>
+        <a href="auth.html" class="home-module-notify">
+          <span class="home-module-lock">🔒</span> Notify Me
+        </a>
       </div>
     </div>
   </div>
