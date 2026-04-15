@@ -766,7 +766,6 @@ How scoring works &darr;
 <div class="q-opts-wrap">
 <div class="q-opts" id="qOptions"></div>
 
-```
 <div class="conf-section" id="confSection">
 <div class="conf-label">How confident are you?</div>
 <div class="conf-btns">
@@ -787,7 +786,6 @@ How scoring works &darr;
 </div>
 </div>
 </div>
-```
 
 </div>
 </div>
@@ -1026,40 +1024,89 @@ loggedIn: false,
 pillarData: {}
 };
 
+// ── SEEN COOLDOWN (30-day localStorage cache) ──────────────────────────────
+var SEEN_KEY = 'fda_seen_qs';
+var SEEN_TTL = 30 * 24 * 60 * 60 * 1000; // 30 days in ms
+
+function getSeenQs() {
+  try {
+    var raw = localStorage.getItem(SEEN_KEY);
+    if (!raw) return {};
+    var data = JSON.parse(raw);
+    var now = Date.now();
+    // Expire old entries
+    Object.keys(data).forEach(function(k) { if (now - data[k] > SEEN_TTL) delete data[k]; });
+    return data;
+  } catch(e) { return {}; }
+}
+
+function markQsSeen(questions) {
+  try {
+    var data = getSeenQs();
+    var now = Date.now();
+    questions.forEach(function(q) { data[q.q.slice(0,40)] = now; });
+    localStorage.setItem(SEEN_KEY, JSON.stringify(data));
+  } catch(e) {}
+}
+
+function isQSeen(q, seenMap) {
+  return !!seenMap[q.q.slice(0,40)];
+}
+
 // Pick N random questions from array
 function pickRandom(arr, n) {
 var shuffled = arr.slice().sort(function() { return Math.random() - .5; });
 return shuffled.slice(0, n);
 }
 
-// Build 15-question adaptive set
-// Block 1: always Easy (5 questions, one per pillar if possible)
-// Blocks 2 & 3 determined after scoring previous block
-function buildBlock(diff, exclude, count) {
-var pool = QB.filter(function(q) {
-return q.diff === diff && !exclude.some(function(e) { return e.q === q.q; });
-});
-// Try to balance pillars
+// Build a block of questions at a given difficulty.
+// Excludes already-used questions this session AND recently seen ones (30-day cooldown).
+// Falls back to seen questions only if pool is too small.
 var PILLARS = ['Rules & Objectives','Positions & Responsibilities','Formations & Alignments','Plays & Concepts','Situational Awareness'];
-var result = [];
-var remaining = pool.slice();
-// One from each pillar first
-PILLARS.forEach(function(p) {
-if (result.length >= count) return;
-var pillarQs = remaining.filter(function(q) { return q.pillar === p; });
-if (pillarQs.length > 0) {
-var picked = pillarQs[Math.floor(Math.random() * pillarQs.length)];
-result.push(picked);
-remaining = remaining.filter(function(q) { return q !== picked; });
+
+function buildBlock(diff, exclude, count) {
+  var seenMap = getSeenQs();
+  // Full pool for this difficulty, excluding already-used this session
+  var pool = QB.filter(function(q) {
+    return q.diff === diff && !exclude.some(function(e) { return e.q === q.q; });
+  });
+  // Preferred pool: unseen within 30 days
+  var freshPool = pool.filter(function(q) { return !isQSeen(q, seenMap); });
+  // Use fresh if we have enough, otherwise fall back to full pool
+  var workingPool = freshPool.length >= count ? freshPool : pool;
+
+  var result = [];
+  var remaining = workingPool.slice();
+
+  // One from each pillar first (from working pool)
+  PILLARS.forEach(function(p) {
+    if (result.length >= count) return;
+    var pillarQs = remaining.filter(function(q) { return q.pillar === p; });
+    if (pillarQs.length > 0) {
+      var picked = pillarQs[Math.floor(Math.random() * pillarQs.length)];
+      result.push(picked);
+      remaining = remaining.filter(function(q) { return q !== picked; });
+    }
+  });
+  // Fill remaining slots randomly
+  while (result.length < count && remaining.length > 0) {
+    var idx = Math.floor(Math.random() * remaining.length);
+    result.push(remaining[idx]);
+    remaining.splice(idx, 1);
+  }
+  return result.slice(0, count);
 }
-});
-// Fill remaining slots randomly
-while (result.length < count && remaining.length > 0) {
-var idx = Math.floor(Math.random() * remaining.length);
-result.push(remaining[idx]);
-remaining.splice(idx, 1);
-}
-return result.slice(0, count);
+
+// Per-question adaptive branching within a block.
+// After every 2 correct/wrong answers mid-block, nudge difficulty for remaining picks.
+function pickNextAdaptive(diff, exclude, seenMap) {
+  var pool = QB.filter(function(q) {
+    return q.diff === diff && !exclude.some(function(e) { return e.q === q.q; });
+  });
+  var freshPool = pool.filter(function(q) { return !isQSeen(q, seenMap); });
+  var workingPool = freshPool.length > 0 ? freshPool : pool;
+  if (workingPool.length === 0) return null;
+  return workingPool[Math.floor(Math.random() * workingPool.length)];
 }
 
 function showScreen(id) {
@@ -1072,6 +1119,8 @@ function startQuiz() {
 var block1 = buildBlock('easy', [], BLOCK_SIZE);
 state.questions = block1;
 state.block1Diff = 'easy';
+state.block2Diff = 'easy';
+state.block3Diff = 'easy';
 state.currentQ = 0;
 state.answers = [];
 state.selected = null;
@@ -1209,10 +1258,39 @@ if (state.currentQ === (BLOCK_SIZE * 2) - 1 && state.questions.length === BLOCK_
 determineBlock3();
 }
 
+// ── Per-question micro-branching within the current block ──
+// After every 2 answers inside a block, if the player is on a hot/cold streak,
+// swap out the next unfilled question for a better-matched one.
+var blockStart = Math.floor(state.currentQ / BLOCK_SIZE) * BLOCK_SIZE;
+var posInBlock = state.currentQ - blockStart;
+var currentBlockDiff = state.currentQ < BLOCK_SIZE ? state.block1Diff :
+                       state.currentQ < BLOCK_SIZE*2 ? state.block2Diff : state.block3Diff;
+
+if (posInBlock % 2 === 1) { // every 2nd question in block
+  var recentTwo = state.answers.slice(-2);
+  var recentCorrect = recentTwo.filter(function(a){return a.correct;}).length;
+  var nextIdx = state.currentQ + 1;
+  // Only swap if there's a next question in the same block and it hasn't been answered
+  var sameBlock = nextIdx < blockStart + BLOCK_SIZE && nextIdx < TOTAL_QS;
+  if (sameBlock && state.questions[nextIdx]) {
+    var nudgeDiff = currentBlockDiff;
+    if (recentCorrect === 2 && currentBlockDiff === 'easy') nudgeDiff = 'medium';
+    else if (recentCorrect === 2 && currentBlockDiff === 'medium') nudgeDiff = 'hard';
+    else if (recentCorrect === 0 && currentBlockDiff === 'hard') nudgeDiff = 'medium';
+    else if (recentCorrect === 0 && currentBlockDiff === 'medium') nudgeDiff = 'easy';
+    if (nudgeDiff !== currentBlockDiff) {
+      var seenMap = getSeenQs();
+      var replacement = pickNextAdaptive(nudgeDiff, state.questions, seenMap);
+      if (replacement) state.questions[nextIdx] = replacement;
+    }
+  }
+}
+
 if (state.currentQ < TOTAL_QS - 1) {
 state.currentQ++;
 renderQuestion();
 } else {
+markQsSeen(state.questions); // mark all 15 as seen on completion
 showResults();
 }
 }
