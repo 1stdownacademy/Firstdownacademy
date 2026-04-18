@@ -2,819 +2,2014 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<link rel="icon" type="image/x-icon" href="favicon.ico">
-<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>First Down Academy — Gridiron Intelligence Platform</title>
 <meta name="description" content="Test your Gridiron IQ. Build your football knowledge. Track your improvement. Free for players ages 8–18.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;0,900;1,800;1,900&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,800;1,900&family=Barlow:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400&display=swap" rel="stylesheet">
 <style>
-/* ── FULL RESET — homepage is self-contained, no style.css ── */
-*, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
-html { scroll-behavior:smooth; }
-body { background:#020f1e; color:#d9e7fc; font-family:'Barlow',sans-serif; overflow-x:hidden; line-height:1.6; }
-a { text-decoration:none; }
-img { display:block; max-width:100%; }
-
-/* ── HOME PAGE STYLES ── */
+/* ───────────────────────── RESET + TOKENS ───────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
 :root {
-  --bg:   #020f1e;
-  --bg2:  #081b2c;
-  --bg3:  #0d2134;
-  --lime: #C1FF22;
-  --lime2:#a8e01e;
-  --muted:#9eacc0;
-  --border:#3c495a;
-  --fd:   'Barlow Condensed',sans-serif;
-  --fb:   'Barlow',sans-serif;
+  --bg:     #020f1e;
+  --bg2:    #081b2c;
+  --bg3:    #0d2134;
+  --bg4:    #11293f;
+  --ink:    #d9e7fc;
+  --muted:  #8fa1bb;
+  --muted2: #5a6b84;
+  --border: #20344b;
+  --border2:#2c4666;
+  --lime:   #C1FF22;
+  --lime2:  #a8e01e;
+  --red:    #C8102E;
+  --chalk:  rgba(255,255,255,.4);
+  --fd: 'Barlow Condensed', sans-serif;
+  --fb: 'Barlow', sans-serif;
+  --fm: 'JetBrains Mono', ui-monospace, monospace;
+  --fs: 'Fraunces', Georgia, serif;
+}
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--fb);
+  overflow-x: hidden;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+a { text-decoration: none; color: inherit; }
+img { display: block; max-width: 100%; }
+button { font-family: inherit; }
+
+/* Subtle film-grain on darkest surfaces */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: radial-gradient(rgba(255,255,255,.035) 1px, transparent 1px);
+  background-size: 3px 3px;
+  pointer-events: none; z-index: 1000;
+  opacity: .4; mix-blend-mode: overlay;
 }
 
-/* ── HOME NAV OVERRIDES ── */
-.home-nav {
-  position:fixed;top:0;left:0;right:0;z-index:200;
-  background:rgba(2,10,20,.92);
-  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
-  height:64px;display:flex;align-items:center;
-  padding:0 24px;justify-content:space-between;
-  border-bottom:1px solid rgba(255,255,255,.06);
+/* ───────────────────────── TOP UTILITY STRIP ───────────────────────── */
+.util-strip {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 210;
+  height: 28px;
+  background: #010810;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center;
+  padding: 0 20px; gap: 28px;
+  font-family: var(--fm);
+  font-size: 10.5px; letter-spacing: .08em;
+  color: var(--muted2);
+  text-transform: uppercase;
 }
-.home-nav-brand {
-  font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;
-  letter-spacing:.08em;text-transform:uppercase;
-  color:#C1FF22;font-style:italic;text-decoration:none;
+.util-strip-left { display: flex; gap: 24px; align-items: center; }
+.util-strip-right { margin-left: auto; display: flex; gap: 20px; align-items: center; }
+.util-dot {
+  display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--lime); margin-right: 6px;
+  box-shadow: 0 0 10px rgba(193,255,34,.6);
+  animation: util-pulse 2.4s ease-in-out infinite;
 }
-.home-nav-right { display:flex;align-items:center;gap:12px; }
-.home-nav-iq {
-  background:#0d2134;padding:6px 14px;border-radius:2px;
-  font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:900;
-  color:#C1FF22;letter-spacing:.08em;text-transform:uppercase;
-  cursor:pointer;border:none;display:none;
-}
-.home-nav-cta {
-  background:#C1FF22;color:#1a2800;
-  font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:900;
-  letter-spacing:.1em;text-transform:uppercase;
-  padding:8px 18px;border:none;cursor:pointer;
-  text-decoration:none;border-radius:2px;transition:background .18s;
-}
-.home-nav-cta:hover { background:#a8e01e; }
-.home-nav-login {
-  font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;
-  letter-spacing:.1em;text-transform:uppercase;
-  color:rgba(255,255,255,.5);text-decoration:none;transition:color .18s;
-}
-.home-nav-login:hover { color:#fff; }
-.home-nav-dash {
-  display:none;
-  background:#0d2134;border:1px solid rgba(255,255,255,.12);
-  color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;
-  letter-spacing:.08em;text-transform:uppercase;
-  padding:8px 16px;border-radius:2px;text-decoration:none;transition:background .18s;
-}
-.home-nav-dash:hover { background:#081b2c; }
+@keyframes util-pulse { 0%,100%{opacity:.5} 50%{opacity:1} }
+.util-strip .sep { color: var(--border2); }
+.util-link { color: var(--muted); transition: color .18s; }
+.util-link:hover { color: var(--lime); }
 
-/* ── HERO ── */
-.home-hero {
-  position:relative;min-height:100vh;
-  display:flex;flex-direction:column;justify-content:flex-end;
-  overflow:hidden;padding-top:64px;
-  background:#020f1e;
+/* ───────────────────────── PRIMARY NAV ───────────────────────── */
+.nav {
+  position: fixed; top: 28px; left: 0; right: 0; z-index: 200;
+  background: rgba(2,10,20,.86);
+  backdrop-filter: blur(20px) saturate(1.3);
+  -webkit-backdrop-filter: blur(20px) saturate(1.3);
+  height: 68px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  padding: 0 24px;
+  gap: 32px;
+  border-bottom: 1px solid var(--border);
 }
-.home-hero-img {
-  position:absolute;inset:0;z-index:0;
+.nav-brand {
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--fd);
+  font-weight: 900; letter-spacing: .06em;
+  text-transform: uppercase;
+  color: #fff;
+  line-height: 1;
+}
+.nav-brand-mark {
+  width: 34px; height: 34px;
+  background: var(--lime);
+  display: grid; place-items: center;
+  font-family: var(--fd); font-weight: 900;
+  font-size: 17px; color: #061000;
+  position: relative;
+  letter-spacing: -.04em;
+  transform: skewX(-8deg);
+}
+.nav-brand-mark span { transform: skewX(8deg); }
+.nav-brand-mark::after {
+  content: ''; position: absolute; inset: 0;
+  border: 1px solid rgba(0,0,0,.2);
+}
+.nav-brand-name {
+  font-size: 17px; font-style: italic;
+  display: flex; flex-direction: column;
+  gap: 1px; line-height: 1;
+}
+.nav-brand-name small {
+  font-family: var(--fm);
+  font-style: normal;
+  font-weight: 500;
+  font-size: 9px;
+  letter-spacing: .22em;
+  color: var(--lime);
+  opacity: .85;
+}
+.nav-links {
+  display: flex; gap: 2px;
+  justify-content: center;
+  font-family: var(--fd);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.nav-link {
+  color: var(--muted);
+  padding: 10px 18px;
+  transition: color .18s;
+  position: relative;
+}
+.nav-link.is-active { color: #fff; }
+.nav-link.is-active::after {
+  content: ''; position: absolute; left: 18px; right: 18px; bottom: 2px;
+  height: 2px; background: var(--lime);
+}
+.nav-link:hover { color: #fff; }
+.nav-right {
+  display: flex; align-items: center; gap: 8px;
+}
+.nav-iq-chip {
+  display: none; align-items: center; gap: 8px;
+  font-family: var(--fm); font-weight: 700; font-size: 11px;
+  letter-spacing: .14em; text-transform: uppercase;
+  background: rgba(193,255,34,.1);
+  color: var(--lime);
+  padding: 8px 12px;
+  border: 1px solid rgba(193,255,34,.3);
+}
+.nav-signin {
+  font-family: var(--fd); font-weight: 700; font-size: 13px;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: var(--muted); padding: 8px 12px;
+  transition: color .18s;
+}
+.nav-signin:hover { color: #fff; }
+.nav-cta {
+  font-family: var(--fd); font-weight: 900; font-size: 13px;
+  letter-spacing: .12em; text-transform: uppercase;
+  background: var(--lime); color: #061000;
+  padding: 11px 18px;
+  display: inline-flex; align-items: center; gap: 8px;
+  transition: all .18s;
+  position: relative;
+  clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+}
+.nav-cta:hover { background: #d8ff55; }
+.nav-cta .arrow { font-family: var(--fm); font-weight: 700; }
+
+/* ───────────────────────── HERO ───────────────────────── */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  padding-top: 96px;
+  overflow: hidden;
+  background: var(--bg);
+  display: flex; flex-direction: column;
+}
+/* Field + chalkboard layer */
+.hero-field {
+  position: absolute; inset: 0; z-index: 0;
   background:
-    linear-gradient(to top,#020f1e 0%,rgba(2,15,30,.6) 55%,rgba(2,15,30,.3) 100%),
-    linear-gradient(160deg,rgba(193,255,34,.04) 0%,transparent 60%);
+    radial-gradient(ellipse 70% 55% at 80% 30%, rgba(193,255,34,.06), transparent 60%),
+    radial-gradient(ellipse 80% 60% at 15% 85%, rgba(200,16,46,.04), transparent 70%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg2) 90%, var(--bg) 100%);
 }
-.home-hero-grid {
-  position:absolute;inset:0;z-index:1;
+.hero-hashmarks {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
   background-image:
-    repeating-linear-gradient(90deg,rgba(255,255,255,.02) 0,rgba(255,255,255,.02) 1px,transparent 1px,transparent 80px),
-    repeating-linear-gradient(0deg,rgba(255,255,255,.015) 0,rgba(255,255,255,.015) 1px,transparent 1px,transparent 80px);
-  pointer-events:none;
+    repeating-linear-gradient(90deg,
+      rgba(255,255,255,.03) 0, rgba(255,255,255,.03) 1px,
+      transparent 1px, transparent 96px),
+    repeating-linear-gradient(0deg,
+      rgba(255,255,255,.02) 0, rgba(255,255,255,.02) 1px,
+      transparent 1px, transparent 96px);
+  mask-image: linear-gradient(180deg, transparent 0, #000 20%, #000 80%, transparent 100%);
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 20%, #000 80%, transparent 100%);
 }
-.home-hero-photo {
-  position:absolute;bottom:0;right:0;
-  width:52%;max-width:500px;height:88%;
-  z-index:2;overflow:hidden;
+/* Yard-line numbers floating in background */
+.hero-yards {
+  position: absolute; inset: 0; z-index: 1;
+  display: grid; align-items: end;
+  justify-items: stretch;
+  grid-template-columns: repeat(6, 1fr);
+  padding: 0 48px 36px;
+  pointer-events: none;
+  font-family: var(--fd); font-weight: 900;
+  font-size: 120px;
+  color: rgba(255,255,255,.025);
+  letter-spacing: -.04em;
+  line-height: .9;
 }
-.home-hero-photo img {
-  position:absolute;inset:0;width:100%;height:100%;
-  object-fit:cover;object-position:center top;display:block;
-  filter:grayscale(85%) brightness(0.55) contrast(1.1);
-  mask-image:linear-gradient(to top,transparent 0%,black 12%,black 90%,transparent 100%),
-             linear-gradient(to right,transparent 0%,black 20%);
-  -webkit-mask-image:linear-gradient(to top,transparent 0%,black 12%,black 90%,transparent 100%),
-                     linear-gradient(to right,transparent 0%,black 20%);
-  mask-composite:intersect;-webkit-mask-composite:source-in;
-}
-.home-hero-content {
-  position:relative;z-index:3;
-  padding:0 28px 52px;max-width:600px;
-}
-.home-hero-badge {
-  display:inline-block;background:#C1FF22;color:#1a2800;
-  font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:800;
-  letter-spacing:.2em;text-transform:uppercase;
-  padding:4px 10px;border-radius:2px;margin-bottom:16px;
-}
-.home-hero-h1 {
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:clamp(60px,13vw,104px);font-weight:900;
-  line-height:.86;letter-spacing:-.01em;text-transform:uppercase;
-  color:#fff;margin-bottom:20px;
-}
-.home-hero-h1 .lime { color:#C1FF22; }
-.home-hero-h1 .outline {
-  -webkit-text-stroke:2px rgba(255,255,255,.22);color:transparent;
-}
-.home-hero-sub {
-  font-size:16px;font-weight:400;color:#9eacc0;
-  line-height:1.75;max-width:420px;margin-bottom:36px;
-}
-.home-hero-sub strong { color:#fff;font-weight:500; }
-.home-hero-btns { display:flex;align-items:center;gap:12px;flex-wrap:wrap; }
-.btn-lime {
-  background:#C1FF22;color:#1a2800;
-  font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:900;
-  letter-spacing:.1em;text-transform:uppercase;
-  padding:14px 32px;border:none;cursor:pointer;
-  text-decoration:none;display:inline-flex;align-items:center;gap:8px;
-  border-radius:2px;transition:all .18s;
-}
-.btn-lime:hover { background:#a8e01e;transform:translateY(-2px); }
-.btn-ghost-home {
-  background:transparent;color:#fff;
-  font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;
-  letter-spacing:.1em;text-transform:uppercase;
-  padding:13px 24px;border:1.5px solid #3c495a;
-  cursor:pointer;text-decoration:none;border-radius:2px;transition:border-color .18s;
-}
-.btn-ghost-home:hover { border-color:rgba(255,255,255,.4); }
+.hero-yards span { text-align: center; }
 
-/* ── MARQUEE ── */
-.home-marquee {
-  background:#C8102E;height:44px;overflow:hidden;display:flex;align-items:center;
+/* Playbook sketch in the hero, right side */
+.hero-playbook {
+  position: absolute;
+  top: 140px; right: -40px;
+  width: 560px; height: 560px;
+  z-index: 2;
+  opacity: .85;
+  pointer-events: none;
 }
-.home-marquee-track {
-  display:inline-flex;white-space:nowrap;
-  animation:hm-scroll 24s linear infinite;
-}
-@keyframes hm-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-.home-marquee-item {
-  font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:800;
-  letter-spacing:.18em;text-transform:uppercase;
-  color:#fff;padding:0 28px;
-  display:inline-flex;align-items:center;gap:24px;
-}
-.home-marquee-item::after{content:"◆";font-size:6px;opacity:.5;}
+@media (max-width: 900px) { .hero-playbook { display: none; } }
 
-/* ── MODULES ── */
-.home-modules-header { margin-bottom:28px; }
-.home-section-title {
-  font-family:'Barlow Condensed',sans-serif;font-size:clamp(36px,6vw,52px);font-weight:900;
-  letter-spacing:-.01em;text-transform:uppercase;line-height:.9;color:#fff;
-}
-.home-section-title .dim { color:#9eacc0;opacity:.3; }
-.home-modules-scroll {
-  display:grid;grid-template-columns:repeat(3,280px);
-  gap:12px;overflow-x:auto;padding-bottom:8px;
-  -ms-overflow-style:none;scrollbar-width:none;
-}
-.home-modules-scroll::-webkit-scrollbar { display:none; }
-.home-module-card {
-  background:#0d2134;border-radius:2px;padding:24px;
-  position:relative;overflow:hidden;
-}
-.home-module-accent {
-  position:absolute;bottom:0;left:0;right:0;height:2px;
-  background:#C1FF22;transform:scaleX(0);transform-origin:left;transition:transform .3s;
-}
-.home-module-card:hover .home-module-accent { transform:scaleX(1); }
-.home-module-bg {
-  position:absolute;top:-8px;right:-8px;font-size:80px;opacity:.04;
-  color:#C1FF22;pointer-events:none;font-family:'Barlow Condensed',sans-serif;font-weight:900;
-}
-.home-module-level {
-  font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;
-  letter-spacing:.2em;text-transform:uppercase;color:#C1FF22;margin-bottom:6px;
-}
-.home-module-title {
-  font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;
-  text-transform:uppercase;color:#fff;margin-bottom:10px;line-height:1;
-}
-.home-module-desc { font-size:13px;color:#9eacc0;line-height:1.6;margin-bottom:16px; }
-.home-module-footer {
-  padding-top:14px;border-top:1px solid #3c495a;
-  display:flex;align-items:center;justify-content:space-between;
-}
-.home-module-count {
-  font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;
-  letter-spacing:.1em;text-transform:uppercase;color:#d9e7fc;
-}
-.home-module-arrow { color:#C1FF22;font-size:18px; }
-
-/* ── PATHS ── */
-.home-paths { display:grid;grid-template-columns:1fr; }
-.home-path {
-  display:grid;grid-template-columns:1fr 1fr;
-  min-height:500px;overflow:hidden;
-}
-.home-path-player { background:#020f1e; }
-.home-path-coach  { background:#040e04; }
-.home-path-text {
-  padding:60px 48px;display:flex;flex-direction:column;
-  justify-content:center;position:relative;z-index:2;
-}
-.home-path-player .home-path-text { order:1; }
-.home-path-coach  .home-path-text { order:2; }
-.home-path-photo {
-  position:relative;overflow:hidden;min-height:500px;
-}
-.home-path-player .home-path-photo { order:2; }
-.home-path-coach  .home-path-photo { order:1; }
-.home-path-photo img {
-  width:100%;height:100%;object-fit:cover;
-  object-position:center top;display:block;
-  position:absolute;inset:0;
-}
-.home-path-fade {
-  position:absolute;inset:0;pointer-events:none;z-index:1;
-}
-.home-path-fade-l { background:linear-gradient(to right,#020f1e 0%,rgba(2,15,30,.7) 25%,transparent 65%); }
-.home-path-fade-r { background:linear-gradient(to left,#040e04 0%,rgba(4,14,4,.7) 25%,transparent 65%); }
-.home-path-tag {
-  font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;
-  letter-spacing:.22em;text-transform:uppercase;
-  margin-bottom:16px;display:flex;align-items:center;gap:10px;
-  color:rgba(193,255,34,.8);
-}
-.home-path-tag::before { content:'';display:block;width:18px;height:1.5px;background:rgba(193,255,34,.5); }
-.home-path-title {
-  font-family:'Barlow Condensed',sans-serif;font-size:clamp(52px,5.5vw,80px);font-weight:900;
-  text-transform:uppercase;line-height:.88;letter-spacing:-.01em;
-  margin-bottom:20px;color:#C1FF22;
-  text-shadow:0 2px 24px rgba(0,0,0,.9);
-}
-.home-path-coach .home-path-title { color:#fff; }
-.home-path-body {
-  font-size:14px;line-height:1.7;margin-bottom:32px;
-  color:rgba(200,220,255,.75);max-width:280px;
-  text-shadow:0 1px 8px rgba(0,0,0,.9);
-}
-.home-path-coach .home-path-body { color:rgba(210,230,200,.75); }
-
-/* Path buttons */
-.home-path-btn {
-  display:inline-flex;align-items:center;gap:12px;
-  font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:900;
-  letter-spacing:.12em;text-transform:uppercase;
-  text-decoration:none;padding:14px 28px;
-  border:none;cursor:pointer;align-self:flex-start;
-  transition:all .2s;border-radius:2px;position:relative;overflow:hidden;
-}
-.home-path-btn::after {
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent);
-  transform:translateX(-100%);transition:transform .45s;
-}
-.home-path-btn:hover::after { transform:translateX(100%); }
-.home-path-btn:hover { transform:translateY(-2px); }
-.home-path-btn-arrow {
-  display:inline-flex;align-items:center;justify-content:center;
-  width:26px;height:26px;border-radius:50%;flex-shrink:0;transition:transform .2s;
-}
-.home-path-btn:hover .home-path-btn-arrow { transform:translateX(4px); }
-.home-btn-player {
-  background:#C1FF22;color:#0d1a00;
-  box-shadow:0 4px 20px rgba(193,255,34,.35);
-}
-.home-btn-player:hover { background:#d0ff55;box-shadow:0 8px 32px rgba(193,255,34,.55); }
-.home-btn-player .home-path-btn-arrow { background:rgba(0,0,0,.12); }
-.home-btn-coach {
-  background:#fff;color:#001f3f;
-  box-shadow:0 4px 20px rgba(255,255,255,.15);
-}
-.home-btn-coach:hover { background:#eef6ff;box-shadow:0 8px 32px rgba(255,255,255,.25); }
-.home-btn-coach .home-path-btn-arrow { background:rgba(0,30,60,.1); }
-
-/* ── OFFERINGS / WHY IQ ── */
-.home-offerings-header { margin-bottom:32px; }
-.home-offerings-grid { display:grid;grid-template-columns:1fr;gap:2px; }
-.home-offering {
-  background:#081b2c;border-left:2px solid transparent;
-  padding:24px;display:flex;align-items:flex-start;gap:16px;
-  transition:border-color .2s,background .2s;cursor:default;
-}
-.home-offering:hover { border-left-color:#C1FF22;background:#0d2134; }
-.home-offering-icon {
-  width:36px;height:36px;background:#0d2134;border-radius:2px;
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;
-}
-.home-offering-name {
-  font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;
-  letter-spacing:.04em;text-transform:uppercase;
-  color:#fff;margin-bottom:5px;line-height:1;
-}
-.home-offering-desc { font-size:14px;color:#9eacc0;line-height:1.6; }
-.home-offering-tag {
-  font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;
-  letter-spacing:.14em;text-transform:uppercase;
-  color:#C1FF22;margin-top:8px;display:block;
+.hero-body {
+  position: relative; z-index: 3;
+  padding: 48px 32px 0;
+  max-width: 1320px; margin: 0 auto;
+  width: 100%;
+  flex: 1;
+  display: flex; flex-direction: column;
+  justify-content: space-between;
 }
 
-/* ── FINAL CTA ── */
-.home-cta::before {
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(135deg,rgba(193,255,34,.04),transparent 60%);
-  pointer-events:none;
+.hero-meta {
+  display: flex; align-items: center; gap: 18px;
+  font-family: var(--fm); font-size: 10.5px;
+  letter-spacing: .2em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 28px;
 }
-.home-cta-inner { position:relative;z-index:1; }
-.home-cta-title {
-  font-family:'Barlow Condensed',sans-serif;font-size:clamp(32px,7vw,48px);font-weight:900;
-  text-transform:uppercase;line-height:.9;color:#fff;margin-bottom:12px;
+.hero-meta strong { color: var(--lime); font-weight: 700; }
+.hero-meta .chip {
+  background: rgba(193,255,34,.08);
+  color: var(--lime);
+  border: 1px solid rgba(193,255,34,.25);
+  padding: 5px 10px;
+  font-weight: 700;
+  display: inline-flex; align-items: center; gap: 6px;
 }
-.home-cta-body { font-size:15px;color:#9eacc0;line-height:1.65;margin-bottom:28px; }
-
-/* ── HOME FOOTER ── */
-.home-footer {
-  background:#020f1e;border-top:1px solid #3c495a;
-  padding:28px 28px 90px;
-  display:flex;align-items:center;justify-content:space-between;
-  flex-wrap:wrap;gap:14px;
+.hero-meta .chip .dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--lime); box-shadow: 0 0 8px var(--lime);
 }
-.home-footer-brand {
-  font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;
-  letter-spacing:.08em;text-transform:uppercase;font-style:italic;color:#C1FF22;
-}
-.home-footer-links { display:flex;gap:20px; }
-.home-footer-link {
-  font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;
-  letter-spacing:.1em;text-transform:uppercase;
-  color:#9eacc0;text-decoration:none;transition:color .18s;
-}
-.home-footer-link:hover { color:#fff; }
-.home-footer-copy { font-size:11px;color:rgba(255,255,255,.18); }
-
-/* ── BOTTOM NAV ── */
-.home-bottom-nav {
-  position:fixed;bottom:0;left:0;right:0;z-index:100;
-  background:linear-gradient(to top,rgba(2,10,20,1) 70%,rgba(2,10,20,.9));
-  backdrop-filter:blur(12px);padding:10px 0 18px;
-  display:flex;justify-content:space-around;
-  border-top:1px solid rgba(255,255,255,.04);
-}
-.home-bnav-item {
-  display:flex;flex-direction:column;align-items:center;gap:3px;
-  color:rgba(255,255,255,.3);text-decoration:none;
-  font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;
-  letter-spacing:.12em;text-transform:uppercase;
-  transition:color .18s;padding:4px 16px;border-top:2px solid transparent;
-}
-.home-bnav-item.active { color:#C1FF22;border-top-color:#C1FF22; }
-.home-bnav-item:hover { color:rgba(255,255,255,.7); }
-.home-bnav-icon { width:22px;height:22px;display:flex;align-items:center;justify-content:center; }
-
-/* ── ANIMATIONS ── */
-@keyframes hm-fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-.hm-a1{opacity:0;animation:hm-fadeUp .6s .1s ease both;}
-.hm-a2{opacity:0;animation:hm-fadeUp .6s .2s ease both;}
-.hm-a3{opacity:0;animation:hm-fadeUp .6s .35s ease both;}
-.hm-a4{opacity:0;animation:hm-fadeUp .6s .5s ease both;}
-.hm-reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease;}
-.hm-reveal.on{opacity:1;transform:translateY(0);}
-.hm-reveal2{opacity:0;transform:translateY(24px);transition:opacity .6s .12s ease,transform .6s .12s ease;}
-.hm-reveal2.on{opacity:1;transform:translateY(0);}
-.hm-reveal3{opacity:0;transform:translateY(24px);transition:opacity .6s .24s ease,transform .6s .24s ease;}
-.hm-reveal3.on{opacity:1;transform:translateY(0);}
-
-/* ── STAT BAR ── */
-.home-statbar {
-  background:#081b2c;border-bottom:1px solid rgba(255,255,255,.06);
-  padding:0 28px;display:flex;align-items:stretch;justify-content:center;
-  gap:0;overflow:hidden;
-}
-.home-stat {
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:20px 36px;position:relative;flex:1;max-width:200px;
-  text-align:center;
-}
-.home-stat+.home-stat::before {
-  content:'';position:absolute;left:0;top:25%;bottom:25%;
-  width:1px;background:rgba(255,255,255,.08);
-}
-.home-stat-num {
-  font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:900;
-  letter-spacing:-.01em;line-height:1;color:#C1FF22;
-}
-.home-stat-label {
-  font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;
-  letter-spacing:.18em;text-transform:uppercase;color:#9eacc0;margin-top:4px;
+.hero-meta .divider {
+  width: 1px; height: 12px; background: var(--border2);
 }
 
-/* ── SECTION LABEL UPGRADE ── */
-.home-section-label {
-  font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;
-  letter-spacing:.22em;text-transform:uppercase;color:#9eacc0;margin-bottom:10px;
-  display:flex;align-items:center;gap:10px;
+.hero-h1 {
+  font-family: var(--fd);
+  font-weight: 900;
+  font-size: clamp(72px, 11vw, 168px);
+  line-height: .82;
+  letter-spacing: -.025em;
+  text-transform: uppercase;
+  color: #fff;
+  margin-bottom: 28px;
+  max-width: 14ch;
 }
-.home-section-label::before {
-  content:'';display:block;width:20px;height:1.5px;
-  background:rgba(193,255,34,.5);flex-shrink:0;
+.hero-h1 .serif {
+  font-family: var(--fs);
+  font-style: italic;
+  font-weight: 300;
+  letter-spacing: -.02em;
+  text-transform: none;
+  color: var(--lime);
 }
-
-/* ── SECTION TRANSITIONS ── */
-.home-modules {
-  padding:56px 28px;
-  background:linear-gradient(to bottom,#020f1e 0%,rgba(13,33,52,.6) 30%,rgba(13,33,52,.6) 100%);
+.hero-h1 .outline {
+  -webkit-text-stroke: 1.5px rgba(255,255,255,.35);
+  color: transparent;
 }
-.home-paths { display:grid;grid-template-columns:1fr; }
-.home-offerings {
-  padding:56px 28px;
-  background:linear-gradient(to bottom,#081b2c,#0a1f30);
-}
-.home-cta {
-  margin:0 28px 56px;background:#081b2c;border-radius:2px;
-  padding:36px 28px;position:relative;overflow:hidden;
-  border-left:3px solid #C1FF22;
-}
-
-/* ── COMING SOON CARD UPGRADE ── */
-.home-module-card-locked {
-  opacity:.7;
-}
-.home-module-card-locked .home-module-title { color:#9eacc0; }
-.home-module-card-locked .home-module-level { color:#9eacc0;opacity:.6; }
-.home-module-notify {
-  display:inline-flex;align-items:center;gap:6px;
-  font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;
-  letter-spacing:.14em;text-transform:uppercase;
-  color:#9eacc0;border:1px solid #3c495a;
-  padding:6px 12px;border-radius:2px;cursor:pointer;
-  background:transparent;transition:all .18s;text-decoration:none;
-}
-.home-module-notify:hover { border-color:#C1FF22;color:#C1FF22; }
-.home-module-lock { font-size:11px;opacity:.5; }
-
-@media (max-width:700px) {
-  .home-statbar { gap:0;padding:0 12px; }
-  .home-stat { padding:16px 12px;max-width:none; }
-  .home-stat-num { font-size:24px; }
-  .home-stat-label { font-size:9px;letter-spacing:.12em; }
+.hero-h1 .amp {
+  font-family: var(--fs);
+  font-style: italic;
+  font-weight: 300;
+  color: rgba(255,255,255,.3);
+  padding: 0 .15em;
 }
 
-@media (max-width:700px) {
-  /* Hero — remove blank gap, photo fills from nav down */
-  .home-hero { min-height:100svh; }
-  .home-hero-photo {
-    width:100%; max-width:none;
-    height:65%; top:64px; bottom:auto;
-    right:0; left:0;
-  }
-  .home-hero-photo img {
-    mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
-    mask-composite: unset;
-    -webkit-mask-composite: unset;
-    object-position: center 20%;
-  }
-  .home-hero-content {
-    padding: 0 20px 40px;
-  }
-  .home-hero-h1 { font-size: clamp(48px, 14vw, 80px); }
+.hero-split {
+  display: grid;
+  grid-template-columns: minmax(0,1fr) auto;
+  align-items: end;
+  gap: 48px;
+  padding-bottom: 56px;
+}
+@media (max-width: 900px) {
+  .hero-split { grid-template-columns: 1fr; gap: 28px; }
+}
 
-  /* Modules — single column, full width */
-  .home-modules { padding: 40px 16px; }
-  .home-modules-scroll {
+.hero-sub {
+  font-family: var(--fb);
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--muted);
+  max-width: 46ch;
+  margin-bottom: 32px;
+}
+.hero-sub strong { color: #fff; font-weight: 500; }
+
+.hero-btns { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+
+.btn {
+  font-family: var(--fd); font-weight: 900; font-size: 13.5px;
+  letter-spacing: .14em; text-transform: uppercase;
+  padding: 15px 24px;
+  display: inline-flex; align-items: center; gap: 12px;
+  cursor: pointer; border: none;
+  transition: all .2s;
+  position: relative;
+}
+.btn-primary {
+  background: var(--lime); color: #061000;
+  clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+  padding-left: 28px; padding-right: 28px;
+  box-shadow: 0 8px 32px -8px rgba(193,255,34,.4);
+}
+.btn-primary:hover { background: #d8ff55; transform: translateY(-2px); box-shadow: 0 16px 42px -8px rgba(193,255,34,.6); }
+.btn-ghost {
+  background: transparent; color: #fff;
+  border: 1px solid var(--border2);
+  padding: 14px 22px;
+}
+.btn-ghost:hover { border-color: rgba(255,255,255,.5); background: rgba(255,255,255,.04); }
+.btn-arrow {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 22px; height: 22px; border-radius: 50%;
+  transition: transform .2s;
+}
+.btn:hover .btn-arrow { transform: translateX(3px); }
+
+/* Hero specs card on right */
+.hero-specs {
+  width: 320px;
+  border: 1px solid var(--border);
+  background: rgba(8,27,44,.7);
+  backdrop-filter: blur(10px);
+  padding: 0;
+  position: relative;
+}
+.hero-specs-head {
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  font-family: var(--fm); font-size: 10px;
+  letter-spacing: .22em; text-transform: uppercase;
+  color: var(--muted); display: flex; justify-content: space-between;
+}
+.hero-specs-head span:last-child { color: var(--lime); }
+.hero-specs-row {
+  display: grid; grid-template-columns: 100px 1fr auto;
+  padding: 12px 20px;
+  border-bottom: 1px dashed var(--border);
+  font-family: var(--fm); font-size: 11.5px;
+  letter-spacing: .08em; text-transform: uppercase;
+  align-items: center;
+}
+.hero-specs-row:last-child { border-bottom: none; }
+.hero-specs-row .k { color: var(--muted2); }
+.hero-specs-row .v { color: #fff; font-weight: 500; }
+.hero-specs-row .pill {
+  font-family: var(--fd); font-weight: 800;
+  font-size: 11px; letter-spacing: .12em;
+  padding: 3px 8px;
+  background: rgba(193,255,34,.12); color: var(--lime);
+}
+
+/* Bottom-edge scroll hint */
+.hero-foot {
+  position: relative; z-index: 3;
+  border-top: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  font-family: var(--fm); font-size: 10.5px;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--muted);
+}
+.hero-foot-cell {
+  padding: 14px 24px;
+  border-right: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+}
+.hero-foot-cell:last-child { border-right: none; }
+.hero-foot-cell .n {
+  font-family: var(--fd); font-weight: 900;
+  color: var(--lime); font-size: 22px; letter-spacing: -.01em;
+}
+@media (max-width: 760px) {
+  .hero-foot { grid-template-columns: repeat(2,1fr); }
+  .hero-foot-cell { border-bottom: 1px solid var(--border); }
+  .hero-foot-cell:nth-child(2) { border-right: none; }
+  .hero-yards { display: none; }
+  .hero-h1 { font-size: clamp(56px, 14vw, 96px); }
+  .hero-body { padding: 32px 20px 0; }
+}
+
+/* ───────────────────────── MARQUEE / TICKER ───────────────────────── */
+.ticker {
+  background: var(--red);
+  height: 44px; overflow: hidden;
+  display: flex; align-items: center;
+  position: relative;
+  border-top: 1px solid rgba(0,0,0,.2);
+  border-bottom: 1px solid rgba(0,0,0,.2);
+}
+.ticker::before, .ticker::after {
+  content: ''; position: absolute; top: 0; bottom: 0; width: 60px; z-index: 2;
+  pointer-events: none;
+}
+.ticker::before { left: 0; background: linear-gradient(90deg, var(--red), transparent); }
+.ticker::after  { right: 0; background: linear-gradient(-90deg, var(--red), transparent); }
+.ticker-label {
+  position: absolute; left: 0; top: 0; bottom: 0; z-index: 3;
+  background: #000; color: #fff;
+  padding: 0 18px;
+  display: flex; align-items: center; gap: 8px;
+  font-family: var(--fd); font-weight: 900; font-size: 12px;
+  letter-spacing: .2em; text-transform: uppercase;
+}
+.ticker-label .dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--lime); box-shadow: 0 0 8px var(--lime);
+  animation: util-pulse 1.6s ease-in-out infinite;
+}
+.ticker-track {
+  display: inline-flex; white-space: nowrap;
+  animation: ticker-scroll 40s linear infinite;
+  padding-left: 150px;
+}
+@keyframes ticker-scroll { to { transform: translateX(-50%); } }
+.ticker-item {
+  font-family: var(--fd); font-weight: 800; font-size: 12.5px;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: #fff;
+  padding: 0 24px;
+  display: inline-flex; align-items: center; gap: 24px;
+}
+.ticker-item::after {
+  content: '★'; font-size: 9px; color: rgba(255,255,255,.5);
+  margin-left: 24px;
+}
+
+/* ───────────────────────── STAT BAR ───────────────────────── */
+.statbar {
+  background: var(--bg2);
+  padding: 0 24px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-bottom: 1px solid var(--border);
+}
+.stat {
+  padding: 28px 24px;
+  position: relative;
+  display: flex; align-items: baseline; gap: 14px;
+  border-right: 1px solid var(--border);
+}
+.stat:last-child { border-right: none; }
+.stat-num {
+  font-family: var(--fd); font-weight: 900;
+  font-size: 56px; letter-spacing: -.02em; line-height: .9;
+  color: #fff;
+}
+.stat-num .unit {
+  font-family: var(--fm); font-weight: 500;
+  font-size: 12px; color: var(--lime);
+  letter-spacing: .1em; margin-left: 2px;
+}
+.stat-body { display: flex; flex-direction: column; gap: 2px; }
+.stat-label {
+  font-family: var(--fd); font-weight: 800;
+  font-size: 13px; letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #fff;
+}
+.stat-note {
+  font-family: var(--fm); font-size: 10px;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: var(--muted2);
+}
+.stat::after {
+  content: attr(data-idx);
+  position: absolute; top: 12px; right: 14px;
+  font-family: var(--fm); font-size: 10px;
+  letter-spacing: .2em; color: var(--muted2);
+}
+@media (max-width: 760px) {
+  .statbar { grid-template-columns: repeat(2, 1fr); }
+  .stat { border-bottom: 1px solid var(--border); padding: 18px 16px; }
+  .stat:nth-child(2) { border-right: none; }
+  .stat-num { font-size: 40px; }
+}
+
+/* ───────────────────────── SECTION SHELLS ───────────────────────── */
+.section {
+  padding: 96px 32px;
+  position: relative;
+  max-width: 1440px; margin: 0 auto;
+}
+.section-head {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 32px;
+  align-items: end;
+  margin-bottom: 48px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--border);
+}
+.section-num {
+  font-family: var(--fm); font-weight: 700;
+  font-size: 12px; letter-spacing: .22em;
+  color: var(--lime);
+  display: flex; align-items: center; gap: 10px;
+}
+.section-num::before {
+  content: ''; width: 24px; height: 1.5px;
+  background: var(--lime);
+}
+.section-title {
+  font-family: var(--fd); font-weight: 900;
+  font-size: clamp(42px, 6vw, 72px);
+  line-height: .88;
+  letter-spacing: -.02em;
+  text-transform: uppercase;
+  color: #fff;
+}
+.section-title .serif {
+  font-family: var(--fs); font-style: italic;
+  font-weight: 300;
+  color: var(--lime);
+  letter-spacing: -.01em;
+  text-transform: none;
+}
+.section-title .dim { color: var(--muted2); }
+.section-lede {
+  font-family: var(--fb);
+  font-size: 14px; line-height: 1.6;
+  color: var(--muted);
+  max-width: 36ch;
+  justify-self: end;
+}
+@media (max-width: 760px) {
+  .section { padding: 56px 20px; }
+  .section-head {
     grid-template-columns: 1fr;
-    gap: 10px;
+    gap: 14px; margin-bottom: 28px;
   }
-  .home-module-card { width: 100%; }
+  .section-lede { justify-self: start; max-width: 100%; }
+}
 
-  /* Paths — stack vertically, photo on top smaller, text below */
-  .home-path { grid-template-columns: 1fr; min-height: auto; }
-  .home-path-player .home-path-photo,
-  .home-path-coach  .home-path-photo { order:1; min-height:220px; max-height:260px; }
-  .home-path-player .home-path-text,
-  .home-path-coach  .home-path-text  { order:2; padding:32px 24px 40px; justify-content:flex-start; }
-  .home-path-fade-l {
-    background:linear-gradient(to top,#020f1e 0%,rgba(2,15,30,.3) 60%, transparent 100%);
-  }
-  .home-path-fade-r {
-    background:linear-gradient(to top,#040e04 0%,rgba(4,14,4,.3) 60%, transparent 100%);
-  }
-  .home-path-title { font-size: clamp(48px,12vw,72px); margin-bottom:14px; }
-  .home-path-body { max-width:100%; margin-bottom:24px; font-size:15px; }
-  .home-path-btn { width:100%; justify-content:center; padding:15px 20px; }
+/* ───────────────────────── MODULES / LEVELS ───────────────────────── */
+.levels-wrap { background: var(--bg); position: relative; }
+.levels-wrap::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(193,255,34,.04), transparent 60%);
+  pointer-events: none;
+}
+.levels {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border: 1px solid var(--border);
+  background: var(--bg2);
+}
+@media (max-width: 900px) { .levels { grid-template-columns: 1fr; } }
+.level {
+  padding: 32px 28px 28px;
+  position: relative;
+  border-right: 1px solid var(--border);
+  overflow: hidden;
+  transition: background .25s;
+}
+.level:last-child { border-right: none; }
+@media (max-width: 900px) {
+  .level { border-right: none; border-bottom: 1px solid var(--border); }
+  .level:last-child { border-bottom: none; }
+}
+.level:hover { background: var(--bg3); }
+.level::before {
+  content: attr(data-big);
+  position: absolute; right: -24px; top: -36px;
+  font-family: var(--fd); font-weight: 900;
+  font-size: 240px; line-height: .8;
+  color: rgba(255,255,255,.02);
+  pointer-events: none;
+  letter-spacing: -.04em;
+}
+.level-status {
+  display: flex; align-items: center; gap: 8px;
+  font-family: var(--fm); font-size: 10.5px;
+  letter-spacing: .2em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 16px;
+}
+.level-status.live { color: var(--lime); }
+.level-status .pip {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 8px currentColor;
+}
+.level-status.locked .pip { box-shadow: none; background: var(--muted2); }
+.level-level {
+  font-family: var(--fm); font-weight: 500;
+  font-size: 11px; letter-spacing: .22em;
+  color: var(--muted); margin-bottom: 6px;
+}
+.level-title {
+  font-family: var(--fd); font-weight: 900;
+  font-size: 56px; text-transform: uppercase;
+  letter-spacing: -.02em; line-height: .9;
+  color: #fff; margin-bottom: 18px;
+}
+.level.is-locked .level-title { color: var(--muted); }
+.level-desc {
+  font-size: 14px; line-height: 1.65;
+  color: var(--muted); margin-bottom: 24px;
+  max-width: 34ch;
+}
 
-  /* Offerings */
-  .home-offerings { padding:40px 16px; }
+/* Curriculum list — a tiny syllabus */
+.level-syllabus {
+  display: grid; gap: 2px;
+  margin-bottom: 24px;
+}
+.syl-row {
+  display: grid; grid-template-columns: 28px 1fr auto;
+  align-items: center;
+  padding: 8px 0;
+  font-family: var(--fm); font-size: 11.5px;
+  letter-spacing: .04em;
+  color: var(--ink);
+  border-bottom: 1px dashed var(--border);
+}
+.syl-row .n { color: var(--lime); font-weight: 700; font-size: 10.5px; }
+.syl-row .t { text-transform: uppercase; letter-spacing: .08em; font-weight: 500; font-size: 10.5px; color: #cfdcef; }
+.syl-row .m { color: var(--muted2); font-size: 10px; letter-spacing: .1em; }
+.level.is-locked .syl-row { opacity: .55; }
+.level.is-locked .syl-row .n { color: var(--muted2); }
 
-  /* CTA */
-  .home-cta { margin:0 16px 40px; padding:28px 20px; }
+.level-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-top: 16px; border-top: 1px solid var(--border);
+}
+.level-cta {
+  font-family: var(--fd); font-weight: 900;
+  font-size: 12.5px; letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--lime);
+  display: inline-flex; align-items: center; gap: 8px;
+  transition: gap .2s;
+}
+.level-cta:hover { gap: 14px; }
+.level-count {
+  font-family: var(--fm); font-size: 10.5px;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: var(--muted2);
+}
+.level.is-locked .level-cta {
+  color: var(--muted);
+  border: 1px solid var(--border);
+  padding: 6px 12px;
+}
+.level.is-locked .level-cta:hover {
+  color: var(--lime); border-color: var(--lime);
+}
 
-  /* Footer */
-  .home-footer { padding:24px 16px 90px; flex-direction:column; gap:16px; align-items:flex-start; }
-  .home-footer-links { flex-wrap:wrap; gap:12px; }
+/* ───────────────────────── PATHS ───────────────────────── */
+.paths { padding: 0; max-width: none; }
+.paths-inner {
+  max-width: 1440px; margin: 0 auto;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.path {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  min-height: 560px;
+  position: relative;
+  border-bottom: 1px solid var(--border);
+}
+.path:last-child { border-bottom: none; }
+@media (max-width: 900px) { .path { grid-template-columns: 1fr; min-height: auto; } }
 
-  /* Nav — wrap on mobile */
-  .home-nav { padding:0 16px; height:auto; min-height:64px; flex-wrap:wrap; gap:8px; padding-top:12px; padding-bottom:12px; }
-  .home-nav-brand { font-size:18px; }
-  .home-nav-right { gap:8px; }
-  .home-nav-cta { padding:8px 14px; font-size:12px; }
-  .home-nav-login { font-size:12px; }
+.path-body {
+  padding: 72px 56px;
+  position: relative;
+  display: flex; flex-direction: column; justify-content: center;
+  background: var(--bg);
+}
+.path.is-coach .path-body {
+  background: var(--bg);
+  order: 2;
+}
+.path.is-coach .path-visual { order: 1; }
+@media (max-width: 900px) {
+  .path-body { padding: 40px 24px; }
+  .path.is-coach .path-body,
+  .path.is-coach .path-visual { order: unset; }
+}
+
+.path-tag {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: var(--fm); font-size: 10.5px;
+  letter-spacing: .22em; text-transform: uppercase;
+  color: var(--lime); margin-bottom: 24px;
+}
+.path-tag::before {
+  content: ''; display: block; width: 28px; height: 1.5px;
+  background: var(--lime);
+}
+.path-title {
+  font-family: var(--fd); font-weight: 900;
+  font-size: clamp(56px, 6.5vw, 104px);
+  line-height: .86;
+  letter-spacing: -.025em;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  color: #fff;
+}
+.path-title .accent {
+  font-family: var(--fs); font-style: italic;
+  font-weight: 300;
+  letter-spacing: -.01em;
+  text-transform: none;
+  color: var(--lime);
+}
+.path-body > p {
+  font-size: 15px; line-height: 1.65;
+  color: var(--muted);
+  max-width: 44ch;
+  margin-bottom: 28px;
+}
+
+.path-meta {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  gap: 32px;
+  margin-bottom: 36px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+.path-meta-cell { display: flex; flex-direction: column; gap: 4px; }
+.path-meta-v {
+  font-family: var(--fd); font-weight: 900;
+  font-size: 28px; letter-spacing: -.01em; color: #fff; line-height: 1;
+}
+.path-meta-k {
+  font-family: var(--fm); font-size: 10px;
+  letter-spacing: .2em; text-transform: uppercase;
+  color: var(--muted2);
+}
+
+.path-btn {
+  display: inline-flex; align-items: center; gap: 14px;
+  font-family: var(--fd); font-weight: 900; font-size: 14px;
+  letter-spacing: .12em; text-transform: uppercase;
+  padding: 16px 28px;
+  align-self: flex-start;
+  transition: all .2s;
+  clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+  background: var(--lime); color: #061000;
+  box-shadow: 0 10px 30px -10px rgba(193,255,34,.5);
+}
+.path-btn:hover { background: #d8ff55; transform: translateY(-2px); }
+.path-btn-arrow {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 24px; height: 24px; border-radius: 50%;
+  background: rgba(0,0,0,.18);
+}
+.path.is-coach .path-btn { background: #fff; color: #061000; box-shadow: 0 10px 30px -10px rgba(255,255,255,.25); }
+.path.is-coach .path-btn:hover { background: #eef6ff; }
+
+/* Path visual: tactical chalkboard */
+.path-visual {
+  position: relative;
+  background: #05101d;
+  overflow: hidden;
+  border-left: 1px solid var(--border);
+}
+.path.is-coach .path-visual { border-left: none; border-right: 1px solid var(--border); }
+@media (max-width: 900px) { .path-visual { border-left: none; min-height: 360px; } }
+
+.path-visual svg { width: 100%; height: 100%; display: block; }
+
+.path-visual-overlay {
+  position: absolute; left: 20px; top: 20px;
+  font-family: var(--fm); font-size: 10px;
+  letter-spacing: .2em; text-transform: uppercase;
+  color: var(--muted); z-index: 2;
+  display: flex; gap: 20px; align-items: center;
+}
+.path-visual-overlay .tag {
+  background: rgba(0,0,0,.55); padding: 6px 10px; border: 1px solid var(--border2);
+  color: #fff;
+}
+.path-visual-cap {
+  position: absolute; right: 20px; bottom: 20px;
+  font-family: var(--fm); font-size: 10px;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--muted);
+  background: rgba(0,0,0,.55);
+  border: 1px solid var(--border2);
+  padding: 8px 14px;
+  z-index: 2; text-align: right;
+}
+
+/* ───────────────────────── WHY IQ MATTERS ───────────────────────── */
+.why-wrap { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.offerings {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0;
+  border: 1px solid var(--border);
+}
+@media (max-width: 760px) { .offerings { grid-template-columns: 1fr; } }
+.offering {
+  padding: 32px 28px;
+  display: grid;
+  grid-template-columns: 56px 1fr auto;
+  gap: 20px;
+  align-items: flex-start;
+  background: var(--bg);
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  transition: background .2s;
+}
+.offering:nth-child(2n) { border-right: none; }
+.offering:nth-last-child(-n+2) { border-bottom: none; }
+@media (max-width: 760px) {
+  .offering { border-right: none; }
+  .offering:nth-last-child(1) { border-bottom: none; }
+  .offering:nth-last-child(2) { border-bottom: 1px solid var(--border); }
+}
+.offering:hover { background: var(--bg3); }
+.offering:hover .offering-icon { border-color: var(--lime); }
+
+.offering-icon {
+  width: 56px; height: 56px;
+  border: 1px solid var(--border2);
+  display: grid; place-items: center;
+  position: relative;
+  transition: border-color .2s;
+}
+.offering-icon::before {
+  content: ''; position: absolute; inset: -1px;
+  background: linear-gradient(135deg, rgba(193,255,34,.15), transparent 50%);
+  pointer-events: none;
+}
+.offering-content {
+  min-width: 0;
+}
+.offering-name {
+  font-family: var(--fd); font-weight: 900;
+  font-size: 26px; letter-spacing: -.01em;
+  text-transform: uppercase;
+  color: #fff; margin-bottom: 8px; line-height: 1;
+  display: flex; align-items: baseline; gap: 12px;
+}
+.offering-name .no {
+  font-family: var(--fm); font-size: 11px; font-weight: 700;
+  color: var(--lime);
+  letter-spacing: .2em;
+}
+.offering-desc {
+  font-size: 14px; line-height: 1.65;
+  color: var(--muted);
+  margin-bottom: 12px;
+  max-width: 48ch;
+}
+.offering-tag {
+  font-family: var(--fm); font-size: 10.5px; font-weight: 500;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: var(--lime);
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.offering-tag::before {
+  content: '+'; font-weight: 700; color: var(--lime);
+}
+.offering-arrow {
+  color: var(--muted2);
+  align-self: center;
+  transition: color .2s, transform .2s;
+}
+.offering:hover .offering-arrow { color: var(--lime); transform: translateX(4px); }
+
+/* ───────────────────────── FILM-ROOM FEATURE ───────────────────────── */
+.film {
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.film-inner {
+  max-width: 1440px; margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 0;
+}
+@media (max-width: 900px) { .film-inner { grid-template-columns: 1fr; } }
+.film-body { padding: 72px 56px; }
+@media (max-width: 900px) { .film-body { padding: 48px 24px; } }
+.film-eyebrow {
+  font-family: var(--fm); font-size: 11px;
+  letter-spacing: .22em; text-transform: uppercase;
+  color: var(--lime);
+  margin-bottom: 20px;
+  display: flex; align-items: center; gap: 10px;
+}
+.film-eyebrow::before { content: ''; width: 24px; height: 1.5px; background: var(--lime); }
+.film-title {
+  font-family: var(--fd); font-weight: 900;
+  font-size: clamp(42px, 5.5vw, 76px);
+  line-height: .9; letter-spacing: -.02em;
+  text-transform: uppercase; color: #fff;
+  margin-bottom: 22px;
+  max-width: 14ch;
+}
+.film-title .serif {
+  font-family: var(--fs); font-style: italic; font-weight: 300;
+  letter-spacing: -.01em; text-transform: none;
+  color: var(--lime);
+}
+.film-lede {
+  font-size: 15px; line-height: 1.7; color: var(--muted);
+  max-width: 44ch; margin-bottom: 32px;
+}
+
+.pillars {
+  display: grid; gap: 10px;
+  margin-bottom: 32px;
+}
+.pillar {
+  display: grid;
+  grid-template-columns: 44px 1fr auto;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 18px;
+  border: 1px solid var(--border);
+  background: var(--bg2);
+  transition: border-color .2s, background .2s;
+}
+.pillar:hover { border-color: var(--lime); background: var(--bg3); }
+.pillar-num {
+  font-family: var(--fm); font-weight: 700; font-size: 12px;
+  letter-spacing: .2em; color: var(--lime);
+}
+.pillar-name {
+  font-family: var(--fd); font-weight: 800; font-size: 18px;
+  letter-spacing: .02em; text-transform: uppercase;
+  color: #fff;
+}
+.pillar-name small {
+  display: block;
+  font-family: var(--fb); font-weight: 400; font-size: 12px;
+  letter-spacing: 0; text-transform: none; color: var(--muted);
+  margin-top: 2px;
+}
+.pillar-prog {
+  font-family: var(--fm); font-size: 10.5px;
+  letter-spacing: .12em; color: var(--muted2);
+  text-transform: uppercase;
+}
+
+.film-visual {
+  position: relative;
+  border-left: 1px solid var(--border);
+  overflow: hidden;
+  background: #020a14;
+  min-height: 560px;
+}
+@media (max-width: 900px) {
+  .film-visual { border-left: none; border-top: 1px solid var(--border); min-height: 400px; }
+}
+.film-visual svg { width: 100%; height: 100%; display: block; }
+.film-visual-head {
+  position: absolute; top: 20px; left: 20px; right: 20px;
+  display: flex; justify-content: space-between;
+  font-family: var(--fm); font-size: 10px;
+  letter-spacing: .2em; text-transform: uppercase;
+  color: var(--muted); z-index: 2;
+}
+.film-visual-head .pill {
+  background: rgba(0,0,0,.55);
+  border: 1px solid var(--border2);
+  color: var(--lime);
+  padding: 5px 10px;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.film-visual-head .pill .rec {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--red);
+  animation: util-pulse 1.4s ease-in-out infinite;
+}
+.film-visual-timeline {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 38px; background: rgba(0,0,0,.55);
+  border-top: 1px solid var(--border);
+  display: flex; align-items: center;
+  padding: 0 14px;
+  font-family: var(--fm); font-size: 10px;
+  letter-spacing: .14em; color: var(--muted);
+  gap: 14px; z-index: 2;
+}
+.film-visual-timeline .bar {
+  flex: 1; height: 3px; background: rgba(255,255,255,.1);
+  position: relative;
+}
+.film-visual-timeline .bar::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+  width: 38%; background: var(--lime);
+}
+.film-visual-timeline .bar::after {
+  content: ''; position: absolute; left: 38%; top: -3px; bottom: -3px;
+  width: 9px; background: var(--lime);
+}
+
+/* ───────────────────────── CTA ───────────────────────── */
+.cta-wrap { background: var(--bg); padding: 96px 32px; }
+.cta {
+  max-width: 1440px; margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 0;
+  border: 1px solid var(--border);
+  background: var(--bg2);
+  position: relative;
+  overflow: hidden;
+}
+.cta::before {
+  content: ''; position: absolute; inset: 0;
+  background:
+    linear-gradient(135deg, rgba(193,255,34,.08), transparent 50%),
+    repeating-linear-gradient(45deg, rgba(193,255,34,.04) 0 2px, transparent 2px 14px);
+  pointer-events: none;
+}
+@media (max-width: 900px) { .cta { grid-template-columns: 1fr; } }
+.cta-body { padding: 52px 48px; position: relative; z-index: 1; }
+@media (max-width: 900px) { .cta-body { padding: 36px 24px; } }
+.cta-eyebrow {
+  font-family: var(--fm); font-size: 11px;
+  letter-spacing: .22em; text-transform: uppercase;
+  color: var(--lime); margin-bottom: 18px;
+  display: flex; align-items: center; gap: 10px;
+}
+.cta-eyebrow::before { content: ''; width: 24px; height: 1.5px; background: var(--lime); }
+.cta-title {
+  font-family: var(--fd); font-weight: 900;
+  font-size: clamp(40px, 5.5vw, 72px);
+  line-height: .92; letter-spacing: -.02em;
+  text-transform: uppercase; color: #fff;
+  margin-bottom: 18px;
+}
+.cta-title .serif { font-family: var(--fs); font-style: italic; font-weight: 300; text-transform: none; color: var(--lime); }
+.cta-body > p {
+  font-size: 15px; line-height: 1.65;
+  color: var(--muted); max-width: 48ch;
+  margin-bottom: 28px;
+}
+.cta-form {
+  display: flex; gap: 8px; flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.cta-input {
+  flex: 1; min-width: 220px;
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  color: #fff;
+  font-family: var(--fb); font-size: 14px;
+  padding: 14px 18px;
+  outline: none;
+  transition: border-color .18s;
+}
+.cta-input::placeholder { color: var(--muted2); }
+.cta-input:focus { border-color: var(--lime); }
+.cta-fine {
+  font-family: var(--fm); font-size: 10.5px;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--muted2);
+}
+.cta-side {
+  padding: 52px 48px;
+  border-left: 1px solid var(--border);
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; justify-content: space-between;
+  background: rgba(0,0,0,.15);
+}
+@media (max-width: 900px) { .cta-side { border-left: none; border-top: 1px solid var(--border); padding: 36px 24px; } }
+.cta-side-h {
+  font-family: var(--fd); font-weight: 800; font-size: 12px;
+  letter-spacing: .22em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 22px;
+}
+.cta-topics { display: grid; gap: 10px; }
+.cta-topic {
+  display: grid; grid-template-columns: 24px 1fr auto;
+  padding: 10px 0; gap: 12px;
+  border-bottom: 1px dashed var(--border);
+  font-family: var(--fm); font-size: 12px;
+  letter-spacing: .06em; color: #cfdcef;
+  align-items: center;
+}
+.cta-topic .n { color: var(--lime); font-weight: 700; font-size: 10.5px; letter-spacing: .2em; }
+.cta-topic .d { color: var(--muted2); text-transform: uppercase; font-size: 10px; letter-spacing: .2em; }
+
+/* ───────────────────────── FOOTER ───────────────────────── */
+.footer {
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  padding: 64px 32px 120px;
+}
+.footer-inner { max-width: 1440px; margin: 0 auto; }
+.footer-top {
+  display: grid;
+  grid-template-columns: 2fr repeat(3, 1fr);
+  gap: 48px;
+  padding-bottom: 48px;
+  border-bottom: 1px solid var(--border);
+}
+@media (max-width: 760px) { .footer-top { grid-template-columns: 1fr 1fr; gap: 32px; } }
+.footer-brand {
+  font-family: var(--fd); font-weight: 900; font-style: italic;
+  font-size: 32px; letter-spacing: .04em;
+  color: var(--lime); line-height: 1; margin-bottom: 16px;
+}
+.footer-tag {
+  font-family: var(--fb); font-size: 14px; color: var(--muted);
+  max-width: 38ch; line-height: 1.6; margin-bottom: 20px;
+}
+.footer-signature {
+  font-family: var(--fm); font-size: 10.5px;
+  letter-spacing: .2em; text-transform: uppercase;
+  color: var(--muted2); display: flex; gap: 10px; align-items: center;
+}
+.footer-signature .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--lime); }
+.footer-col-h {
+  font-family: var(--fd); font-weight: 800; font-size: 12px;
+  letter-spacing: .22em; text-transform: uppercase;
+  color: #fff; margin-bottom: 18px;
+}
+.footer-col ul { list-style: none; display: grid; gap: 10px; }
+.footer-col a {
+  font-family: var(--fd); font-weight: 600; font-size: 13.5px;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--muted); transition: color .18s;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.footer-col a:hover { color: var(--lime); }
+.footer-col a .ext { font-family: var(--fm); font-size: 9px; color: var(--muted2); }
+
+.footer-bot {
+  display: flex; justify-content: space-between;
+  flex-wrap: wrap; gap: 16px;
+  padding-top: 28px;
+  font-family: var(--fm); font-size: 10.5px;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--muted2);
+}
+.footer-bot a { color: var(--muted); }
+.footer-bot a:hover { color: var(--lime); }
+.footer-bot .links { display: flex; gap: 22px; flex-wrap: wrap; }
+
+/* ───────────────────────── BOTTOM NAV (mobile) ───────────────────────── */
+.bottom-nav {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+  background: linear-gradient(to top, rgba(2,10,20,1) 72%, rgba(2,10,20,.9));
+  backdrop-filter: blur(12px);
+  padding: 10px 0 20px;
+  display: flex; justify-content: space-around;
+  border-top: 1px solid var(--border);
+}
+.bnav {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  color: var(--muted2);
+  font-family: var(--fd); font-weight: 700; font-size: 10px;
+  letter-spacing: .14em; text-transform: uppercase;
+  padding: 4px 14px;
+  border-top: 2px solid transparent;
+  transition: color .18s;
+}
+.bnav.is-active { color: var(--lime); border-top-color: var(--lime); }
+.bnav:hover { color: #fff; }
+@media (min-width: 760px) { .bottom-nav { display: none; } .footer { padding-bottom: 64px; } }
+
+/* ───────────────────────── REVEAL ───────────────────────── */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity .65s ease, transform .65s ease; }
+.reveal.on { opacity: 1; transform: translateY(0); }
+.reveal.d1 { transition-delay: .08s; }
+.reveal.d2 { transition-delay: .16s; }
+.reveal.d3 { transition-delay: .24s; }
+.fade-up { animation: fade-up .7s ease both; }
+@keyframes fade-up { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ───────────────────────── MOBILE NAV TWEAKS ───────────────────────── */
+@media (max-width: 900px) {
+  .util-strip { font-size: 9.5px; padding: 0 14px; gap: 14px; }
+  .util-strip .hide-sm { display: none; }
+  .nav { padding: 0 14px; gap: 12px; grid-template-columns: auto 1fr; }
+  .nav-links { display: none; }
+}
+@media (max-width: 560px) {
+  .util-strip-left .hide-xs { display: none; }
+  .nav-brand-name small { display: none; }
+  .nav-signin { display: none; }
 }
 </style>
 </head>
-<body style="background:#020f1e;margin:0;">
+<body>
 
-<!-- NAV -->
-<nav class="home-nav">
-  <a href="index.html" class="home-nav-brand">First Down Academy</a>
-  <div class="home-nav-right">
-    <button class="home-nav-iq" id="homeNavIQ" onclick="window.location.href='dashboard.html'"></button>
-    <a href="coaches.html" class="home-nav-login" id="homeNavLogin">Coaches</a>
-    <a href="auth.html" class="home-nav-login" id="homeNavSignin">Sign In</a>
-    <a href="dashboard.html" class="home-nav-dash" id="homeNavDash">Dashboard</a>
-    <a href="giq-exam.html" class="home-nav-cta">Test Your IQ</a>
+<!-- ═══════════════ UTILITY STRIP ═══════════════ -->
+<div class="util-strip">
+  <div class="util-strip-left">
+    <span><span class="util-dot"></span>Season IV · Live</span>
+    <span class="sep hide-xs">//</span>
+    <span class="hide-xs">Week 08 · Fri Apr 17 2026</span>
+  </div>
+  <div class="util-strip-right">
+    <a href="#" class="util-link hide-sm">Schools</a>
+    <a href="#" class="util-link hide-sm">Parents</a>
+    <a href="#" class="util-link">Help</a>
+  </div>
+</div>
+
+<!-- ═══════════════ NAV ═══════════════ -->
+<nav class="nav">
+  <a href="index.html" class="nav-brand">
+    <span class="nav-brand-mark"><span>FD</span></span>
+    <span class="nav-brand-name">
+      First Down Academy
+      <small>Gridiron Intelligence</small>
+    </span>
+  </a>
+  <div class="nav-links">
+    <a href="index.html" class="nav-link is-active">Home</a>
+    <a href="program.html" class="nav-link">Curriculum</a>
+    <a href="giq-exam.html" class="nav-link">IQ Lab</a>
+    <a href="coaches.html" class="nav-link">Coaches</a>
+    <a href="#" class="nav-link">Library</a>
+  </div>
+  <div class="nav-right">
+    <button class="nav-iq-chip" id="homeNavIQ" onclick="window.location.href='dashboard.html'"></button>
+    <a href="auth.html" class="nav-signin" id="homeNavSignin">Sign In</a>
+    <a href="giq-exam.html" class="nav-cta">Test Your IQ <span class="arrow">→</span></a>
   </div>
 </nav>
 
-<!-- HERO -->
-<section class="home-hero">
-  <div class="home-hero-img"></div>
-  <div class="home-hero-grid"></div>
-  <div class="home-hero-photo">
-    <img src="football_qb_action.png" alt="Football quarterback throwing"
-      style="filter:grayscale(60%) brightness(0.75) contrast(1.15);">
+<!-- ═══════════════ HERO ═══════════════ -->
+<section class="hero">
+  <div class="hero-field"></div>
+  <div class="hero-hashmarks"></div>
+  <div class="hero-yards" aria-hidden="true">
+    <span>10</span><span>20</span><span>30</span><span>40</span><span>50</span><span>40</span>
   </div>
-  <div class="home-hero-content">
-    <span class="home-hero-badge hm-a1">Gridiron Intelligence Platform</span>
-    <h1 class="home-hero-h1 hm-a2">
-      Master the<br>
-      <span class="lime">Game.</span><br>
-      <span class="outline">Build Your IQ.</span>
-    </h1>
-    <p class="home-hero-sub hm-a3">
-      <strong>High-performance football education</strong> for players ages 8–18. Test your Gridiron IQ. Build what's missing. Track every improvement.
-    </p>
-    <div class="home-hero-btns hm-a4">
-      <a href="giq-exam.html" class="btn-lime">Start IQ Quiz &#x2192;</a>
-      <a href="program.html" class="btn-ghost-home">View Course</a>
+
+  <!-- Playbook sketch: route tree -->
+  <svg class="hero-playbook" viewBox="0 0 560 560" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <pattern id="dotgrid" width="24" height="24" patternUnits="userSpaceOnUse">
+        <circle cx="1" cy="1" r="1" fill="rgba(255,255,255,.07)"/>
+      </pattern>
+    </defs>
+    <rect width="560" height="560" fill="url(#dotgrid)"/>
+    <!-- Line of scrimmage -->
+    <line x1="60" y1="440" x2="500" y2="440" stroke="rgba(255,255,255,.35)" stroke-width="1.5"/>
+    <line x1="60" y1="460" x2="500" y2="460" stroke="rgba(255,255,255,.15)" stroke-width="1"/>
+    <text x="68" y="475" font-family="JetBrains Mono" font-size="10" fill="rgba(255,255,255,.45)" letter-spacing="2">LINE OF SCRIMMAGE</text>
+    <!-- QB dot -->
+    <circle cx="280" cy="470" r="7" fill="#C1FF22"/>
+    <text x="293" y="474" font-family="JetBrains Mono" font-size="10" fill="#C1FF22" letter-spacing="1.5">QB</text>
+    <!-- Receiver starts -->
+    <circle cx="120" cy="440" r="5" fill="none" stroke="#C1FF22" stroke-width="1.5"/>
+    <circle cx="200" cy="440" r="5" fill="none" stroke="#C1FF22" stroke-width="1.5"/>
+    <circle cx="360" cy="440" r="5" fill="none" stroke="#C1FF22" stroke-width="1.5"/>
+    <circle cx="440" cy="440" r="5" fill="none" stroke="#C1FF22" stroke-width="1.5"/>
+    <!-- Routes -->
+    <!-- Go route -->
+    <path d="M 120 440 L 120 100" stroke="#C1FF22" stroke-width="1.6" stroke-dasharray="4 4" fill="none"/>
+    <polygon points="120,92 115,104 125,104" fill="#C1FF22"/>
+    <text x="96" y="88" font-family="JetBrains Mono" font-size="9" fill="rgba(193,255,34,.85)" letter-spacing="1.4">9 · GO</text>
+    <!-- Post -->
+    <path d="M 200 440 L 200 280 L 300 180" stroke="#C1FF22" stroke-width="1.6" stroke-dasharray="4 4" fill="none"/>
+    <polygon points="306,174 294,178 304,188" fill="#C1FF22"/>
+    <text x="208" y="180" font-family="JetBrains Mono" font-size="9" fill="rgba(193,255,34,.85)" letter-spacing="1.4">7 · POST</text>
+    <!-- Curl -->
+    <path d="M 360 440 L 360 340 C 360 320 380 320 380 340 L 380 360" stroke="#C1FF22" stroke-width="1.6" stroke-dasharray="4 4" fill="none"/>
+    <polygon points="380,368 375,358 385,358" fill="#C1FF22"/>
+    <text x="388" y="348" font-family="JetBrains Mono" font-size="9" fill="rgba(193,255,34,.85)" letter-spacing="1.4">3 · CURL</text>
+    <!-- Out -->
+    <path d="M 440 440 L 440 360 L 510 360" stroke="#C1FF22" stroke-width="1.6" stroke-dasharray="4 4" fill="none"/>
+    <polygon points="518,360 506,355 506,365" fill="#C1FF22"/>
+    <text x="452" y="356" font-family="JetBrains Mono" font-size="9" fill="rgba(193,255,34,.85)" letter-spacing="1.4">0 · OUT</text>
+    <!-- Title -->
+    <text x="60" y="60" font-family="Barlow Condensed" font-size="14" font-weight="800" fill="rgba(255,255,255,.5)" letter-spacing="3">FIG 01 · ROUTE TREE</text>
+    <text x="60" y="78" font-family="JetBrains Mono" font-size="10" fill="rgba(255,255,255,.3)" letter-spacing="1.4">11 PERSONNEL · TRIPS RIGHT</text>
+  </svg>
+
+  <div class="hero-body">
+    <div>
+      <div class="hero-meta fade-up">
+        <span class="chip"><span class="dot"></span>Est. 2024 · Ages 8–18</span>
+        <span class="divider"></span>
+        <span>Gridiron <strong>Intelligence</strong> Platform</span>
+        <span class="divider"></span>
+        <span>Vol. IV · Issue 08</span>
+      </div>
+
+      <h1 class="hero-h1 fade-up">
+        Master<br>
+        the <span class="serif">game.</span><br>
+        <span class="outline">Build your</span><br>
+        <span class="outline">IQ.</span>
+      </h1>
     </div>
+
+    <div class="hero-split">
+      <div class="fade-up">
+        <p class="hero-sub">
+          <strong>High-performance football education</strong> for players ages 8–18.
+          Test your Gridiron IQ. Build what's missing. Track every improvement —
+          with an adaptive engine trained on the same concepts taught inside pro film rooms.
+        </p>
+        <div class="hero-btns">
+          <a href="giq-exam.html" class="btn btn-primary">
+            Start IQ Quiz
+            <span class="btn-arrow">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </a>
+          <a href="program.html" class="btn btn-ghost">View Course</a>
+        </div>
+      </div>
+
+      <aside class="hero-specs fade-up" aria-label="Program specs">
+        <div class="hero-specs-head">
+          <span>Today's Briefing</span>
+          <span>● Live</span>
+        </div>
+        <div class="hero-specs-row">
+          <span class="k">Format</span>
+          <span class="v">Adaptive Quiz</span>
+          <span class="pill">15 Qs</span>
+        </div>
+        <div class="hero-specs-row">
+          <span class="k">Runtime</span>
+          <span class="v">08:00 min</span>
+          <span class="pill">Free</span>
+        </div>
+        <div class="hero-specs-row">
+          <span class="k">Difficulty</span>
+          <span class="v">Real-time</span>
+          <span class="pill">Auto</span>
+        </div>
+        <div class="hero-specs-row">
+          <span class="k">Grading</span>
+          <span class="v">Letter · A–F</span>
+          <span class="pill">Instant</span>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <div class="hero-foot">
+    <div class="hero-foot-cell"><span class="n">15</span> Adaptive Questions</div>
+    <div class="hero-foot-cell"><span class="n">84</span> Training Slides</div>
+    <div class="hero-foot-cell"><span class="n">05</span> Knowledge Pillars</div>
+    <div class="hero-foot-cell"><span class="n">∅</span> No Card Required</div>
   </div>
 </section>
 
-<!-- MARQUEE -->
-<div class="home-marquee">
-  <div class="home-marquee-track">
-    <span class="home-marquee-item">Gridiron IQ Quiz</span>
-    <span class="home-marquee-item">Adaptive Testing</span>
-    <span class="home-marquee-item">5 Pillars of Knowledge</span>
-    <span class="home-marquee-item">Free Rookie Course</span>
-    <span class="home-marquee-item">Coach Dashboard</span>
-    <span class="home-marquee-item">Track Your Improvement</span>
-    <span class="home-marquee-item">Ages 8 to 18</span>
-    <span class="home-marquee-item">Instant Grade</span>
-    <span class="home-marquee-item">Gridiron IQ Quiz</span>
-    <span class="home-marquee-item">Adaptive Testing</span>
-    <span class="home-marquee-item">5 Pillars of Knowledge</span>
-    <span class="home-marquee-item">Free Rookie Course</span>
-    <span class="home-marquee-item">Coach Dashboard</span>
-    <span class="home-marquee-item">Track Your Improvement</span>
-    <span class="home-marquee-item">Ages 8 to 18</span>
-    <span class="home-marquee-item">Instant Grade</span>
+<!-- ═══════════════ MARQUEE ═══════════════ -->
+<div class="ticker">
+  <div class="ticker-label"><span class="dot"></span>The Wire</div>
+  <div class="ticker-track">
+    <span class="ticker-item">Gridiron IQ Quiz</span>
+    <span class="ticker-item">Adaptive Testing</span>
+    <span class="ticker-item">5 Pillars of Knowledge</span>
+    <span class="ticker-item">Free Rookie Course</span>
+    <span class="ticker-item">Coach Dashboard</span>
+    <span class="ticker-item">Track Your Improvement</span>
+    <span class="ticker-item">Ages 8 to 18</span>
+    <span class="ticker-item">Instant Grade</span>
+    <span class="ticker-item">Gridiron IQ Quiz</span>
+    <span class="ticker-item">Adaptive Testing</span>
+    <span class="ticker-item">5 Pillars of Knowledge</span>
+    <span class="ticker-item">Free Rookie Course</span>
+    <span class="ticker-item">Coach Dashboard</span>
+    <span class="ticker-item">Track Your Improvement</span>
+    <span class="ticker-item">Ages 8 to 18</span>
+    <span class="ticker-item">Instant Grade</span>
   </div>
 </div>
 
-<!-- STAT BAR -->
-<div class="home-statbar hm-reveal">
-  <div class="home-stat">
-    <div class="home-stat-num">15</div>
-    <div class="home-stat-label">Adaptive Questions</div>
-  </div>
-  <div class="home-stat">
-    <div class="home-stat-num">84</div>
-    <div class="home-stat-label">Training Slides</div>
-  </div>
-  <div class="home-stat">
-    <div class="home-stat-num">5</div>
-    <div class="home-stat-label">Knowledge Pillars</div>
-  </div>
-  <div class="home-stat">
-    <div class="home-stat-num">Free</div>
-    <div class="home-stat-label">No Card Required</div>
-  </div>
-</div>
-
-<!-- MODULES -->
-<div class="home-modules">
-  <div class="home-modules-header hm-reveal">
-    <div class="home-section-label">Training Modules</div>
-    <div class="home-section-title">Three <span class="dim">Levels</span></div>
-  </div>
-  <div class="home-modules-scroll">
-    <div class="home-module-card hm-reveal">
-      <div class="home-module-accent"></div>
-      <div class="home-module-bg">01</div>
-      <div class="home-module-level">Level 01</div>
-      <div class="home-module-title">Rookie</div>
-      <div class="home-module-desc">Fundamentals of formation, positions, basic route trees, and essential football terminology.</div>
-      <div class="home-module-footer">
-        <span class="home-module-count">8 Modules &middot; Live Now</span>
-        <a href="program.html" class="home-module-arrow">&#x2192;</a>
-      </div>
+<!-- ═══════════════ STAT BAR ═══════════════ -->
+<div class="statbar reveal">
+  <div class="stat" data-idx="S·01">
+    <span class="stat-num">15</span>
+    <div class="stat-body">
+      <span class="stat-label">Adaptive Questions</span>
+      <span class="stat-note">Difficulty · real-time</span>
     </div>
-    <div class="home-module-card home-module-card-locked hm-reveal2">
-      <div class="home-module-accent"></div>
-      <div class="home-module-bg">02</div>
-      <div class="home-module-level">Level 02</div>
-      <div class="home-module-title">Starter</div>
-      <div class="home-module-desc">Defensive scheme recognition, gap analysis, coverages, and situational decision-making.</div>
-      <div class="home-module-footer">
-        <a href="auth.html" class="home-module-notify">
-          <span class="home-module-lock">🔒</span> Notify Me
-        </a>
-      </div>
+  </div>
+  <div class="stat" data-idx="S·02">
+    <span class="stat-num">84</span>
+    <div class="stat-body">
+      <span class="stat-label">Training Slides</span>
+      <span class="stat-note">Rookie course</span>
     </div>
-    <div class="home-module-card home-module-card-locked hm-reveal3">
-      <div class="home-module-accent"></div>
-      <div class="home-module-bg">03</div>
-      <div class="home-module-level">Level 03</div>
-      <div class="home-module-title">Elite</div>
-      <div class="home-module-desc">Advanced game management, complex RPO logic, and pro-grade film study concepts.</div>
-      <div class="home-module-footer">
-        <a href="auth.html" class="home-module-notify">
-          <span class="home-module-lock">🔒</span> Notify Me
-        </a>
-      </div>
+  </div>
+  <div class="stat" data-idx="S·03">
+    <span class="stat-num">5<span class="unit">/V</span></span>
+    <div class="stat-body">
+      <span class="stat-label">Knowledge Pillars</span>
+      <span class="stat-note">Fundamentals → film</span>
+    </div>
+  </div>
+  <div class="stat" data-idx="S·04">
+    <span class="stat-num">Free</span>
+    <div class="stat-body">
+      <span class="stat-label">No Card Required</span>
+      <span class="stat-note">Start in 8 minutes</span>
     </div>
   </div>
 </div>
 
-<!-- TWO PATHS -->
-<div class="home-paths">
+<!-- ═══════════════ MODULES / LEVELS ═══════════════ -->
+<div class="levels-wrap">
+<section class="section">
+  <div class="section-head reveal">
+    <span class="section-num">§ 01 · Training Modules</span>
+    <h2 class="section-title">Three <span class="serif">levels.</span><br>One <span class="dim">IQ.</span></h2>
+    <p class="section-lede">
+      A structured curriculum built the way pro-staff install a playbook — earn the fundamentals before you unlock the scheme.
+    </p>
+  </div>
+
+  <div class="levels">
+    <article class="level reveal" data-big="01">
+      <div class="level-status live"><span class="pip"></span>Live · Open Enrollment</div>
+      <div class="level-level">Level 01</div>
+      <h3 class="level-title">Rookie</h3>
+      <p class="level-desc">Fundamentals of formation, positions, basic route trees, and essential football terminology.</p>
+      <div class="level-syllabus">
+        <div class="syl-row"><span class="n">01</span><span class="t">Field, Downs & Scoring</span><span class="m">9 SLIDES</span></div>
+        <div class="syl-row"><span class="n">02</span><span class="t">Offensive Formations</span><span class="m">11 SLIDES</span></div>
+        <div class="syl-row"><span class="n">03</span><span class="t">Route Tree · 0–9</span><span class="m">10 SLIDES</span></div>
+        <div class="syl-row"><span class="n">04</span><span class="t">Defense 101</span><span class="m">12 SLIDES</span></div>
+        <div class="syl-row"><span class="n">05</span><span class="t">Special Teams</span><span class="m">8 SLIDES</span></div>
+      </div>
+      <div class="level-footer">
+        <span class="level-count">8 Modules · 84 Slides</span>
+        <a href="program.html" class="level-cta">Enroll →</a>
+      </div>
+    </article>
+
+    <article class="level is-locked reveal d1" data-big="02">
+      <div class="level-status locked"><span class="pip"></span>Coming · Season V</div>
+      <div class="level-level">Level 02</div>
+      <h3 class="level-title">Starter</h3>
+      <p class="level-desc">Defensive scheme recognition, gap analysis, coverages, and situational decision-making.</p>
+      <div class="level-syllabus">
+        <div class="syl-row"><span class="n">01</span><span class="t">Coverages · 1 / 2 / 3</span><span class="m">—</span></div>
+        <div class="syl-row"><span class="n">02</span><span class="t">Run Fits & Gap Logic</span><span class="m">—</span></div>
+        <div class="syl-row"><span class="n">03</span><span class="t">Protections & Blitzes</span><span class="m">—</span></div>
+        <div class="syl-row"><span class="n">04</span><span class="t">Situational Calls</span><span class="m">—</span></div>
+        <div class="syl-row"><span class="n">05</span><span class="t">Two-Minute Drill</span><span class="m">—</span></div>
+      </div>
+      <div class="level-footer">
+        <span class="level-count">Launch · 2026</span>
+        <a href="auth.html" class="level-cta">⎔ Notify Me</a>
+      </div>
+    </article>
+
+    <article class="level is-locked reveal d2" data-big="03">
+      <div class="level-status locked"><span class="pip"></span>Coming · Season VI</div>
+      <div class="level-level">Level 03</div>
+      <h3 class="level-title">Elite</h3>
+      <p class="level-desc">Advanced game management, complex RPO logic, and pro-grade film study concepts.</p>
+      <div class="level-syllabus">
+        <div class="syl-row"><span class="n">01</span><span class="t">RPO Concepts</span><span class="m">—</span></div>
+        <div class="syl-row"><span class="n">02</span><span class="t">Quarters · Match Rules</span><span class="m">—</span></div>
+        <div class="syl-row"><span class="n">03</span><span class="t">Clock Management</span><span class="m">—</span></div>
+        <div class="syl-row"><span class="n">04</span><span class="t">Pro Film Breakdown</span><span class="m">—</span></div>
+        <div class="syl-row"><span class="n">05</span><span class="t">Pre-Snap Reads</span><span class="m">—</span></div>
+      </div>
+      <div class="level-footer">
+        <span class="level-count">Launch · 2027</span>
+        <a href="auth.html" class="level-cta">⎔ Notify Me</a>
+      </div>
+    </article>
+  </div>
+</section>
+</div>
+
+<!-- ═══════════════ TWO PATHS ═══════════════ -->
+<section class="paths">
+  <div class="paths-inner">
 
   <!-- PLAYER -->
-  <div class="home-path home-path-player hm-reveal">
-    <div class="home-path-text">
-      <div class="home-path-tag">I&rsquo;m a Player</div>
-      <div class="home-path-title">Test.<br>Build.<br>Rise.</div>
-      <p class="home-path-body">Quiz in 8 minutes. Course at your pace. Your IQ tracked every step.</p>
-      <a href="giq-exam.html" class="home-path-btn home-btn-player">
+  <div class="path is-player reveal">
+    <div class="path-body">
+      <span class="path-tag">§ 02 · I'm a Player</span>
+      <h2 class="path-title">Test.<br><span class="accent">Build.</span><br>Rise.</h2>
+      <p>Quiz in 8 minutes. Course at your pace. Your IQ tracked every step.
+         Every answer refines the engine — no two seasons look the same.</p>
+      <div class="path-meta">
+        <div class="path-meta-cell"><span class="path-meta-v">08:00</span><span class="path-meta-k">Avg. Time</span></div>
+        <div class="path-meta-cell"><span class="path-meta-v">A–F</span><span class="path-meta-k">Letter Grade</span></div>
+        <div class="path-meta-cell"><span class="path-meta-v">∞</span><span class="path-meta-k">Retakes</span></div>
+      </div>
+      <a href="giq-exam.html" class="path-btn">
         Take the IQ Quiz
-        <span class="home-path-btn-arrow">
-          <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
+        <span class="path-btn-arrow">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </span>
       </a>
     </div>
-    <div class="home-path-photo">
-      <img src="football_rb_action.png" alt="Football player running"
-        style="filter:grayscale(80%) brightness(0.7) contrast(1.1);">
-      <div class="home-path-fade home-path-fade-l"></div>
+    <div class="path-visual">
+      <div class="path-visual-overlay">
+        <span class="tag">IQ-VIEW · PLAY 04 / 12</span>
+      </div>
+      <svg viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <!-- field -->
+        <rect width="600" height="600" fill="#05101d"/>
+        <defs>
+          <pattern id="p-grid" width="60" height="60" patternUnits="userSpaceOnUse">
+            <path d="M 60 0 L 0 0 0 60" fill="none" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
+          </pattern>
+        </defs>
+        <rect width="600" height="600" fill="url(#p-grid)"/>
+        <!-- yard lines -->
+        <line x1="0" y1="180" x2="600" y2="180" stroke="rgba(255,255,255,.08)" stroke-width="1"/>
+        <line x1="0" y1="300" x2="600" y2="300" stroke="rgba(255,255,255,.16)" stroke-width="1.5"/>
+        <line x1="0" y1="420" x2="600" y2="420" stroke="rgba(255,255,255,.08)" stroke-width="1"/>
+        <text x="18" y="304" font-family="JetBrains Mono" font-size="11" fill="rgba(255,255,255,.28)" letter-spacing="2">50</text>
+        <text x="18" y="184" font-family="JetBrains Mono" font-size="11" fill="rgba(255,255,255,.2)" letter-spacing="2">30</text>
+        <text x="18" y="424" font-family="JetBrains Mono" font-size="11" fill="rgba(255,255,255,.2)" letter-spacing="2">30</text>
+        <!-- LOS -->
+        <line x1="60" y1="420" x2="540" y2="420" stroke="rgba(193,255,34,.35)" stroke-width="1.5" stroke-dasharray="6 4"/>
+
+        <!-- Offense -->
+        <!-- OL -->
+        <g>
+          <circle cx="220" cy="420" r="9" fill="#C1FF22" opacity=".85"/>
+          <circle cx="260" cy="420" r="9" fill="#C1FF22" opacity=".85"/>
+          <circle cx="300" cy="420" r="9" fill="#C1FF22"/>
+          <circle cx="340" cy="420" r="9" fill="#C1FF22" opacity=".85"/>
+          <circle cx="380" cy="420" r="9" fill="#C1FF22" opacity=".85"/>
+        </g>
+        <!-- QB -->
+        <circle cx="300" cy="460" r="11" fill="none" stroke="#C1FF22" stroke-width="2.5"/>
+        <text x="293" y="465" font-family="Barlow Condensed" font-size="13" font-weight="800" fill="#C1FF22">QB</text>
+        <!-- WRs -->
+        <circle cx="120" cy="420" r="9" fill="#C1FF22" opacity=".85"/>
+        <circle cx="480" cy="420" r="9" fill="#C1FF22" opacity=".85"/>
+        <circle cx="440" cy="410" r="9" fill="#C1FF22" opacity=".65"/>
+
+        <!-- Routes -->
+        <path d="M 120 420 L 120 220" stroke="#C1FF22" stroke-width="2" stroke-dasharray="5 5" fill="none"/>
+        <polygon points="120,212 114,224 126,224" fill="#C1FF22"/>
+        <text x="100" y="204" font-family="JetBrains Mono" font-size="10" fill="#C1FF22">9 · GO</text>
+
+        <path d="M 440 410 L 440 310 L 380 250" stroke="#C1FF22" stroke-width="2" stroke-dasharray="5 5" fill="none"/>
+        <polygon points="374,246 384,244 380,256" fill="#C1FF22"/>
+        <text x="378" y="238" font-family="JetBrains Mono" font-size="10" fill="#C1FF22">7 · POST</text>
+
+        <path d="M 480 420 L 480 340 L 540 340" stroke="#C1FF22" stroke-width="2" stroke-dasharray="5 5" fill="none"/>
+        <polygon points="548,340 536,335 536,345" fill="#C1FF22"/>
+        <text x="496" y="332" font-family="JetBrains Mono" font-size="10" fill="#C1FF22">0 · OUT</text>
+
+        <!-- Defense Xs -->
+        <g stroke="rgba(255,255,255,.55)" stroke-width="2">
+          <path d="M 214 340 L 226 352 M 226 340 L 214 352"/>
+          <path d="M 294 340 L 306 352 M 306 340 L 294 352"/>
+          <path d="M 374 340 L 386 352 M 386 340 L 374 352"/>
+          <path d="M 154 260 L 166 272 M 166 260 L 154 272"/>
+          <path d="M 434 260 L 446 272 M 446 260 L 434 272"/>
+          <path d="M 294 180 L 306 192 M 306 180 L 294 192"/>
+        </g>
+
+        <!-- Label: coverage -->
+        <rect x="420" y="140" width="150" height="38" fill="rgba(0,0,0,.6)" stroke="rgba(255,255,255,.18)"/>
+        <text x="432" y="158" font-family="JetBrains Mono" font-size="10" fill="#C1FF22" letter-spacing="2">COVERAGE</text>
+        <text x="432" y="172" font-family="Barlow Condensed" font-size="14" font-weight="900" fill="#fff" letter-spacing="2">COVER 3 · SPOT DROP</text>
+
+        <!-- Label top: play -->
+        <text x="36" y="48" font-family="Barlow Condensed" font-size="13" font-weight="800" fill="rgba(255,255,255,.6)" letter-spacing="3">▲ PLAY 04 · SMASH CONCEPT</text>
+      </svg>
+      <div class="path-visual-cap">Trips Right · 3×1 · Cover 3 Beater</div>
     </div>
   </div>
 
   <!-- COACH -->
-  <div class="home-path home-path-coach hm-reveal2">
-    <div class="home-path-photo">
-      <img src="coach_top_left.png" alt="Football coach"
-        style="filter:grayscale(60%) brightness(0.65) contrast(1.05) sepia(10%);">
-      <div class="home-path-fade home-path-fade-r"></div>
-    </div>
-    <div class="home-path-text">
-      <div class="home-path-tag">I&rsquo;m a Coach</div>
-      <div class="home-path-title">One Link.<br>Smarter<br>Team.</div>
-      <p class="home-path-body">Share your referral link. Whole roster enrolled. Run the practice you want.</p>
-      <a href="coaches.html" class="home-path-btn home-btn-coach">
+  <div class="path is-coach reveal d1">
+    <div class="path-body">
+      <span class="path-tag">§ 03 · I'm a Coach</span>
+      <h2 class="path-title">One link.<br><span class="accent">Smarter</span><br>team.</h2>
+      <p>Share your referral link. Whole roster enrolled. Run the practice you want —
+         we handle the classroom.</p>
+      <div class="path-meta">
+        <div class="path-meta-cell"><span class="path-meta-v">1×</span><span class="path-meta-k">Share Link</span></div>
+        <div class="path-meta-cell"><span class="path-meta-v">53</span><span class="path-meta-k">Roster Cap</span></div>
+        <div class="path-meta-cell"><span class="path-meta-v">$0</span><span class="path-meta-k">Forever</span></div>
+      </div>
+      <a href="coaches.html" class="path-btn">
         Get Your Coach Link
-        <span class="home-path-btn-arrow">
-          <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
+        <span class="path-btn-arrow">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </span>
       </a>
     </div>
+    <div class="path-visual">
+      <div class="path-visual-overlay">
+        <span class="tag">STAFF-VIEW · ROSTER 24</span>
+      </div>
+      <!-- Coach dashboard schematic -->
+      <svg viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect width="600" height="600" fill="#05101d"/>
+        <defs>
+          <pattern id="c-grid" width="30" height="30" patternUnits="userSpaceOnUse">
+            <path d="M 30 0 L 0 0 0 30" fill="none" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+          </pattern>
+        </defs>
+        <rect width="600" height="600" fill="url(#c-grid)"/>
+
+        <!-- Title bar -->
+        <rect x="40" y="60" width="520" height="40" fill="rgba(8,27,44,.9)" stroke="rgba(255,255,255,.12)"/>
+        <circle cx="56" cy="80" r="4" fill="#C1FF22"/>
+        <text x="68" y="85" font-family="Barlow Condensed" font-size="14" font-weight="900" fill="#fff" letter-spacing="2">VARSITY · 2026 SPRING COHORT</text>
+        <text x="470" y="85" font-family="JetBrains Mono" font-size="10" fill="#C1FF22" letter-spacing="2">24 / 53</text>
+
+        <!-- Chart area -->
+        <rect x="40" y="120" width="520" height="180" fill="rgba(8,27,44,.7)" stroke="rgba(255,255,255,.08)"/>
+        <text x="54" y="144" font-family="JetBrains Mono" font-size="10" fill="rgba(255,255,255,.5)" letter-spacing="2">ROSTER IQ · PRE vs POST</text>
+        <!-- axis -->
+        <line x1="60" y1="280" x2="540" y2="280" stroke="rgba(255,255,255,.1)"/>
+        <g font-family="JetBrains Mono" font-size="9" fill="rgba(255,255,255,.3)" letter-spacing="1.5">
+          <text x="60" y="294">W1</text><text x="140" y="294">W2</text><text x="220" y="294">W3</text>
+          <text x="300" y="294">W4</text><text x="380" y="294">W5</text><text x="460" y="294">W6</text>
+          <text x="530" y="294">W7</text>
+        </g>
+        <!-- pre line -->
+        <polyline points="60,250 140,240 220,238 300,232 380,225 460,222 540,218"
+          fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1.5" stroke-dasharray="4 4"/>
+        <!-- post line -->
+        <polyline points="60,244 140,224 220,200 300,184 380,172 460,158 540,150"
+          fill="none" stroke="#C1FF22" stroke-width="2.5"/>
+        <g fill="#C1FF22">
+          <circle cx="60" cy="244" r="3"/><circle cx="140" cy="224" r="3"/>
+          <circle cx="220" cy="200" r="3"/><circle cx="300" cy="184" r="3"/>
+          <circle cx="380" cy="172" r="3"/><circle cx="460" cy="158" r="3"/>
+          <circle cx="540" cy="150" r="4"/>
+        </g>
+        <text x="544" y="154" font-family="Barlow Condensed" font-size="14" font-weight="900" fill="#C1FF22">A</text>
+
+        <!-- Roster table -->
+        <rect x="40" y="320" width="520" height="220" fill="rgba(8,27,44,.6)" stroke="rgba(255,255,255,.08)"/>
+        <text x="54" y="342" font-family="JetBrains Mono" font-size="10" fill="rgba(255,255,255,.5)" letter-spacing="2">PLAYER · POS · IQ · PROG</text>
+        <g font-family="Barlow Condensed" font-weight="600" font-size="13" letter-spacing="1.5" fill="#cfdcef">
+          <!-- rows -->
+          <text x="56" y="370">#07 MALCOLM R.</text><text x="230" y="370">QB</text>
+          <text x="56" y="394">#22 JAYDEN T.</text><text x="230" y="394">RB</text>
+          <text x="56" y="418">#81 ELIAS M.</text><text x="230" y="418">WR</text>
+          <text x="56" y="442">#54 DEVON K.</text><text x="230" y="442">LB</text>
+          <text x="56" y="466">#13 ANDRE P.</text><text x="230" y="466">WR</text>
+          <text x="56" y="490">#04 CALEB G.</text><text x="230" y="490">S</text>
+          <text x="56" y="514">#33 ISAIAH H.</text><text x="230" y="514">CB</text>
+        </g>
+        <!-- iq scores -->
+        <g font-family="JetBrains Mono" font-weight="700" font-size="12" letter-spacing="1">
+          <text x="310" y="370" fill="#C1FF22">A</text>
+          <text x="310" y="394" fill="#C1FF22">A-</text>
+          <text x="310" y="418" fill="#C1FF22">B+</text>
+          <text x="310" y="442" fill="#cfdcef">B</text>
+          <text x="310" y="466" fill="#cfdcef">B</text>
+          <text x="310" y="490" fill="#8fa1bb">C+</text>
+          <text x="310" y="514" fill="#8fa1bb">C</text>
+        </g>
+        <!-- bars -->
+        <g>
+          <rect x="360" y="361" width="180" height="8" fill="rgba(255,255,255,.06)"/><rect x="360" y="361" width="170" height="8" fill="#C1FF22"/>
+          <rect x="360" y="385" width="180" height="8" fill="rgba(255,255,255,.06)"/><rect x="360" y="385" width="158" height="8" fill="#C1FF22"/>
+          <rect x="360" y="409" width="180" height="8" fill="rgba(255,255,255,.06)"/><rect x="360" y="409" width="140" height="8" fill="#C1FF22"/>
+          <rect x="360" y="433" width="180" height="8" fill="rgba(255,255,255,.06)"/><rect x="360" y="433" width="124" height="8" fill="#C1FF22" opacity=".8"/>
+          <rect x="360" y="457" width="180" height="8" fill="rgba(255,255,255,.06)"/><rect x="360" y="457" width="116" height="8" fill="#C1FF22" opacity=".8"/>
+          <rect x="360" y="481" width="180" height="8" fill="rgba(255,255,255,.06)"/><rect x="360" y="481" width="92"  height="8" fill="#C1FF22" opacity=".55"/>
+          <rect x="360" y="505" width="180" height="8" fill="rgba(255,255,255,.06)"/><rect x="360" y="505" width="74"  height="8" fill="#C1FF22" opacity=".5"/>
+        </g>
+      </svg>
+      <div class="path-visual-cap">Live Roster IQ · Pre → Post Improvement</div>
+    </div>
   </div>
 
+  </div>
+</section>
+
+<!-- ═══════════════ WHY IQ MATTERS ═══════════════ -->
+<div class="why-wrap">
+<section class="section">
+  <div class="section-head reveal">
+    <span class="section-num">§ 04 · What's Inside</span>
+    <h2 class="section-title">Why IQ <span class="serif">matters.</span></h2>
+    <p class="section-lede">
+      Football is a thinking sport. Players who see it faster play faster. Everything here is engineered to make that mental clock tick a little quicker.
+    </p>
+  </div>
+
+  <div class="offerings">
+    <div class="offering reveal">
+      <div class="offering-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#C1FF22" stroke-width="1.4"/><path d="M12 7v5l3 2" stroke="#C1FF22" stroke-width="1.4" stroke-linecap="round"/></svg>
+      </div>
+      <div class="offering-content">
+        <div class="offering-name"><span class="no">01</span>IQ Quiz</div>
+        <p class="offering-desc">15 adaptive questions. Difficulty adjusts in real time. Letter grade the instant you finish.</p>
+        <span class="offering-tag">Free · No signup to start</span>
+      </div>
+      <div class="offering-arrow">→</div>
+    </div>
+
+    <div class="offering reveal d1">
+      <div class="offering-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3.5" y="5" width="17" height="14" rx="1" stroke="#C1FF22" stroke-width="1.4"/><path d="M7 9h6M7 13h4M7 16h8" stroke="#C1FF22" stroke-width="1.4" stroke-linecap="round"/></svg>
+      </div>
+      <div class="offering-content">
+        <div class="offering-name"><span class="no">02</span>Training</div>
+        <p class="offering-desc">8 modules. 84 slides. All 5 pillars of football knowledge. Self-paced and free.</p>
+        <span class="offering-tag">Rookie Course — Free</span>
+      </div>
+      <div class="offering-arrow">→</div>
+    </div>
+
+    <div class="offering reveal d2">
+      <div class="offering-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M4 19L9 13L13 16L20 8" stroke="#C1FF22" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="20" cy="8" r="1.5" fill="#C1FF22"/></svg>
+      </div>
+      <div class="offering-content">
+        <div class="offering-name"><span class="no">03</span>Improvement</div>
+        <p class="offering-desc">Take the course. Retake the quiz. Every result saved. Watch your IQ score climb.</p>
+        <span class="offering-tag">Track your progress</span>
+      </div>
+      <div class="offering-arrow">→</div>
+    </div>
+
+    <div class="offering reveal d3">
+      <div class="offering-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3" stroke="#C1FF22" stroke-width="1.4"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5" stroke="#C1FF22" stroke-width="1.4" stroke-linecap="round"/><circle cx="17" cy="7" r="2" stroke="#C1FF22" stroke-width="1.4"/><path d="M15 19c0-2 1.5-4 4-4" stroke="#C1FF22" stroke-width="1.4" stroke-linecap="round"/></svg>
+      </div>
+      <div class="offering-content">
+        <div class="offering-name"><span class="no">04</span>Coach Tools</div>
+        <p class="offering-desc">One link enrolls your whole roster. See every player's IQ score and module progress.</p>
+        <span class="offering-tag">Free for coaches</span>
+      </div>
+      <div class="offering-arrow">→</div>
+    </div>
+  </div>
+</section>
 </div>
 
-<!-- WHY IQ MATTERS -->
-<div class="home-offerings">
-  <div class="home-offerings-header hm-reveal">
-    <div class="home-section-label">What's Inside</div>
-    <div class="home-section-title">Why IQ <span class="dim">Matters</span></div>
+<!-- ═══════════════ FILM / 5 PILLARS ═══════════════ -->
+<section class="film">
+  <div class="film-inner">
+    <div class="film-body reveal">
+      <div class="film-eyebrow">§ 05 · Inside the Classroom</div>
+      <h2 class="film-title">Five <span class="serif">pillars.</span><br>One field.</h2>
+      <p class="film-lede">
+        The Gridiron IQ framework breaks football down into the five disciplines every smart player masters — in the order a coach would install them.
+      </p>
+
+      <div class="pillars">
+        <div class="pillar">
+          <span class="pillar-num">P·I</span>
+          <div>
+            <div class="pillar-name">Fundamentals<small>Field, downs, scoring, positions.</small></div>
+          </div>
+          <span class="pillar-prog">100%</span>
+        </div>
+        <div class="pillar">
+          <span class="pillar-num">P·II</span>
+          <div>
+            <div class="pillar-name">Formations<small>Personnel groupings, sets, alignment rules.</small></div>
+          </div>
+          <span class="pillar-prog">100%</span>
+        </div>
+        <div class="pillar">
+          <span class="pillar-num">P·III</span>
+          <div>
+            <div class="pillar-name">Routes &amp; Concepts<small>The 0–9 tree, combo routes, triangle reads.</small></div>
+          </div>
+          <span class="pillar-prog">100%</span>
+        </div>
+        <div class="pillar">
+          <span class="pillar-num">P·IV</span>
+          <div>
+            <div class="pillar-name">Defense<small>Fronts, coverages, tells, and leverage.</small></div>
+          </div>
+          <span class="pillar-prog">100%</span>
+        </div>
+        <div class="pillar">
+          <span class="pillar-num">P·V</span>
+          <div>
+            <div class="pillar-name">Situational<small>Down &amp; distance, clock, red zone decisions.</small></div>
+          </div>
+          <span class="pillar-prog">100%</span>
+        </div>
+      </div>
+
+      <a href="program.html" class="btn btn-ghost">
+        Open the Curriculum
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+
+    <div class="film-visual reveal d1">
+      <div class="film-visual-head">
+        <span class="pill"><span class="rec"></span>REC · 01:04:12</span>
+        <span class="pill" style="color:#cfdcef">CAM 03 · END ZONE</span>
+      </div>
+      <svg viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+        <rect width="600" height="600" fill="#020a14"/>
+        <defs>
+          <pattern id="f-stripes" width="60" height="60" patternUnits="userSpaceOnUse">
+            <rect width="60" height="60" fill="#04121f"/>
+            <rect width="60" height="30" fill="#031019"/>
+          </pattern>
+          <linearGradient id="f-vig" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#000" stop-opacity=".4"/>
+            <stop offset=".5" stop-color="#000" stop-opacity="0"/>
+            <stop offset="1" stop-color="#000" stop-opacity=".55"/>
+          </linearGradient>
+        </defs>
+        <rect width="600" height="600" fill="url(#f-stripes)"/>
+        <!-- hash marks -->
+        <g stroke="rgba(255,255,255,.15)" stroke-width="1">
+          <line x1="100" y1="60" x2="100" y2="560"/>
+          <line x1="500" y1="60" x2="500" y2="560"/>
+        </g>
+        <g stroke="rgba(255,255,255,.25)" stroke-width="2">
+          <line x1="60" y1="140" x2="540" y2="140"/>
+          <line x1="60" y1="220" x2="540" y2="220"/>
+          <line x1="60" y1="300" x2="540" y2="300"/>
+          <line x1="60" y1="380" x2="540" y2="380"/>
+          <line x1="60" y1="460" x2="540" y2="460"/>
+        </g>
+        <!-- yard numbers -->
+        <g font-family="Barlow Condensed" font-weight="900" font-size="36" letter-spacing="6" fill="rgba(255,255,255,.22)">
+          <text x="72" y="154">10</text><text x="72" y="234">20</text><text x="72" y="314">30</text><text x="72" y="394">40</text><text x="72" y="474">50</text>
+          <text x="480" y="154">10</text><text x="480" y="234">20</text><text x="480" y="314">30</text><text x="480" y="394">40</text><text x="480" y="474">50</text>
+        </g>
+
+        <!-- Telestrator markings -->
+        <!-- highlight circle -->
+        <circle cx="300" cy="300" r="36" fill="none" stroke="#C1FF22" stroke-width="3" stroke-dasharray="5 5"/>
+        <circle cx="300" cy="300" r="52" fill="none" stroke="rgba(193,255,34,.35)" stroke-width="1.5"/>
+        <!-- arrow -->
+        <path d="M 180 190 Q 240 220 290 280" stroke="#C1FF22" stroke-width="3" fill="none"/>
+        <polygon points="290,280 276,276 282,266" fill="#C1FF22"/>
+        <!-- label box -->
+        <rect x="140" y="140" width="120" height="44" fill="rgba(0,0,0,.7)" stroke="#C1FF22"/>
+        <text x="152" y="160" font-family="JetBrains Mono" font-size="10" fill="#C1FF22" letter-spacing="2">READ · MIKE LB</text>
+        <text x="152" y="176" font-family="Barlow Condensed" font-size="14" font-weight="900" fill="#fff" letter-spacing="2">CHECK · KILL</text>
+        <!-- markers -->
+        <g fill="#C1FF22">
+          <rect x="395" y="430" width="32" height="22"/><text x="398" y="446" font-family="Barlow Condensed" font-weight="900" font-size="13" fill="#061000" letter-spacing="1">2ND</text>
+          <rect x="432" y="430" width="32" height="22" fill="rgba(0,0,0,.6)" stroke="#C1FF22"/><text x="436" y="446" font-family="Barlow Condensed" font-weight="900" font-size="13" fill="#fff" letter-spacing="1">&amp; 7</text>
+        </g>
+        <!-- vignette -->
+        <rect width="600" height="600" fill="url(#f-vig)"/>
+      </svg>
+      <div class="film-visual-timeline">
+        <span>00:42</span>
+        <div class="bar"></div>
+        <span>01:50</span>
+      </div>
+    </div>
   </div>
-  <div class="home-offerings-grid">
-    <div class="home-offering hm-reveal">
-      <div class="home-offering-icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#C1FF22" stroke-width="1.5"/><path d="M12 8v4l3 2" stroke="#C1FF22" stroke-width="1.5" stroke-linecap="round"/></svg>
-      </div>
-      <div>
-        <div class="home-offering-name">IQ Quiz</div>
-        <div class="home-offering-desc">15 adaptive questions. Difficulty adjusts in real time. Letter grade the instant you finish.</div>
-        <span class="home-offering-tag">Free &middot; No signup to start</span>
-      </div>
+</section>
+
+<!-- ═══════════════ CTA ═══════════════ -->
+<div class="cta-wrap">
+  <div class="cta reveal">
+    <div class="cta-body">
+      <div class="cta-eyebrow">§ 06 · The FDA Briefing</div>
+      <h2 class="cta-title">Stay ahead<br>of the <span class="serif">chains.</span></h2>
+      <p>Join the FDA Briefing — weekly tactical breakdowns and playbook insights for players and coaches. Delivered Friday mornings, before the varsity whistle.</p>
+      <form class="cta-form" onsubmit="event.preventDefault();window.location.href='auth.html';">
+        <input class="cta-input" type="email" placeholder="name@school.edu" aria-label="Email">
+        <button class="btn btn-primary" type="submit">
+          Subscribe
+          <span class="btn-arrow">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </button>
+      </form>
+      <div class="cta-fine">Free · One email / week · Unsubscribe anytime</div>
     </div>
-    <div class="home-offering hm-reveal">
-      <div class="home-offering-icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2" stroke="#C1FF22" stroke-width="1.5"/><path d="M9 9h6M9 12h4" stroke="#C1FF22" stroke-width="1.5" stroke-linecap="round"/></svg>
-      </div>
+    <aside class="cta-side">
       <div>
-        <div class="home-offering-name">Training</div>
-        <div class="home-offering-desc">8 modules. 84 slides. All 5 pillars of football knowledge. Self-paced and free.</div>
-        <span class="home-offering-tag">Rookie Course &mdash; Free</span>
+        <div class="cta-side-h">This Week's Briefing</div>
+        <div class="cta-topics">
+          <div class="cta-topic"><span class="n">01</span><span>Reading the Mike pre-snap</span><span class="d">04 MIN</span></div>
+          <div class="cta-topic"><span class="n">02</span><span>Smash vs Cover 3</span><span class="d">06 MIN</span></div>
+          <div class="cta-topic"><span class="n">03</span><span>Clock drills · 2-minute</span><span class="d">03 MIN</span></div>
+          <div class="cta-topic"><span class="n">04</span><span>Film Q&amp;A · Week 08</span><span class="d">LIVE</span></div>
+        </div>
       </div>
-    </div>
-    <div class="home-offering hm-reveal">
-      <div class="home-offering-icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 20L10 14L14 18L20 10" stroke="#C1FF22" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </div>
-      <div>
-        <div class="home-offering-name">Improvement</div>
-        <div class="home-offering-desc">Take the course. Retake the quiz. Every result saved. Watch your IQ score climb.</div>
-        <span class="home-offering-tag">Track your progress</span>
-      </div>
-    </div>
-    <div class="home-offering hm-reveal">
-      <div class="home-offering-icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke="#C1FF22" stroke-width="1.5" stroke-linecap="round"/></svg>
-      </div>
-      <div>
-        <div class="home-offering-name">Coach Tools</div>
-        <div class="home-offering-desc">One link enrolls your whole roster. See every player's IQ score and module progress.</div>
-        <span class="home-offering-tag">Free for coaches</span>
-      </div>
-    </div>
+      <div class="cta-fine">Vol. IV · Issue 08 · Apr 17 2026</div>
+    </aside>
   </div>
 </div>
 
-<!-- CTA -->
-<div class="home-cta hm-reveal">
-  <div class="home-cta-inner">
-    <div class="home-cta-title">Stay Ahead of<br>the Chains.</div>
-    <p class="home-cta-body">Join the FDA Briefing &mdash; weekly tactical breakdowns and playbook insights for players and coaches.</p>
-    <a href="auth.html" class="btn-lime">Join the List &#x2192;</a>
-  </div>
-</div>
+<!-- ═══════════════ FOOTER ═══════════════ -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand">First Down Academy</div>
+        <p class="footer-tag">Gridiron intelligence for players ages 8–18. Build a mind for the game. Built free, built for the long season.</p>
+        <div class="footer-signature"><span class="dot"></span>Est. 2024 · Season IV · © 2026</div>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-h">Program</div>
+        <ul>
+          <li><a href="program.html">Curriculum <span class="ext">→</span></a></li>
+          <li><a href="giq.html">Gridiron IQ <span class="ext">→</span></a></li>
+          <li><a href="giq-exam.html">Take the Quiz <span class="ext">→</span></a></li>
+          <li><a href="#">The Pillars <span class="ext">→</span></a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-h">Community</div>
+        <ul>
+          <li><a href="coaches.html">For Coaches <span class="ext">→</span></a></li>
+          <li><a href="#">For Parents <span class="ext">→</span></a></li>
+          <li><a href="#">For Schools <span class="ext">→</span></a></li>
+          <li><a href="#">The Briefing <span class="ext">→</span></a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-h">Company</div>
+        <ul>
+          <li><a href="#">About <span class="ext">→</span></a></li>
+          <li><a href="#">Contact <span class="ext">→</span></a></li>
+          <li><a href="legal.html">Privacy <span class="ext">→</span></a></li>
+          <li><a href="legal.html">Terms <span class="ext">→</span></a></li>
+        </ul>
+      </div>
+    </div>
 
-<!-- FOOTER -->
-<footer class="home-footer">
-  <div class="home-footer-brand">First Down Academy</div>
-  <div class="home-footer-links">
-    <a href="program.html" class="home-footer-link">Program</a>
-    <a href="giq.html" class="home-footer-link">Gridiron IQ</a>
-    <a href="coaches.html" class="home-footer-link">Coaches</a>
-    <a href="legal.html" class="home-footer-link">Privacy</a>
-    <a href="legal.html" class="home-footer-link">Terms</a>
+    <div class="footer-bot">
+      <div>FDA · Gridiron Intelligence Platform</div>
+      <div class="links">
+        <a href="legal.html">Privacy</a>
+        <a href="legal.html">Terms</a>
+        <a href="#">Accessibility</a>
+        <a href="#">Coach of the Month</a>
+      </div>
+      <div>v4.08 · Built on the Sideline</div>
+    </div>
   </div>
-  <div class="home-footer-copy">&copy; 2026 First Down Academy</div>
 </footer>
 
-<!-- BOTTOM NAV -->
-<nav class="home-bottom-nav">
-  <a href="index.html" class="home-bnav-item active">
-    <div class="home-bnav-icon">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 9.5L12 4l9 5.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
-    </div>
+<!-- ═══════════════ BOTTOM NAV ═══════════════ -->
+<nav class="bottom-nav">
+  <a href="index.html" class="bnav is-active">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 9.5L12 4l9 5.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z" stroke="currentColor" stroke-width="1.5"/></svg>
     Home
   </a>
-  <a href="giq-exam.html" class="home-bnav-item">
-    <div class="home-bnav-icon">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/><path d="M12 8v4l3 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-    </div>
+  <a href="giq-exam.html" class="bnav">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/><path d="M12 8v4l3 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
     IQ Lab
   </a>
-  <a href="coaches.html" class="home-bnav-item">
-    <div class="home-bnav-icon">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-    </div>
+  <a href="coaches.html" class="bnav">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
     Coaches
   </a>
-  <a href="auth.html" class="home-bnav-item" id="homeNavLoginBtn">
-    <div class="home-bnav-icon">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.5"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-    </div>
+  <a href="auth.html" class="bnav" id="homeNavLoginBtn">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.5"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
     Login
   </a>
 </nav>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="curriculum.js?v=4"></script>
-<script src="app.js?v=4"></script>
 <script>
 // Scroll reveal
-var hmObs = new IntersectionObserver(function(entries){
+var obs = new IntersectionObserver(function(entries){
   entries.forEach(function(e){ if(e.isIntersecting) e.target.classList.add('on'); });
-},{threshold:.1,rootMargin:'0px 0px -30px 0px'});
-document.querySelectorAll('.hm-reveal,.hm-reveal2,.hm-reveal3').forEach(function(el){hmObs.observe(el);});
+}, { threshold: .08, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(function(el){ obs.observe(el); });
 
-// Page stubs for app.js compatibility
+// Stubs from original for app.js compatibility
 function showPage(n){
   var m={'home':'index.html','course':'program.html','giq':'giq.html',
          'coaches':'coaches.html','signup':'auth.html','dashboard':'dashboard.html'};
@@ -827,32 +2022,19 @@ function loadGIQScore(){}
 
 // Auth-aware nav
 function updateNavForLoggedIn(){
-  // Show IQ badge with score if available
   var iqBtn = document.getElementById('homeNavIQ');
-  var dashBtn = document.getElementById('homeNavDash');
   var signinBtn = document.getElementById('homeNavSignin');
-  var loginBtn = document.getElementById('homeNavLoginBtn');
-  if(iqBtn) iqBtn.style.display='inline-block';
-  if(dashBtn) dashBtn.style.display='inline-flex';
-  if(signinBtn) signinBtn.style.display='none';
-  if(loginBtn){ loginBtn.href='dashboard.html'; loginBtn.querySelector('div+div,div:last-child,span'); }
-  // Load IQ score for badge
-  if(typeof db!=='undefined' && currentUser){
-    db.from('giq_scores').select('grade').eq('user_id',currentUser.id)
-      .order('taken_at',{ascending:false}).limit(1)
+  if(iqBtn) iqBtn.style.display = 'inline-flex';
+  if(signinBtn) signinBtn.style.display = 'none';
+  if (typeof db !== 'undefined' && typeof currentUser !== 'undefined' && currentUser) {
+    db.from('giq_scores').select('grade').eq('user_id', currentUser.id)
+      .order('taken_at', { ascending: false }).limit(1)
       .then(function(r){
-        if(r.data && r.data.length > 0 && iqBtn){
-          iqBtn.textContent = (r.data[0].grade || '') + ' IQ';
-        } else if(iqBtn){
-          iqBtn.textContent = 'My IQ';
-        }
+        if (iqBtn) iqBtn.textContent = (r.data && r.data[0] ? (r.data[0].grade || '') + ' IQ' : 'My IQ');
       }).catch(function(){});
   }
 }
-
-document.addEventListener('sessionReady', function(){
-  if(currentUser) updateNavForLoggedIn();
-});
+document.addEventListener('sessionReady', function(){ if (typeof currentUser !== 'undefined' && currentUser) updateNavForLoggedIn(); });
 </script>
 </body>
 </html>
