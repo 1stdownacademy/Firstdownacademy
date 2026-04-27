@@ -1,9 +1,911 @@
 // ═══════════════════════════════════════════
 // First Down Academy — Curriculum Data
 // 8 modules · 28 lessons · 84 slides · 42 quiz questions
+//
+// Each lesson carries a `pillar` field mapping to one of the 5 GIQ pillars:
+//   "rules"       → Rules & Objectives
+//   "positions"   → Positions & Responsibilities
+//   "formations"  → Formations & Alignments
+//   "plays"       → Plays & Concepts
+//   "situational" → Situational Awareness
 // ═══════════════════════════════════════════
 
-const CURRICULUM = [{"num": 1, "name": "The Field", "desc": "Field layout, yard lines, hash marks, end zones, and boundaries.", "lessons": [{"title": "The Football Field", "slides": [{"heading": "The Field Is 100 Yards Long", "body": "A football field is 100 yards long and about 53 yards wide. Yard lines cross the field every 10 yards, numbered from each end zone up to the 50-yard line in the middle."}, {"heading": "Finding Your Way Around", "body": "The 50-yard line sits exactly in the center. Numbers count up from 0 at each end zone \u2014 so both sides show 10, 20, 30, 40, 50. Each team defends one half of the field."}, {"heading": "Why It Matters", "body": "Yard lines tell everyone exactly where the ball is on every single play. When a team needs 10 yards for a first down, the yard lines show exactly how far they need to go."}]}, {"title": "Yard Lines and Hash Marks", "slides": [{"heading": "Hash Marks Run Down the Middle", "body": "Hash marks are short lines that run parallel to the sidelines down the center of the field. After every play the referee spots the ball on or between the hash marks."}, {"heading": "Why the Hashes Matter", "body": "The offense always snaps the ball from between the hash marks. This gives the offense more room to one side of the field depending on where the ball is spotted \u2014 a real strategic factor."}, {"heading": "Reading the Numbers", "body": "Yard line numbers are painted every 10 yards and count from 0 at each end zone to 50 in the middle. Together the yard lines and hash marks give every player a precise map of the field."}]}, {"title": "End Zones and Boundaries", "slides": [{"heading": "The End Zone Is Where You Score", "body": "The end zone sits at each end of the field and is 10 yards deep. The full field including both end zones is 120 yards total. The goal line is the front edge of the end zone."}, {"heading": "Crossing the Goal Line", "body": "A touchdown is scored when the ball crosses the goal line into the end zone while the player has possession. Even breaking the plane of the goal line with just the tip of the ball counts."}, {"heading": "Out of Bounds Ends the Play", "body": "The sidelines mark the outer edges of the field. A player who steps on or past a sideline is out of bounds and the play is immediately dead. A receiver must keep both feet in bounds when catching a pass."}]}], "quiz": [{"q": "How long is a standard football field?", "opts": ["50 yards", "75 yards", "100 yards", "120 yards"], "correct": 2, "explanation": "A football field is 100 yards long. The total including both end zones is 120 yards but the playing field itself is 100 yards."}, {"q": "What are hash marks used for?", "opts": ["Marking the end zones", "Spotting the ball after each play", "Showing goal post location", "Marking the sidelines"], "correct": 1, "explanation": "Hash marks determine where the ball is spotted after each play. The referee places the ball on or between the hash marks before the next snap."}, {"q": "How deep is each end zone?", "opts": ["5 yards", "10 yards", "15 yards", "20 yards"], "correct": 1, "explanation": "Each end zone is 10 yards deep. The goal line is at the front and the end line is at the back."}, {"q": "What happens when a ball carrier steps on the sideline?", "opts": ["Play continues", "They get a penalty", "They are out of bounds and the play is dead", "They lose a down"], "correct": 2, "explanation": "Stepping on the sideline means the player is out of bounds. The play is immediately over at that spot."}]}, {"num": 2, "name": "How the Game Works", "desc": "Downs, first downs, possession, scoring, and turnovers.", "lessons": [{"title": "Downs and Distance", "slides": [{"heading": "Four Chances to Move 10 Yards", "body": "The offense gets four chances called downs to move the ball 10 yards. Each attempt uses one down. If they gain 10 yards before using all four downs they earn a fresh set of four downs."}, {"heading": "Reading Down and Distance", "body": "The down and distance is announced before every play. '2nd and 6' means it is the second down and the offense needs 6 more yards for a first down. Knowing this tells you what play is likely coming."}, {"heading": "The Fourth Down Decision", "body": "On fourth down most teams punt the ball away or attempt a field goal. Going for it is a risk \u2014 if the offense fails the other team gets the ball right there. The stakes make fourth down one of the most strategic moments in football."}]}, {"title": "Earning a First Down", "slides": [{"heading": "Keep the Drive Alive", "body": "A first down is earned when the offense gains 10 or more yards before using all four downs. The chain crew on the sideline moves their markers to show the new 10-yard target."}, {"heading": "Why First Downs Win Games", "body": "First downs keep the drive alive. A team that consistently earns first downs controls the ball, uses up clock time, and eventually scores. First down conversion rate is one of the best predictors of winning."}, {"heading": "What Happens If You Fail", "body": "If the offense uses all four downs without gaining 10 yards they turn the ball over at whatever spot the ball stopped. This is why the fourth down decision is so important \u2014 failure hands the opponent good field position."}]}, {"title": "Scoring", "slides": [{"heading": "Touchdowns and Extra Points", "body": "A touchdown is worth 6 points and scored by getting the ball into the end zone. After scoring the team can kick for 1 extra point or run and pass the ball into the end zone for 2 extra points."}, {"heading": "Field Goals and Safeties", "body": "A field goal is worth 3 points \u2014 the kicker kicks through the upright goal posts, usually on fourth down. A safety is worth 2 points and scored by the defense when the offense is tackled in their own end zone."}, {"heading": "Know the Score Situation", "body": "Smart players always know the score. Down by 4 means a field goal does not help \u2014 you need a touchdown. Down by 2 means a field goal wins. Understanding scoring values is real football IQ."}]}, {"title": "Possession and Turnovers", "slides": [{"heading": "Possessions and Drives", "body": "A possession is when one team has control of the ball. A drive is a series of plays during one possession. Teams trade possessions back and forth throughout the game \u2014 how well each team uses their possessions determines the outcome."}, {"heading": "Interceptions and Fumbles", "body": "A turnover happens when the defense takes the ball away. An interception is when a defender catches a pass meant for the offense. A fumble recovery is when the defense picks up a ball the offense dropped."}, {"heading": "Turnovers Change Games", "body": "Turnovers are one of the most important factors in winning football. Teams that protect the ball and force turnovers have a massive advantage. Most games are decided by the turnover margin."}]}], "quiz": [{"q": "What does '3rd and 8' mean?", "opts": ["Third quarter with 8 minutes left", "Third down, need 8 more yards for a first down", "Eight players on the field", "Ball is on the 8-yard line"], "correct": 1, "explanation": "Down and distance tells you where the offense stands. 3rd and 8 means it is the third down and they need 8 more yards to earn a first down."}, {"q": "How many points is a touchdown worth?", "opts": ["3 points", "4 points", "6 points", "7 points"], "correct": 2, "explanation": "A touchdown is worth 6 points. After scoring the team can kick for 1 extra point or go for 2, making the total 7 or 8."}, {"q": "What is an interception?", "opts": ["A dropped pass", "A defender catching a pass meant for the offense", "A scoring play", "A penalty"], "correct": 1, "explanation": "An interception is when a defensive player catches a pass intended for an offensive receiver. The defense immediately takes possession."}, {"q": "What happens if the offense fails to gain 10 yards in four downs?", "opts": ["They get another set of downs", "They automatically score a safety", "The other team gets the ball at that spot", "The quarter ends"], "correct": 2, "explanation": "Failing to gain 10 yards in four downs means the other team gets the ball exactly where the play ended. This is called a turnover on downs."}, {"q": "How many points is a field goal worth?", "opts": ["1 point", "2 points", "3 points", "6 points"], "correct": 2, "explanation": "A field goal is worth 3 points. It is kicked through the upright goal posts, usually on fourth down when the team is close enough."}, {"q": "A team is losing by 4 points with 30 seconds left. What must they do?", "opts": ["Kick a field goal", "Punt the ball", "Score a touchdown \u2014 a field goal is not enough", "Take a knee"], "correct": 2, "explanation": "A field goal would only cut the deficit to 1 point \u2014 still a loss. They must score a touchdown to take the lead and win."}]}, {"num": 3, "name": "Penalties and Kicking", "desc": "Basic penalties, kickoffs, punts, and the kicking game.", "lessons": [{"title": "Common Penalties", "slides": [{"heading": "The Yellow Flag Stops Play", "body": "When a player breaks a rule a referee throws a yellow flag. After the play the referee announces the penalty and the opposing team can accept it or decline it. Accepting or declining can be strategic depending on the situation."}, {"heading": "Offensive Penalties", "body": "A false start costs the offense 5 yards when a player moves before the snap. Holding costs 10 yards when a lineman grabs a defender illegally. These penalties push the offense backward and make first downs harder to earn."}, {"heading": "Defensive Penalties", "body": "Offsides on defense costs 5 yards when a defender crosses the line before the snap. Defensive pass interference spots the ball at the foul location \u2014 potentially a massive gain for the offense. Knowing penalties is real game awareness."}]}, {"title": "Kickoffs and Touchbacks", "slides": [{"heading": "Every Score Starts With a Kickoff", "body": "The kickoff starts each half and follows every score. The kicking team kicks from their own 35-yard line and the receiving team tries to catch it and return it as far as possible."}, {"heading": "Understanding the Touchback", "body": "If the kick lands in the end zone the returner can choose to run it out or stay in the end zone for a touchback. A touchback means the offense starts at their own 25-yard line \u2014 no return attempt."}, {"heading": "Field Position Is the Goal", "body": "The kickoff is really a field position battle. Starting deep in your own territory is a major disadvantage. A good kick that pins the opponent deep \u2014 or a great return that reaches midfield \u2014 can flip the momentum of a drive."}]}, {"title": "Punting and Field Position", "slides": [{"heading": "The Punt Flips Field Position", "body": "A punt on fourth down kicks the ball away to push the opponent deep in their own territory. The punter drops the ball and kicks it before it hits the ground, aiming for maximum distance and placement."}, {"heading": "Pinning the Opponent Deep", "body": "A great punt that lands inside the opponent's 10-yard line is a huge special teams win. It forces the offense to drive 90-plus yards to score \u2014 an enormous challenge that often results in a punt right back."}, {"heading": "Field Position Wins Games", "body": "Coaches say field position is one of the most important factors in football. Where a team starts their drive determines how far they have to go. Special teams \u2014 punts, kicks, and returns \u2014 are the primary tool for controlling field position."}]}], "quiz": [{"q": "What penalty is called when an offensive lineman grabs a defender illegally?", "opts": ["False start", "Offsides", "Holding", "Pass interference"], "correct": 2, "explanation": "Holding is called when an offensive lineman grabs or holds a defensive player illegally. It costs the offense 10 yards."}, {"q": "What is a touchback?", "opts": ["A tackle inside the end zone", "When the kick lands in the end zone and is not returned \u2014 ball starts at the 25", "A penalty on the kicker", "When the returner fumbles"], "correct": 1, "explanation": "A touchback occurs when the kick lands in the end zone and the returner does not run it out. The offense starts from their own 25-yard line."}, {"q": "Why do teams punt on 4th down?", "opts": ["To score 2 points", "To pin the opponent deep and gain field position", "Because it is required by the rules", "To rest their offense"], "correct": 1, "explanation": "Teams punt to push the opponent deep in their own territory. Better field position for the defense often leads to a quick stop and a short field for the offense."}, {"q": "What happens when the offense commits a false start?", "opts": ["They lose a down", "They are penalized 5 yards", "They are penalized 10 yards", "The play is replayed with no penalty"], "correct": 1, "explanation": "A false start costs the offense 5 yards. An offensive player moved before the ball was snapped, which is illegal."}]}, {"num": 4, "name": "Offensive Players", "desc": "Every offensive position \u2014 their identity and role on each play.", "lessons": [{"title": "The Quarterback", "slides": [{"heading": "The Most Important Position", "body": "The quarterback is the leader of the offense and touches the ball on almost every play. He reads the defense before the snap, makes decisions under pressure, and must be accurate, smart, and calm in critical moments."}, {"heading": "Reading the Defense", "body": "Before the snap the quarterback reads how defenders are lined up to find the best play. If the original play will not work against the defense he can change it at the line \u2014 this is called an audible. Great QBs make the right call before the ball is even snapped."}, {"heading": "The QB's Three Options", "body": "After the snap the quarterback hands off to a running back, throws a pass to a receiver, or runs the ball himself. The best quarterbacks process all three options in seconds and deliver the ball to the right place."}]}, {"title": "Running Backs and the Offensive Line", "slides": [{"heading": "The Running Back Finds the Hole", "body": "The running back lines up behind the quarterback. His job is to take handoffs and run the ball through gaps created by the offensive line. Vision \u2014 reading the blocks and finding the right hole \u2014 separates good backs from great ones."}, {"heading": "The Five Offensive Linemen", "body": "The offensive line has five players: the center, two guards, and two tackles. The center snaps the ball to start every play. Together these five block defenders to protect the quarterback and open running lanes."}, {"heading": "Nothing Works Without the Line", "body": "Without good offensive line play the entire offense breaks down. The quarterback gets sacked. Running backs get tackled for losses. The offensive line is the foundation that makes every other position work \u2014 they are the most important unit on the offense."}]}, {"title": "Wide Receivers and Tight Ends", "slides": [{"heading": "Receivers Run Routes to Get Open", "body": "Wide receivers line up on the outside edges of the offense. Their job is to run precise planned paths called routes to get open against defenders. A receiver who runs sharp routes and has great hands changes what a defense can do."}, {"heading": "The Versatile Tight End", "body": "The tight end lines up next to the offensive line. He is unique because he can block like a lineman on running plays and run routes like a receiver on passing plays. This makes him one of the hardest positions to defend."}, {"heading": "Routes Are the Foundation of Passing", "body": "A route is a specific path designed to beat a specific type of coverage. Slants attack the middle. Out routes attack the sideline. Go routes attack deep coverage. When the route matches the coverage the receiver will be open."}]}], "quiz": [{"q": "What is it called when a quarterback changes the play at the line of scrimmage?", "opts": ["A blitz", "A punt", "An audible", "A screen pass"], "correct": 2, "explanation": "When a quarterback changes the play at the line based on what the defense is showing it is called an audible. This is one of the most important QB skills."}, {"q": "Which offensive lineman snaps the ball to start every play?", "opts": ["Left tackle", "Right guard", "Center", "Fullback"], "correct": 2, "explanation": "The center is positioned in the middle of the offensive line and snaps the ball to the quarterback to start every single play."}, {"q": "Why is the tight end so hard to defend?", "opts": ["He is the fastest player on the field", "He can both block and catch passes", "He always lines up in a different spot", "He calls all the plays"], "correct": 1, "explanation": "The tight end's ability to both block and catch passes makes the defense guess on every play. They never know which role he will take."}, {"q": "What is a route in football?", "opts": ["A type of run play", "A planned path a receiver runs to get open", "A defensive formation", "A type of kick"], "correct": 1, "explanation": "A route is a specific planned path a receiver runs designed to get open against the defender covering them. Good route running is essential for any passing game."}, {"q": "How many players are on the offensive line?", "opts": ["3", "4", "5", "6"], "correct": 2, "explanation": "The offensive line has 5 players: the center, two guards, and two tackles. All five must work together to protect the quarterback and open running lanes."}]}, {"num": 5, "name": "Defensive Players and Special Teams", "desc": "Every defensive position and the players who cover kicks.", "lessons": [{"title": "Defensive Line and Linebackers", "slides": [{"heading": "The Defensive Line Stops Everything", "body": "The defensive line lines up directly across from the offensive line. Defensive ends rush the quarterback on the outside. Defensive tackles stop runs up the middle. When a defender tackles the QB behind the line it is called a sack \u2014 one of the biggest defensive plays."}, {"heading": "Linebackers Do Everything", "body": "Linebackers line up behind the defensive line. They are the most versatile defenders \u2014 they stop runs, cover receivers, and sometimes blitz the quarterback. The middle linebacker often calls the defensive signals, making him the quarterback of the defense."}, {"heading": "Controlling the Line of Scrimmage", "body": "The battle at the line of scrimmage determines who wins most plays. If the defensive line dominates \u2014 stopping runs and pressuring the QB \u2014 the whole defense plays better. Controlling the line is the foundation of every good defense."}]}, {"title": "Cornerbacks and Safeties", "slides": [{"heading": "Cornerbacks Cover Receivers", "body": "Cornerbacks line up across from wide receivers. Their job is to prevent receivers from catching passes. In man coverage they follow one receiver wherever they go. In zone coverage they guard a specific area. Corners must be fast, physical, and mentally tough."}, {"heading": "Safeties Are the Last Line", "body": "Safeties play deep behind everyone else and are the last line of defense. The free safety roams deep reading the quarterback. The strong safety plays closer to the line and helps against both runs and passes. When both safeties play deep it is called a two-high look."}, {"heading": "The Secondary Works Together", "body": "Cornerbacks and safeties work as a unit called the secondary. Communication between them is critical \u2014 one missed assignment can result in a wide-open receiver. Great secondaries disguise their coverage to confuse the quarterback before the snap."}]}, {"title": "Kicker, Punter, and Returner", "slides": [{"heading": "The Kicker Handles Three Jobs", "body": "The kicker handles kickoffs, field goal attempts, and extra point kicks. A great kicker can make field goals from 55 or more yards and kick the ball deep into the end zone on kickoffs \u2014 taking the return game away from the opponent."}, {"heading": "The Punter Controls Field Position", "body": "The punter kicks on fourth down to flip field position. He drops the ball and kicks it before it hits the ground aiming for maximum distance. Great punters consistently pin opponents inside their own 10-yard line \u2014 one of the most impactful plays in football."}, {"heading": "The Returner Changes Games", "body": "The returner catches kickoffs and punts and tries to gain as many yards as possible. A return touchdown is worth 6 points and can completely shift momentum. Great returners are fast, fearless, and instinctive \u2014 they see the field in a split second."}]}], "quiz": [{"q": "What is a sack?", "opts": ["An interception", "Tackling the QB behind the line of scrimmage", "A type of punt", "A penalty on the offense"], "correct": 1, "explanation": "A sack occurs when the quarterback is tackled behind the line of scrimmage before throwing. It is one of the most impactful defensive plays."}, {"q": "What is the cornerback's main responsibility?", "opts": ["Rush the quarterback", "Cover wide receivers and prevent catches", "Call defensive signals", "Block punts"], "correct": 1, "explanation": "The cornerback's primary job is covering wide receivers to prevent them from catching passes. They face the fastest players on the offense."}, {"q": "Where do safeties line up?", "opts": ["On the line of scrimmage", "Behind the cornerbacks in the deep secondary", "Next to the defensive tackles", "Across from the tight end only"], "correct": 1, "explanation": "Safeties play deep behind the linebackers and cornerbacks. They are the last line of defense and protect against big passing plays."}, {"q": "How many points is a kick return touchdown worth?", "opts": ["2 points", "3 points", "6 points", "7 points"], "correct": 2, "explanation": "A kick return touchdown is worth 6 points \u2014 the same as any other touchdown. It is one of the most exciting plays in football."}, {"q": "What does a two-high look mean?", "opts": ["Two linemen rushing the QB", "Both safeties playing deep to protect against long passes", "Two cornerbacks covering one receiver", "Two linebackers blitzing"], "correct": 1, "explanation": "A two-high look means both safeties are playing deep. This protects against deep passes and is a common coverage against passing offenses."}]}, {"num": 6, "name": "Offensive Concepts", "desc": "Run vs pass, handoffs, blocking, formations, and routes.", "lessons": [{"title": "Run Plays", "slides": [{"heading": "Running the Ball Controls the Game", "body": "A running play is when the quarterback hands off to a running back who runs through gaps created by the offensive line. Running plays gain consistent yards and use up clock time \u2014 critical when a team is winning late."}, {"heading": "Types of Run Plays", "body": "A dive goes straight up the middle through the center and guards. A sweep goes wide around the edge. A draw fakes a pass first to pull defenders upfield then hands off up the middle. Each play attacks a different part of the defense."}, {"heading": "Why Running Sets Up Everything", "body": "Teams that run the ball effectively make the entire offense harder to stop. When defenders commit to stopping the run they leave receivers more open. This is called setting up the pass with the run \u2014 a foundation of great offensive football."}]}, {"title": "Blocking", "slides": [{"heading": "Blocking Makes Every Play Work", "body": "Blocking is how the offense creates space for the ball carrier and protects the quarterback. Every single play depends on good blocking \u2014 without it the quarterback gets hit and running backs gain nothing."}, {"heading": "Run Blocking vs Pass Blocking", "body": "On running plays linemen drive defenders away from the hole to create a running lane. On passing plays the offensive line forms a protective pocket around the quarterback. Each lineman is responsible for one defender."}, {"heading": "The Pocket Is Sacred", "body": "When the offensive line builds a clean pocket the quarterback has time to survey the whole field and make the right throw. When the pocket collapses the QB must scramble and the play breaks down. Protecting the pocket is the most important job on the offensive line."}]}, {"title": "Offensive Formations", "slides": [{"heading": "Formations Signal Intent", "body": "A formation is how the offense lines up before the snap. Different formations give the offense different strengths and signal different types of plays to the defense \u2014 who in turn adjusts their alignment to match."}, {"heading": "Common Formations", "body": "The I-Formation places two backs behind the QB for power running. The Shotgun has the QB several yards back for better passing looks. The Spread spaces receivers wide across the field to stretch the defense horizontally."}, {"heading": "Modern Offenses Use the Spread", "body": "Most modern offenses use Spread formations because they create open space and force defenses to cover the whole field. The Spread is used at every level from youth football to the NFL. Understanding formations helps you predict what play is coming."}]}, {"title": "Pass Routes", "slides": [{"heading": "Routes Beat Coverage", "body": "On passing plays receivers run planned paths called routes designed to get open against defenders. Every route has a specific purpose built to beat a specific type of coverage. Good route running is what separates open receivers from covered ones."}, {"heading": "The Basic Routes", "body": "A slant cuts sharply toward the middle \u2014 quick and hard to defend. A curl runs straight then curls back toward the QB. An out breaks toward the sideline. A go route is a straight sprint deep. Each attacks a different area of the field."}, {"heading": "Route Combinations Create Openings", "body": "Multiple receivers running coordinated routes at once is called a route combination. They are designed to attack specific coverages \u2014 stretching defenders between two threats so one is always open. This is the heart of modern passing game design."}]}], "quiz": [{"q": "What makes a draw play different from a regular run?", "opts": ["The QB keeps the ball", "It fakes a pass first before handing off", "The fullback takes the handoff", "It always goes wide"], "correct": 1, "explanation": "A draw play fakes a pass to pull defenders upfield, then the QB hands off to the running back through the cleared middle."}, {"q": "What is the pocket in football?", "opts": ["A type of run play", "The protected area the line creates around the QB", "A short route to the flat", "The area behind the end zone"], "correct": 1, "explanation": "The pocket is the protected area the offensive line creates around the quarterback on passing plays. A clean pocket gives the QB time to throw."}, {"q": "Which formation is best known as a power running formation?", "opts": ["Shotgun", "Spread", "I-Formation", "Nickel"], "correct": 2, "explanation": "The I-Formation places two backs behind the QB giving the offense extra blocking power. It is one of the strongest run formations in football."}, {"q": "What is a go route?", "opts": ["A quick cut toward the middle", "A route where the receiver curls back", "A straight sprint deep down the field", "A short route near the sideline"], "correct": 2, "explanation": "A go route is a straight sprint deep down the field. It attacks deep coverage and can score a touchdown or open up shorter routes underneath."}, {"q": "Why does running the ball help the passing game?", "opts": ["It tires out the defense", "It forces defenders to commit to stopping the run, leaving receivers more open", "It always gains more yards", "It prevents penalties"], "correct": 1, "explanation": "When defenders commit to stopping the run they leave passing lanes more open. This is called setting up the pass with the run."}, {"q": "What is a route combination?", "opts": ["A running play with multiple blockers", "Multiple receivers running coordinated routes to attack coverage together", "A formation with extra linemen", "A trick play with lateral passes"], "correct": 1, "explanation": "A route combination is when multiple receivers run coordinated routes designed to stretch the defense and create open receivers by attacking multiple areas at once."}]}, {"num": 7, "name": "Defensive Concepts", "desc": "Tackling, stopping the run, coverages, and turnovers.", "lessons": [{"title": "Tackling Fundamentals", "slides": [{"heading": "Safe Tackling Wins Games", "body": "Tackling is how a defender stops the ball carrier. The safest and most effective tackle keeps your eyes up and head to the side \u2014 never lead with the crown of your helmet. Bend your knees, stay low, and wrap both arms."}, {"heading": "The Form Tackle", "body": "A form tackle: eyes up, head to the side, bend knees, wrap both arms around the ball carrier, and drive your legs through the contact. Driving your legs is what finishes the tackle \u2014 arm tackles alone rarely work."}, {"heading": "Spearing Is Dangerous and Illegal", "body": "Leading with the top of the helmet \u2014 called spearing \u2014 is illegal and causes serious neck and spine injuries to both players. Safe tackling technique protects you and your opponent and is the foundation of good defensive play at every level."}]}, {"title": "Stopping the Run", "slides": [{"heading": "Control the Line of Scrimmage", "body": "To stop the run the defensive line must hold their ground and not get pushed backward. If the line gets pushed back the running back has space to run. Winning the line of scrimmage is the first step in stopping any run game."}, {"heading": "Gap Discipline Is Everything", "body": "Every defender is assigned a specific gap \u2014 the space between offensive linemen. Gap discipline means staying in your assigned space. If a defender abandons their gap the running back cuts back to the open space and gains big yards."}, {"heading": "Linebackers Flow to the Ball", "body": "Linebackers read the backfield \u2014 watching the offensive line and running back \u2014 to identify where the run is going. Then they flow to that hole and make the tackle. Reading and reacting quickly is what makes a great linebacker."}]}, {"title": "Coverage Concepts", "slides": [{"heading": "Man vs Zone Coverage", "body": "In man coverage each defender follows one specific player wherever they go. In zone coverage each defender guards a specific area of the field and covers any receiver who enters their zone. Both have strengths and weaknesses depending on the situation."}, {"heading": "Cover 2 and Cover 3", "body": "Cover 2 splits the deep field between two safeties \u2014 five defenders cover underneath zones. Cover 3 uses three deep defenders and four underneath. Zone coverage can confuse the quarterback by not giving clear one-on-one matchups to attack."}, {"heading": "Coverage Wins Passing Downs", "body": "On third and long the defense almost always plays coverage to take away the easy pass. Good coverage forces the quarterback to hold the ball longer \u2014 which gives the pass rush time to get to him. Coverage and the pass rush work together."}]}, {"title": "Creating Turnovers", "slides": [{"heading": "Interceptions Change Games", "body": "To get an interception a defender reads the quarterback's eyes to predict where the ball is going. When the QB throws the defender breaks on the ball and tries to catch it before the receiver. Reading the QB is a skill that takes practice to develop."}, {"heading": "Stripping the Ball", "body": "Defenders cause fumbles by punching or ripping at the ball when making a tackle. Ball carriers protect the ball by holding it tight with elbow down against their body. The team that wins the fumble battle often wins the game."}, {"heading": "Turnovers Are Momentum", "body": "Teams that win the turnover battle win the majority of their games. A turnover does two things at once \u2014 it takes points away from the offense and gives the defense a chance to score. Protecting the ball and hunting turnovers is game-changing football IQ."}]}], "quiz": [{"q": "What is spearing?", "opts": ["A long pass to the tight end", "Leading with the crown of the helmet when tackling", "A run play up the middle", "A trick kick play"], "correct": 1, "explanation": "Spearing is leading with the crown of the helmet to make a tackle. It is illegal and causes serious injury to both players."}, {"q": "What is gap discipline?", "opts": ["Running faster than the ball carrier", "Each defender staying in their assigned space to prevent cutback runs", "Blitzing the QB on every play", "Covering the tight end"], "correct": 1, "explanation": "Gap discipline means each defender maintains their assigned gap between offensive linemen so there is no hole for the running back to run through."}, {"q": "In man coverage what does each defender do?", "opts": ["Guards a zone area", "Follows one specific player wherever they go", "Only covers the QB", "Blitzes every play"], "correct": 1, "explanation": "In man coverage each defender is assigned one specific player to follow on every play. It requires athletic, confident defensive backs."}, {"q": "What is Cover 2?", "opts": ["Two linebackers blitzing", "Two safeties splitting the deep field with five underneath defenders", "Two cornerbacks on one receiver", "Two defensive linemen rushing"], "correct": 1, "explanation": "Cover 2 has two safeties splitting the deep field in half while five defenders cover underneath zones. It is one of the most common defensive coverages."}, {"q": "How do defenders create fumbles?", "opts": ["By running faster than the ball carrier", "By punching or ripping at the ball", "By calling a timeout", "By jumping over the ball carrier"], "correct": 1, "explanation": "Defenders are coached to punch or rip at the ball when making a tackle to knock it loose. This is called a strip \u2014 a forced fumble."}, {"q": "Why does good coverage help the pass rush?", "opts": ["It makes the QB throw faster", "It forces the QB to hold the ball longer giving the pass rush more time", "It stops the run game", "It eliminates blitzing"], "correct": 1, "explanation": "When coverage takes away easy throws the QB must hold the ball longer. This gives pass rushers extra time to reach him \u2014 coverage and pass rush work together."}]}, {"num": 8, "name": "Situational Strategy", "desc": "3rd down, 4th down, red zone, field position, and game awareness.", "lessons": [{"title": "Third Down", "slides": [{"heading": "The Most Important Down", "body": "Third down is the offense's last real chance to get a first down before facing a fourth down decision. Third down conversion rate \u2014 how often a team gets a first down on third down \u2014 is one of the best predictors of which team will win."}, {"heading": "Short vs Long Third Downs", "body": "On third and short \u2014 needing one or two yards \u2014 teams usually run because a short gain is reliable. On third and long \u2014 needing eight or more yards \u2014 teams almost always pass because only a pass can gain that much quickly."}, {"heading": "Defense Adjusts on Third Down", "body": "Defenses bring extra defensive backs on third and long expecting a pass. They may blitz more to pressure the quarterback. Understanding what third down means tells a player exactly what play is likely coming and how the defense will respond."}]}, {"title": "Fourth Down Decisions", "slides": [{"heading": "The Biggest Decision in Football", "body": "Fourth down is the most strategic moment in football. The coach must decide whether to punt, attempt a field goal, or go for a first down. Each choice has very different consequences depending on the score, field position, and time remaining."}, {"heading": "Three Options, Three Outcomes", "body": "Punting is safe \u2014 it gives the ball away but pins the opponent deep. A field goal scores 3 points but only makes sense if close enough. Going for it keeps the drive alive but hands the opponent excellent field position if it fails."}, {"heading": "Analytics Changed Fourth Down", "body": "Modern analytics show that going for it on fourth and short is often the right call even deep in your own territory. Many coaches now make more aggressive fourth down decisions than ever before. Smart players understand why \u2014 the math often favors going for it."}]}, {"title": "Red Zone and Scoring Decisions", "slides": [{"heading": "The Red Zone Is Scoring Territory", "body": "The red zone is the area from the opponent's 20-yard line to the end zone. When a team enters the red zone scoring is the immediate priority. The defense tightens because there is less space for routes \u2014 every yard matters more."}, {"heading": "Touchdown or Field Goal", "body": "Inside the red zone teams must decide whether to go for the touchdown or kick the field goal. A touchdown plus extra point is worth 7 points. A field goal is 3. The game situation determines which choice is correct."}, {"heading": "Know What You Need", "body": "Smart players always know the score and what they need. Down by 4 \u2014 a field goal does not help, you need a touchdown. Down by 2 \u2014 a field goal wins it. Down by 7 \u2014 you need a touchdown and a 2-point conversion or overtime. Football IQ means knowing these situations without thinking."}]}, {"title": "Field Position Awareness", "slides": [{"heading": "Where You Start Matters Enormously", "body": "Field position is where the offense starts their drive. Starting at your own 10-yard line means 90 yards to score \u2014 very difficult. Starting at the opponent's 40-yard line means only 40 yards \u2014 a massive advantage that often leads to points."}, {"heading": "Special Teams Control Field Position", "body": "Coaches think about field position on every single play. A great punt that pins the opponent, a big return that reaches midfield, or a turnover deep in enemy territory all flip field position. Special teams are the primary tool for winning the field position battle."}, {"heading": "Field Position Is Football IQ", "body": "Teams that consistently have better field position win more games. A player who understands field position makes smarter decisions \u2014 on kickoffs, on fourth down, on punt coverage. Field position awareness is one of the clearest signs of high Gridiron IQ."}]}], "quiz": [{"q": "Why is third down called the most important down?", "opts": ["Points are worth double", "It is the offense's last real chance to earn a first down before fourth down", "The defense always blitzes", "The quarter ends on third down"], "correct": 1, "explanation": "Third down is critical because it is the final opportunity to earn a first down and keep the drive alive. Failing on third down forces a difficult fourth down decision."}, {"q": "What are the three choices on fourth down?", "opts": ["Run, pass, or kick", "Punt, field goal, or go for it", "Blitz, zone, or man", "Kickoff, punt, or field goal"], "correct": 1, "explanation": "On fourth down the coach chooses between punting to flip field position, kicking a field goal for 3 points, or going for a first down to keep the drive alive."}, {"q": "What is the red zone?", "opts": ["The area near the 50-yard line", "The area from the opponent's 20-yard line to the end zone", "The end zone itself", "The area behind the offense's own goal line"], "correct": 1, "explanation": "The red zone is inside the opponent's 20-yard line. When a team is in the red zone they are in strong scoring position and must convert to avoid wasting the drive."}, {"q": "A team is losing by 4 points in the red zone. What must they do?", "opts": ["Kick a field goal to get within 1", "Go for the touchdown \u2014 a field goal leaves them losing", "Punt the ball", "Run out the clock"], "correct": 1, "explanation": "A field goal would only cut the deficit to 1 point \u2014 still a loss. They must score a touchdown because that is the only way to take the lead."}, {"q": "Why does starting a drive at your own 10-yard line hurt?", "opts": ["There is more traffic near the end zone", "You must travel 90 yards to score \u2014 a much harder task than starting near midfield", "Penalties are more common there", "The defense plays differently there"], "correct": 1, "explanation": "Starting deep in your own territory means 90 yards to score. Starting near midfield means only 50 yards. Better field position dramatically increases scoring chances."}, {"q": "What controls field position most?", "opts": ["The quarterback's passing accuracy", "Special teams \u2014 punts, kicks, and returns", "How many timeouts each team has", "Which team scores first"], "correct": 1, "explanation": "Special teams \u2014 punts, kickoffs, and returns \u2014 are the primary tool for controlling field position. A great punt or return can completely shift where the next drive starts."}]}];
+const CURRICULUM = [
+  {
+    "num": 1,
+    "name": "The Field",
+    "desc": "Field layout, yard lines, hash marks, end zones, and boundaries.",
+    "pillar": "rules",
+    "lessons": [
+      {
+        "title": "The Football Field",
+        "pillar": "rules",
+        "slides": [
+          {
+            "heading": "The Field Is 100 Yards Long",
+            "body": "A football field is 100 yards long and about 53 yards wide. Yard lines cross the field every 10 yards, numbered from each end zone up to the 50-yard line in the middle."
+          },
+          {
+            "heading": "Finding Your Way Around",
+            "body": "The 50-yard line sits exactly in the center. Numbers count up from 0 at each end zone — so both sides show 10, 20, 30, 40, 50. Each team defends one half of the field."
+          },
+          {
+            "heading": "Why It Matters",
+            "body": "Yard lines tell everyone exactly where the ball is on every single play. When a team needs 10 yards for a first down, the yard lines show exactly how far they need to go."
+          }
+        ]
+      },
+      {
+        "title": "Yard Lines and Hash Marks",
+        "pillar": "rules",
+        "slides": [
+          {
+            "heading": "Hash Marks Run Down the Middle",
+            "body": "Hash marks are short lines that run parallel to the sidelines down the center of the field. After every play the referee spots the ball on or between the hash marks."
+          },
+          {
+            "heading": "Why the Hashes Matter",
+            "body": "The offense always snaps the ball from between the hash marks. This gives the offense more room to one side of the field depending on where the ball is spotted — a real strategic factor."
+          },
+          {
+            "heading": "Reading the Numbers",
+            "body": "Yard line numbers are painted every 10 yards and count from 0 at each end zone to 50 in the middle. Together the yard lines and hash marks give every player a precise map of the field."
+          }
+        ]
+      },
+      {
+        "title": "End Zones and Boundaries",
+        "pillar": "rules",
+        "slides": [
+          {
+            "heading": "The End Zone Is Where You Score",
+            "body": "The end zone sits at each end of the field and is 10 yards deep. The full field including both end zones is 120 yards total. The goal line is the front edge of the end zone."
+          },
+          {
+            "heading": "Crossing the Goal Line",
+            "body": "A touchdown is scored when the ball crosses the goal line into the end zone while the player has possession. Even breaking the plane of the goal line with just the tip of the ball counts."
+          },
+          {
+            "heading": "Out of Bounds Ends the Play",
+            "body": "The sidelines mark the outer edges of the field. A player who steps on or past a sideline is out of bounds and the play is immediately dead. A receiver must keep both feet in bounds when catching a pass."
+          }
+        ]
+      }
+    ],
+    "quiz": [
+      {
+        "q": "How long is a standard football field?",
+        "opts": ["50 yards", "75 yards", "100 yards", "120 yards"],
+        "correct": 2,
+        "pillar": "rules",
+        "explanation": "A football field is 100 yards long. The total including both end zones is 120 yards but the playing field itself is 100 yards."
+      },
+      {
+        "q": "What are hash marks used for?",
+        "opts": ["Marking the end zones", "Spotting the ball after each play", "Showing goal post location", "Marking the sidelines"],
+        "correct": 1,
+        "pillar": "rules",
+        "explanation": "Hash marks determine where the ball is spotted after each play. The referee places the ball on or between the hash marks before the next snap."
+      },
+      {
+        "q": "How deep is each end zone?",
+        "opts": ["5 yards", "10 yards", "15 yards", "20 yards"],
+        "correct": 1,
+        "pillar": "rules",
+        "explanation": "Each end zone is 10 yards deep. The goal line is at the front and the end line is at the back."
+      },
+      {
+        "q": "What happens when a ball carrier steps on the sideline?",
+        "opts": ["Play continues", "They get a penalty", "They are out of bounds and the play is dead", "They lose a down"],
+        "correct": 2,
+        "pillar": "rules",
+        "explanation": "Stepping on the sideline means the player is out of bounds. The play is immediately over at that spot."
+      }
+    ]
+  },
+
+  {
+    "num": 2,
+    "name": "How the Game Works",
+    "desc": "Downs, first downs, possession, scoring, and turnovers.",
+    "pillar": "rules",
+    "lessons": [
+      {
+        "title": "Downs and Distance",
+        "pillar": "rules",
+        "slides": [
+          {
+            "heading": "Four Chances to Move 10 Yards",
+            "body": "The offense gets four chances called downs to move the ball 10 yards. Each attempt uses one down. If they gain 10 yards before using all four downs they earn a fresh set of four downs."
+          },
+          {
+            "heading": "Reading Down and Distance",
+            "body": "The down and distance is announced before every play. '2nd and 6' means it is the second down and the offense needs 6 more yards for a first down. Knowing this tells you what play is likely coming."
+          },
+          {
+            "heading": "The Fourth Down Decision",
+            "body": "On fourth down most teams punt the ball away or attempt a field goal. Going for it is a risk — if the offense fails the other team gets the ball right there. The stakes make fourth down one of the most strategic moments in football."
+          }
+        ]
+      },
+      {
+        "title": "Earning a First Down",
+        "pillar": "rules",
+        "slides": [
+          {
+            "heading": "Keep the Drive Alive",
+            "body": "A first down is earned when the offense gains 10 or more yards before using all four downs. The chain crew on the sideline moves their markers to show the new 10-yard target."
+          },
+          {
+            "heading": "Why First Downs Win Games",
+            "body": "First downs keep the drive alive. A team that consistently earns first downs controls the ball, uses up clock time, and eventually scores. First down conversion rate is one of the best predictors of winning."
+          },
+          {
+            "heading": "What Happens If You Fail",
+            "body": "If the offense uses all four downs without gaining 10 yards they turn the ball over at whatever spot the ball stopped. This is why the fourth down decision is so important — failure hands the opponent good field position."
+          }
+        ]
+      },
+      {
+        "title": "Scoring",
+        "pillar": "rules",
+        "slides": [
+          {
+            "heading": "Touchdowns and Extra Points",
+            "body": "A touchdown is worth 6 points and scored by getting the ball into the end zone. After scoring the team can kick for 1 extra point or run and pass the ball into the end zone for 2 extra points."
+          },
+          {
+            "heading": "Field Goals and Safeties",
+            "body": "A field goal is worth 3 points — the kicker kicks through the upright goal posts, usually on fourth down. A safety is worth 2 points and scored by the defense when the offense is tackled in their own end zone."
+          },
+          {
+            "heading": "Know the Score Situation",
+            "body": "Smart players always know the score. Down by 4 means a field goal does not help — you need a touchdown. Down by 2 means a field goal wins. Understanding scoring values is real football IQ."
+          }
+        ]
+      },
+      {
+        "title": "Possession and Turnovers",
+        "pillar": "rules",
+        "slides": [
+          {
+            "heading": "Possessions and Drives",
+            "body": "A possession is when one team has control of the ball. A drive is a series of plays during one possession. Teams trade possessions back and forth throughout the game — how well each team uses their possessions determines the outcome."
+          },
+          {
+            "heading": "Interceptions and Fumbles",
+            "body": "A turnover happens when the defense takes the ball away. An interception is when a defender catches a pass meant for the offense. A fumble recovery is when the defense picks up a ball the offense dropped."
+          },
+          {
+            "heading": "Turnovers Change Games",
+            "body": "Turnovers are one of the most important factors in winning football. Teams that protect the ball and force turnovers have a massive advantage. Most games are decided by the turnover margin."
+          }
+        ]
+      }
+    ],
+    "quiz": [
+      {
+        "q": "What does '3rd and 8' mean?",
+        "opts": ["Third quarter with 8 minutes left", "Third down, need 8 more yards for a first down", "Eight players on the field", "Ball is on the 8-yard line"],
+        "correct": 1,
+        "pillar": "rules",
+        "explanation": "Down and distance tells you where the offense stands. 3rd and 8 means it is the third down and they need 8 more yards to earn a first down."
+      },
+      {
+        "q": "How many points is a touchdown worth?",
+        "opts": ["3 points", "4 points", "6 points", "7 points"],
+        "correct": 2,
+        "pillar": "rules",
+        "explanation": "A touchdown is worth 6 points. After scoring the team can kick for 1 extra point or go for 2, making the total 7 or 8."
+      },
+      {
+        "q": "What is an interception?",
+        "opts": ["A dropped pass", "A defender catching a pass meant for the offense", "A scoring play", "A penalty"],
+        "correct": 1,
+        "pillar": "rules",
+        "explanation": "An interception is when a defensive player catches a pass intended for an offensive receiver. The defense immediately takes possession."
+      },
+      {
+        "q": "What happens if the offense fails to gain 10 yards in four downs?",
+        "opts": ["They get another set of downs", "They automatically score a safety", "The other team gets the ball at that spot", "The quarter ends"],
+        "correct": 2,
+        "pillar": "rules",
+        "explanation": "Failing to gain 10 yards in four downs means the other team gets the ball exactly where the play ended. This is called a turnover on downs."
+      },
+      {
+        "q": "How many points is a field goal worth?",
+        "opts": ["1 point", "2 points", "3 points", "6 points"],
+        "correct": 2,
+        "pillar": "rules",
+        "explanation": "A field goal is worth 3 points. It is kicked through the upright goal posts, usually on fourth down when the team is close enough."
+      },
+      {
+        "q": "A team is losing by 4 points with 30 seconds left. What must they do?",
+        "opts": ["Kick a field goal", "Punt the ball", "Score a touchdown — a field goal is not enough", "Take a knee"],
+        "correct": 2,
+        "pillar": "situational",
+        "explanation": "A field goal would only cut the deficit to 1 point — still a loss. They must score a touchdown to take the lead and win."
+      }
+    ]
+  },
+
+  {
+    "num": 3,
+    "name": "Penalties and Kicking",
+    "desc": "Basic penalties, kickoffs, punts, and the kicking game.",
+    "pillar": "rules",
+    "lessons": [
+      {
+        "title": "Common Penalties",
+        "pillar": "rules",
+        "slides": [
+          {
+            "heading": "The Yellow Flag Stops Play",
+            "body": "When a player breaks a rule a referee throws a yellow flag. After the play the referee announces the penalty and the opposing team can accept it or decline it. Accepting or declining can be strategic depending on the situation."
+          },
+          {
+            "heading": "Offensive Penalties",
+            "body": "A false start costs the offense 5 yards when a player moves before the snap. Holding costs 10 yards when a lineman grabs a defender illegally. These penalties push the offense backward and make first downs harder to earn."
+          },
+          {
+            "heading": "Defensive Penalties",
+            "body": "Offsides on defense costs 5 yards when a defender crosses the line before the snap. Defensive pass interference spots the ball at the foul location — potentially a massive gain for the offense. Knowing penalties is real game awareness."
+          }
+        ]
+      },
+      {
+        "title": "Kickoffs and Touchbacks",
+        "pillar": "situational",
+        "slides": [
+          {
+            "heading": "Every Score Starts With a Kickoff",
+            "body": "The kickoff starts each half and follows every score. The kicking team kicks from their own 35-yard line and the receiving team tries to catch it and return it as far as possible."
+          },
+          {
+            "heading": "Understanding the Touchback",
+            "body": "If the kick lands in the end zone the returner can choose to run it out or stay in the end zone for a touchback. A touchback means the offense starts at their own 25-yard line — no return attempt."
+          },
+          {
+            "heading": "Field Position Is the Goal",
+            "body": "The kickoff is really a field position battle. Starting deep in your own territory is a major disadvantage. A good kick that pins the opponent deep — or a great return that reaches midfield — can flip the momentum of a drive."
+          }
+        ]
+      },
+      {
+        "title": "Punting and Field Position",
+        "pillar": "situational",
+        "slides": [
+          {
+            "heading": "The Punt Flips Field Position",
+            "body": "A punt on fourth down kicks the ball away to push the opponent deep in their own territory. The punter drops the ball and kicks it before it hits the ground, aiming for maximum distance and placement."
+          },
+          {
+            "heading": "Pinning the Opponent Deep",
+            "body": "A great punt that lands inside the opponent's 10-yard line is a huge special teams win. It forces the offense to drive 90-plus yards to score — an enormous challenge that often results in a punt right back."
+          },
+          {
+            "heading": "Field Position Wins Games",
+            "body": "Coaches say field position is one of the most important factors in football. Where a team starts their drive determines how far they have to go. Special teams — punts, kicks, and returns — are the primary tool for controlling field position."
+          }
+        ]
+      }
+    ],
+    "quiz": [
+      {
+        "q": "What penalty is called when an offensive lineman grabs a defender illegally?",
+        "opts": ["False start", "Offsides", "Holding", "Pass interference"],
+        "correct": 2,
+        "pillar": "rules",
+        "explanation": "Holding is called when an offensive lineman grabs or holds a defensive player illegally. It costs the offense 10 yards."
+      },
+      {
+        "q": "What is a touchback?",
+        "opts": ["A tackle inside the end zone", "When the kick lands in the end zone and is not returned — ball starts at the 25", "A penalty on the kicker", "When the returner fumbles"],
+        "correct": 1,
+        "pillar": "situational",
+        "explanation": "A touchback occurs when the kick lands in the end zone and the returner does not run it out. The offense starts from their own 25-yard line."
+      },
+      {
+        "q": "Why do teams punt on 4th down?",
+        "opts": ["To score 2 points", "To pin the opponent deep and gain field position", "Because it is required by the rules", "To rest their offense"],
+        "correct": 1,
+        "pillar": "situational",
+        "explanation": "Teams punt to push the opponent deep in their own territory. Better field position for the defense often leads to a quick stop and a short field for the offense."
+      },
+      {
+        "q": "What happens when the offense commits a false start?",
+        "opts": ["They lose a down", "They are penalized 5 yards", "They are penalized 10 yards", "The play is replayed with no penalty"],
+        "correct": 1,
+        "pillar": "rules",
+        "explanation": "A false start costs the offense 5 yards. An offensive player moved before the ball was snapped, which is illegal."
+      }
+    ]
+  },
+
+  {
+    "num": 4,
+    "name": "Offensive Players",
+    "desc": "Every offensive position — their identity and role on each play.",
+    "pillar": "positions",
+    "lessons": [
+      {
+        "title": "The Quarterback",
+        "pillar": "positions",
+        "slides": [
+          {
+            "heading": "The Most Important Position",
+            "body": "The quarterback is the leader of the offense and touches the ball on almost every play. He reads the defense before the snap, makes decisions under pressure, and must be accurate, smart, and calm in critical moments."
+          },
+          {
+            "heading": "Reading the Defense",
+            "body": "Before the snap the quarterback reads how defenders are lined up to find the best play. If the original play will not work against the defense he can change it at the line — this is called an audible. Great QBs make the right call before the ball is even snapped."
+          },
+          {
+            "heading": "The QB's Three Options",
+            "body": "After the snap the quarterback hands off to a running back, throws a pass to a receiver, or runs the ball himself. The best quarterbacks process all three options in seconds and deliver the ball to the right place."
+          }
+        ]
+      },
+      {
+        "title": "Running Backs and the Offensive Line",
+        "pillar": "positions",
+        "slides": [
+          {
+            "heading": "The Running Back Finds the Hole",
+            "body": "The running back lines up behind the quarterback. His job is to take handoffs and run the ball through gaps created by the offensive line. Vision — reading the blocks and finding the right hole — separates good backs from great ones."
+          },
+          {
+            "heading": "The Five Offensive Linemen",
+            "body": "The offensive line has five players: the center, two guards, and two tackles. The center snaps the ball to start every play. Together these five block defenders to protect the quarterback and open running lanes."
+          },
+          {
+            "heading": "Nothing Works Without the Line",
+            "body": "Without good offensive line play the entire offense breaks down. The quarterback gets sacked. Running backs get tackled for losses. The offensive line is the foundation that makes every other position work — they are the most important unit on the offense."
+          }
+        ]
+      },
+      {
+        "title": "Wide Receivers and Tight Ends",
+        "pillar": "positions",
+        "slides": [
+          {
+            "heading": "Receivers Run Routes to Get Open",
+            "body": "Wide receivers line up on the outside edges of the offense. Their job is to run precise planned paths called routes to get open against defenders. A receiver who runs sharp routes and has great hands changes what a defense can do."
+          },
+          {
+            "heading": "The Versatile Tight End",
+            "body": "The tight end lines up next to the offensive line. He is unique because he can block like a lineman on running plays and run routes like a receiver on passing plays. This makes him one of the hardest positions to defend."
+          },
+          {
+            "heading": "Routes Are the Foundation of Passing",
+            "body": "A route is a specific path designed to beat a specific type of coverage. Slants attack the middle. Out routes attack the sideline. Go routes attack deep coverage. When the route matches the coverage the receiver will be open."
+          }
+        ]
+      }
+    ],
+    "quiz": [
+      {
+        "q": "What is it called when a quarterback changes the play at the line of scrimmage?",
+        "opts": ["A blitz", "A punt", "An audible", "A screen pass"],
+        "correct": 2,
+        "pillar": "positions",
+        "explanation": "When a quarterback changes the play at the line based on what the defense is showing it is called an audible. This is one of the most important QB skills."
+      },
+      {
+        "q": "Which offensive lineman snaps the ball to start every play?",
+        "opts": ["Left tackle", "Right guard", "Center", "Fullback"],
+        "correct": 2,
+        "pillar": "positions",
+        "explanation": "The center is positioned in the middle of the offensive line and snaps the ball to the quarterback to start every single play."
+      },
+      {
+        "q": "Why is the tight end so hard to defend?",
+        "opts": ["He is the fastest player on the field", "He can both block and catch passes", "He always lines up in a different spot", "He calls all the plays"],
+        "correct": 1,
+        "pillar": "positions",
+        "explanation": "The tight end's ability to both block and catch passes makes the defense guess on every play. They never know which role he will take."
+      },
+      {
+        "q": "What is a route in football?",
+        "opts": ["A type of run play", "A planned path a receiver runs to get open", "A defensive formation", "A type of kick"],
+        "correct": 1,
+        "pillar": "plays",
+        "explanation": "A route is a specific planned path a receiver runs designed to get open against the defender covering them. Good route running is essential for any passing game."
+      },
+      {
+        "q": "How many players are on the offensive line?",
+        "opts": ["3", "4", "5", "6"],
+        "correct": 2,
+        "pillar": "positions",
+        "explanation": "The offensive line has 5 players: the center, two guards, and two tackles. All five must work together to protect the quarterback and open running lanes."
+      }
+    ]
+  },
+
+  {
+    "num": 5,
+    "name": "Defensive Players and Special Teams",
+    "desc": "Every defensive position and the players who cover kicks.",
+    "pillar": "positions",
+    "lessons": [
+      {
+        "title": "Defensive Line and Linebackers",
+        "pillar": "positions",
+        "slides": [
+          {
+            "heading": "The Defensive Line Stops Everything",
+            "body": "The defensive line lines up directly across from the offensive line. Defensive ends rush the quarterback on the outside. Defensive tackles stop runs up the middle. When a defender tackles the QB behind the line it is called a sack — one of the biggest defensive plays."
+          },
+          {
+            "heading": "Linebackers Do Everything",
+            "body": "Linebackers line up behind the defensive line. They are the most versatile defenders — they stop runs, cover receivers, and sometimes blitz the quarterback. The middle linebacker often calls the defensive signals, making him the quarterback of the defense."
+          },
+          {
+            "heading": "Controlling the Line of Scrimmage",
+            "body": "The battle at the line of scrimmage determines who wins most plays. If the defensive line dominates — stopping runs and pressuring the QB — the whole defense plays better. Controlling the line is the foundation of every good defense."
+          }
+        ]
+      },
+      {
+        "title": "Cornerbacks and Safeties",
+        "pillar": "positions",
+        "slides": [
+          {
+            "heading": "Cornerbacks Cover Receivers",
+            "body": "Cornerbacks line up across from wide receivers. Their job is to prevent receivers from catching passes. In man coverage they follow one receiver wherever they go. In zone coverage they guard a specific area. Corners must be fast, physical, and mentally tough."
+          },
+          {
+            "heading": "Safeties Are the Last Line",
+            "body": "Safeties play deep behind everyone else and are the last line of defense. The free safety roams deep reading the quarterback. The strong safety plays closer to the line and helps against both runs and passes. When both safeties play deep it is called a two-high look."
+          },
+          {
+            "heading": "The Secondary Works Together",
+            "body": "Cornerbacks and safeties work as a unit called the secondary. Communication between them is critical — one missed assignment can result in a wide-open receiver. Great secondaries disguise their coverage to confuse the quarterback before the snap."
+          }
+        ]
+      },
+      {
+        "title": "Kicker, Punter, and Returner",
+        "pillar": "positions",
+        "slides": [
+          {
+            "heading": "The Kicker Handles Three Jobs",
+            "body": "The kicker handles kickoffs, field goal attempts, and extra point kicks. A great kicker can make field goals from 55 or more yards and kick the ball deep into the end zone on kickoffs — taking the return game away from the opponent."
+          },
+          {
+            "heading": "The Punter Controls Field Position",
+            "body": "The punter kicks on fourth down to flip field position. He drops the ball and kicks it before it hits the ground aiming for maximum distance. Great punters consistently pin opponents inside their own 10-yard line — one of the most impactful plays in football."
+          },
+          {
+            "heading": "The Returner Changes Games",
+            "body": "The returner catches kickoffs and punts and tries to gain as many yards as possible. A return touchdown is worth 6 points and can completely shift momentum. Great returners are fast, fearless, and instinctive — they see the field in a split second."
+          }
+        ]
+      }
+    ],
+    "quiz": [
+      {
+        "q": "What is a sack?",
+        "opts": ["An interception", "Tackling the QB behind the line of scrimmage", "A type of punt", "A penalty on the offense"],
+        "correct": 1,
+        "pillar": "positions",
+        "explanation": "A sack occurs when the quarterback is tackled behind the line of scrimmage before throwing. It is one of the most impactful defensive plays."
+      },
+      {
+        "q": "What is the cornerback's main responsibility?",
+        "opts": ["Rush the quarterback", "Cover wide receivers and prevent catches", "Call defensive signals", "Block punts"],
+        "correct": 1,
+        "pillar": "positions",
+        "explanation": "The cornerback's primary job is covering wide receivers to prevent them from catching passes. They face the fastest players on the offense."
+      },
+      {
+        "q": "Where do safeties line up?",
+        "opts": ["On the line of scrimmage", "Behind the cornerbacks in the deep secondary", "Next to the defensive tackles", "Across from the tight end only"],
+        "correct": 1,
+        "pillar": "positions",
+        "explanation": "Safeties play deep behind the linebackers and cornerbacks. They are the last line of defense and protect against big passing plays."
+      },
+      {
+        "q": "How many points is a kick return touchdown worth?",
+        "opts": ["2 points", "3 points", "6 points", "7 points"],
+        "correct": 2,
+        "pillar": "rules",
+        "explanation": "A kick return touchdown is worth 6 points — the same as any other touchdown. It is one of the most exciting plays in football."
+      },
+      {
+        "q": "What does a two-high look mean?",
+        "opts": ["Two linemen rushing the QB", "Both safeties playing deep to protect against long passes", "Two cornerbacks covering one receiver", "Two linebackers blitzing"],
+        "correct": 1,
+        "pillar": "formations",
+        "explanation": "A two-high look means both safeties are playing deep. This protects against deep passes and is a common coverage against passing offenses."
+      }
+    ]
+  },
+
+  {
+    "num": 6,
+    "name": "Offensive Concepts",
+    "desc": "Run vs pass, handoffs, blocking, formations, and routes.",
+    "pillar": "plays",
+    "lessons": [
+      {
+        "title": "Run Plays",
+        "pillar": "plays",
+        "slides": [
+          {
+            "heading": "Running the Ball Controls the Game",
+            "body": "A running play is when the quarterback hands off to a running back who runs through gaps created by the offensive line. Running plays gain consistent yards and use up clock time — critical when a team is winning late."
+          },
+          {
+            "heading": "Types of Run Plays",
+            "body": "A dive goes straight up the middle through the center and guards. A sweep goes wide around the edge. A draw fakes a pass first to pull defenders upfield then hands off up the middle. Each play attacks a different part of the defense."
+          },
+          {
+            "heading": "Why Running Sets Up Everything",
+            "body": "Teams that run the ball effectively make the entire offense harder to stop. When defenders commit to stopping the run they leave receivers more open. This is called setting up the pass with the run — a foundation of great offensive football."
+          }
+        ]
+      },
+      {
+        "title": "Blocking",
+        "pillar": "plays",
+        "slides": [
+          {
+            "heading": "Blocking Makes Every Play Work",
+            "body": "Blocking is how the offense creates space for the ball carrier and protects the quarterback. Every single play depends on good blocking — without it the quarterback gets hit and running backs gain nothing."
+          },
+          {
+            "heading": "Run Blocking vs Pass Blocking",
+            "body": "On running plays linemen drive defenders away from the hole to create a running lane. On passing plays the offensive line forms a protective pocket around the quarterback. Each lineman is responsible for one defender."
+          },
+          {
+            "heading": "The Pocket Is Sacred",
+            "body": "When the offensive line builds a clean pocket the quarterback has time to survey the whole field and make the right throw. When the pocket collapses the QB must scramble and the play breaks down. Protecting the pocket is the most important job on the offensive line."
+          }
+        ]
+      },
+      {
+        "title": "Offensive Formations",
+        "pillar": "formations",
+        "slides": [
+          {
+            "heading": "Formations Signal Intent",
+            "body": "A formation is how the offense lines up before the snap. Different formations give the offense different strengths and signal different types of plays to the defense — who in turn adjusts their alignment to match."
+          },
+          {
+            "heading": "Common Formations",
+            "body": "The I-Formation places two backs behind the QB for power running. The Shotgun has the QB several yards back for better passing looks. The Spread spaces receivers wide across the field to stretch the defense horizontally."
+          },
+          {
+            "heading": "Modern Offenses Use the Spread",
+            "body": "Most modern offenses use Spread formations because they create open space and force defenses to cover the whole field. The Spread is used at every level from youth football to the NFL. Understanding formations helps you predict what play is coming."
+          }
+        ]
+      },
+      {
+        "title": "Pass Routes",
+        "pillar": "plays",
+        "slides": [
+          {
+            "heading": "Routes Beat Coverage",
+            "body": "On passing plays receivers run planned paths called routes designed to get open against defenders. Every route has a specific purpose built to beat a specific type of coverage. Good route running is what separates open receivers from covered ones."
+          },
+          {
+            "heading": "The Basic Routes",
+            "body": "A slant cuts sharply toward the middle — quick and hard to defend. A curl runs straight then curls back toward the QB. An out breaks toward the sideline. A go route is a straight sprint deep. Each attacks a different area of the field."
+          },
+          {
+            "heading": "Route Combinations Create Openings",
+            "body": "Multiple receivers running coordinated routes at once is called a route combination. They are designed to attack specific coverages — stretching defenders between two threats so one is always open. This is the heart of modern passing game design."
+          }
+        ]
+      }
+    ],
+    "quiz": [
+      {
+        "q": "What makes a draw play different from a regular run?",
+        "opts": ["The QB keeps the ball", "It fakes a pass first before handing off", "The fullback takes the handoff", "It always goes wide"],
+        "correct": 1,
+        "pillar": "plays",
+        "explanation": "A draw play fakes a pass to pull defenders upfield, then the QB hands off to the running back through the cleared middle."
+      },
+      {
+        "q": "What is the pocket in football?",
+        "opts": ["A type of run play", "The protected area the line creates around the QB", "A short route to the flat", "The area behind the end zone"],
+        "correct": 1,
+        "pillar": "plays",
+        "explanation": "The pocket is the protected area the offensive line creates around the quarterback on passing plays. A clean pocket gives the QB time to throw."
+      },
+      {
+        "q": "Which formation is best known as a power running formation?",
+        "opts": ["Shotgun", "Spread", "I-Formation", "Nickel"],
+        "correct": 2,
+        "pillar": "formations",
+        "explanation": "The I-Formation places two backs behind the QB giving the offense extra blocking power. It is one of the strongest run formations in football."
+      },
+      {
+        "q": "What is a go route?",
+        "opts": ["A quick cut toward the middle", "A route where the receiver curls back", "A straight sprint deep down the field", "A short route near the sideline"],
+        "correct": 2,
+        "pillar": "plays",
+        "explanation": "A go route is a straight sprint deep down the field. It attacks deep coverage and can score a touchdown or open up shorter routes underneath."
+      },
+      {
+        "q": "Why does running the ball help the passing game?",
+        "opts": ["It tires out the defense", "It forces defenders to commit to stopping the run, leaving receivers more open", "It always gains more yards", "It prevents penalties"],
+        "correct": 1,
+        "pillar": "plays",
+        "explanation": "When defenders commit to stopping the run they leave passing lanes more open. This is called setting up the pass with the run."
+      },
+      {
+        "q": "What is a route combination?",
+        "opts": ["A running play with multiple blockers", "Multiple receivers running coordinated routes to attack coverage together", "A formation with extra linemen", "A trick play with lateral passes"],
+        "correct": 1,
+        "pillar": "plays",
+        "explanation": "A route combination is when multiple receivers run coordinated routes designed to stretch the defense and create open receivers by attacking multiple areas at once."
+      }
+    ]
+  },
+
+  {
+    "num": 7,
+    "name": "Defensive Concepts",
+    "desc": "Tackling, stopping the run, coverages, and turnovers.",
+    "pillar": "plays",
+    "lessons": [
+      {
+        "title": "Tackling Fundamentals",
+        "pillar": "plays",
+        "slides": [
+          {
+            "heading": "Safe Tackling Wins Games",
+            "body": "Tackling is how a defender stops the ball carrier. The safest and most effective tackle keeps your eyes up and head to the side — never lead with the crown of your helmet. Bend your knees, stay low, and wrap both arms."
+          },
+          {
+            "heading": "The Form Tackle",
+            "body": "A form tackle: eyes up, head to the side, bend knees, wrap both arms around the ball carrier, and drive your legs through the contact. Driving your legs is what finishes the tackle — arm tackles alone rarely work."
+          },
+          {
+            "heading": "Spearing Is Dangerous and Illegal",
+            "body": "Leading with the top of the helmet — called spearing — is illegal and causes serious neck and spine injuries to both players. Safe tackling technique protects you and your opponent and is the foundation of good defensive play at every level."
+          }
+        ]
+      },
+      {
+        "title": "Stopping the Run",
+        "pillar": "plays",
+        "slides": [
+          {
+            "heading": "Control the Line of Scrimmage",
+            "body": "To stop the run the defensive line must hold their ground and not get pushed backward. If the line gets pushed back the running back has space to run. Winning the line of scrimmage is the first step in stopping any run game."
+          },
+          {
+            "heading": "Gap Discipline Is Everything",
+            "body": "Every defender is assigned a specific gap — the space between offensive linemen. Gap discipline means staying in your assigned space. If a defender abandons their gap the running back cuts back to the open space and gains big yards."
+          },
+          {
+            "heading": "Linebackers Flow to the Ball",
+            "body": "Linebackers read the backfield — watching the offensive line and running back — to identify where the run is going. Then they flow to that hole and make the tackle. Reading and reacting quickly is what makes a great linebacker."
+          }
+        ]
+      },
+      {
+        "title": "Coverage Concepts",
+        "pillar": "formations",
+        "slides": [
+          {
+            "heading": "Man vs Zone Coverage",
+            "body": "In man coverage each defender follows one specific player wherever they go. In zone coverage each defender guards a specific area of the field and covers any receiver who enters their zone. Both have strengths and weaknesses depending on the situation."
+          },
+          {
+            "heading": "Cover 2 and Cover 3",
+            "body": "Cover 2 splits the deep field between two safeties — five defenders cover underneath zones. Cover 3 uses three deep defenders and four underneath. Zone coverage can confuse the quarterback by not giving clear one-on-one matchups to attack."
+          },
+          {
+            "heading": "Coverage Wins Passing Downs",
+            "body": "On third and long the defense almost always plays coverage to take away the easy pass. Good coverage forces the quarterback to hold the ball longer — which gives the pass rush time to get to him. Coverage and the pass rush work together."
+          }
+        ]
+      },
+      {
+        "title": "Creating Turnovers",
+        "pillar": "plays",
+        "slides": [
+          {
+            "heading": "Interceptions Change Games",
+            "body": "To get an interception a defender reads the quarterback's eyes to predict where the ball is going. When the QB throws the defender breaks on the ball and tries to catch it before the receiver. Reading the QB is a skill that takes practice to develop."
+          },
+          {
+            "heading": "Stripping the Ball",
+            "body": "Defenders cause fumbles by punching or ripping at the ball when making a tackle. Ball carriers protect the ball by holding it tight with elbow down against their body. The team that wins the fumble battle often wins the game."
+          },
+          {
+            "heading": "Turnovers Are Momentum",
+            "body": "Teams that win the turnover battle win the majority of their games. A turnover does two things at once — it takes points away from the offense and gives the defense a chance to score. Protecting the ball and hunting turnovers is game-changing football IQ."
+          }
+        ]
+      }
+    ],
+    "quiz": [
+      {
+        "q": "What is spearing?",
+        "opts": ["A long pass to the tight end", "Leading with the crown of the helmet when tackling", "A run play up the middle", "A trick kick play"],
+        "correct": 1,
+        "pillar": "plays",
+        "explanation": "Spearing is leading with the crown of the helmet to make a tackle. It is illegal and causes serious injury to both players."
+      },
+      {
+        "q": "What is gap discipline?",
+        "opts": ["Running faster than the ball carrier", "Each defender staying in their assigned space to prevent cutback runs", "Blitzing the QB on every play", "Covering the tight end"],
+        "correct": 1,
+        "pillar": "plays",
+        "explanation": "Gap discipline means each defender maintains their assigned gap between offensive linemen so there is no hole for the running back to run through."
+      },
+      {
+        "q": "In man coverage what does each defender do?",
+        "opts": ["Guards a zone area", "Follows one specific player wherever they go", "Only covers the QB", "Blitzes every play"],
+        "correct": 1,
+        "pillar": "formations",
+        "explanation": "In man coverage each defender is assigned one specific player to follow on every play. It requires athletic, confident defensive backs."
+      },
+      {
+        "q": "What is Cover 2?",
+        "opts": ["Two linebackers blitzing", "Two safeties splitting the deep field with five underneath defenders", "Two cornerbacks on one receiver", "Two defensive linemen rushing"],
+        "correct": 1,
+        "pillar": "formations",
+        "explanation": "Cover 2 has two safeties splitting the deep field in half while five defenders cover underneath zones. It is one of the most common defensive coverages."
+      },
+      {
+        "q": "How do defenders create fumbles?",
+        "opts": ["By running faster than the ball carrier", "By punching or ripping at the ball", "By calling a timeout", "By jumping over the ball carrier"],
+        "correct": 1,
+        "pillar": "plays",
+        "explanation": "Defenders are coached to punch or rip at the ball when making a tackle to knock it loose. This is called a strip — a forced fumble."
+      },
+      {
+        "q": "Why does good coverage help the pass rush?",
+        "opts": ["It makes the QB throw faster", "It forces the QB to hold the ball longer giving the pass rush more time", "It stops the run game", "It eliminates blitzing"],
+        "correct": 1,
+        "pillar": "formations",
+        "explanation": "When coverage takes away easy throws the QB must hold the ball longer. This gives pass rushers extra time to reach him — coverage and pass rush work together."
+      }
+    ]
+  },
+
+  {
+    "num": 8,
+    "name": "Situational Strategy",
+    "desc": "3rd down, 4th down, red zone, field position, and game awareness.",
+    "pillar": "situational",
+    "lessons": [
+      {
+        "title": "Third Down",
+        "pillar": "situational",
+        "slides": [
+          {
+            "heading": "The Most Important Down",
+            "body": "Third down is the offense's last real chance to get a first down before facing a fourth down decision. Third down conversion rate — how often a team gets a first down on third down — is one of the best predictors of which team will win."
+          },
+          {
+            "heading": "Short vs Long Third Downs",
+            "body": "On third and short — needing one or two yards — teams usually run because a short gain is reliable. On third and long — needing eight or more yards — teams almost always pass because only a pass can gain that much quickly."
+          },
+          {
+            "heading": "Defense Adjusts on Third Down",
+            "body": "Defenses bring extra defensive backs on third and long expecting a pass. They may blitz more to pressure the quarterback. Understanding what third down means tells a player exactly what play is likely coming and how the defense will respond."
+          }
+        ]
+      },
+      {
+        "title": "Fourth Down Decisions",
+        "pillar": "situational",
+        "slides": [
+          {
+            "heading": "The Biggest Decision in Football",
+            "body": "Fourth down is the most strategic moment in football. The coach must decide whether to punt, attempt a field goal, or go for a first down. Each choice has very different consequences depending on the score, field position, and time remaining."
+          },
+          {
+            "heading": "Three Options, Three Outcomes",
+            "body": "Punting is safe — it gives the ball away but pins the opponent deep. A field goal scores 3 points but only makes sense if close enough. Going for it keeps the drive alive but hands the opponent excellent field position if it fails."
+          },
+          {
+            "heading": "Analytics Changed Fourth Down",
+            "body": "Modern analytics show that going for it on fourth and short is often the right call even deep in your own territory. Many coaches now make more aggressive fourth down decisions than ever before. Smart players understand why — the math often favors going for it."
+          }
+        ]
+      },
+      {
+        "title": "Red Zone and Scoring Decisions",
+        "pillar": "situational",
+        "slides": [
+          {
+            "heading": "The Red Zone Is Scoring Territory",
+            "body": "The red zone is the area from the opponent's 20-yard line to the end zone. When a team enters the red zone scoring is the immediate priority. The defense tightens because there is less space for routes — every yard matters more."
+          },
+          {
+            "heading": "Touchdown or Field Goal",
+            "body": "Inside the red zone teams must decide whether to go for the touchdown or kick the field goal. A touchdown plus extra point is worth 7 points. A field goal is 3. The game situation determines which choice is correct."
+          },
+          {
+            "heading": "Know What You Need",
+            "body": "Smart players always know the score and what they need. Down by 4 — a field goal does not help, you need a touchdown. Down by 2 — a field goal wins it. Down by 7 — you need a touchdown and a 2-point conversion or overtime. Football IQ means knowing these situations without thinking."
+          }
+        ]
+      },
+      {
+        "title": "Field Position Awareness",
+        "pillar": "situational",
+        "slides": [
+          {
+            "heading": "Where You Start Matters Enormously",
+            "body": "Field position is where the offense starts their drive. Starting at your own 10-yard line means 90 yards to score — very difficult. Starting at the opponent's 40-yard line means only 40 yards — a massive advantage that often leads to points."
+          },
+          {
+            "heading": "Special Teams Control Field Position",
+            "body": "Coaches think about field position on every single play. A great punt that pins the opponent, a big return that reaches midfield, or a turnover deep in enemy territory all flip field position. Special teams are the primary tool for winning the field position battle."
+          },
+          {
+            "heading": "Field Position Is Football IQ",
+            "body": "Teams that consistently have better field position win more games. A player who understands field position makes smarter decisions — on kickoffs, on fourth down, on punt coverage. Field position awareness is one of the clearest signs of high Gridiron IQ."
+          }
+        ]
+      }
+    ],
+    "quiz": [
+      {
+        "q": "Why is third down called the most important down?",
+        "opts": ["Points are worth double", "It is the offense's last real chance to earn a first down before fourth down", "The defense always blitzes", "The quarter ends on third down"],
+        "correct": 1,
+        "pillar": "situational",
+        "explanation": "Third down is critical because it is the final opportunity to earn a first down and keep the drive alive. Failing on third down forces a difficult fourth down decision."
+      },
+      {
+        "q": "What are the three choices on fourth down?",
+        "opts": ["Run, pass, or kick", "Punt, field goal, or go for it", "Blitz, zone, or man", "Kickoff, punt, or field goal"],
+        "correct": 1,
+        "pillar": "situational",
+        "explanation": "On fourth down the coach chooses between punting to flip field position, kicking a field goal for 3 points, or going for a first down to keep the drive alive."
+      },
+      {
+        "q": "What is the red zone?",
+        "opts": ["The area near the 50-yard line", "The area from the opponent's 20-yard line to the end zone", "The end zone itself", "The area behind the offense's own goal line"],
+        "correct": 1,
+        "pillar": "situational",
+        "explanation": "The red zone is inside the opponent's 20-yard line. When a team is in the red zone they are in strong scoring position and must convert to avoid wasting the drive."
+      },
+      {
+        "q": "A team is losing by 4 points in the red zone. What must they do?",
+        "opts": ["Kick a field goal to get within 1", "Go for the touchdown — a field goal leaves them losing", "Punt the ball", "Run out the clock"],
+        "correct": 1,
+        "pillar": "situational",
+        "explanation": "A field goal would only cut the deficit to 1 point — still a loss. They must score a touchdown because that is the only way to take the lead."
+      },
+      {
+        "q": "Why does starting a drive at your own 10-yard line hurt?",
+        "opts": ["There is more traffic near the end zone", "You must travel 90 yards to score — a much harder task than starting near midfield", "Penalties are more common there", "The defense plays differently there"],
+        "correct": 1,
+        "pillar": "situational",
+        "explanation": "Starting deep in your own territory means 90 yards to score. Starting near midfield means only 50 yards. Better field position dramatically increases scoring chances."
+      },
+      {
+        "q": "What controls field position most?",
+        "opts": ["The quarterback's passing accuracy", "Special teams — punts, kicks, and returns", "How many timeouts each team has", "Which team scores first"],
+        "correct": 1,
+        "pillar": "situational",
+        "explanation": "Special teams — punts, kickoffs, and returns — are the primary tool for controlling field position. A great punt or return can completely shift where the next drive starts."
+      }
+    ]
+  }
+];
+
+// ── Pillar metadata — matches GIQ radar chart axes ──
+const PILLARS = {
+  rules:       { label: "Rules & Objectives",         color: "#E63946" },
+  positions:   { label: "Positions & Responsibilities", color: "#F4A261" },
+  formations:  { label: "Formations & Alignments",    color: "#2A9D8F" },
+  plays:       { label: "Plays & Concepts",            color: "#457B9D" },
+  situational: { label: "Situational Awareness",       color: "#6A4C93" }
+};
 
 // ── Helper: total slides in a module ──
 function totalSlides(mIdx) {
@@ -22,4 +924,26 @@ function getNextLesson(mIdx, lIdx) {
   if (lIdx + 1 < CURRICULUM[mIdx].lessons.length) return { mIdx: mIdx, lIdx: lIdx + 1 };
   if (mIdx + 1 < CURRICULUM.length) return { mIdx: mIdx + 1, lIdx: 0 };
   return null;
+}
+
+// ── Helper: get all quiz questions for a pillar ──
+function getQuizByPillar(pillarKey) {
+  var questions = [];
+  CURRICULUM.forEach(function(mod) {
+    mod.quiz.forEach(function(q) {
+      if (q.pillar === pillarKey) questions.push(q);
+    });
+  });
+  return questions;
+}
+
+// ── Helper: count lessons per pillar ──
+function lessonCountByPillar() {
+  var counts = { rules: 0, positions: 0, formations: 0, plays: 0, situational: 0 };
+  CURRICULUM.forEach(function(mod) {
+    mod.lessons.forEach(function(l) {
+      if (counts[l.pillar] !== undefined) counts[l.pillar]++;
+    });
+  });
+  return counts;
 }
